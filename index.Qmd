@@ -1,0 +1,34 @@
+---
+title: "A living systematic review and meta-analysis for SEB skills"
+subtitle: "Site index"
+author: "Tommaso Feraco"
+#include-in-header: assets/header.html
+format: 
+  html:
+    self-contained: true
+    toc: true   
+    toc-depth: 3 
+    toc-expand: 3 
+    code-fold: false 
+    message: false
+#    css: "assets/custom.css"
+editor: visual
+---
+
+## Materials
+
+Here you can find materials of this project:
+
+-   **Presentations**
+    -   Lab meeting 2025 - 05 - 21 [html](https://feracotommaso.github.io/living_SEB_review/slides/labMeeting/LabMeetingLMA.html){target="_blank"}
+-   **Preregistration**
+-   **Data**
+-   **ShinyApp**
+
+------------------------------------------------------------------------
+
+::: {style="font-size:11px;"}
+GitHub repository associated to the present course website: <https://github.com/feracotommaso/living_SEB_review>
+
+Many thanks to Filippo Gambarota and Enrico Toffalini for sharing their expertise in using GitHub, Quarto, and creating GitHub Pages websites.
+:::
