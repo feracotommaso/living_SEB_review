@@ -1,0 +1,247 @@
+---
+title: "Review preregistration protocol: A living systematic review and meta-analysis for SEB skills"
+#author: "Tommaso Feraco, XXX, XXX, XXX"
+date: today
+format: 
+    pdf
+# csl: assets/apa.csl
+bibliography: references.bib
+---
+
+# 1. Objectives and Rationale
+
+The social, emotional, and behavioral (SEB) skills framework, recently proposed by Soto and colleagues, offers an integrative alternative to earlier models of soft skills, bringing conceptual clarity and new measurement tools to the field. Given the framework’s novelty and the longstanding challenges in psychological research—such as fragmented evidence, inconsistent methods, and limited reproducibility—we believe it is crucial to adopt a modern, cumulative, and open approach to studying SEB skills.
+
+This project introduces a *living systematic review* and *meta-analysis* of research adopting the SEB framework. Unlike traditional reviews, this living review will be continuously updated to incorporate newly published studies, making the accumulated evidence transparent, accessible, and dynamically integrated.
+
+The goals of this project are:
+
+-   To **synthesize and critically review** the literature on SEB skills using the Soto framework.
+
+-   To provide an **open-access, regularly updated database** of all relevant publications, including metadata on study design, samples, measures, and data availability.
+
+-   To **meta-analyze cross-sectional associations** between SEB skills and all other variables reported in the literature, using:
+
+    -   Meta-analytic Structural Equation Modeling (metaSEM)
+
+    -   Multilevel random-effects meta-analysis for correlation coefficients
+
+-   To develop a **user-friendly ShinyApp** that allows researchers, educators, and policymakers to explore the meta-analytic findings and conduct rapid, customizable syntheses.
+
+This preregistration outlines the planned methods for data extraction, coding, and synthesis, ensuring transparency and reproducibility from the outset.
+
+------------------------------------------------------------------------
+
+# Methods
+
+## Data
+
+The aim of the project is to keep track of the literature on SEB skills adopting a skill-based and not trait-based framework and measurement. We will thus strictly adhere to this selection and exclude trait-based frameworks and measurement (e.g., the OECD framework, SEL framework), and frameworks not based on the Big Five. This avoids confusion with personality traits, who should keep their intertwined but separated literature.
+
+### Sources and search strategy
+
+The search will be conducted on two separate databases (Scopus and Web Of Science) using broad search strings (see @tbl-string). Indeed, given the broad scope of the review, it is fundamental that our search string cover all publications on the topic of SEB skills and not only studies focusing on the association between SEB skills and specific outcomes and/or specific experimental manipulation or interventions. For this reason we decided to keep as string search the seminal theoretical and measurement papers that, assuming scholars cite the necessary literature, will always be included (at least one of them) into their reference list. In other words, we will search WOS and Scopus for all the papers citing at least one of the seminal/measurement SEB papers (this list will be updated when new measurement or theoretical papers are published). The initial string will consider the following papers and is provided in @tbl-string, while additional inputs for updates are provided in @tbl-string-update:
+
+-   **Seminal theoretical papers**
+
+    -   Taking Skills Seriously: Toward an Integrative Model and Agenda for Social, Emotional, and Behavioral Skills [@soto2021]
+
+-   **Measurement**
+
+    -   An Integrative Framework for Conceptualizing and Assessing Social, Emotional, and Behavioral Skills: The BESSI [@soto2022]
+
+    -   The Behavioral, Emotional, and Social Skills Inventory (BESSI): Psychometric Properties of a German-Language Adaptation, Temporal Stabilities of the Skills, and Associations with Personality and Intelligence [@lechner2022]
+
+    -   The Italian Behavioral, Emotional, and Social Skills Inventory (BESSI-I) [@feraco2024]
+
+    -   The Behavioral, Emotional, and Social Skills Inventory: A Spanish Adaptation and Further Validation in Adult Population [@postigo2024]
+
+-   **Short measurement versions**
+
+    -   Assessing Social, Emotional, and Behavioral Skills in Just a Few Minutes: 96-, 45-, and 20-Item Short Forms of the BESSI [@sewell2024]
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Search string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
++=====================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================+
+| **Scopus**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ( REF ( taking AND skills AND seriously: AND toward AND an AND integrative AND model AND agenda AND for AND social, AND emotional, AND behavioral AND skills ) OR REF ( an AND integrative AND framework AND for AND conceptualizing AND assessing AND social, AND emotional, AND behavioral AND skills: AND the AND bessi ) OR REF ( the AND behavioral, AND emotional, AND social AND skills AND inventory AND psychometric AND properties AND of AND a AND german-language AND adaptation, AND temporal AND stabilities AND of AND the AND skills, AND associations AND with AND personality AND intelligence ) OR REF ( the AND italian AND behavioral, AND emotional, AND social AND skills AND inventory AND bessi ) OR REF ( the AND behavioral, AND emotional, AND social AND skills AND inventory: AND a AND spanish AND adaptation AND further AND validation AND in AND adult AND population ) OR REF ( assessing AND social, AND emotional, AND behavioral AND skills AND in AND just AND a AND few AND minutes: AND 96-, AND 45-, AND 20-item AND short AND forms AND of AND the AND bessi ) ) AND PUBYEAR \> 2019 AND PUBYEAR \< 2026 |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Web Of Science**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| 10.1177/0963721420978613 (Cited DOI) or 10.1037/pspp0000401 (Cited DOI) or 10.3390/jintelligence10030063 (Cited DOI) or 10.1080/00223891.2024.2335912 (Cited DOI) or 10.1177/10731911231225197 (Cited DOI) or 10.1177/10731911241256434 (Cited DOI) \|                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+: Initial search string for the two databases {#tbl-string}
+
++--------------------+----------------------------------------------------------+
+| Database           | String                                                   |
++====================+==========================================================+
+| **Scopus**         | -   AND ORIG-LOAD-DATE AFT YYYYMMDD                      |
+|                    |                                                          |
+|                    | -   Title of new measurement/seminal papers added        |
++--------------------+----------------------------------------------------------+
+| **Web Of Science** | -   \| Timespan: YYYY-MM-DD to YYYY-MM-DD (*Index Date)* |
+|                    |                                                          |
+|                    | -   DOI of new measurement/seminal papers added          |
++--------------------+----------------------------------------------------------+
+
+: Updates of the search strings {#tbl-string-update}
+
+### Eligibility Criteria
+
+Given the double aim of this project (review + meta-analysis), broader eligibility criteria were applied to select papers for systematic review and the more specific (nested) meta-analytic synthesis.
+
+1.  **Review.**
+
+-   **Review eligibility:** Citations are included in the review synthesis if:
+
+    -   The main topic of the paper is SEB skills.
+
+    -   The paper provides substantial theoretical and quantitative information about SEB skills.
+
+-   **Exclusion from the review.** Citations are completely excluded from the review synthesis if:
+
+    -   They were not focusing on or adopting the SEB skill framework or emerging frameworks based on it. For example, a study focusing on the development of the Big Five should be excluded although it cites the reference papers. However, if it focuses on the development of the Big Five but also collects side data using the BESSI, it will be included in the meta-analysis and -if it also interprets and discuss SEB results- in the review;
+
+    -   They were published as books;
+
+    -   They were published in languages that were not comprehensible for the authors;
+
+    -   Referer to the SEB framework, but focus on different frameworks, such as the OECD or CASEL.
+
+2.  **Meta analysis**
+
+-   **Meta analysis eligibility.** Citations are included in the meta-analysis if:
+
+    -   The study assessed SEB skills using a validated skill-based assessment referencing to the SEB framework;
+
+    -   The study referred to original data that are not already reported in other included studies;
+
+    -   The population study was either the general population or a clinical population with mild/moderate mental health issues.
+
+-   **Exclusion from the meta analysis.** Citations are excluded if:
+
+    -   It is a qualitative study;
+
+    -   The study does not measure participants' SEB skills;
+
+    -   SEB skills were measured with a non-validated measure or with a measure that does follow the SEB framework;
+
+    -   The study does not report correlations at baseline or the data could not be reduced to correlations nor obtained by the authors;
+
+    -   It was a study whose data were previously used in a paper already included in the meta-analysis;
+
+    -   The study focused on severe mental health issues (e.g., schizophrenia, bipolar disorder);
+
+    -   They were published in languages that were not comprehensible for the authors.
+
+### Outcomes
+
+This review is not limited to any outcome, but all possible outcomes will be coded and included. Outcomes will be treated in the following way:
+
+-   **Broad category:** Each outcome is assigned to the a broad category. Examples might be skills, mental health, school, demographic variables, job, personality traits...
+
+-   **Second-level category:** Subsequently, within each broad category, each outcome is assigned to a more specific category. For instance, the broad 'traits' category may include the big five, hexaco, character strengths. School may include academic achievement, learning factors.
+
+-   **Specific construct:** Finally, each construct is labeled with its own construct label (e.g., extraversion, self-management).
+
+### Measures of effect
+
+Correlations (Pearson's *r*) between skills and outcomes will be coded in form of correlation matrices.
+
+## Coding procedure
+
+@tbl-coding reports the variables that will be coded for each included study.
+
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| **Variable Name**        | **Description**                                                                                                                           | **Value Type** |
++:=========================+:==========================================================================================================================================+:===============+
+| *Download date*          | The day the BibTex was downloaded.                                                                                                        | Date           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Paper ID*               | The progressive number of the paper.                                                                                                      | Integer        |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Sample ID*              | The progressive letter identifying each sample within the same study.                                                                     | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Matrix ID*              | The unique identifier of each matrix of correlations composed by paper ID + sample ID.                                                    | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *DOI*                    | The link-formatted digital object identifier.                                                                                             | Text (link)    |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Title*                  | Title of the article.                                                                                                                     | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Abstract*               | Abstract of the paper.                                                                                                                    | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Journal*                | Name of the journal in which the article was published.                                                                                   | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Authors*                | Full list of authors' names.                                                                                                              | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Author et al*           | Abbreviated authors' list.                                                                                                                | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Year*                   | Year of publication.                                                                                                                      | Integer        |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Exclusion general*      | Whether the paper should be included or the reason why the paper was excluded during fulltext screening.                                  | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Exclusion meta*         | The reason why the paper cannot be included in the meta-analysis (blank if 'exclusion_general' != 'include').                             | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Review topic*           | What is the single main topic of the paper (blank if 'exclusion_general' != 'include').                                                   | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Final decision*         | Whether the paper should be excluded ('exclude'), included in the meta-analysis AND the review ('meta') or in the review only ('review'). | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Email*                  | Corresponding author email.                                                                                                               | Text (email)   |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Open data*              | Link to the available data, if any.                                                                                                       | Text (link)    |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Study design*           | The design of the study (cross-sectional, longitudinal, experimental).                                                                    | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Country*                | Participants' country.                                                                                                                    | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Gender*                 | The percentage of females included in the study.                                                                                          | Percentage     |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Age*                    | The mean age of the sample.                                                                                                               | Numeric        |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *N*                      | The sample size.                                                                                                                          | Integer        |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Age class*              | Whether the sample is composed by children, school-age students, young adults, adults, or older adults.                                   | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Clinical*               | Whether the sample is a clinical sample or not.                                                                                           | Boolean        |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Clinical specification* | If clinical, what specific clinical sample is.                                                                                            | Text           |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *SEB measure*            | The SEB/BESSI measure used.                                                                                                               | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *SEB measure type*       | Whether the SEB measure is a short or long form.                                                                                          | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| *Trait framework*        | What framework of personality traits is adopted (e.g., Big Five, HEXACO).                                                                 | Category       |
++--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+
+: Coding scheme {#tbl-coding}
+
+## Risk of bias (quality) assessment
+
+## Data synthesis
+
+### Analysis of subgroups or subsets
+
+## Open science
+
+# Information
+
+-   Conflict of interest: none
+
+-   Fundings: none
+
+-   Keywords:
+
+# Expected future development
+
+-   Longitudinal and experimental studies
+
+-   Moderators
+
+-   Bibliometric analysis
+
+------------------------------------------------------------------------
+
+# References
