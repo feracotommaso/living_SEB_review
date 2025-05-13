@@ -15,15 +15,27 @@ format:
 editor: visual
 ---
 
-## Materials
+## Resources for all
 
-Here you can find materials of this project:
+Here you can find the basic resources that everyone may want to use or read:
 
 -   **Presentations**
     -   Lab meeting 2025 - 05 - 21 [html](https://feracotommaso.github.io/living_SEB_review/slides/labMeeting/LabMeetingLMA.html){target="_blank"}
 -   **Preregistration**
--   **Data**
+-   **Living review**
 -   **ShinyApp**
+
+## Navigate the materials
+
+-   **R code:**
+
+    -   App
+
+    -   Analysis
+
+    -   Publication
+
+-   **Data**
 
 ------------------------------------------------------------------------
 
