@@ -1,0 +1,167 @@
+---
+title: "Report - meta analysis of the correlations"
+author: "Living SEB app"
+output:
+  bookdown::html_document2
+params:
+  target_vars: NA
+  age_filter: NA
+  year_filter: NA
+  metaD: NA
+  cfa1: NA
+  lavmodel: NA
+  SumTable: NA
+  sumfit: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(kableExtra)
+library(ggplot2)
+library(metaSEM)
+```
+
+# Introduction
+
+Through the living SEB app you just conducted a meta-analytic SEM using the following variables.
+
+```{r}
+target_vars <- params$target_vars
+target_vars
+```
+
+You may also have filtered the dataset based on your interest. If you did so, you only used the studies:
+
+Did you select specific years of publication?
+
+```{r}
+# Years selected
+year_filter <- params$year_filter
+year_filter
+```
+
+Did you select specific age classifications??
+
+```{r}
+# Age selected
+age_filter <- params$age_filter
+age_filter
+```
+
+## Descriptive statistics
+
+```{r}
+metaD <- params$metaD
+StudyTab <- data.frame(
+    # Dataset = metaD()$basic_info$download_date,
+    StudyID = metaD$basic_info$matrix_id,
+    Authors = metaD$basic_info$author_et_al,
+    Year = as.character(metaD$basic_info$year),
+    Age = as.character(metaD$basic_info$age_class),
+    N = metaD$basic_info$n,
+    doi = metaD$basic_info$doi)
+
+kableExtra::kable(StudyTab)%>%
+  kable_classic()%>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+```{r}
+ktab<-pattern.na(metaD$cor_matrices, show.na = FALSE) # k cors
+rownames(ktab) <- paste0(1:nrow(ktab),".",rownames(ktab))
+colnames(ktab) <- paste0(1:ncol(ktab),".")
+
+kableExtra::kable(ktab)%>%
+  kable_classic()%>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+```{r}
+ntab<-pattern.n(metaD$cor_matrices, metaD$basic_info$n) # k cors
+rownames(ntab) <- paste0(1:nrow(ntab),".",rownames(ntab))
+colnames(ntab) <- paste0(1:ncol(ntab),".")
+
+kableExtra::kable(ntab)%>%
+  kable_classic()%>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+## Meta-correlation matrix
+
+```{r}
+sumTable <- params$SumTable
+kableExtra::kable(sumTable)%>%
+  kable_classic()%>%
+  kable_styling(latex_options = "hold_position")
+```
+
+
+
+<!-- Specific information of the meta-analysis conducted: -->
+
+<!--   - All materials, data, and analytical code are provided in the GitHub repository associated with this project. -->
+<!--   - All the analyses are conducted in R (R Core Team, 2022) using the ‘metafor’ package (Viechtbauer, 2010).  -->
+<!--   - Pearson’s r correlation coefficients were transformed to Fisher’s z scale for analysis. The results were then back-transformed to Pearson’s r -->
+<!--   - We employed three-level meta-analytic random-effects models using restricted maximum likelihood estimation. This approach accounts for heterogeneity both between and within studies.  -->
+<!--   - Confidence intervals were estimated based on a t-distribution -->
+
+<!-- ## Descriptive statistics -->
+
+<!-- The samples included in the meta-analysis are summarized in Table \@ref(tab:descriptives) -->
+
+<!-- ```{r descriptives, tab.cap="Samples included and corresponding sizes"} -->
+<!-- # The `params` object is available in the document. -->
+<!-- descriptives <- params$descriptives -->
+
+<!-- kableExtra::kable(descriptives)%>% -->
+<!--   kable_classic()%>% -->
+<!--   kable_styling(latex_options = "hold_position") -->
+
+
+<!-- ``` -->
+
+<!-- ## Results -->
+
+<!-- The results of the meta-analysis are synthesized in the following table (Table \@ref(tab:metaRes)) -->
+
+<!-- ```{r metaRes, tab.cap="Results of the meta-analysis"} -->
+
+<!-- metaRes <- params$metaRes -->
+<!-- metaResTable <- data.frame( -->
+<!--       Skill = metaRes$skill, -->
+<!--       N = paste0(metaRes$N, " k = (", metaRes$k, ")"), -->
+<!--       r = format(round(metaRes$r, 3),nsmall=3), -->
+<!--       CI = paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ", -->
+<!--                   format(round(metaRes$rciu,3),nsmall=3),"]"), -->
+<!--       se = format(round(metaRes$se,3),nsmall=3), -->
+<!--       p = format(round(metaRes$p,4),3), -->
+<!--       q = paste0(round(metaRes$q), "(",metaRes$qdf,")",ifelse(metaRes$qp < .01, "*", "")), -->
+<!--       tau2 = format(round(metaRes$tau2,3),nsmall=3)) -->
+
+<!-- kableExtra::kable(metaResTable)%>% -->
+<!--   kable_classic()%>% -->
+<!--   kable_styling(latex_options = "hold_position") -->
+
+
+<!-- ``` -->
+
+<!-- Figure \@ref(fig:metaplot) shows the same results graphically. Confidence intervals are plotted together with point estimates. -->
+
+<!-- ```{r metaplot, fig.cap="Graphic representation of the results"} -->
+<!-- ggplot(metaRes, aes(x = r, y = reorder(skill,5:1))) + -->
+<!--        geom_point(shape = 18, -->
+<!--                   color = "black", -->
+<!--                   size = 4) + -->
+<!--        geom_errorbar(aes(xmin = rcil, xmax = rciu), width = 0, linewidth = .8) + -->
+<!--        geom_vline(xintercept = c(.00), linetype = "dashed") + -->
+<!--        labs(x = "Meta-analytical association", y = "Skill") + -->
+<!--        theme_bw(base_size = 18) + -->
+<!--        theme(strip.text = element_text(size = 18)) + -->
+<!--        coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.15, -->
+<!--                                        min(metaRes$rcil)), -->
+<!--                                 max(metaRes$rciu))) -->
+<!-- ``` -->

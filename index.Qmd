@@ -23,7 +23,7 @@ Here you can find the basic resources that everyone may want to use or read:
     -   Lab meeting 2025 - 05 - 21 [html](https://feracotommaso.github.io/living_SEB_review/slides/labMeeting/LabMeetingLMA.html){target="_blank"}
 -   **Preregistration** - [pdf](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)
 -   **Living review**
--   **ShinyApp**
+-   **ShinyApp -** [link v0](https://feracoshiny.shinyapps.io/livingSEBapp/)
 
 ## Navigate the materials
 

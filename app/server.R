@@ -11,7 +11,7 @@ server <- function(input, output, session) {
   # META-ANALYSIS ####
   # PAGE a ####
   # Basic info and moderators
-  study_info <- reactive({c("paper_id", "matrix_id", "author_et_al", "n", input$Moderators)})
+  study_info <- reactive({c("download_date","doi","year","age_class","paper_id", "matrix_id", "author_et_al", "n", input$Moderators)})
   
   # Reactive list of choices
   outlist <- reactive({
@@ -21,7 +21,7 @@ server <- function(input, output, session) {
   
   # Dynamic UI generation
   output$dynamic_outcome_select <- renderUI({
-    selectInput("metaOutcomes", "Outcomes:",
+    selectInput("metaOutcomes", "Select the specific outcome:",
                 choices = outlist(),
                 multiple = FALSE, selected = NULL)
   })
@@ -29,11 +29,29 @@ server <- function(input, output, session) {
   # Selected outcome
   meta_outcome <- reactive({input$metaOutcomes})
   
+  # Filter by year
+  
+  
   # Get the requested data
   dm <- reactive({
-    out_vars <- c(input$metaOutcomes)
+    # Get outcome variable
+    out_vars <- input$metaOutcomes
+    age_filter <- input$age_filter
+    year_filter <- input$year_filter
+    # Filter by age class if selected
+    if (!is.null(input$age_filter)) {
+      combined_data <- combined_data[combined_data$age_class %in% age_filter, ]
+    }
+    # Filter by year if selected
+    if (!is.null(input$year_filter)) {
+      combined_data <- combined_data[combined_data$year %in% year_filter, ]
+    }
+    # Compute metadata using your custom function
     dm <- getMETAdata(pred_vars, out_vars, combined_data, study_info())
+    # Compute effect sizes
     dm <- escalc(measure = "ZCOR", ri = value, ni = n, data = dm)
+    
+    return(dm)
   })
   
   # Study_table
@@ -117,7 +135,19 @@ server <- function(input, output, session) {
                                 max(metaRes$rciu)))
   })
   
-  # REPORT ####
+  #PAGE c ####
+  output$forestPlot <- renderPlot({
+    outList <- metaAnalysis()$outList
+    x = input$forestSelected
+    forest(outList[[x]], slab = paste0(outList[[x]]$data$author_et_al, " ",
+    #                                    outList[[x]]$data$year, " ",
+                                        outList[[x]]$data$matrix_id),
+            header = T,
+            main = x)
+    # forest(outList[[x]])
+  })
+  
+  # d. REPORT ####
   output$report <- downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename = "report.html",
@@ -142,18 +172,6 @@ server <- function(input, output, session) {
     }
   )
   
-  #PAGE c ####
-  output$forestPlot <- renderPlot({
-    outList <- metaAnalysis()$outList
-    x = input$forestSelected
-    forest(outList[[x]], slab = paste0(outList[[x]]$data$author_et_al, " ",
-    #                                    outList[[x]]$data$year, " ",
-                                        outList[[x]]$data$matrix_id),
-            header = T,
-            main = x)
-    # forest(outList[[x]])
-  })
-  
   # META-SEM ####
   # PAGE a ####
   # Select vars
@@ -167,10 +185,22 @@ server <- function(input, output, session) {
     clean_selections
   })
   # Basic info and moderators
-  study_info <- reactive({c("paper_id", "matrix_id", "author_et_al", "n", input$Moderators)})
+  # study_info <- reactive({c("paper_id", "matrix_id", "author_et_al", "n", input$Moderators)})
   
   # Get the requested data
   metaD <- eventReactive({input$k_info}, {
+    # Filter
+    age_filter <- input$age_filter_masem
+    year_filter <- input$year_filter_masem
+    # Filter by age class if selected
+    if (!is.null(input$age_filter_masem)) {
+      combined_data <- combined_data[combined_data$age_class %in% age_filter, ]
+    }
+    # Filter by year if selected
+    if (!is.null(input$year_filter_masem)) {
+      combined_data <- combined_data[combined_data$year %in% year_filter, ]
+    }
+    # Get the data
     getSEMdata(target_vars(),combined_data,study_info())
   })
   
@@ -189,9 +219,14 @@ server <- function(input, output, session) {
     ntab
   }) 
   # Study_table
-  StudyTab <- reactive({data.frame(StudyID = metaD()$basic_info$matrix_id,
-                                   Authors = metaD()$basic_info$author_et_al,
-                                   N = metaD()$basic_info$n)})
+  StudyTab <- reactive({data.frame(
+    # Dataset = metaD()$basic_info$download_date,
+    StudyID = metaD()$basic_info$matrix_id,
+    Authors = metaD()$basic_info$author_et_al,
+    Year = as.character(metaD()$basic_info$year),
+    Age = as.character(metaD()$basic_info$age_class),
+    N = metaD()$basic_info$n,
+    doi = metaD()$basic_info$doi)})
   output$Study_table <- renderTable({StudyTab()})
   
   # PAGE b ####
@@ -284,5 +319,39 @@ server <- function(input, output, session) {
     # parTab$p <- ifelse(parTab$p < .001, "<.001", parTab$p)
     # data.frame(parTab)
   })
+  
+  # d. REPORT ####
+  output$report_masem <- downloadHandler(
+    # For PDF output, change this to "report.pdf"
+    filename = "report_masem.html",
+    content = function(file) {
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      tempReport <- file.path(tempdir(), "report_masem.Rmd")
+      file.copy("report_masem.Rmd", tempReport, overwrite = TRUE)
+      
+      # Set up parameters to pass to Rmd document
+      params <- list(
+        target_vars = target_vars(),
+        metaD = metaD(),
+        age_filter = input$age_filter_masem,
+        year_filter = input$year_filter_masem,
+        cfa1 = cfa1(),
+        SumTable = SumTable()
+        # ,
+        # lavmodel = input$lavmodel,
+        # sumfit = sumfit()
+        )
+      
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+    }
+  )
   
 }

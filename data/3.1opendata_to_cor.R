@@ -1,0 +1,907 @@
+#### --------------------------------------------------- 0013 --------------------------------------------------- ####
+
+rm(list=ls())
+d0013 <- readr::read_csv("data/3.meta_data/open_data/d0013.csv")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Reverse neuroticism
+d0013$BFI_EmotionalStability <- (-1)*d0013$BFI_EmotionalStability
+
+# Scores are already calculated. Just change the column names
+names(d0013)[names(d0013) == "BFI_OpenMindedness"] <- "openness"
+names(d0013)[names(d0013) == "BFI_Conscientiousness"] <- "conscientiousness"
+names(d0013)[names(d0013) == "BFI_Extraversion"] <- "extraversion"
+names(d0013)[names(d0013) == "BFI_Agreeableness"] <- "agreeableness"
+names(d0013)[names(d0013) == "BFI_EmotionalStability"] <- "neuroticism"
+
+names(d0013)[names(d0013) == "BESSI_SelfManagement"] <- "selfmanagement"
+names(d0013)[names(d0013) == "BESSI_Cooperation"] <- "cooperation"
+names(d0013)[names(d0013) == "BESSI_SocialEngagement"] <- "socialengagement"
+names(d0013)[names(d0013) == "BESSI_EmotionalResilience"] <- "emotionalresilience"
+names(d0013)[names(d0013) == "BESSI_Innovation"] <- "innovation"
+
+names(d0013)[names(d0013) == "AcademicEngagement"] <- "academicengagement"
+names(d0013)[names(d0013) == "SchoolGrades"] <- "academicachievement"
+names(d0013)[names(d0013) == "MotherRelationshipQuality"] <- "motherrelationship"
+names(d0013)[names(d0013) == "FatherRelationshipQuality"] <- "fatherrelationship"
+names(d0013)[names(d0013) == "FriendshipQuality"] <- "friendshipquality"
+names(d0013)[names(d0013) == "PeerAcceptance"] <- "peeracceptance"
+names(d0013)[names(d0013) == "SocialResponsibilityValues"] <- "socialresponsibility"
+names(d0013)[names(d0013) == "CivicSkills"] <- "civicskills"
+names(d0013)[names(d0013) == "Anxiety"] <- "anxiety"
+names(d0013)[names(d0013) == "Depression"] <- "depression"
+names(d0013)[names(d0013) == "LifeSatisfaction"] <- "satisfactionwithlife"
+
+d0013a <- d0013[, colnames(d0013) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0013a, use = "pairwise.complete")),"data/3.meta_data/matrices/0013a.xlsx")
+
+#### --------------------------------------------------- 0018 --------------------------------------------------- ####
+
+rm(list=ls())
+d0018 <- readr::read_csv("data/3.meta_data/open_data/d0018.csv")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+#Self-Management skill facets
+d0018$goalregulation<-rowMeans(d0018[,c("bessi_24", "bessi_56", "bessi_88", "bessi_120", "bessi_152", "bessi_184")], na.rm=TRUE) #Goal Regulation
+d0018$taskmanagement<-rowMeans(d0018[,c("bessi_12", "bessi_44", "bessi_76", "bessi_108", "bessi_140", "bessi_172")], na.rm=TRUE) #Task Management
+d0018$decisionmakingskill<-rowMeans(d0018[,c("bessi_27", "bessi_59", "bessi_91", "bessi_123", "bessi_155", "bessi_187")], na.rm=TRUE) #Decision-Making Skill
+d0018$detailmanagement<-rowMeans(d0018[,c("bessi_15", "bessi_47", "bessi_79", "bessi_111", "bessi_143", "bessi_175")], na.rm=TRUE) #Detail Management
+d0018$capacityforconsistency<-rowMeans(d0018[,c("bessi_9", "bessi_41", "bessi_73", "bessi_105", "bessi_137", "bessi_169")], na.rm=TRUE) #Capacity for Consistency
+d0018$organizationalskill<-rowMeans(d0018[,c("bessi_6", "bessi_38", "bessi_70", "bessi_102", "bessi_134", "bessi_166")], na.rm=TRUE) #Organizational Skill
+d0018$timemanagement<-rowMeans(d0018[,c("bessi_3", "bessi_35", "bessi_67", "bessi_99", "bessi_131", "bessi_163")], na.rm=TRUE) #Time Management
+d0018$responsibilitymanagement<-rowMeans(d0018[,c("bessi_21", "bessi_53", "bessi_85", "bessi_117", "bessi_149", "bessi_181")], na.rm=TRUE) #Responsibility Management #21->193 #149->194
+d0018$rulefollowingskill<-rowMeans(d0018[,c("bessi_18", "bessi_50", "bessi_82", "bessi_114", "bessi_146", "bessi_178")], na.rm=TRUE) #Rule Following Skill
+
+#Innovation skill facets
+d0018$abstractthinkingskill<-rowMeans(d0018[,c("bessi_4", "bessi_36", "bessi_68", "bessi_100", "bessi_132", "bessi_164")], na.rm=TRUE) #Abstract Thinking Skill #4->200
+d0018$creativeskill<-rowMeans(d0018[,c("bessi_16", "bessi_48", "bessi_80", "bessi_112", "bessi_144", "bessi_176")], na.rm=TRUE) #Creative Skill
+d0018$informationprocessingskill<-rowMeans(d0018[,c("bessi_22", "bessi_54", "bessi_86", "bessi_118", "bessi_150", "bessi_182")], na.rm=TRUE) #Information Processing Skill #86->202
+d0018$culturalcompetence<-rowMeans(d0018[,c("bessi_32", "bessi_64", "bessi_96", "bessi_128", "bessi_160", "bessi_192")], na.rm=TRUE) #Cultural Competence #96->201
+d0018$artisticskill<-rowMeans(d0018[,c("bessi_28", "bessi_60", "bessi_92", "bessi_124", "bessi_156", "bessi_188")], na.rm=TRUE) #Artistic Skill
+
+#Cooperation skill facets
+d0018$perspectivetakingskill<-rowMeans(d0018[,c("bessi_2", "bessi_34", "bessi_66", "bessi_98", "bessi_130", "bessi_162")], na.rm=TRUE) #Perspective Taking skill #34->196
+d0018$capacityforsocialwarmth<-rowMeans(d0018[,c("bessi_14", "bessi_46", "bessi_78", "bessi_110", "bessi_142", "bessi_174")], na.rm=TRUE) #Capacity for Social Warmth
+d0018$teamworkskill<-rowMeans(d0018[,c("bessi_23", "bessi_55", "bessi_87", "bessi_119", "bessi_151", "bessi_183")], na.rm=TRUE) #Teamwork Skill
+d0018$ethicalcompetence<-rowMeans(d0018[,c("bessi_29", "bessi_61", "bessi_93", "bessi_125", "bessi_157", "bessi_189")], na.rm=TRUE) #Ethical Competence
+d0018$capacityfortrust<-rowMeans(d0018[,c("bessi_8", "bessi_40", "bessi_72", "bessi_104", "bessi_136", "bessi_168")], na.rm=TRUE) #Capacity for Trust #8-197
+
+#Social Engagement skill facets
+d0018$leadershipskill<-rowMeans(d0018[,c("bessi_1", "bessi_33", "bessi_65", "bessi_97", "bessi_129", "bessi_161")], na.rm=TRUE) #Leadership Skill #1->195
+d0018$expressiveskill<-rowMeans(d0018[,c("bessi_17", "bessi_49", "bessi_81", "bessi_113", "bessi_145", "bessi_177")], na.rm=TRUE) #Expressive Skill
+d0018$conversationalskill<-rowMeans(d0018[,c("bessi_25", "bessi_57", "bessi_89", "bessi_121", "bessi_153", "bessi_185")], na.rm=TRUE) #Conversational Skill
+d0018$persuasiveskill<-rowMeans(d0018[,c("bessi_13", "bessi_45", "bessi_77", "bessi_109", "bessi_141", "bessi_173")], na.rm=TRUE) #Persuasive Skill
+d0018$energyregulation<-rowMeans(d0018[,c("bessi_7", "bessi_39", "bessi_71", "bessi_103", "bessi_135", "bessi_167")], na.rm=TRUE) #Energy Regulation
+
+#Emotional Resilience skill facets
+d0018$stressregulation<-rowMeans(d0018[,c("bessi_5", "bessi_37", "bessi_69", "bessi_101", "bessi_133", "bessi_165")], na.rm=TRUE) #Stress Regulation #5->198
+d0018$capacityforoptimism<-rowMeans(d0018[,c("bessi_11", "bessi_43", "bessi_75", "bessi_107", "bessi_139", "bessi_171")], na.rm=TRUE) #Capacity for Optimism
+d0018$confidenceregulation<-rowMeans(d0018[,c("bessi_26", "bessi_58", "bessi_90", "bessi_122", "bessi_154", "bessi_186")], na.rm=TRUE) #Confidence Regulation #122->199
+d0018$impulseregulation<-rowMeans(d0018[,c("bessi_30", "bessi_62", "bessi_94", "bessi_126", "bessi_158", "bessi_190")], na.rm=TRUE) #Impulse Regulation
+d0018$angermanagement<-rowMeans(d0018[,c("bessi_20", "bessi_52", "bessi_84", "bessi_116", "bessi_148", "bessi_180")], na.rm=TRUE) #Anger Management
+
+#Compound skill facets
+d0018$selfreflectionskill<-rowMeans(d0018[,c("bessi_10", "bessi_42", "bessi_74", "bessi_106", "bessi_138", "bessi_170")], na.rm=TRUE) #Self-Reflection Skill
+d0018$capacityforindependence<-rowMeans(d0018[,c("bessi_31", "bessi_63", "bessi_95", "bessi_127", "bessi_159", "bessi_191")], na.rm=TRUE) #Capacity for Independence
+d0018$adaptability<-rowMeans(d0018[,c("bessi_19", "bessi_51", "bessi_83", "bessi_115", "bessi_147", "bessi_179")], na.rm=TRUE) #Adaptability
+
+#Five BESSI skill domains 
+d0018$selfmanagement<-rowMeans(d0018[,c("goalregulation", "goalregulation", "taskmanagement", "taskmanagement", "decisionmakingskill", "decisionmakingskill", "detailmanagement", "detailmanagement",
+                                        "capacityforconsistency", "capacityforconsistency", "organizationalskill", "organizationalskill", "timemanagement", "timemanagement", 
+                                        "responsibilitymanagement", "responsibilitymanagement", "rulefollowingskill", "rulefollowingskill",
+                                        "informationprocessingskill", "ethicalcompetence", "energyregulation", "impulseregulation")], na.rm=TRUE) #Self Management skill
+
+d0018$innovation<-rowMeans(d0018[,c("abstractthinkingskill", "abstractthinkingskill", "creativeskill", "creativeskill", "culturalcompetence", "culturalcompetence",
+                                    "artisticskill", "artisticskill", "informationprocessingskill")], na.rm=TRUE) #Innovation skill
+
+d0018$cooperation<-rowMeans(d0018[,c("perspectivetakingskill", "perspectivetakingskill", "capacityforsocialwarmth", "capacityforsocialwarmth", "teamworkskill", "teamworkskill",
+                                     "capacityfortrust", "capacityfortrust", "ethicalcompetence")], na.rm=TRUE) #Cooperation skill
+
+d0018$socialengagement<-rowMeans(d0018[,c("leadershipskill", "leadershipskill", "expressiveskill", "expressiveskill", "conversationalskill", "conversationalskill",
+                                          "persuasiveskill", "persuasiveskill", "energyregulation")], na.rm=TRUE) #Social Engagement skill
+
+d0018$emotionalresilience<-rowMeans(d0018[,c("stressregulation", "stressregulation", "capacityforoptimism", "capacityforoptimism", "confidenceregulation", "confidenceregulation",
+                                             "angermanagement", "angermanagement", "impulseregulation")], na.rm=TRUE) #Emotional Resilience skill
+
+#Life satisfaction
+d0018$satisfactionwithlife<-rowMeans(d0018[,c("SWLS_1", "SWLS_2", "SWLS_3", "SWLS_4", "SWLS_5")], na.rm = T)
+
+# Achievement
+d0018$math <- d0018$math
+d0018$italian <- d0018$ita
+d0018$academicachievement <- rowMeans(d0018[,c("math","italian")])
+
+# Sex
+d0018$sex <- d0018$sex - 1
+
+d0018a <- d0018[d0018$dsa == "dsa", colnames(d0018) %in% admcol$column_name]
+d0018b <- d0018[d0018$dsa == "typical", colnames(d0018) %in% admcol$column_name]
+
+writexl::write_xlsx(data.frame(cor(d0018a, use = "pairwise.complete")),"data/3.meta_data/matrices/0018a.xlsx")
+writexl::write_xlsx(data.frame(cor(d0018b, use = "pairwise.complete")),"data/3.meta_data/matrices/0018b.xlsx")
+
+#### --------------------------------------------------- 0026 --------------------------------------------------- ####
+rm(list=ls())
+d0026 <- readr::read_csv("data/3.meta_data/open_data/d0026.csv")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0026$sex <- ifelse(d0026$sex == 0, 1, ifelse(d0026$sex == 1, 0, d0026$sex)) # Males should be 0
+
+# Scores are already calculated. Just change the column names
+names(d0026)[names(d0026) == "Open_M"] <- "openness"
+names(d0026)[names(d0026) == "Cons_M"] <- "conscientiousness"
+names(d0026)[names(d0026) == "Extra_M"] <- "extraversion"
+names(d0026)[names(d0026) == "Agree_M"] <- "agreeableness"
+names(d0026)[names(d0026) == "Neu_M"] <- "neuroticism"
+
+names(d0026)[names(d0026) == "SMang_M"] <- "selfmanagement"
+names(d0026)[names(d0026) == "Coop_M"] <- "cooperation"
+names(d0026)[names(d0026) == "SEnga_M"] <- "socialengagement"
+names(d0026)[names(d0026) == "ERes_M"] <- "emotionalresilience"
+names(d0026)[names(d0026) == "Innov_M"] <- "innovation"
+
+names(d0026)[names(d0026) == "CWB_M"] <- "counterproductiveworkbehavior"
+names(d0026)[names(d0026) == "FWG_M"] <- "coworkerrelationship"
+names(d0026)[names(d0026) == "OCB_M"] <- "organizationalcitizenshipbehavior"
+names(d0026)[names(d0026) == "JSB"] <- "jobsatisfaction"
+
+# Additional scores are available, such as deal and sales centers (but very specific)
+d0026a <- d0026[, colnames(d0026) %in% admcol$column_name]
+
+writexl::write_xlsx(data.frame(cor(d0026a, use = "pairwise.complete")),"data/3.meta_data/matrices/0026a.xlsx")
+
+#### --------------------------------------------------- 0030a --------------------------------------------------- ####
+rm(list=ls())
+d0030a <- readr::read_csv2("data/3.meta_data/open_data/d0030a.csv")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0030a$sex <- d0030a$sex - 1
+d0030a$age <- 2022 - d0030a$birth
+
+#Self-Management skill facets
+d0030a$goalregulation<-rowMeans(d0030a[,c("bessi_24", "bessi_56", "bessi_88", "bessi_120", "bessi_152", "bessi_184")], na.rm=TRUE) #Goal Regulation
+d0030a$taskmanagement<-rowMeans(d0030a[,c("bessi_12", "bessi_44", "bessi_76", "bessi_108", "bessi_140", "bessi_172")], na.rm=TRUE) #Task Management
+d0030a$decisionmakingskill<-rowMeans(d0030a[,c("bessi_27", "bessi_59", "bessi_91", "bessi_123", "bessi_155", "bessi_187")], na.rm=TRUE) #Decision-Making Skill
+d0030a$detailmanagement<-rowMeans(d0030a[,c("bessi_15", "bessi_47", "bessi_79", "bessi_111", "bessi_143", "bessi_175")], na.rm=TRUE) #Detail Management
+d0030a$capacityforconsistency<-rowMeans(d0030a[,c("bessi_9", "bessi_41", "bessi_73", "bessi_105", "bessi_137", "bessi_169")], na.rm=TRUE) #Capacity for Consistency
+d0030a$organizationalskill<-rowMeans(d0030a[,c("bessi_6", "bessi_38", "bessi_70", "bessi_102", "bessi_134", "bessi_166")], na.rm=TRUE) #Organizational Skill
+d0030a$timemanagement<-rowMeans(d0030a[,c("bessi_3", "bessi_35", "bessi_67", "bessi_99", "bessi_131", "bessi_163")], na.rm=TRUE) #Time Management
+d0030a$responsibilitymanagement<-rowMeans(d0030a[,c("bessi_21", "bessi_53", "bessi_85", "bessi_117", "bessi_149", "bessi_181")], na.rm=TRUE) #Responsibility Management #21->193 #149->194
+d0030a$rulefollowingskill<-rowMeans(d0030a[,c("bessi_18", "bessi_50", "bessi_82", "bessi_114", "bessi_146", "bessi_178")], na.rm=TRUE) #Rule Following Skill
+
+#Innovation skill facets
+d0030a$abstractthinkingskill<-rowMeans(d0030a[,c("bessi_4", "bessi_36", "bessi_68", "bessi_100", "bessi_132", "bessi_164")], na.rm=TRUE) #Abstract Thinking Skill #4->200
+d0030a$creativeskill<-rowMeans(d0030a[,c("bessi_16", "bessi_48", "bessi_80", "bessi_112", "bessi_144", "bessi_176")], na.rm=TRUE) #Creative Skill
+d0030a$informationprocessingskill<-rowMeans(d0030a[,c("bessi_22", "bessi_54", "bessi_86", "bessi_118", "bessi_150", "bessi_182")], na.rm=TRUE) #Information Processing Skill #86->202
+d0030a$culturalcompetence<-rowMeans(d0030a[,c("bessi_32", "bessi_64", "bessi_96", "bessi_128", "bessi_160", "bessi_192")], na.rm=TRUE) #Cultural Competence #96->201
+d0030a$artisticskill<-rowMeans(d0030a[,c("bessi_28", "bessi_60", "bessi_92", "bessi_124", "bessi_156", "bessi_188")], na.rm=TRUE) #Artistic Skill
+
+#Cooperation skill facets
+d0030a$perspectivetakingskill<-rowMeans(d0030a[,c("bessi_2", "bessi_34", "bessi_66", "bessi_98", "bessi_130", "bessi_162")], na.rm=TRUE) #Perspective Taking skill #34->196
+d0030a$capacityforsocialwarmth<-rowMeans(d0030a[,c("bessi_14", "bessi_46", "bessi_78", "bessi_110", "bessi_142", "bessi_174")], na.rm=TRUE) #Capacity for Social Warmth
+d0030a$teamworkskill<-rowMeans(d0030a[,c("bessi_23", "bessi_55", "bessi_87", "bessi_119", "bessi_151", "bessi_183")], na.rm=TRUE) #Teamwork Skill
+d0030a$ethicalcompetence<-rowMeans(d0030a[,c("bessi_29", "bessi_61", "bessi_93", "bessi_125", "bessi_157", "bessi_189")], na.rm=TRUE) #Ethical Competence
+d0030a$capacityfortrust<-rowMeans(d0030a[,c("bessi_8", "bessi_40", "bessi_72", "bessi_104", "bessi_136", "bessi_168")], na.rm=TRUE) #Capacity for Trust #8-197
+
+#Social Engagement skill facets
+d0030a$leadershipskill<-rowMeans(d0030a[,c("bessi_1", "bessi_33", "bessi_65", "bessi_97", "bessi_129", "bessi_161")], na.rm=TRUE) #Leadership Skill #1->195
+d0030a$expressiveskill<-rowMeans(d0030a[,c("bessi_17", "bessi_49", "bessi_81", "bessi_113", "bessi_145", "bessi_177")], na.rm=TRUE) #Expressive Skill
+d0030a$conversationalskill<-rowMeans(d0030a[,c("bessi_25", "bessi_57", "bessi_89", "bessi_121", "bessi_153", "bessi_185")], na.rm=TRUE) #Conversational Skill
+d0030a$persuasiveskill<-rowMeans(d0030a[,c("bessi_13", "bessi_45", "bessi_77", "bessi_109", "bessi_141", "bessi_173")], na.rm=TRUE) #Persuasive Skill
+d0030a$energyregulation<-rowMeans(d0030a[,c("bessi_7", "bessi_39", "bessi_71", "bessi_103", "bessi_135", "bessi_167")], na.rm=TRUE) #Energy Regulation
+
+#Emotional Resilience skill facets
+d0030a$stressregulation<-rowMeans(d0030a[,c("bessi_5", "bessi_37", "bessi_69", "bessi_101", "bessi_133", "bessi_165")], na.rm=TRUE) #Stress Regulation #5->198
+d0030a$capacityforoptimism<-rowMeans(d0030a[,c("bessi_11", "bessi_43", "bessi_75", "bessi_107", "bessi_139", "bessi_171")], na.rm=TRUE) #Capacity for Optimism
+d0030a$confidenceregulation<-rowMeans(d0030a[,c("bessi_26", "bessi_58", "bessi_90", "bessi_122", "bessi_154", "bessi_186")], na.rm=TRUE) #Confidence Regulation #122->199
+d0030a$impulseregulation<-rowMeans(d0030a[,c("bessi_30", "bessi_62", "bessi_94", "bessi_126", "bessi_158", "bessi_190")], na.rm=TRUE) #Impulse Regulation
+d0030a$angermanagement<-rowMeans(d0030a[,c("bessi_20", "bessi_52", "bessi_84", "bessi_116", "bessi_148", "bessi_180")], na.rm=TRUE) #Anger Management
+
+#Compound skill facets
+d0030a$selfreflectionskill<-rowMeans(d0030a[,c("bessi_10", "bessi_42", "bessi_74", "bessi_106", "bessi_138", "bessi_170")], na.rm=TRUE) #Self-Reflection Skill
+d0030a$capacityforindependence<-rowMeans(d0030a[,c("bessi_31", "bessi_63", "bessi_95", "bessi_127", "bessi_159", "bessi_191")], na.rm=TRUE) #Capacity for Independence
+d0030a$adaptability<-rowMeans(d0030a[,c("bessi_19", "bessi_51", "bessi_83", "bessi_115", "bessi_147", "bessi_179")], na.rm=TRUE) #Adaptability
+
+#Five BESSI skill domains 
+d0030a$selfmanagement<-rowMeans(d0030a[,c("goalregulation", "goalregulation", "taskmanagement", "taskmanagement", "decisionmakingskill", "decisionmakingskill", "detailmanagement", "detailmanagement",
+                                        "capacityforconsistency", "capacityforconsistency", "organizationalskill", "organizationalskill", "timemanagement", "timemanagement", 
+                                        "responsibilitymanagement", "responsibilitymanagement", "rulefollowingskill", "rulefollowingskill",
+                                        "informationprocessingskill", "ethicalcompetence", "energyregulation", "impulseregulation")], na.rm=TRUE) #Self Management skill
+
+d0030a$innovation<-rowMeans(d0030a[,c("abstractthinkingskill", "abstractthinkingskill", "creativeskill", "creativeskill", "culturalcompetence", "culturalcompetence",
+                                    "artisticskill", "artisticskill", "informationprocessingskill")], na.rm=TRUE) #Innovation skill
+
+d0030a$cooperation<-rowMeans(d0030a[,c("perspectivetakingskill", "perspectivetakingskill", "capacityforsocialwarmth", "capacityforsocialwarmth", "teamworkskill", "teamworkskill",
+                                     "capacityfortrust", "capacityfortrust", "ethicalcompetence")], na.rm=TRUE) #Cooperation skill
+
+d0030a$socialengagement<-rowMeans(d0030a[,c("leadershipskill", "leadershipskill", "expressiveskill", "expressiveskill", "conversationalskill", "conversationalskill",
+                                          "persuasiveskill", "persuasiveskill", "energyregulation")], na.rm=TRUE) #Social Engagement skill
+
+d0030a$emotionalresilience<-rowMeans(d0030a[,c("stressregulation", "stressregulation", "capacityforoptimism", "capacityforoptimism", "confidenceregulation", "confidenceregulation",
+                                             "angermanagement", "angermanagement", "impulseregulation")], na.rm=TRUE) #Emotional Resilience skill
+
+d0030a <- d0030a[, colnames(d0030a) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0030a, use = "pairwise.complete")),"data/3.meta_data/matrices/0030a.xlsx")
+
+#### --------------------------------------------------- 0030b --------------------------------------------------- ####
+rm(list=ls())
+dd <- readr::read_csv("data/3.meta_data/open_data/d0030b.csv")
+d0030b <- readr::read_csv("data/3.meta_data/open_data/d0030b.csv")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0030b$sex <- d0030b$sex - 1
+
+# SMD
+names(d0030b)[names(d0030b) == "SMD_GR"] <- "goalregulation"
+names(d0030b)[names(d0030b) == "SMD_TaM"] <- "taskmanagement"
+names(d0030b)[names(d0030b) == "SMD_DMS"] <- "decisionmakingskill"
+names(d0030b)[names(d0030b) == "SMD_DM"] <- "detailmanagement"
+names(d0030b)[names(d0030b) == "SMD_CC"] <- "capacityforconsistency"
+names(d0030b)[names(d0030b) == "SMD_OS"] <- "organizationalskill"
+names(d0030b)[names(d0030b) == "SMD_TiM"] <- "timemanagement"
+names(d0030b)[names(d0030b) == "SMD_RM"] <- "responsibilitymanagement"
+names(d0030b)[names(d0030b) == "SMD_RFS"] <- "rulefollowingskill"
+names(d0030b)[names(d0030b) == "SMD"] <- "selfmanagement"
+
+# IND
+names(d0030b)[names(d0030b) == "IND_ATS"] <- "abstractthinkingskill"
+names(d0030b)[names(d0030b) == "IND_CS"] <- "creativeskill"
+names(d0030b)[names(d0030b) == "IND_IPS"] <- "informationprocessingskill"
+names(d0030b)[names(d0030b) == "IND_CC"] <- "culturalcompetence"
+names(d0030b)[names(d0030b) == "IND_AS"] <- "artisticskill"
+names(d0030b)[names(d0030b) == "IND"] <- "innovation"
+
+# COD
+names(d0030b)[names(d0030b) == "COD_PTS"] <- "perspectivetakingskill"
+names(d0030b)[names(d0030b) == "COD_CSW"] <- "capacityforsocialwarmth"
+names(d0030b)[names(d0030b) == "COD_TS"] <- "teamworkskill"
+names(d0030b)[names(d0030b) == "COD_EC"] <- "ethicalcompetence"
+names(d0030b)[names(d0030b) == "COD_CT"] <- "capacityfortrust"
+names(d0030b)[names(d0030b) == "COD"] <- "cooperation"
+
+# SED
+names(d0030b)[names(d0030b) == "SED_LS"] <- "leadershipskill"
+names(d0030b)[names(d0030b) == "SED_ES"] <- "expressiveskill"
+names(d0030b)[names(d0030b) == "SED_CS"] <- "conversationalskill"
+names(d0030b)[names(d0030b) == "SED_PS"] <- "persuasiveskill"
+names(d0030b)[names(d0030b) == "SED_ER"] <- "energyregulation"
+names(d0030b)[names(d0030b) == "SED"] <- "socialengagement"
+
+# ESD
+names(d0030b)[names(d0030b) == "ESD_SR"] <- "stressregulation"
+names(d0030b)[names(d0030b) == "ESD_CO"] <- "capacityforoptimism"
+names(d0030b)[names(d0030b) == "ESD_CR"] <- "confidenceregulation"
+names(d0030b)[names(d0030b) == "ESD_IR"] <- "impulseregulation"
+names(d0030b)[names(d0030b) == "ESD_AM"] <- "angermanagement"
+names(d0030b)[names(d0030b) == "ESD"] <- "emotionalresilience"
+
+# Interstitial
+names(d0030b)[names(d0030b) == "SRS"] <- "selfreflectionskill"
+names(d0030b)[names(d0030b) == "CI"] <- "capacityforindependence"
+names(d0030b)[names(d0030b) == "AD"] <- "adaptability"
+
+# Other
+names(d0030b)[names(d0030b) == "BF_C"] <- "conscientiousness"
+names(d0030b)[names(d0030b) == "BF_O"] <- "openness"
+names(d0030b)[names(d0030b) == "BF_A"] <- "agreeableness"
+names(d0030b)[names(d0030b) == "BF_E"] <- "extraversion"
+names(d0030b)[names(d0030b) == "BF_N"] <- "neuroticism"
+
+names(d0030b)[names(d0030b) == "GSES"] <- "selfefficacy"
+names(d0030b)[names(d0030b) == "GPS"] <- "procrastination"
+names(d0030b)[names(d0030b) == "suppression"] <- "suppressionstrat"
+names(d0030b)[names(d0030b) == "reappraisal"] <- "reappraisalstrat"
+
+# Select and save
+d0030b <- d0030b[, colnames(d0030b) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0030b, use = "pairwise.complete")),"data/3.meta_data/matrices/0030b.xlsx")
+
+
+#### --------------------------------------------------- 0035 --------------------------------------------------- ####
+rm(list=ls())
+d0035 <- readr::read_csv("data/3.meta_data/open_data/d0035.csv")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0035)[names(d0035) == "AVGP"] <- "goalregulation"
+names(d0035)[names(d0035) == "AVLD"] <- "leadershipskill"
+names(d0035)[names(d0035) == "AVCL"] <- "teamworkskill"
+names(d0035)[names(d0035) == "AVIC"] <- "abstractthinkingskill"
+names(d0035)[names(d0035) == "AVSR"] <- "stressregulation"
+
+names(d0035)[names(d0035) == "bfi_C"] <- "conscientiousness"
+names(d0035)[names(d0035) == "bfi_O"] <- "openness"
+names(d0035)[names(d0035) == "bfi_A"] <- "agreeableness"
+names(d0035)[names(d0035) == "bfi_E"] <- "extraversion"
+names(d0035)[names(d0035) == "bfi_ES"] <- "neuroticism"
+
+names(d0035)[names(d0035) == "RPTD_STDSCN_C"] <- "academicachievement"
+
+# Transform emotional stability to neuroticism
+d0035$neuroticism <- d0035$neuroticism*(-1)
+
+# Select and save
+d0035a <- d0035[, colnames(d0035) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0035a, use = "pairwise.complete")),"data/3.meta_data/matrices/0035a.xlsx")
+
+#### --------------------------------------------------- 0045 --------------------------------------------------- ####
+rm(list=ls())
+d0045 <- readxl::read_excel("data/3.meta_data/open_data/d0045.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0045$sex <- ifelse(d0045$gender == 2, NA, ifelse(d0045$gender==0,2, d0045$gender))
+d0045$volunteering <- d0045$hour_group
+
+#Self-Management skill facets
+d0045$taskmanagement<-rowMeans(d0045[,c("bessi_12", "bessi_44", "bessi_76", "bessi_108", "bessi_140", "bessi_172")], na.rm=TRUE) #Task Management
+#Social Engagement skill facets
+d0045$leadershipskill<-rowMeans(d0045[,c("bessi_1", "bessi_33", "bessi_65", "bessi_97", "bessi_129", "bessi_161")], na.rm=TRUE) #Leadership Skill #1->195
+#Innovation skill facets
+d0045$creativeskill<-rowMeans(d0045[,c("bessi_16", "bessi_48", "bessi_80", "bessi_112", "bessi_144", "bessi_176")], na.rm=TRUE) #Creative Skill
+d0045$abstractthinkingskill<-rowMeans(d0045[,c("bessi_4", "bessi_36", "bessi_68", "bessi_100", "bessi_132", "bessi_164")], na.rm=TRUE) #Abstract Thinking Skill #4->200
+d0045$culturalcompetence<-rowMeans(d0045[,c("bessi_32", "bessi_64", "bessi_96", "bessi_128", "bessi_160", "bessi_192")], na.rm=TRUE) #Cultural Competence #96->201
+#Cooperation skill facets
+d0045$perspectivetakingskill<-rowMeans(d0045[,c("bessi_2", "bessi_34", "bessi_66", "bessi_98", "bessi_130", "bessi_162")], na.rm=TRUE) #Perspective Taking skill #34->196
+#Emotional Resilience skill facets
+d0045$stressregulation<-rowMeans(d0045[,c("bessi_5", "bessi_37", "bessi_69", "bessi_101", "bessi_133", "bessi_165")], na.rm=TRUE) #Stress Regulation #5->198
+
+# Select and save
+d0045a <- d0045[, colnames(d0045) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0045a, use = "pairwise.complete")),"data/3.meta_data/matrices/0045a.xlsx")
+
+#### --------------------------------------------------- 0048 --------------------------------------------------- ####
+rm(list=ls())
+d0048 <- haven::read_sav("data/3.meta_data/open_data/d0048.sav")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0048$sex <- ifelse(d0048$Gender == -1, 0, d0048$Gender)
+
+# Transform colnames
+names(d0048)[names(d0048) == "Age"] <- "age"
+
+#Seb
+names(d0048)[names(d0048) == "BESSI_SelfManagement"] <- "selfmanagement"
+names(d0048)[names(d0048) == "BESSI_SocialEngagement"] <- "socialengagement"
+names(d0048)[names(d0048) == "BESSI_Cooperation"] <- "cooperation"
+names(d0048)[names(d0048) == "BESSI_EmotionalResilience"] <- "emotionalresilience"
+names(d0048)[names(d0048) == "BESSI_Innovation"] <- "innovation"
+#Traits
+names(d0048)[names(d0048) == "BFI_Conscientiousness"] <- "conscientiousness"
+names(d0048)[names(d0048) == "BFI_OpenMindedness"] <- "openness"
+names(d0048)[names(d0048) == "BFI_Agreeableness"] <- "agreeableness"
+names(d0048)[names(d0048) == "BFI_Extraversion"] <- "extraversion"
+names(d0048)[names(d0048) == "BFI_NegativeEmotionality"] <- "neuroticism"
+#Casel
+names(d0048)[names(d0048) == "SECA_SelfManagement"] <- "secaSelfmanagement"
+names(d0048)[names(d0048) == "SECA_RelationshipSkills"] <- "secaRelationships"
+names(d0048)[names(d0048) == "SECA_SocialAwareness"] <- "secaSocialawareness"
+names(d0048)[names(d0048) == "SECA_SelfAwareness"] <- "secaSelfawareness"
+names(d0048)[names(d0048) == "SECA_ResponsibleDecisionMaking"] <- "secaDecisionmaking"
+#School
+names(d0048)[names(d0048) == "AcademicEngagement"] <- "academicengagement"
+names(d0048)[names(d0048) == "SchoolGrades"] <- "academicachievement"
+names(d0048)[names(d0048) == "SchoolAttendance"] <- "schoolattendance"
+names(d0048)[names(d0048) == "SchoolDisciplineReferral"] <- "schooldiscipline"
+#Creative
+names(d0048)[names(d0048) == "RealisticInterests"] <- "realisticinterests"
+names(d0048)[names(d0048) == "InvestigativeInterests"] <- "investigativeinterests"
+names(d0048)[names(d0048) == "ArtisticInterests"] <- "artisticinterests"
+names(d0048)[names(d0048) == "SocialInterests"] <- "socialinterests"
+names(d0048)[names(d0048) == "EnterprisingInterests"] <- "enterprisinginterests"
+names(d0048)[names(d0048) == "ConventionalInterests"] <- "conventionalinterests"
+#Social
+names(d0048)[names(d0048) == "PeerAcceptance"] <- "peeracceptance"
+names(d0048)[names(d0048) == "FriendshipQuality"] <- "friendshipquality"
+names(d0048)[names(d0048) == "MotherRelationshipQuality"] <- "motherrelationship"
+names(d0048)[names(d0048) == "FatherRelationshipQuality"] <- "fatherrelationship"
+names(d0048)[names(d0048) == "SocialResponsibilityValues"] <- "socialresponsibility"
+names(d0048)[names(d0048) == "CivicSkills"] <- "civicskills"
+names(d0048)[names(d0048) == "VotingIntention"] <- "votingintention"
+names(d0048)[names(d0048) == "CivicOrganizationInvolvement"] <- "civicinvolvement"
+names(d0048)[names(d0048) == "Activism"] <- "activism"
+names(d0048)[names(d0048) == "InformalHelping"] <- "informalhelping"
+names(d0048)[names(d0048) == "Volunteerism"] <- "volunteering"
+#Physical
+names(d0048)[names(d0048) == "PhysicalExercise"] <- "physicalexercise"
+#Mental health
+names(d0048)[names(d0048) == "Anxiety"] <- "anxiety"
+names(d0048)[names(d0048) == "Depression"] <- "depression"
+names(d0048)[names(d0048) == "LifeSatisfaction"] <- "satisfactionwithlife"
+
+# Select and save
+d0048a <- d0048[, colnames(d0048) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0048a, use = "pairwise.complete")),"data/3.meta_data/matrices/0048a.xlsx")
+
+#### --------------------------------------------------- 0049 --------------------------------------------------- ####
+rm(list=ls())
+d0049 <- readxl::read_excel("data/3.meta_data/open_data/d0049.xlsx", na = "NA")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# SEX
+d0049$sex <- d0049$Gender #Gender is already coded 0 = M; 1 = F
+#Big Five Scores
+#Recode reversed Items. Items that need to be reversed are those with "_R"
+d0049$BFI01 <- 6 - d0049$BFI01_R
+d0049$BFI03 <- 6 - d0049$BFI03_R
+d0049$BFI07 <- 6 - d0049$BFI07_R
+d0049$BFI08 <- 6 - d0049$BFI08_R
+d0049$BFI10 <- 6 - d0049$BFI10_R
+d0049$BFI14 <- 6 - d0049$BFI14_R
+d0049$BFI17 <- 6 - d0049$BFI17_R
+d0049$BFI19 <- 6 - d0049$BFI19_R
+d0049$BFI20 <- 6 - d0049$BFI20_R
+d0049$BFI21 <- 6 - d0049$BFI21_R
+d0049$BFI24 <- 6 - d0049$BFI24_R
+d0049$BFI26 <- 6 - d0049$BFI26_R
+d0049$BFI27 <- 6 - d0049$BFI27_R
+d0049$BFI28 <- 6 - d0049$BFI28_R
+d0049$BFI30 <- 6 - d0049$BFI30_R
+
+#Create Big Five Scales. E = Extraversion, A = Agreeableness, N = Negative emotionality
+d0049$extraversion <- rowMeans (select(d0049,BFI01,BFI06,BFI11,BFI16,BFI21,BFI26))
+d0049$agreeableness <- rowMeans (select(d0049,BFI02,BFI07,BFI12,BFI17,BFI22,BFI27))
+d0049$neuroticism <- rowMeans (select(d0049,BFI04,BFI09,BFI14,BFI19,BFI24,BFI29))
+
+#Build Big Five Facet Scores
+#Extraversion: S = Sociability, A = Assertiveness, E = Energy level
+d0049$bf_sociability <- rowMeans (select(d0049,BFI01,BFI16))
+d0049$bf_assertiveness <- rowMeans (select(d0049,BFI06,BFI21))
+d0049$bf_energy <- rowMeans (select(d0049,BFI11,BFI26))
+
+#Agreeableness: C = Compassion, R = Respectfulness, T = Trust
+d0049$bf_compassion <- rowMeans (select(d0049,BFI02,BFI17))
+d0049$bf_respectfulness <- rowMeans (select(d0049,BFI07,BFI22))
+d0049$bf_trust <- rowMeans (select(d0049,BFI12,BFI27))
+
+#Negative emotionality: A = Anxiety, D = Depression, E = Emotional volatility
+d0049$bf_anxiety <- rowMeans (select(d0049,BFI04,BFI19))
+d0049$bf_depression <- rowMeans (select(d0049,BFI09,BFI24))
+d0049$emotionalvolatility <- rowMeans (select(d0049,BFI14,BFI29))
+
+#Create BESSI Scales
+#Leadership skill
+d0049$leadershipskill <- rowMeans (select(d0049,Lead1,Lead2,Lead3,Lead4,Lead5,Lead6))
+#Persuasion skill with alternative translations
+d0049$persuasiveskill <- rowMeans (select(d0049,Pers1,Pers2,Pers3,Pers4,Pers5,Pers6a))
+
+#Perspective-taking skill
+d0049$perspectivetakingskill <- rowMeans (select(d0049,Empa1,Empa2,Empa3,Empa4,Empa5,Empa6))
+#Capacity for social warmth
+d0049$capacityforsocialwarmth <- rowMeans (select(d0049,Soha1,Soha2,Soha3,Soha4,Soha5,Soha6))
+
+#Stress regulation
+d0049$stressregulation <- rowMeans (select(d0049,Stres1,Stres2,Stres3,Stres4,Stres5,Stres6))
+#Anger management
+d0049$angermanagement <- rowMeans (select(d0049,Angm1,Angm2,Angm3,Angm4,Angm5,Angm6))
+
+#Agency skill
+d0049$socialengagement <- rowMeans (select(d0049,leadershipskill,persuasiveskill))
+
+#Communion skill
+d0049$cooperation <- rowMeans (select(d0049,perspectivetakingskill,capacityforsocialwarmth))
+
+#Resilience skill
+d0049$emotionalresilience <- rowMeans (select(d0049,stressregulation,angermanagement))
+
+#Observed skills - aggregate across raters
+d0049$task_socialengagement <- rowMeans (select(d0049,Agency_Observed_R1,Agency_Observed_R2),na.rm =T)
+d0049$task_cooperation <- rowMeans (select(d0049,Communion_Observed_R1,Communion_Observed_R2),na.rm =T)
+d0049$task_emotionalresilience <- rowMeans (select(d0049,Resilience_Observed_R1,Resilience_Observed_R2,Resilience_Observed_R3),na.rm =T)
+
+# Select and save
+d0049a <- d0049[, colnames(d0049) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0049a, use = "pairwise.complete")),"data/3.meta_data/matrices/0049a.xlsx")
+
+#### --------------------------------------------------- 0053c --------------------------------------------------- ####
+rm(list=ls())
+d0053c <- readxl::read_excel("data/3.meta_data/open_data/d0053c.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+table(d0053c$Gender)
+
+d0053c$sex <- ifelse(d0053c$Gender == "Female", 1, 0)
+
+# Transform colnames
+names(d0053c)[names(d0053c) == "Age"] <- "age"
+
+#Seb
+# SMD
+names(d0053c)[names(d0053c) == "BESSI_SM_GoalRegulation"] <- "goalregulation"
+names(d0053c)[names(d0053c) == "BESSI_SM_TaskManagement"] <- "taskmanagement"
+names(d0053c)[names(d0053c) == "BESSI_SM_DecisionMakingSkill"] <- "decisionmakingskill"
+names(d0053c)[names(d0053c) == "BESSI_SM_DetailManagement"] <- "detailmanagement"
+names(d0053c)[names(d0053c) == "BESSI_SM_CapacityForConsistency"] <- "capacityforconsistency"
+names(d0053c)[names(d0053c) == "BESSI_SM_OrganizationalSkill"] <- "organizationalskill"
+names(d0053c)[names(d0053c) == "BESSI_SM_TimeManagement"] <- "timemanagement"
+names(d0053c)[names(d0053c) == "BESSI_SM_ResponsibilityManagement"] <- "responsibilitymanagement"
+names(d0053c)[names(d0053c) == "BESSI_SM_RuleFollowingSkill"] <- "rulefollowingskill"
+names(d0053c)[names(d0053c) == "BESSI_SelfManagementSkills"] <- "selfmanagement"
+
+# IND
+names(d0053c)[names(d0053c) == "BESSI_IN_AbstractThinkingSkill"] <- "abstractthinkingskill"
+names(d0053c)[names(d0053c) == "BESSI_IN_CreativeSkill"] <- "creativeskill"
+names(d0053c)[names(d0053c) == "BESSI_INSM_InformationProcessingSkill"] <- "informationprocessingskill"
+names(d0053c)[names(d0053c) == "BESSI_IN_CulturalCompetence"] <- "culturalcompetence"
+names(d0053c)[names(d0053c) == "BESSI_IN_ArtisticSkill"] <- "artisticskill"
+names(d0053c)[names(d0053c) == "BESSI_InnovationSkills"] <- "innovation"
+
+# COD
+names(d0053c)[names(d0053c) == "BESSI_CO_PerspectiveTakingSkill"] <- "perspectivetakingskill"
+names(d0053c)[names(d0053c) == "BESSI_CO_CapacityForSocialWarmth"] <- "capacityforsocialwarmth"
+names(d0053c)[names(d0053c) == "BESSI_CO_TeamworkSkill"] <- "teamworkskill"
+names(d0053c)[names(d0053c) == "BESSI_COSM_EthicalCompetence"] <- "ethicalcompetence"
+names(d0053c)[names(d0053c) == "BESSI_CO_CapacityForTrust"] <- "capacityfortrust"
+names(d0053c)[names(d0053c) == "BESSI_CooperationSkills"] <- "cooperation"
+
+# SED
+names(d0053c)[names(d0053c) == "BESSI_SE_LeadershipSkill"] <- "leadershipskill"
+names(d0053c)[names(d0053c) == "BESSI_SE_ExpressiveSkill"] <- "expressiveskill"
+names(d0053c)[names(d0053c) == "BESSI_SE_ConversationalSkill"] <- "conversationalskill"
+names(d0053c)[names(d0053c) == "BESSI_SE_PersuasiveSkill"] <- "persuasiveskill"
+names(d0053c)[names(d0053c) == "BESSI_SESM_EnergyRegulation"] <- "energyregulation"
+names(d0053c)[names(d0053c) == "BESSI_SocialEngagementSkills"] <- "socialengagement"
+
+# ESD
+names(d0053c)[names(d0053c) == "BESSI_ER_StressRegulation"] <- "stressregulation"
+names(d0053c)[names(d0053c) == "BESSI_ER_CapacityForOptimism"] <- "capacityforoptimism"
+names(d0053c)[names(d0053c) == "BESSI_ER_ConfidenceRegulation"] <- "confidenceregulation"
+names(d0053c)[names(d0053c) == "BESSI_ERSM_ImpulseRegulation"] <- "impulseregulation"
+names(d0053c)[names(d0053c) == "BESSI_ER_AngerManagement"] <- "angermanagement"
+names(d0053c)[names(d0053c) == "BESSI_EmotionalResilienceSkills"] <- "emotionalresilience"
+
+# Interstitial
+names(d0053c)[names(d0053c) == "BESSI_XX_SelfReflectionSkill"] <- "selfreflectionskill"
+names(d0053c)[names(d0053c) == "BESSI_XX_CapacityForIndependence"] <- "capacityforindependence"
+names(d0053c)[names(d0053c) == "BESSI_XX_Adaptability"] <- "adaptability"
+
+# Select and save
+d0053c <- d0053c[, colnames(d0053c) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0053c, use = "pairwise.complete")),"data/3.meta_data/matrices/0053c.xlsx")
+
+#### --------------------------------------------------- 0053d --------------------------------------------------- ####
+rm(list=ls())
+d0053d <- readxl::read_excel("data/3.meta_data/open_data/d0053d.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0053d$sex <- ifelse(d0053d$Gender == "Female", 1, 0)
+
+# Transform colnames
+names(d0053d)[names(d0053d) == "Age"] <- "age"
+
+#Seb
+# SMD
+names(d0053d)[names(d0053d) == "BESSI_SM_GoalRegulation"] <- "goalregulation"
+names(d0053d)[names(d0053d) == "BESSI_SM_TaskManagement"] <- "taskmanagement"
+names(d0053d)[names(d0053d) == "BESSI_SM_DecisionMakingSkill"] <- "decisionmakingskill"
+names(d0053d)[names(d0053d) == "BESSI_SM_DetailManagement"] <- "detailmanagement"
+names(d0053d)[names(d0053d) == "BESSI_SM_CapacityForConsistency"] <- "capacityforconsistency"
+names(d0053d)[names(d0053d) == "BESSI_SM_OrganizationalSkill"] <- "organizationalskill"
+names(d0053d)[names(d0053d) == "BESSI_SM_TimeManagement"] <- "timemanagement"
+names(d0053d)[names(d0053d) == "BESSI_SM_ResponsibilityManagement"] <- "responsibilitymanagement"
+names(d0053d)[names(d0053d) == "BESSI_SM_RuleFollowingSkill"] <- "rulefollowingskill"
+names(d0053d)[names(d0053d) == "BESSI_SelfManagementSkills"] <- "selfmanagement"
+
+# IND
+names(d0053d)[names(d0053d) == "BESSI_IN_AbstractThinkingSkill"] <- "abstractthinkingskill"
+names(d0053d)[names(d0053d) == "BESSI_IN_CreativeSkill"] <- "creativeskill"
+names(d0053d)[names(d0053d) == "BESSI_INSM_InformationProcessingSkill"] <- "informationprocessingskill"
+names(d0053d)[names(d0053d) == "BESSI_IN_CulturalCompetence"] <- "culturalcompetence"
+names(d0053d)[names(d0053d) == "BESSI_IN_ArtisticSkill"] <- "artisticskill"
+names(d0053d)[names(d0053d) == "BESSI_InnovationSkills"] <- "innovation"
+
+# COD
+names(d0053d)[names(d0053d) == "BESSI_CO_PerspectiveTakingSkill"] <- "perspectivetakingskill"
+names(d0053d)[names(d0053d) == "BESSI_CO_CapacityForSocialWarmth"] <- "capacityforsocialwarmth"
+names(d0053d)[names(d0053d) == "BESSI_CO_TeamworkSkill"] <- "teamworkskill"
+names(d0053d)[names(d0053d) == "BESSI_COSM_EthicalCompetence"] <- "ethicalcompetence"
+names(d0053d)[names(d0053d) == "BESSI_CO_CapacityForTrust"] <- "capacityfortrust"
+names(d0053d)[names(d0053d) == "BESSI_CooperationSkills"] <- "cooperation"
+
+# SED
+names(d0053d)[names(d0053d) == "BESSI_SE_LeadershipSkill"] <- "leadershipskill"
+names(d0053d)[names(d0053d) == "BESSI_SE_ExpressiveSkill"] <- "expressiveskill"
+names(d0053d)[names(d0053d) == "BESSI_SE_ConversationalSkill"] <- "conversationalskill"
+names(d0053d)[names(d0053d) == "BESSI_SE_PersuasiveSkill"] <- "persuasiveskill"
+names(d0053d)[names(d0053d) == "BESSI_SESM_EnergyRegulation"] <- "energyregulation"
+names(d0053d)[names(d0053d) == "BESSI_SocialEngagementSkills"] <- "socialengagement"
+
+# ESD
+names(d0053d)[names(d0053d) == "BESSI_ER_StressRegulation"] <- "stressregulation"
+names(d0053d)[names(d0053d) == "BESSI_ER_CapacityForOptimism"] <- "capacityforoptimism"
+names(d0053d)[names(d0053d) == "BESSI_ER_ConfidenceRegulation"] <- "confidenceregulation"
+names(d0053d)[names(d0053d) == "BESSI_ERSM_ImpulseRegulation"] <- "impulseregulation"
+names(d0053d)[names(d0053d) == "BESSI_ER_AngerManagement"] <- "angermanagement"
+names(d0053d)[names(d0053d) == "BESSI_EmotionalResilienceSkills"] <- "emotionalresilience"
+
+# Interstitial
+names(d0053d)[names(d0053d) == "BESSI_XX_SelfReflectionSkill"] <- "selfreflectionskill"
+names(d0053d)[names(d0053d) == "BESSI_XX_CapacityForIndependence"] <- "capacityforindependence"
+names(d0053d)[names(d0053d) == "BESSI_XX_Adaptability"] <- "adaptability"
+
+# Select and save
+d0053d <- d0053d[, colnames(d0053d) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0053d, use = "pairwise.complete")),"data/3.meta_data/matrices/0053d.xlsx")
+
+#### --------------------------------------------------- 0053e --------------------------------------------------- ####
+rm(list=ls())
+d0053e <- readxl::read_excel("data/3.meta_data/open_data/d0053e.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0053e$sex <- ifelse(d0053e$Gender == 3, NA, d0053e$Gender)
+d0053e$sex <- d0053e$sex -1 #males to 0, females to 1
+
+# Transform colnames
+names(d0053e)[names(d0053e) == "Age"] <- "age"
+
+#Seb
+# SMD
+names(d0053e)[names(d0053e) == "BESSI_SM_GoalRegulation"] <- "goalregulation"
+names(d0053e)[names(d0053e) == "BESSI_SM_TaskManagement"] <- "taskmanagement"
+names(d0053e)[names(d0053e) == "BESSI_SM_DecisionMakingSkill"] <- "decisionmakingskill"
+names(d0053e)[names(d0053e) == "BESSI_SM_DetailManagement"] <- "detailmanagement"
+names(d0053e)[names(d0053e) == "BESSI_SM_CapacityForConsistency"] <- "capacityforconsistency"
+names(d0053e)[names(d0053e) == "BESSI_SM_OrganizationalSkill"] <- "organizationalskill"
+names(d0053e)[names(d0053e) == "BESSI_SM_TimeManagement"] <- "timemanagement"
+names(d0053e)[names(d0053e) == "BESSI_SM_ResponsibilityManagement"] <- "responsibilitymanagement"
+names(d0053e)[names(d0053e) == "BESSI_SM_RuleFollowingSkill"] <- "rulefollowingskill"
+names(d0053e)[names(d0053e) == "BESSI_SelfManagementSkills"] <- "selfmanagement"
+
+# IND
+names(d0053e)[names(d0053e) == "BESSI_IN_AbstractThinkingSkill"] <- "abstractthinkingskill"
+names(d0053e)[names(d0053e) == "BESSI_IN_CreativeSkill"] <- "creativeskill"
+names(d0053e)[names(d0053e) == "BESSI_INSM_InformationProcessingSkill"] <- "informationprocessingskill"
+names(d0053e)[names(d0053e) == "BESSI_IN_CulturalCompetence"] <- "culturalcompetence"
+names(d0053e)[names(d0053e) == "BESSI_IN_ArtisticSkill"] <- "artisticskill"
+names(d0053e)[names(d0053e) == "BESSI_InnovationSkills"] <- "innovation"
+
+# COD
+names(d0053e)[names(d0053e) == "BESSI_CO_PerspectiveTakingSkill"] <- "perspectivetakingskill"
+names(d0053e)[names(d0053e) == "BESSI_CO_CapacityForSocialWarmth"] <- "capacityforsocialwarmth"
+names(d0053e)[names(d0053e) == "BESSI_CO_TeamworkSkill"] <- "teamworkskill"
+names(d0053e)[names(d0053e) == "BESSI_COSM_EthicalCompetence"] <- "ethicalcompetence"
+names(d0053e)[names(d0053e) == "BESSI_CO_CapacityForTrust"] <- "capacityfortrust"
+names(d0053e)[names(d0053e) == "BESSI_CooperationSkills"] <- "cooperation"
+
+# SED
+names(d0053e)[names(d0053e) == "BESSI_SE_LeadershipSkill"] <- "leadershipskill"
+names(d0053e)[names(d0053e) == "BESSI_SE_ExpressiveSkill"] <- "expressiveskill"
+names(d0053e)[names(d0053e) == "BESSI_SE_ConversationalSkill"] <- "conversationalskill"
+names(d0053e)[names(d0053e) == "BESSI_SE_PersuasiveSkill"] <- "persuasiveskill"
+names(d0053e)[names(d0053e) == "BESSI_SESM_EnergyRegulation"] <- "energyregulation"
+names(d0053e)[names(d0053e) == "BESSI_SocialEngagementSkills"] <- "socialengagement"
+
+# ESD
+names(d0053e)[names(d0053e) == "BESSI_ER_StressRegulation"] <- "stressregulation"
+names(d0053e)[names(d0053e) == "BESSI_ER_CapacityForOptimism"] <- "capacityforoptimism"
+names(d0053e)[names(d0053e) == "BESSI_ER_ConfidenceRegulation"] <- "confidenceregulation"
+names(d0053e)[names(d0053e) == "BESSI_ERSM_ImpulseRegulation"] <- "impulseregulation"
+names(d0053e)[names(d0053e) == "BESSI_ER_AngerManagement"] <- "angermanagement"
+names(d0053e)[names(d0053e) == "BESSI_EmotionalResilienceSkills"] <- "emotionalresilience"
+
+# Interstitial
+names(d0053e)[names(d0053e) == "BESSI_XX_SelfReflectionSkill"] <- "selfreflectionskill"
+names(d0053e)[names(d0053e) == "BESSI_XX_CapacityForIndependence"] <- "capacityforindependence"
+names(d0053e)[names(d0053e) == "BESSI_XX_Adaptability"] <- "adaptability"
+
+# BIG FIVE
+# O
+names(d0053e)[names(d0053e) == "BFI2_OpenMindedness"] <- "openness"
+names(d0053e)[names(d0053e) == "BFI2_O_IntellectualCuriosity"] <- "bf_curiosity"
+names(d0053e)[names(d0053e) == "BFI2_O_AestheticSensitivity"] <- "bf_aesthetic"
+names(d0053e)[names(d0053e) == "BFI2_O_CreativeImagination"] <- "bf_creativity"
+# C
+names(d0053e)[names(d0053e) == "BFI2_Conscientiousness"] <- "conscientiousness"
+names(d0053e)[names(d0053e) == "BFI2_C_Organization"] <- "bf_organization"
+names(d0053e)[names(d0053e) == "BFI2_C_Productiveness"] <- "bf_productiveness"
+names(d0053e)[names(d0053e) == "BFI2_C_Responsibility"] <- "bf_responsibility"
+# E
+names(d0053e)[names(d0053e) == "BFI2_Extraversion"] <- "extraversion"
+names(d0053e)[names(d0053e) == "BFI2_E_Sociability"] <- "bf_sociability"
+names(d0053e)[names(d0053e) == "BFI2_E_Assertiveness"] <- "bf_assertiveness"
+names(d0053e)[names(d0053e) == "BFI2_E_EnergyLevel"] <- "bf_energy"
+# A
+names(d0053e)[names(d0053e) == "BFI2_Agreeableness"] <- "agreeableness"
+names(d0053e)[names(d0053e) == "BFI2_A_Compassion"] <- "bf_compassion"
+names(d0053e)[names(d0053e) == "BFI2_A_Respectfulness"] <- "bf_respectfulness"
+names(d0053e)[names(d0053e) == "BFI2_A_Trust"] <- "bf_trust"
+# N
+names(d0053e)[names(d0053e) == "BFI2_NegativeEmotionality"] <- "neuroticism"
+names(d0053e)[names(d0053e) == "BFI2_N_Anxiety"] <- "bf_anxiety"
+names(d0053e)[names(d0053e) == "BFI2_N_Depression"] <- "bf_depression"
+names(d0053e)[names(d0053e) == "BFI2_N_EmotionalVolatility"] <- "bf_emotionalvolatility"
+
+# CHARACTER STRENGTHS
+names(d0053e)[names(d0053e) == "TTC_InterpersonalStrengths"] <- "cs_interpersonal"
+names(d0053e)[names(d0053e) == "TTC_IntellectualStrengths"] <- "cs_intellectual"
+names(d0053e)[names(d0053e) == "TTC_IntrapersonalStrengths"] <- "cs_intrapersonal"
+names(d0053e)[names(d0053e) == "TTC_Inter_InterpersonalControl"] <- "cs_interpersonalcontrol"
+names(d0053e)[names(d0053e) == "TTC_Inter_SocialIntelligence"] <- "cs_socialintelligence"
+names(d0053e)[names(d0053e) == "TTC_Inter_Gratitude"] <- "cs_gratitude"
+names(d0053e)[names(d0053e) == "TTC_Intel_Zest"] <- "cs_zest"
+names(d0053e)[names(d0053e) == "TTC_Intel_Curiosity"] <- "cs_curiosity"
+names(d0053e)[names(d0053e) == "TTC_Intra_AcademicControl"] <- "cs_academiccontrol"
+names(d0053e)[names(d0053e) == "TTC_Intra_Grit"] <- "cs_perseverance"
+
+# POSITIVE YOUTH DEVELOPMENT
+names(d0053e)[names(d0053e) == "PYD_Competence"] <- "pyd_competence"
+names(d0053e)[names(d0053e) == "PYD_Confidence"] <- "pyd_confidence"
+names(d0053e)[names(d0053e) == "PYD_Character"] <- "pyd_character"
+names(d0053e)[names(d0053e) == "PYD_Caring"] <- "pyd_caring"
+names(d0053e)[names(d0053e) == "PYD_Connection"] <- "pyd_connection"
+
+#Casel
+names(d0053e)[names(d0053e) == "SECA_SelfManagement"] <- "secaSelfmanagement"
+names(d0053e)[names(d0053e) == "SECA_RelationshipSkills"] <- "secaRelationships"
+names(d0053e)[names(d0053e) == "SECA_SocialAwareness"] <- "secaSocialawareness"
+names(d0053e)[names(d0053e) == "SECA_SelfAwareness"] <- "secaSelfawareness"
+names(d0053e)[names(d0053e) == "SECA_ResponsibleDecisionMaking"] <- "secaDecisionmaking"
+
+#SEL
+names(d0053e)[names(d0053e) == "SELS_SelfManagement"] <- "sel_selfmanagement"
+names(d0053e)[names(d0053e) == "SELS_GrowthMindset"] <- "sel_mindset"
+names(d0053e)[names(d0053e) == "SELS_SelfEfficacy"] <- "sel_selfefficacy"
+names(d0053e)[names(d0053e) == "SELS_SocialAwareness"] <- "selsocial"
+
+names(d0053e)
+# Select and save
+d0053e <- d0053e[, colnames(d0053e) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0053e, use = "pairwise.complete")),"data/3.meta_data/matrices/0053e.xlsx")
+
+#### --------------------------------------------------- 0053f --------------------------------------------------- ####
+rm(list=ls())
+d0053f <- readxl::read_excel("data/3.meta_data/open_data/d0053f.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0053f)
+
+# Transform scores
+d0053f$sex <- ifelse(d0053f$Gender == 0, NA, ifelse(d0053f$Gender == -1, 0, d0053f$Gender)) # Males to 0, Females to 1
+# Transform colnames
+names(d0053f)[names(d0053f) == "Age"] <- "age"
+
+#Seb
+# SMD
+names(d0053f)[names(d0053f) == "BESSI_SM_GoalRegulation"] <- "goalregulation"
+names(d0053f)[names(d0053f) == "BESSI_SM_TaskManagement"] <- "taskmanagement"
+names(d0053f)[names(d0053f) == "BESSI_SM_DecisionMakingSkill"] <- "decisionmakingskill"
+names(d0053f)[names(d0053f) == "BESSI_SM_DetailManagement"] <- "detailmanagement"
+names(d0053f)[names(d0053f) == "BESSI_SM_CapacityForConsistency"] <- "capacityforconsistency"
+names(d0053f)[names(d0053f) == "BESSI_SM_OrganizationalSkill"] <- "organizationalskill"
+names(d0053f)[names(d0053f) == "BESSI_SM_TimeManagement"] <- "timemanagement"
+names(d0053f)[names(d0053f) == "BESSI_SM_ResponsibilityManagement"] <- "responsibilitymanagement"
+names(d0053f)[names(d0053f) == "BESSI_SM_RuleFollowingSkill"] <- "rulefollowingskill"
+names(d0053f)[names(d0053f) == "BESSI_SelfManagementSkills"] <- "selfmanagement"
+# IND
+names(d0053f)[names(d0053f) == "BESSI_IN_AbstractThinkingSkill"] <- "abstractthinkingskill"
+names(d0053f)[names(d0053f) == "BESSI_IN_CreativeSkill"] <- "creativeskill"
+names(d0053f)[names(d0053f) == "BESSI_INSM_InformationProcessingSkill"] <- "informationprocessingskill"
+names(d0053f)[names(d0053f) == "BESSI_IN_CulturalCompetence"] <- "culturalcompetence"
+names(d0053f)[names(d0053f) == "BESSI_IN_ArtisticSkill"] <- "artisticskill"
+names(d0053f)[names(d0053f) == "BESSI_InnovationSkills"] <- "innovation"
+# COD
+names(d0053f)[names(d0053f) == "BESSI_CO_PerspectiveTakingSkill"] <- "perspectivetakingskill"
+names(d0053f)[names(d0053f) == "BESSI_CO_CapacityForSocialWarmth"] <- "capacityforsocialwarmth"
+names(d0053f)[names(d0053f) == "BESSI_CO_TeamworkSkill"] <- "teamworkskill"
+names(d0053f)[names(d0053f) == "BESSI_COSM_EthicalCompetence"] <- "ethicalcompetence"
+names(d0053f)[names(d0053f) == "BESSI_CO_CapacityForTrust"] <- "capacityfortrust"
+names(d0053f)[names(d0053f) == "BESSI_CooperationSkills"] <- "cooperation"
+# SED
+names(d0053f)[names(d0053f) == "BESSI_SE_LeadershipSkill"] <- "leadershipskill"
+names(d0053f)[names(d0053f) == "BESSI_SE_ExpressiveSkill"] <- "expressiveskill"
+names(d0053f)[names(d0053f) == "BESSI_SE_ConversationalSkill"] <- "conversationalskill"
+names(d0053f)[names(d0053f) == "BESSI_SE_PersuasiveSkill"] <- "persuasiveskill"
+names(d0053f)[names(d0053f) == "BESSI_SESM_EnergyRegulation"] <- "energyregulation"
+names(d0053f)[names(d0053f) == "BESSI_SocialEngagementSkills"] <- "socialengagement"
+# ESD
+names(d0053f)[names(d0053f) == "BESSI_ER_StressRegulation"] <- "stressregulation"
+names(d0053f)[names(d0053f) == "BESSI_ER_CapacityForOptimism"] <- "capacityforoptimism"
+names(d0053f)[names(d0053f) == "BESSI_ER_ConfidenceRegulation"] <- "confidenceregulation"
+names(d0053f)[names(d0053f) == "BESSI_ERSM_ImpulseRegulation"] <- "impulseregulation"
+names(d0053f)[names(d0053f) == "BESSI_ER_AngerManagement"] <- "angermanagement"
+names(d0053f)[names(d0053f) == "BESSI_EmotionalResilienceSkills"] <- "emotionalresilience"
+# Interstitial
+names(d0053f)[names(d0053f) == "BESSI_XX_SelfReflectionSkill"] <- "selfreflectionskill"
+names(d0053f)[names(d0053f) == "BESSI_XX_CapacityForIndependence"] <- "capacityforindependence"
+names(d0053f)[names(d0053f) == "BESSI_XX_Adaptability"] <- "adaptability"
+
+# School
+d0053f$academicachievement <- rowMeans(select(d0053f, GPA_Winter, GPA_Spring), na.rm = TRUE)
+names(d0053f)[names(d0053f) == "AE_Overall"] <- "academicengagement"
+# Social
+names(d0053f)[names(d0053f) == "Volunteerism"] <- "volunteering"
+names(d0053f)[names(d0053f) == "PeerAcceptance"] <- "peeracceptance"
+names(d0053f)[names(d0053f) == "FQS_Overall"] <- "friendshipquality"
+names(d0053f)[names(d0053f) == "RomanticSatisfaction"] <- "romanticrelationship"
+names(d0053f)[names(d0053f) == "MotherSatisfaction"] <- "motherrelationship"
+names(d0053f)[names(d0053f) == "FatherSatisfaction"] <- "fatherrelationship"
+# Physical
+names(d0053f)[names(d0053f) == "Exercise"] <- "physicalexercise"
+# Mental health
+names(d0053f)[names(d0053f) == "LifeSatisfaction"] <- "satisfactionwithlife"
+#Creative
+names(d0053f)[names(d0053f) == "MIP_Realistic"] <- "realisticinterests"
+names(d0053f)[names(d0053f) == "MIP_Investigative"] <- "investigativeinterests"
+names(d0053f)[names(d0053f) == "MIP_Artistic"] <- "artisticinterests"
+names(d0053f)[names(d0053f) == "MIP_Social"] <- "socialinterests"
+names(d0053f)[names(d0053f) == "MIP_Enterprising"] <- "enterprisinginterests"
+names(d0053f)[names(d0053f) == "MIP_Conventional"] <- "conventionalinterests"
+
+
+# Select and save
+d0053f <- d0053f[, colnames(d0053f) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0053f, use = "pairwise.complete")),"data/3.meta_data/matrices/0053f.xlsx")
+
+#### --------------------------------------------------- 0053g --------------------------------------------------- ####
+rm(list=ls())
+d0053g <- readxl::read_excel("data/3.meta_data/open_data/d0053g.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+table(d0053g$TargetGender)
+
+d0053g$sex <- ifelse(d0053g$TargetGender == 2, 0, d0053g$TargetGender) # Male = 0, Female = 1
+
+# Transform colnames
+names(d0053g)[names(d0053g) == "TargetAge"] <- "age"
+
+#Seb
+# SMD
+names(d0053g)[names(d0053g) == "BESSI_SM_GoalRegulation"] <- "goalregulation"
+names(d0053g)[names(d0053g) == "BESSI_SM_TaskManagement"] <- "taskmanagement"
+names(d0053g)[names(d0053g) == "BESSI_SM_DecisionMakingSkill"] <- "decisionmakingskill"
+names(d0053g)[names(d0053g) == "BESSI_SM_DetailManagement"] <- "detailmanagement"
+names(d0053g)[names(d0053g) == "BESSI_SM_CapacityForConsistency"] <- "capacityforconsistency"
+names(d0053g)[names(d0053g) == "BESSI_SM_OrganizationalSkill"] <- "organizationalskill"
+names(d0053g)[names(d0053g) == "BESSI_SM_TimeManagement"] <- "timemanagement"
+names(d0053g)[names(d0053g) == "BESSI_SM_ResponsibilityManagement"] <- "responsibilitymanagement"
+names(d0053g)[names(d0053g) == "BESSI_SM_RuleFollowingSkill"] <- "rulefollowingskill"
+names(d0053g)[names(d0053g) == "BESSI_SelfManagementSkills"] <- "selfmanagement"
+
+# IND
+names(d0053g)[names(d0053g) == "BESSI_IN_AbstractThinkingSkill"] <- "abstractthinkingskill"
+names(d0053g)[names(d0053g) == "BESSI_IN_CreativeSkill"] <- "creativeskill"
+names(d0053g)[names(d0053g) == "BESSI_INSM_InformationProcessingSkill"] <- "informationprocessingskill"
+names(d0053g)[names(d0053g) == "BESSI_IN_CulturalCompetence"] <- "culturalcompetence"
+names(d0053g)[names(d0053g) == "BESSI_IN_ArtisticSkill"] <- "artisticskill"
+names(d0053g)[names(d0053g) == "BESSI_InnovationSkills"] <- "innovation"
+
+# COD
+names(d0053g)[names(d0053g) == "BESSI_CO_PerspectiveTakingSkill"] <- "perspectivetakingskill"
+names(d0053g)[names(d0053g) == "BESSI_CO_CapacityForSocialWarmth"] <- "capacityforsocialwarmth"
+names(d0053g)[names(d0053g) == "BESSI_CO_TeamworkSkill"] <- "teamworkskill"
+names(d0053g)[names(d0053g) == "BESSI_COSM_EthicalCompetence"] <- "ethicalcompetence"
+names(d0053g)[names(d0053g) == "BESSI_CO_CapacityForTrust"] <- "capacityfortrust"
+names(d0053g)[names(d0053g) == "BESSI_CooperationSkills"] <- "cooperation"
+
+# SED
+names(d0053g)[names(d0053g) == "BESSI_SE_LeadershipSkill"] <- "leadershipskill"
+names(d0053g)[names(d0053g) == "BESSI_SE_ExpressiveSkill"] <- "expressiveskill"
+names(d0053g)[names(d0053g) == "BESSI_SE_ConversationalSkill"] <- "conversationalskill"
+names(d0053g)[names(d0053g) == "BESSI_SE_PersuasiveSkill"] <- "persuasiveskill"
+names(d0053g)[names(d0053g) == "BESSI_SESM_EnergyRegulation"] <- "energyregulation"
+names(d0053g)[names(d0053g) == "BESSI_SocialEngagementSkills"] <- "socialengagement"
+
+# ESD
+names(d0053g)[names(d0053g) == "BESSI_ER_StressRegulation"] <- "stressregulation"
+names(d0053g)[names(d0053g) == "BESSI_ER_CapacityForOptimism"] <- "capacityforoptimism"
+names(d0053g)[names(d0053g) == "BESSI_ER_ConfidenceRegulation"] <- "confidenceregulation"
+names(d0053g)[names(d0053g) == "BESSI_ERSM_ImpulseRegulation"] <- "impulseregulation"
+names(d0053g)[names(d0053g) == "BESSI_ER_AngerManagement"] <- "angermanagement"
+names(d0053g)[names(d0053g) == "BESSI_EmotionalResilienceSkills"] <- "emotionalresilience"
+
+# Interstitial
+names(d0053g)[names(d0053g) == "BESSI_XX_SelfReflectionSkill"] <- "selfreflectionskill"
+names(d0053g)[names(d0053g) == "BESSI_XX_CapacityForIndependence"] <- "capacityforindependence"
+names(d0053g)[names(d0053g) == "BESSI_XX_Adaptability"] <- "adaptability"
+
+# Select and save
+d0053g <- d0053g[, colnames(d0053g) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0053g, use = "pairwise.complete")),"data/3.meta_data/matrices/0053g.xlsx")
+

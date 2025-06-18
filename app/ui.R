@@ -2,6 +2,7 @@
 source("R/utils.R")
 library(shiny)
 library(shinyjs)
+library(bslib)
 library(shinycssloaders)
 library(DT)
 library(tidyverse)
@@ -72,9 +73,15 @@ ui <- navbarPage(
 ### .a vars selection ####
     sidebarLayout(
       sidebarPanel(h3("Select the outcome of interest"),
-                   radioButtons("outcomeTopics", "Refine outcomes list (if desired):",
+                   radioButtons("outcomeTopics", "Select the broad outcome grouping:",
                                unique(c(varlist$Topic[varlist$Topic != "SKILLS"])), selected = "SCHOOL" ),
-                   uiOutput("dynamic_outcome_select")
+                   uiOutput("dynamic_outcome_select"),
+                   selectInput("age_filter","Filter by age",
+                               choices = unique(combined_data$age_class),
+                               multiple = TRUE),
+                   selectInput("year_filter","Filter by year of publication",
+                               choices = unique(combined_data$year),
+                               multiple = TRUE)
                    # selectInput("metaModerators", "Moderators?",
                    #             c(list("XXXX","YYYY","ZZZZ")), 
                    #             multiple = FALSE )
@@ -97,8 +104,7 @@ ui <- navbarPage(
             h4("Estimated correlations"),
             tableOutput("metaResults"),
             # verbatimTextOutput("s1_table"),
-            plotOutput("metaPlot"),
-            downloadButton("report", "Generate report")
+            plotOutput("metaPlot")
           ),
 
 ### .c forest plots ####
@@ -108,6 +114,12 @@ ui <- navbarPage(
                         pred_vars, 
                         multiple = FALSE, selected = TRUE ),
             plotOutput("forestPlot")
+          ),
+
+### .d report ####
+          tabPanel(
+            title = "Report",
+            downloadButton("report", "Generate a brief report of the results")
           )
         )
       )
@@ -132,26 +144,39 @@ ui <- navbarPage(
                                c(varlist$column_name[varlist$broad == "BIGFIVE"]), 
                                multiple = TRUE ),
                    selectInput("Outcomes", "Outcomes:",
-                               c(varlist$column_name[varlist$Topic %in% c("SCHOOL", "MENTAL HEALTH")]), 
+                               c(varlist$column_name[!(varlist$Topic %in% c("SKILLS", "TRAITS"))]), 
                                multiple = TRUE ), 
-                   selectInput("Moderators", "Moderators?",
-                               c(list("XXXX","YYYY","ZZZZ")), 
-                               multiple = TRUE ), 
+                   selectInput("age_filter_masem","Filter by age",
+                               choices = unique(combined_data$age_class),
+                               multiple = TRUE),
+                   selectInput("year_filter_masem","Filter by year of publication",
+                               choices = unique(combined_data$year),
+                               multiple = TRUE),
+                   # selectInput("Moderators", "Moderators?",
+                   #             c(list("XXXX","YYYY","ZZZZ")), 
+                   #             multiple = TRUE ), 
                    actionButton("k_info", "Get info",
                                 style="color: #fff; background-color: black; border-color: black")
       ),
       
       mainPanel(
         tabsetPanel(
+          # tabPanel("Summary",
+          #   accordion(
+          #     accordion_panel("K correlations", verbatimTextOutput("K_table")),
+          #     accordion_panel("Sample size per correlation", verbatimTextOutput("N_table")),
+          #     accordion_panel("Studies included", tableOutput("Study_table")),
+          #   )
+          # ),
           tabPanel("Summary",
                    # Conditionally display the warning message in red
-                   
+
                    h4("K correlations"),
                    verbatimTextOutput("K_table"),
-                   
+
                    h4("Sample size per correlation"),
                    verbatimTextOutput("N_table"),
-                   
+
                    h4("Studies included"),
                    tableOutput("Study_table")
           ),
@@ -203,6 +228,12 @@ extraversion ~~ 1*extraversion
             h4("Model estimates"),
             withSpinner(verbatimTextOutput("results")),
             withSpinner(tableOutput("SEMresults"))#withSpinner
+          ),
+
+### .d report ####
+          tabPanel(
+            title = "Report",
+            downloadButton("report_masem", "Generate a brief report of the maSEM results")
           )
         )
       )
