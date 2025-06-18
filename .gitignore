@@ -1,6 +1,19 @@
 # FOLDERS
 # preregistration/
 
+# working data analysis files
+analysis/
+app_old/
+paper/
+paperOld/
+
+# non-proprietary data and pdfs
+data/2.full_abstracting/downloads/
+data/2.full_abstracting/pdfs/
+data/2.full_abstracting/_pdfDownload.R
+
+data/3.meta_data/open_data/
+data/3.meta_data/review_data/
 
 
 # R STUFF
