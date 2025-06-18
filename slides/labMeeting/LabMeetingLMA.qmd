@@ -140,7 +140,7 @@ This approach is designed to better align the measurement method with the constr
 
 **HOW CAN WE MAKE THIS NEW LINE OF RESEARCH TRULY RELIABLE, ACCESSIBLE, AND SCIENTIFIC?**
 
-## The idea 
+## The idea
 
 **A living systematic review and meta-analysis:** By creating an adaptable infrastructure for evidence integration, we hope to support more transparent, efficient, and rigorous scientific progress. This initiative lays the foundation not only for SEB research but also as a model for other emerging fields to follow—advancing toward a new era of living meta-synthesis in psychology.
 
@@ -171,6 +171,8 @@ This approach is designed to better align the measurement method with the constr
 <div>
 
 # Method
+
+see [preregistration](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)
 
 ## Search strategy (WOS + Scopus)
 
@@ -278,6 +280,10 @@ A shiny app!
 
 # Open questions
 
+<div style="font-size: 0.8em; line-height: 1.2;">
+
+-   Quality assessment?
+
 -   How do we collaborate without using word files?
 
 -   Preregistration
@@ -299,6 +305,8 @@ A shiny app!
     -   Can I (we) keep updating it forever?
 
     -   Can we involve the community? How?
+
+<div>
 
 # Next steps
 
