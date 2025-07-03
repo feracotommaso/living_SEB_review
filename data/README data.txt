@@ -10,8 +10,7 @@ update history file [./materials/search_results_history.xlsx]
 	- Select only the useful variables from the ryyan export, reorder them and save it as xlsx (YY_MM_DD_deduplicated)
 	- Papers are screened (title + abstract) and initial selection is conducted
 		- 'exlcude' when the paper is not of interest / out of topic
-		- 'include' when the paper is in topic but probably some SEB measurement or framework
-		- 'include' when the paper is in topic and looks like they adopt the SEB measurement
+		- 'include' when the paper is in topic or looks like they adopt the SEB measurement
 		- when finished, add "_processed" at the file name
 	- 1.abstracting_exclude.R is used to remove the excluded papers and save a new xlsx in the next folder
 
@@ -36,10 +35,10 @@ update history file
 3.meta_data includes all the final data that will be used for the meta-analysis and review
 	- 'basic_info' includes the dataset with the coded dataframe after fulltext exclusion
 	- 'open_data' includes the openly available data provided by the authors. 
-		- Data are downloaded from the archives and saved as .xlsx named with 'd' + 'paperID'
-		- Open code are also downloaded and stored as 'opencode' + 'paperID'
+		- data are downloaded from the archives and saved as .xlsx named with 'd' + 'paperID'
+		- open code are also downloaded and stored as 'opencode' + 'paperID'
 	- 'matrices' includes all the correlation matrices obtained from the included papers. These are calculated by
-		- PREFERABLE: Calculating the correlation matrices from the available data
+		- Calculating the correlation matrices from the available data (PREFERRED)
 			- To do this use 3.1opendata_to_cor.R
 			- Ensure that all the variable names are included exactly as reported in the 'matrix_codebook'
 			- If they are not present in the 'matrix_codebook' add it
@@ -49,5 +48,4 @@ update history file
 
 	- 'meta_data' includes the final data to be used for meta-analytic purposes
 		- This is obtained by running '3.2cor_to_metadata.R'. This code works using all the above information which should be available to be included
-	- 'review_data' includes he basic_info data of all included papers, comprehending also those excluded from the meta-analysis.This is generated within '3.2cor_to_metadata.R'.
-		
+	- 'review_data' includes the basic_info data of all included papers, comprehending also those excluded from the meta-analysis. This is generated within '3.2cor_to_metadata.R'.

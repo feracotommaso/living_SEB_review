@@ -6,6 +6,7 @@ output:
 params:
   metaRes: NA
   descriptives: NA
+  outcome: NA
 ---
 
 ```{r setup, include=FALSE}
@@ -13,9 +14,37 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(kableExtra)
 library(ggplot2)
+
+#TO DO
+load_xlsx_url <- function(url) {
+  temp_file <- tempfile(fileext = ".xlsx")
+  tryCatch({
+    download.file(url, destfile = temp_file, mode = "wb")
+    readxl::read_excel(temp_file)
+  }, error = function(e) {
+    stop("Failed to download or read Excel file: ", e$message)
+  })
+}
+
+admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/matrix_codebook.xlsx"
+admcol <- load_xlsx_url(admcol_url)
+
+varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that can be used with different grain [Topic, BROAD, specific, and label]
+labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
+
+
+#   - Labels for the plots and tables
+
+descriptives <- params$descriptives
+metaRes <- params$metaRes
+metaRes$skill <- labels_app[as.character(metaRes$skill)]
+
+out_selected <- params$outcome
+out_selected <- labels_app[as.character(out_selected)]
+
 ```
 
-## Introduction
+# Introduction
 
 Through the living SEB app you just conducted a three-level meta-analysis of the cross-sectional associations between the five SEB domains and the outcome of your interest.
 Specific information of the meta-analysis conducted:
@@ -28,26 +57,33 @@ Specific information of the meta-analysis conducted:
 
 ## Descriptive statistics
 
-The samples included in the meta-analysis are summarized in Table \@ref(tab:descriptives)
+The outcome selected for this meta-analysis is:
 
-```{r descriptives, tab.cap="Samples included and corresponding sizes"}
+```{r}
+print(params$outcome)
+```
+
+
+The samples included in the meta-analysis are summarized in Table \@ref(tab:descriptives).
+
+```{r descriptives}
 # The `params` object is available in the document.
-descriptives <- params$descriptives
 
-kableExtra::kable(descriptives)%>%
-  kable_classic()%>%
-  kable_styling(latex_options = "hold_position")
-
+knitr::kable(
+  descriptives,
+  caption = 'Samples included and corresponding sizes'
+)
 
 ```
 
 ## Results
 
-The results of the meta-analysis are synthesized in the following table (Table \@ref(tab:metaRes))
+The results of the meta-analysis are synthesized in the following table (Table \@ref(tab:metaRes)).
+`r metaRes$skill[which.max(metaRes$r)]` showed the strongest association with `r out_selected`, while `r metaRes$skill[which.min(metaRes$r)]` showed the lowest.
 
-```{r metaRes, tab.cap="Results of the meta-analysis"}
+```{r metaRes}
 
-metaRes <- params$metaRes
+
 metaResTable <- data.frame(
       Skill = metaRes$skill,
       N = paste0(metaRes$N, " k = (", metaRes$k, ")"),
@@ -59,10 +95,12 @@ metaResTable <- data.frame(
       q = paste0(round(metaRes$q), "(",metaRes$qdf,")",ifelse(metaRes$qp < .01, "*", "")),
       tau2 = format(round(metaRes$tau2,3),nsmall=3))
 
-kableExtra::kable(metaResTable)%>%
-  kable_classic()%>%
-  kable_styling(latex_options = "hold_position")
+# metaResTable$Skill <- labels_app[as.character(metaResTable$Skill)]
 
+knitr::kable(
+  metaResTable,
+  caption = 'Results of the meta-analysis'
+)
 
 ```
 

@@ -59,7 +59,11 @@ server <- function(input, output, session) {
     uniqueD <- dm()[!duplicated(dm()$matrix_id), ]
     data.frame(StudyID = uniqueD$matrix_id, 
                Authors = uniqueD$author_et_al,
-               N = uniqueD$n)})
+               Year = as.character(uniqueD$year),
+               Age = uniqueD$age_class,
+               N = as.character(uniqueD$n),
+               doi = uniqueD$doi
+               )})
   output$metaStudy_table <- renderTable({metaStudyTab()})
   
   #PAGE b ####
@@ -121,6 +125,8 @@ server <- function(input, output, session) {
     outcomelabel <- varlist$label[varlist$column_name == outcomemeta]
     metaRes <- metaAnalysis()$metaRes
     metaRes$skill <- labels_app[as.character(metaRes$skill)]
+    metaRes$CI <- paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ",
+                         format(round(metaRes$rciu,3),nsmall=3),"]")
     ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
        geom_point(shape = 18,
                   color = "black",
@@ -128,11 +134,15 @@ server <- function(input, output, session) {
        geom_errorbar(aes(xmin = rcil, xmax = rciu), width = 0, linewidth = .8) +
        geom_vline(xintercept = c(.00), linetype = "dashed") +
        labs(x = paste0("Meta-analytical association with ", outcomelabel), y = "Skill") +
-       theme_bw(base_size = 18) +
-       theme(strip.text = element_text(size = 18)) +
+       theme_bw(base_size = 25) +
+       # theme(strip.text = element_text(size = 18)) +
+       annotate("text", x = metaRes$r,
+                y = length(pred_vars):1+.20,
+                label = paste0(round(metaRes$r,3)," ",metaRes$CI), 
+                hjust = "center", size = 5) +
        coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.15,
                                        min(metaRes$rcil)),
-                                max(metaRes$rciu)))
+                                 max(metaRes$rciu)))
   })
   
   #PAGE c ####
@@ -160,7 +170,8 @@ server <- function(input, output, session) {
       
       # Set up parameters to pass to Rmd document
       params <- list(descriptives = metaStudyTab(),
-                     metaRes = metaAnalysis()$metaRes)
+                     metaRes = metaAnalysis()$metaRes,
+                     outcome = meta_outcome())
       
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
@@ -234,10 +245,13 @@ server <- function(input, output, session) {
   cfa1 <- eventReactive({input$s1_matrix}, {
     metaSEM::tssem1(metaD()$cor_matrices, metaD()$basic_info$n)
   })
-  SumTable <- reactive({x <- round(metaSEM::vec2symMat(coef(cfa1(),"fixed"),diag=FALSE),3)
-  dimnames(x) <- list(paste0(1:nrow(metaD()$cor_matrices[[1]]),".",rownames(metaD()$cor_matrices[[1]])),
-                      paste0(1:nrow(metaD()$cor_matrices[[1]]),"."))
-  x})
+  SumTable <- reactive({
+    x <- round(metaSEM::vec2symMat(coef(cfa1(),"fixed"),diag=FALSE),3)
+    dimnames(x) <- list(paste0(1:nrow(metaD()$cor_matrices[[1]]),".",rownames(metaD()$cor_matrices[[1]])),
+                        paste0(1:nrow(metaD()$cor_matrices[[1]]),"."))
+    dimnames(x) <- rep(list(labels_app[rownames(metaD()$cor_matrices[[1]])]), 2)
+    x})
+  
   # Summary table
   output$s1_table <- renderPrint({SumTable()}) 
   output$s1_figure <- renderPlot({corrplot(SumTable(), method = "ellipse", 

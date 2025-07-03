@@ -29,7 +29,7 @@ author-note:
 # abstract: "Abstract abstract abstract"
 # keywords: [validity; specific factors; spuroius correlations; proliferation]
 bibliography: bibliography.bib
-format:
+format: #pdf
   apaquarto-pdf:
     documentmode: man
   apaquarto-docx: default
@@ -39,7 +39,7 @@ format:
 
 <!-- The introduction should not have a level-1 heading such as Introduction. -->
 
-The livingSEBapp (XXXXX LINK XXXX) is a free and open-source Shiny app that allows for data synthesis of peer-reviewed publications that used the Behavioral, Emotional, and Social Skills Inventory (BESSI) in their research. The app should be viewed as a rapid tool for data synthesis, effect size visualization, and Bayesian priors and hypotheses building. It should not be intended as a systematic meta-analysis and its results should not be considered as the output of a complete meta-analysis of the literature (though they should be very similar). To conduct a systematic meta-analysis, the open-source data could be a starting point, but it might be necessary to include additional information (e.g., moderators of interest) and run more detailed and tailored analysis.
+The livingSEBapp (https://feracoshiny.shinyapps.io/livingSEBapp/) is a free and open-source Shiny app that allows for data synthesis of peer-reviewed publications that used the Behavioral, Emotional, and Social Skills Inventory (BESSI) in their research. The app should be viewed as a rapid tool for data synthesis, effect size visualization, and Bayesian priors and hypotheses building. It should not be intended as a systematic meta-analysis and its results should not be considered as the output of a complete meta-analysis of the literature (though they should be very similar). To conduct a systematic meta-analysis, the open-source data could be a starting point, but it might be necessary to include additional information (e.g., moderators of interest) and run more detailed and tailored analysis.
 
 Below, the different functions of the app are described to guide the user toward a correct and efficient usage of the livingSEBapp.
 
@@ -53,17 +53,29 @@ The steps to conduct such analysis are here detailed:
 
     -   Using the tab on the left of the screen, you can select the broad group of outcomes and, within it, the specific outcome you want to analyze. By default, 'schoool' -\> 'academic achievement' is selected as outcome of the meta-analysis. The complete list of outcomes and groupings is available in the matrix codebook.
 
-    -   If you want to filter the data XXXX
+    -   If you want to filter the data you can do it by selecting the data you are interested in based on the year of publication and at the age category of the sample. More filters might be added in the future.
 
-    -   Everytime you select and outcome or filter the data, basic information about the data available for the meta-analysis -given the selections- is provided in the main Tab.
+    -   Everytime you select an outcome or filter the data, basic information about the data available for the meta-analysis -given the selections- is provided in the main Tab.
 
     -   When the selection is completed, you can proceed to the next step of the analysis.
 
 2.  **Run the meta-analysis:**
 
-    -   Download a report of the results
+    -   Once you selected the outcome of interest and filtered the data, move to the next tab 'Meta results'
+    
+    -   In the 'Meta results' page, you can easily meta-analize the associations between SEB domains and the outcome, just by clicking the box "Run the meta-analysis"
+    
+    -   This will generate a summary table with descriptive statistics for each skill (e.g., k samples, total N) and the meta-analytical results, including precision of the estimates and heterogeneity information. The five meta-analytical back-transformed correlations and associated confidence intervals.
 
 3.  **Check forest plots:**
+
+    -   To descriptively inspect forest plots of each specific meta-analytical association, move to the 'Forest plots' tab.
+    
+    -   From the 'Select the skill' list available, please select the skill of interest. The corresponding forest plot will be authomatically showed.
+
+4.  **Export a report of the results:**
+
+    -   Moving to the 'Report' tab, you can download an html file with the current results and a detailed description of the analyses conducted.
 
 # Running a meta-SEM using the metaSEM package
 

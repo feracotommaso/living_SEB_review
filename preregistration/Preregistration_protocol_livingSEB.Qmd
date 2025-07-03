@@ -10,13 +10,13 @@ bibliography: references.bib
 
 # 1. Objectives and Rationale
 
-The social, emotional, and behavioral (SEB) skills framework, recently proposed by Soto and colleagues, offers an integrative alternative to earlier models of soft skills, bringing conceptual clarity and new measurement tools to the field. Given the framework’s novelty and the longstanding challenges in psychological research—such as fragmented evidence, inconsistent methods, and limited reproducibility—we believe it is crucial to adopt a modern, cumulative, and open approach to studying SEB skills.
+The social, emotional, and behavioral (SEB) skills framework, recently proposed by Soto and colleagues, offers an integrative alternative to earlier models of soft skills, bringing conceptual clarity and new measurement tools to the field. Given the framework’s novelty and the longstanding challenges in psychological research —such as fragmented evidence, inconsistent methods, and limited reproducibility— we believe it is crucial to adopt a modern, cumulative, and open approach to studying SEB skills.
 
 This project introduces a *living systematic review* and *meta-analysis* of research adopting the SEB framework. Unlike traditional reviews, this living review will be continuously updated to incorporate newly published studies, making the accumulated evidence transparent, accessible, and dynamically integrated.
 
 The goals of this project are:
 
--   To **synthesize and critically review** the literature on SEB skills using the Soto framework.
+-   To **synthesize and review** the literature on SEB skills using the Soto framework.
 
 -   To provide an **open-access, regularly updated database** of all relevant publications, including metadata on study design, samples, measures, and data availability.
 
@@ -132,7 +132,7 @@ Given the double aim of this project (review + meta-analysis), broader eligibili
 
     -   The study does not report correlations at baseline or the data could not be reduced to correlations nor obtained by the authors;
 
-    -   It was a study whose data were previously used in a paper already included in the meta-analysis;
+    -   Data were previously used in a paper already included in the meta-analysis;
 
     -   The study focused on severe mental health issues (e.g., schizophrenia, bipolar disorder);
 
@@ -185,9 +185,9 @@ Correlations (Pearson's *r*) between skills and outcomes will be coded in form o
 +--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
 | *Exclusion meta*         | The reason why the paper cannot be included in the meta-analysis (blank if 'exclusion_general' != 'include').                             | Category       |
 +--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Review topic*           | What is the single main topic of the paper (blank if 'exclusion_general' != 'include').                                                   | Category       |
+| *Review topics*          | What are the main topics of the paper (blank if 'exclusion_general' != 'include').                                                        | Category       |
 +--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Final decision*         | Whether the paper should be excluded ('exclude'), included in the meta-analysis AND the review ('meta') or in the review only ('review'). | Category       |
+| *Final decision*         | Whether the paper should be excluded ('exclude'), included in the meta-analysis ('meta'), in the review ('review') or both ('both')     . | Category       |
 +--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
 | *Email*                  | Corresponding author email.                                                                                                               | Text (email)   |
 +--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+

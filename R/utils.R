@@ -1,3 +1,14 @@
+load_xlsx_url <- function(url) {
+  temp_file <- tempfile(fileext = ".xlsx")
+  tryCatch({
+    download.file(url, destfile = temp_file, mode = "wb")
+    readxl::read_excel(temp_file)
+  }, error = function(e) {
+    stop("Failed to download or read Excel file: ", e$message)
+  })
+}
+
+
 data_combine <- function(matrix_path, basic_info_data) {
   # Extract matrix_id from the file name (assuming the file name is "matrix_id.xlsx")
   matrix_id <- tools::file_path_sans_ext(basename(matrix_path))
