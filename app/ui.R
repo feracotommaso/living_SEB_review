@@ -127,6 +127,9 @@ ui <- navbarPage(
 ### .d report ####
           tabPanel(
             title = "Report",
+            h4("You can download a report only if you run the meta-analysis first", 
+               align = "left", style = "color: red; font-weight: bold;"), # WARNING
+            br(),
             downloadButton("report", "Generate a brief report of the results")
           )
         )
@@ -296,8 +299,4 @@ extraversion ~~ 1*extraversion
   ) #END LAST PAGE
 ) #END
 
-# # rsconnect::setAccountInfo(name='feracoshiny',
-# #                           token='A47AC911721175295B55E72B4BBDBA64',
-# #                           secret='RDBYEXaqWAtSZDRAFdq1s2WgiKe+Gn9pC6fbLoKQ')
-# # 
 # # rsconnect::deployApp(getwd())

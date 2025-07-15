@@ -29,8 +29,26 @@ labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vect
 pred_vars <- sort(c("selfmanagement", "cooperation", "socialengagement", "innovation", "emotionalresilience"))
 
 # Review data
-review <- readxl::read_excel(here::here("data/3.meta_data/review_data/review_data.xlsx"))
-topics_list <- readxl::read_excel(here::here("data/topics_codebook.xlsx"))
+cat(">>> Downloading review data...\n")
+rev_data_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/3.meta_data/review_data/review_data.xlsx"
+review <- load_xlsx_url(rev_data_url)
+
+# review <- readxl::read_excel(here::here("data/3.meta_data/review_data/review_data.xlsx"))
+
+# Topics data
+cat(">>> Downloading topic list...\n")
+topic_data_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/topics_codebook.xlsx"
+topics_list <- load_xlsx_url(topic_data_url)
+
+# topics_list <- readxl::read_excel(here::here("data/topics_codebook.xlsx"))
 topics_list <- topics_list[is.na(topics_list$Broad_topic)==FALSE,]
 
-bibAll <- RefManageR::ReadBib(here::here("data/0.bib_download/bibAll.bib"))
+# Bib
+cat(">>> Downloading bib list...\n")
+bib_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/0.bib_download/bibAll.bib"
+dest_file <- tempfile(fileext = ".bib")
+download.file(bib_url, destfile = dest_file, mode = "wb")
+library(RefManageR)
+bibAll <- ReadBib(dest_file)
+
+# bibAll <- RefManageR::ReadBib(here::here("data/0.bib_download/bibAll.bib"))

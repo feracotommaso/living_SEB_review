@@ -225,5 +225,3 @@ generateBib <- function(bibAll = bibAll, data = NULL) {
   
   return(filtered_bib)
 }
-
-generateBib(data = dm, bibAll = bibAll)
