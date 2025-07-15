@@ -1,11 +1,5 @@
 # GLOBAL VARIABLES
 
-# load_xlsx_url <- function(url) {
-#   temp_file <- tempfile(fileext = ".xlsx")
-#   download.file(url, destfile = temp_file, mode = "wb")
-#   readxl::read_excel(temp_file)
-# }
-
 load_xlsx_url <- function(url) {
   temp_file <- tempfile(fileext = ".xlsx")
   tryCatch({
@@ -33,3 +27,10 @@ varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that ca
 labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
 
 pred_vars <- sort(c("selfmanagement", "cooperation", "socialengagement", "innovation", "emotionalresilience"))
+
+# Review data
+review <- readxl::read_excel(here::here("data/3.meta_data/review_data/review_data.xlsx"))
+topics_list <- readxl::read_excel(here::here("data/topics_codebook.xlsx"))
+topics_list <- topics_list[is.na(topics_list$Broad_topic)==FALSE,]
+
+bibAll <- RefManageR::ReadBib(here::here("data/0.bib_download/bibAll.bib"))

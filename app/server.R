@@ -11,7 +11,7 @@ server <- function(input, output, session) {
   # META-ANALYSIS ####
   # PAGE a ####
   # Basic info and moderators
-  study_info <- reactive({c("download_date","doi","year","age_class","paper_id", "matrix_id", "author_et_al", "n", input$Moderators)})
+  study_info <- reactive({c("download_date","doi","year","age_class","paper_id", "matrix_id", "author_et_al", "n", "title", input$Moderators)})
   
   # Reactive list of choices
   outlist <- reactive({
@@ -28,9 +28,6 @@ server <- function(input, output, session) {
   
   # Selected outcome
   meta_outcome <- reactive({input$metaOutcomes})
-  
-  # Filter by year
-  
   
   # Get the requested data
   dm <- reactive({
@@ -64,7 +61,20 @@ server <- function(input, output, session) {
                N = as.character(uniqueD$n),
                doi = uniqueD$doi
                )})
-  output$metaStudy_table <- renderTable({metaStudyTab()})
+  output$metaStudy_table <- renderTable({
+    rbind(metaStudyTab(),
+          c("Total","","","",sum(as.numeric(metaStudyTab()$N)),""))
+    })
+  
+  # Downloadable csv of meta-analysis dataset
+  output$downloadMetaData <- downloadHandler(
+    filename = function() {
+      paste(today(),"_livingSEBmetaData", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(dm(), file, row.names = FALSE)
+    }
+  )
   
   #PAGE b ####
   metaAnalysis <- eventReactive({input$meta_analysis},{
@@ -120,8 +130,12 @@ server <- function(input, output, session) {
     metaResTable
   })
   
+  meta_outcome_selected <- eventReactive(input$meta_analysis, {
+    input$metaOutcomes
+  })
+  
   output$metaPlot <- renderPlot({
-    outcomemeta <- meta_outcome()
+    outcomemeta <- meta_outcome_selected()
     outcomelabel <- varlist$label[varlist$column_name == outcomemeta]
     metaRes <- metaAnalysis()$metaRes
     metaRes$skill <- labels_app[as.character(metaRes$skill)]
@@ -157,31 +171,70 @@ server <- function(input, output, session) {
     # forest(outList[[x]])
   })
   
-  # d. REPORT ####
+  # PAGE d. REPORT ####
   output$report <- downloadHandler(
-    # For PDF output, change this to "report.pdf"
-    filename = "report.html",
+    filename = "report_meta.html",
+    
     content = function(file) {
-      # Copy the report file to a temporary directory before processing it, in
-      # case we don't have write permissions to the current working dir (which
-      # can happen when deployed).
-      tempReport <- file.path(tempdir(), "report.Rmd")
-      file.copy("report.Rmd", tempReport, overwrite = TRUE)
+      # Generate filtered bib based on current data
+      filtered_bib <- generateBib(data = dm(), bibAll = bibAll)
+      #filtered_bib_path <- tempfile(fileext = ".bib")
+      filtered_bib_path <- file.path(tempdir(), "filtered_refs.bib")
+      RefManageR::WriteBib(filtered_bib, file = filtered_bib_path)
       
-      # Set up parameters to pass to Rmd document
-      params <- list(descriptives = metaStudyTab(),
-                     metaRes = metaAnalysis()$metaRes,
-                     outcome = meta_outcome())
+      # Copy the report template to a temporary location
+      tempReport <- file.path(tempdir(), "report_meta.Rmd")
+      file.copy("report_meta.Rmd", tempReport, overwrite = TRUE)
       
-      # Knit the document, passing in the `params` list, and eval it in a
-      # child of the global environment (this isolates the code in the document
-      # from the code in this app).
-      rmarkdown::render(tempReport, output_file = file,
-                        params = params,
-                        envir = new.env(parent = globalenv())
+      # Parameters passed to Rmd
+      params <- list(
+        descriptives = metaStudyTab(),
+        metaRes = metaAnalysis()$metaRes,
+        outcome = meta_outcome(),
+        outlist = metaAnalysis()$outList,
+        dm = dm(),
+        bibfile = filtered_bib_path
+      )
+      
+      # Render the report
+      rmarkdown::render(
+        tempReport,
+        output_file = file,
+        params = params,
+        envir = new.env(parent = globalenv())
       )
     }
   )
+  # output$report <- downloadHandler(
+  #   filtered_bib <- generateBib(data = dm(), bibAll = bibAll),
+  #   filtered_bib_path <- tempfile(fileext = ".bib"),
+  #   RefManageR::WriteBib(filtered_bib, file = filtered_bib_path),
+  #   # For PDF output, change this to "report.pdf"
+  #   filename = "report_meta.html",
+  #   content = function(file) {
+  #     # Copy the report file to a temporary directory before processing it, in
+  #     # case we don't have write permissions to the current working dir (which
+  #     # can happen when deployed).
+  #     tempReport <- file.path(tempdir(), "report_meta.Rmd")
+  #     file.copy("report_meta.Rmd", tempReport, overwrite = TRUE)
+  #     
+  #     # Set up parameters to pass to Rmd document
+  #     params <- list(descriptives = metaStudyTab(),
+  #                    metaRes = metaAnalysis()$metaRes,
+  #                    outcome = meta_outcome(),
+  #                    outlist = metaAnalysis()$outList,
+  #                    dm = dm(),
+  #                    bibfile = filtered_bib_path)
+  #     
+  #     # Knit the document, passing in the `params` list, and eval it in a
+  #     # child of the global environment (this isolates the code in the document
+  #     # from the code in this app).
+  #     rmarkdown::render(tempReport, output_file = file,
+  #                       params = params,
+  #                       envir = new.env(parent = globalenv())
+  #     )
+  #   }
+  # )
   
   # META-SEM ####
   # PAGE a ####
@@ -334,7 +387,7 @@ server <- function(input, output, session) {
     # data.frame(parTab)
   })
   
-  # d. REPORT ####
+  # PAGE d. REPORT ####
   output$report_masem <- downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename = "report_masem.html",
@@ -368,4 +421,61 @@ server <- function(input, output, session) {
     }
   )
   
+  # REVIEW ####
+  # Reactive list of choices
+  spec_top_list <- reactive({
+    req(input$topics)  # ensure it's available
+    unique(topics_list$Topic_labs[topics_list$Broad_topic_labs == input$topics])
+  })
+  # Dynamic UI generation
+  output$dynamic_topic_select <- renderUI({
+    selectInput("filtTopic", "Filtered based on broad topic:",
+                choices = spec_top_list(),
+                multiple = TRUE, selected = NULL)
+  })
+  # Review table
+  revSelection <- reactive({
+    # Inputs from UI
+    topLab <- input$topics
+    subLab <- input$subtopics
+    filtTopic <- input$filtTopic
+    # Expand labels to actual topic names
+    topics <- if (is.null(topLab) || length(topLab) == 0) NULL 
+    else unique(topics_list$Broad_topic[topics_list$Broad_topic_labs %in% topLab])
+    # Combine subLab and filtTopic, then match to Topic
+    allSubLab <- unique(c(subLab, filtTopic))
+    subtopics <- if (is.null(allSubLab) || length(allSubLab) == 0) NULL 
+    else unique(topics_list$Topic[topics_list$Topic_labs %in% allSubLab])
+    # Run the table function
+    makeReviewTable(subtopics = subtopics, topics = topics)
+  })
+  output$revTableUI <- renderUI({
+    revTab <- revSelection()$revTab
+    
+    if (nrow(revTab) == 0) {
+      tags$p(
+        "Your match of broad and specific topics does not return any results. Please, when filtering for broad topics, try using the filtered specific topic to ensure at least one match.",
+        style = "color: red; font-weight: bold;"
+      )
+    } else {
+      tableOutput("revTable")
+    }
+  })
+  output$revTable <- renderTable({
+    revSelection()$revTab
+  })
+  # Clean selection
+  observeEvent(input$clean_rev, {
+    updateSelectInput(session, "topics", selected = character(0))
+    updateSelectInput(session, "subtopics", selected = character(0))
+  })
+  # Downloadable csv of filtered data
+  output$downloadFiltered <- downloadHandler(
+    filename = function() {
+      paste(today(),"_topicFilteredSebStudies", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(revSelection()$filteredData, file, row.names = FALSE)
+    }
+  )
 }

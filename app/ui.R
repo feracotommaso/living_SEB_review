@@ -11,6 +11,8 @@ library(metaSEM)
 library(metafor)
 library(ggplot2)
 library(readxl)
+library(RefManageR)
+library(stringdist)
 
 # UI ####
 ui <- navbarPage(
@@ -21,6 +23,8 @@ ui <- navbarPage(
   tabPanel(
     title = "Home",
     br(),  # Line break
+    h1("WARNING: THIS IS STILL A DEMO", align = "left", style = "color: red; font-weight: bold;"), # WARNING
+    br(),
     h1("Introduction to the Shiny app", align = "left"),  # Title
     br(),
     tags$p("Welcome to our Shiny app for navigating peer-reviewed research on SEB skills,
@@ -91,7 +95,11 @@ ui <- navbarPage(
           tabPanel(
             "Summary",
             h4("Samples included"),
-            tableOutput("metaStudy_table")
+            tableOutput("metaStudy_table"),
+            h5("Note: N is the max sample size and may vary across skill domains"),
+            h5(),
+            # Button
+            downloadButton("downloadMetaData", "Download the data")
           ),
           
 ### .b meta-matrix ####
@@ -169,8 +177,6 @@ ui <- navbarPage(
           #   )
           # ),
           tabPanel("Summary",
-                   # Conditionally display the warning message in red
-
                    h4("K correlations"),
                    verbatimTextOutput("K_table"),
 
@@ -239,7 +245,37 @@ extraversion ~~ 1*extraversion
       )
     )
   ), #END PAGE META-SEM
-  
+
+
+# ---------------------------------------------------------------------------------------------------------------- #
+
+##REVIEW ####
+  tabPanel(
+    title="Review",
+### .a topic selection ####
+    sidebarLayout(
+      sidebarPanel(h3("Select the topics of interest"),
+                   selectInput("topics", "BROAD topics:",
+                               choices = unique(topics_list$Broad_topic_labs),
+                               multiple = TRUE ),
+                   selectInput("subtopics", "Specific topics:",
+                               choices = unique(topics_list$Topic_labs),
+                               multiple = TRUE ),
+                   uiOutput("dynamic_topic_select"),
+                   actionButton("clean_rev", "Clean selection",
+                                style="color: #fff; background-color: black; border-color: black"),
+                   br(),br(),
+                   downloadButton("downloadFiltered", "Download the filtered data")
+                   ),
+      mainPanel(
+        h3("Filtered studies"),
+        uiOutput("revTableUI")
+        )
+      )
+  ), #END PAGE REVIEW
+
+# ---------------------------------------------------------------------------------------------------------------- #
+
 ## THANKS ####
   tabPanel(
     title = "References",
@@ -260,10 +296,6 @@ extraversion ~~ 1*extraversion
   ) #END LAST PAGE
 ) #END
 
-# 
-# # Run the application 
-# shinyApp(ui = ui, server = server)
-# 
 # # rsconnect::setAccountInfo(name='feracoshiny',
 # #                           token='A47AC911721175295B55E72B4BBDBA64',
 # #                           secret='RDBYEXaqWAtSZDRAFdq1s2WgiKe+Gn9pC6fbLoKQ')

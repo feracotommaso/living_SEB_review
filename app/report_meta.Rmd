@@ -7,6 +7,11 @@ params:
   metaRes: NA
   descriptives: NA
   outcome: NA
+  outlist: NA
+  dm: NA
+  bibfile: NA
+bibliography: '`r normalizePath(params$bibfile, winslash = "/", mustWork = TRUE)`'
+nocite: "@*"
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +20,6 @@ knitr::opts_chunk$set(echo = FALSE)
 library(kableExtra)
 library(ggplot2)
 
-#TO DO
 load_xlsx_url <- function(url) {
   temp_file <- tempfile(fileext = ".xlsx")
   tryCatch({
@@ -32,7 +36,6 @@ admcol <- load_xlsx_url(admcol_url)
 varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that can be used with different grain [Topic, BROAD, specific, and label]
 labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
 
-
 #   - Labels for the plots and tables
 
 descriptives <- params$descriptives
@@ -42,14 +45,18 @@ metaRes$skill <- labels_app[as.character(metaRes$skill)]
 out_selected <- params$outcome
 out_selected <- labels_app[as.character(out_selected)]
 
+outList <- params$outlist
+dm <- params$dm
+
 ```
 
 # Introduction
 
-Through the living SEB app you just conducted a three-level meta-analysis of the cross-sectional associations between the five SEB domains and the outcome of your interest.
+Through the living SEB app you just conducted a three-level meta-analysis of the cross-sectional associations between the five SEB domains and the outcome of your interest (`r out_selected`).
 Specific information of the meta-analysis conducted:
 
   - All materials, data, and analytical code are provided in the GitHub repository associated with this project.
+  - You can download the filtered data used for this analysis from the Shiny app.
   - All the analyses are conducted in R (R Core Team, 2022) using the ‘metafor’ package (Viechtbauer, 2010). 
   - Pearson’s r correlation coefficients were transformed to Fisher’s z scale for analysis. The results were then back-transformed to Pearson’s r
   - We employed three-level meta-analytic random-effects models using restricted maximum likelihood estimation. This approach accounts for heterogeneity both between and within studies. 
@@ -60,30 +67,28 @@ Specific information of the meta-analysis conducted:
 The outcome selected for this meta-analysis is:
 
 ```{r}
-print(params$outcome)
+print(out_selected)
 ```
 
+
+A total of `r length(unique(dm$paper_id))` papers, `r length(unique(dm$matrix_id))` samples, and `r length(dm)` were considered for this meta-analysis.
 
 The samples included in the meta-analysis are summarized in Table \@ref(tab:descriptives).
 
 ```{r descriptives}
-# The `params` object is available in the document.
-
 knitr::kable(
   descriptives,
-  caption = 'Samples included and corresponding sizes'
+  caption = 'Samples included and corresponding sizes',
+  align = c("lllccc")
 )
-
 ```
 
-## Results
+# Results
 
 The results of the meta-analysis are synthesized in the following table (Table \@ref(tab:metaRes)).
-`r metaRes$skill[which.max(metaRes$r)]` showed the strongest association with `r out_selected`, while `r metaRes$skill[which.min(metaRes$r)]` showed the lowest.
+`r metaRes$skill[which.max(metaRes$r)]` showed the strongest (`r round(metaRes$r[which.max(metaRes$r)],2)`) association with `r out_selected`, while `r metaRes$skill[which.min(metaRes$r)]` showed the lowest (`r round(metaRes$r[which.min(metaRes$r)],2)`). `r sum(metaRes$p < 0.05)` associations were significant with *p* < 0.05, `r sum(metaRes$p < 0.01)` with *p* < 0.01, and `r sum(metaRes$p < 0.001)` with *p* < 0.001.
 
 ```{r metaRes}
-
-
 metaResTable <- data.frame(
       Skill = metaRes$skill,
       N = paste0(metaRes$N, " k = (", metaRes$k, ")"),
@@ -99,9 +104,9 @@ metaResTable <- data.frame(
 
 knitr::kable(
   metaResTable,
-  caption = 'Results of the meta-analysis'
+  caption = 'Results of the meta-analysis',
+  align = c("lccccccc")
 )
-
 ```
 
 Figure \@ref(fig:metaplot) shows the same results graphically. Confidence intervals are plotted together with point estimates.
@@ -120,3 +125,26 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,5:1))) +
                                        min(metaRes$rcil)),
                                 max(metaRes$rciu)))
 ```
+
+## Forest plots
+
+Forest plots for each individual SEB skill are provided below to inspect heterogeneity in the associations across samples.
+
+```{r}
+for (i in 1:length(outList)) {
+  this_var <- names(outList[i])
+  this_var <- labels_app[as.character(this_var)]
+  row_labels <- paste0(outList[[i]]$data$author_et_al, " ",
+                       outList[[i]]$data$year)
+  forest(outList[[i]],
+         slab = row_labels,
+         atransf = transf.ztor,
+         pch = 19,
+         xlab = "Fisher-transformed correlation (r)",
+         main = paste("Outcome:", this_var)
+  )
+}
+```
+
+
+# References

@@ -137,3 +137,93 @@ getMETAdata <- function(pred_vars, out_vars, combined_data, study_info){
   })
   return(dlong)
 }
+
+makeReviewTable <- function(topics = NULL, subtopics = NULL, data = review, topics_df = topics_list) {
+  library(dplyr)
+  library(tidyr)
+  library(stringr)
+  
+  # Step 1: Expand the review_topics into separate rows
+  review_expanded <- data %>%
+    mutate(id = row_number()) %>%
+    separate_rows(review_topics, sep = ";\\s*") %>%
+    mutate(review_topics = str_trim(review_topics))
+  
+  # Step 2: Join with topics_list to get Broad_topic
+  review_with_broad <- review_expanded %>%
+    left_join(topics_df, by = c("review_topics" = "Topic"))
+  
+  # Step 3: Apply correct filtering logic
+  filtered <- review_with_broad %>%
+    filter(
+      (is.null(topics) & is.null(subtopics)) |
+      (!is.null(topics) & is.null(subtopics) & Broad_topic %in% topics) |
+      (is.null(topics) & !is.null(subtopics) & review_topics %in% subtopics) |
+      (!is.null(topics) & !is.null(subtopics) & Broad_topic %in% topics & review_topics %in% subtopics)
+    )
+  
+  # Step 4: Return original dataframe rows based on matched IDs
+  result <- data %>%
+    mutate(id = row_number()) %>%
+    filter(id %in% filtered$id) %>%
+    select(-id)
+  
+  # Step 4: Review Table
+  revInfo <- c("paper_id","author_et_al","year","title","review_topics","doi")
+  revTab <- result[,revInfo]
+  
+  return(list(filteredData = result,
+              revTab = revTab))
+}
+
+generateBib <- function(bibAll = bibAll, data = NULL) {
+  df_unique <- data[!duplicated(data$paper_id), ]
+  
+  # Clean titles from your dataset
+  titles_df <- trimws(tolower(df_unique$title))
+  
+  # Clean titles from BibEntry object
+  titles_bib <- tolower(sapply(bibAll, function(x) x$title))
+  titles_bib <- as.character(titles_bib)
+  
+  # Titles that do not match exactly
+  unmatched_titles <- titles_df[titles_df %in% titles_bib == FALSE]
+  
+  # Fuzzy matching: only unmatched vs all BibTeX titles
+  dist_matrix <- stringdistmatrix(unmatched_titles, titles_bib, method = "osa")
+  
+  # Get best match (lowest distance) for each unmatched title
+  closest_match_index <- apply(dist_matrix, 1, which.min)
+  closest_distances <- apply(dist_matrix, 1, min)
+  
+  # Set a distance threshold for fuzzy match acceptance
+  threshold <- 20
+  
+  # Build a data frame of fuzzy matches
+  fuzzy_matches <- data.frame(
+    original_title = unmatched_titles,
+    matched_bib_title = sapply(closest_match_index, function(i) bibAll[[i]]$title), #titles_bib[closest_match_index],
+    distance = closest_distances,
+    stringsAsFactors = FALSE
+  )
+  
+  # Filter to only strong fuzzy matches
+  fuzzy_matches <- fuzzy_matches[fuzzy_matches$distance <= threshold, ]
+  
+  # Exact matches
+  titles_exact <- titles_df[titles_df %in% titles_bib]
+  
+  # Fuzzy matches — use the matched bib title column
+  titles_fuzzy <- tolower(fuzzy_matches$matched_bib_title)
+  
+  # Combine all matched titles
+  all_matched_titles <- unique(c(titles_exact, titles_fuzzy))
+  
+  # Filter the bib
+  matched <- titles_bib %in% all_matched_titles
+  filtered_bib <- bibAll[matched]
+  
+  return(filtered_bib)
+}
+
+generateBib(data = dm, bibAll = bibAll)
