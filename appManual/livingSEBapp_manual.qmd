@@ -1,6 +1,7 @@
 ---
-title: "The living-SEB-app, a Shiny app for meta-synthesis of SEB literature."
-shorttitle: "User manual"
+title: "The living-SEB-app, a Shiny app for meta-synthesis and review of the SEB literature"
+subtitle: "USER MANUAL"
+shorttitle: "living SEB app - User manual"
 author:
   - name: Tommaso Feraco
     corresponding: true
@@ -39,53 +40,180 @@ format: #pdf
 
 <!-- The introduction should not have a level-1 heading such as Introduction. -->
 
-The livingSEBapp (https://feracoshiny.shinyapps.io/livingSEBapp/) is a free and open-source Shiny app that allows for data synthesis of peer-reviewed publications that used the Behavioral, Emotional, and Social Skills Inventory (BESSI) in their research. The app should be viewed as a rapid tool for data synthesis, effect size visualization, and Bayesian priors and hypotheses building. It should not be intended as a systematic meta-analysis and its results should not be considered as the output of a complete meta-analysis of the literature (though they should be very similar). To conduct a systematic meta-analysis, the open-source data could be a starting point, but it might be necessary to include additional information (e.g., moderators of interest) and run more detailed and tailored analysis.
+The livingSEBapp (<https://feracoshiny.shinyapps.io/livingSEBapp/>) is a free and open-source Shiny app for synthesizing peer-reviewed studies that used the Behavioral, Emotional, and Social Skills Inventory (BESSI). The app is designed as a rapid tool for data synthesis, effect-size visualization, and for building priors/hypotheses. It is **not** a replacement for a full systematic meta-analysis; results should be interpreted as a high-quality *rapid synthesis*. For a full meta-analysis, use the open data here as a starting point, add study-level moderators as needed, enrich the dataset with additional studies if needed, and tailor the analyses on your hypotheses.
 
-Below, the different functions of the app are described to guide the user toward a correct and efficient usage of the livingSEBapp.
+Below, each function of the app is described to guide correct and efficient use.
+
+## Getting started
+
+-   **Home tab.** Read the overview and use the quick-start buttons to jump to **Meta-analysis**, **MetaSEM**, or **Review** pages.
+-   **Navigation.** You can switch tabs anytime; your selections persist within each section until you change them or click “Clean selection” (Review tab).
+-   **Data sources.** All analyses run on the *combined* dataset curated from BESSI studies and related correlates. The data should hopefully cover the full list of cross-sectional associations between SEB skills (as measured with the BESSI) and all other measures included in each study). Code and data are linked on the app’s GitHub.
 
 # Running a meta-analysis of the associations between SEB domains and their correlates
 
-A first utility of the app is the possibility to run a rapid synthesis of the associations between the five SEB domains and each correlate measured more than one time in the literature. Specifically, the app allows for the estimation of the meta-analytical association between the five SEB domains and one 'outcome' at the time. Multivariate associations are not handled at the moment.
+A core utility is the rapid synthesis of associations between the five SEB domains and any correlate measured in ≥2 independent samples. The app estimates **five separate meta-analytical associations** (one per SEB domain) with a **single chosen outcome** (Multivariate models are not currently supported in this section).
 
-The steps to conduct such analysis are here detailed:
+## Steps
 
-1.  **Select the data of interest:**
+1.  **Select the data of interest (Meta-analysis → Summary).**
+-    In the sidebar, choose a **broad outcome grouping** and then a **specific outcome** within it.\
+    By default, *SCHOOL → academic achievement* is selected. The full list of outcomes is in the matrix codebook (repository).
+-    Optionally filter by **age class** and **year of publication**.
+-    As you select, the **Samples included** table updates with study IDs, authors, year, age class, N, and DOI.
+2.  **Run the meta-analysis (Meta-analysis → Meta results).**
+-    Move to the *Meta results* tab and click **Run the meta-analysis**.
+-    The app computes Fisher-z correlations via `metafor::escalc(measure = "ZCOR")`, then fits **multilevel random-effects** models with `metafor::rma.mv()` using random intercepts for `paper_id/matrix_id`. Estimates are back-transformed to *r*.
+-    You’ll see, for each SEB domain:
+      -   **r** and its **95% CI**, **SE**, **p**
+      -   **k** (number of effect sizes) and total **N** (sample size)
+      -   **τ²** (between-study variance; summed across random components)
+      -   **Q**, **df**, and **Q p-value** (heterogeneity)
+      -   **Prediction interval** (PI) for *r* (in the results object and plot annotation)
+3.  **Inspect a forest plot (Meta-analysis → Forest plots).**
+-    Move to the *Forest plots* tab and choose a **skill** (SEB domain) and the app displays the forest plot for that domain–outcome association.
+4.  **Export a brief report (Meta-analysis → Report).**
+-    Download an **HTML report** that includes your selections, descriptive tables, meta-analytic results, and plots.
+-   You can also download the **meta-analysis dataset (CSV)** from the Summary tab for offline work.
 
-    -   Using the tab on the left of the screen, you can select the broad group of outcomes and, within it, the specific outcome you want to analyze. By default, 'schoool' -\> 'academic achievement' is selected as outcome of the meta-analysis. The complete list of outcomes and groupings is available in the matrix codebook.
+### Notes and tips
 
-    -   If you want to filter the data you can do it by selecting the data you are interested in based on the year of publication and at the age category of the sample. More filters might be added in the future.
-
-    -   Everytime you select an outcome or filter the data, basic information about the data available for the meta-analysis -given the selections- is provided in the main Tab.
-
-    -   When the selection is completed, you can proceed to the next step of the analysis.
-
-2.  **Run the meta-analysis:**
-
-    -   Once you selected the outcome of interest and filtered the data, move to the next tab 'Meta results'
-    
-    -   In the 'Meta results' page, you can easily meta-analize the associations between SEB domains and the outcome, just by clicking the box "Run the meta-analysis"
-    
-    -   This will generate a summary table with descriptive statistics for each skill (e.g., k samples, total N) and the meta-analytical results, including precision of the estimates and heterogeneity information. The five meta-analytical back-transformed correlations and associated confidence intervals.
-
-3.  **Check forest plots:**
-
-    -   To descriptively inspect forest plots of each specific meta-analytical association, move to the 'Forest plots' tab.
-    
-    -   From the 'Select the skill' list available, please select the skill of interest. The corresponding forest plot will be authomatically showed.
-
-4.  **Export a report of the results:**
-
-    -   Moving to the 'Report' tab, you can download an html file with the current results and a detailed description of the analyses conducted.
+-   If filters yield **no data**, the results tab will indicate this. Broaden your filters or pick a different outcome.
+-   Interpret **PIs** for expected dispersion of future samples; **CIs** for precision of the mean effect.
+-   The **total N** is computed across unique matrices and may differ across skills when studies report different subsets.
 
 # Running a meta-SEM using the metaSEM package
 
+This section builds a **meta-analytic correlation matrix** across selected variables and fits **one-stage MASEM** models using `metaSEM`.
+
+## Steps
+
+1.  **Select variables and get coverage (MetaSEM → Summary).**
+    -   In the sidebar, select any combination of **SEB domains**, **SEB facets**, **Big Five traits**, and **outcomes**. Optional filters: **age class** and **year**.
+    -   Click **Get info**. The app assembles the data and shows:
+        -   **K correlations** (how many independent samples contribute to each pair).\
+            A red banner appears if any **k = 0** pairs exist; please remove variables so every pair has coverage.
+            As a general rule of thumb, use metaSEM if each pair of correlations has
+              - 2 studies = minimum (barely usable, only fixed-effect style).
+              - 3–5 studies = acceptable for exploratory models, but limited power.
+              - 10+ studies per correlation = good practice for reliable meta-SEM.
+        -   **Sample size per correlation (N)**.
+        -   **Studies included** table.
+    -   Warnings appear if some correlations have **k \< 3** or **N \< 1000** (interpret with caution).
+2.  **Compute the pooled correlation matrix (MetaSEM → SEM matrix).**
+-   Move to the *SEM matrix* tab and click **Get the meta-matrix**. The app runs `metaSEM::tssem1()` to pool the correlation structure.
+-   View the **estimated correlation matrix** (rounded) and a **corrplot**.\
+    You can **download** the correlation plot (PNG).
+3.  **Specify and fit a model (MetaSEM → metaSEM).**
+-   Move to the *metaSEM* tab and insert your **lavaan syntax** in the text area (e.g., `y ~ x1 + x2`). If you are not familiar with `lavaan` or `R`, please see https://lavaan.ugent.be/tutorial/syntax1.html.
+    -   You can insert the regression part of the model only.
+    -   The app **auto-augments** your model to:
+        -   Fix exogenous variances,
+        -   And saturate the residual covariances.
+    -   If you do not want the model to be saturated, unclick the **checkbox**.
+        -   You can now specify the covariances you want to estimate using `~~`.
+        -   If the model is not saturated, you can obtain fit indices.
+-   Click **Fit the specified SEM model** to estimate a **one-stage MASEM** (`osmasem`) with a **diagonal random-effects** structure (`(..., RE.type = "Diag")`).
+-   **Model fit** panel:
+    -    If the model is **saturated (df = 0)**, fit indices aren’t informative; focus on parameter estimates.
+    -   Otherwise, the app shows **CFI, TLI, RMSEA, SRMR**.
+-   **Model estimates** table includes:
+    -   Paths and variances with **Estimate**, **SE**, **z**, **p**, **95% CI**, plus a **τ (sd)** column for random-effect variance and its transformation to SD where applicable.
+-   **Residual variance / R²** table lists each variable’s residual variance and **R² = 1 − residual variance** (endogenous variables first).
+4.  **Export a brief report (MetaSEM → Report).**
+-   Download an **HTML report** with your selections, K/N tables, pooled matrix, model specification (original + augmented), fit indices, parameter table with τ, and R² table.
+
+## Notes and tips
+
+-   Do not proceed with models when the **K table** shows **k = 0** pairs or **k < 5**; adjust the variable set.
+-   Large models with many variables can be slow and sometimes unstable; start small and build up.
+-   Use the **auto-saturate** option if you are not familiar with SEM models. Saturated residuals can mask model misfit but will give interpretable estimates.
+
+# Reviewing and exporting literature subsets
+
+The **Review** tab lets you filter the curated literature by **broad topics** and **specific topics**.
+
+## Steps
+
+1.  **Choose topics.**
+-   Select one or more **BROAD topics** and/or **Specific topics**.
+-   A dynamic **Filtered based on broad topic** selector appears to help you pick specific topics that belong to the chosen broad topics.
+-   The specific topic selection is nested in the broad topic selection: If you select a broad topic, specific topics will not show additional papers but will only filter the selection more (if that specific topic exist in the broader topic/s).
+2.  **View results.**
+-   The **Filtered studies** table shows items matching your filters, with a banner indicating the number of matching records. Helpful messages appear when there are zero matches.
+3.  **Reset / export.**
+-   Click **Clean selection** to clear all topic filters.
+-   Click **Download the filtered data** to export the current subset as **UTF-8 CSV**.
+
+# What the app computes (technical details)
+
+-   **Effect sizes.** Correlations are transformed to Fisher-z via `metafor::escalc(measure = "ZCOR")`; models are fit on *z* and back-transformed to *r*.
+-   **Meta-analytic model (Meta-analysis).** `rma.mv(yi, V = vi, random = ~ 1 | paper_id / matrix_id, test = "t")`.
+    -   Reported: point estimate, 95% CI, SE, p; **τ²** (sum of variance components), **Q**, **df**, **Q p-value**, and **prediction interval**.
+-   **Pooled matrix (MetaSEM).** `tssem1()` aggregates correlations across studies.
+-   **One-stage MASEM.** `osmasem()` with **diagonal random effects**; τ reported per parameter where random effects are estimated.
+-   **R².** Computed from residual variances in the fitted model (`R² = 1 − residual variance`), bounded at 0.
+
+# Data export & reports
+
+-   **Meta-analysis data (CSV).** The exact dataset used to compute the meta-analysis.
+-   **MetaSEM data (ZIP CSV/RDS).** The exact datasets used to compute the metaSEM or pooled correlations.
+-   **Correlation plot (PNG).** High-resolution (2000×2000 px, 300 dpi) of the pooled correlation matrix.
+-   **Review subset (CSV).** Filtered literature table.
+-   **Reports (HTML).** `report_meta.html` and `report_masem.html` include selections, methods, tables, and figures.
+-   **Bibliography.** Reports include a **filtered .bib** of the cited studies based on your current data.
+
+# Reproducibility checklist
+
+-   Save your **filters** and **selected outcome/variables**.
+-   Download the **CSV/RDS/ZIP** outputs alongside the **HTML reports**.
+-   For full reproducibility, clone the GitHub repository and note your **R** and **package versions** when running locally.
+
+# Troubleshooting & FAQ
+
+-   **No results / disabled download.** You’ll see a friendly message; broaden filters or change the outcome/topic.
+-   **K table shows zeros.** Remove variables so every pair has coverage; otherwise, MASEM is not identified.
+-   **Saturated SEM (df = 0).** Fit indices are not meaningful; focus on estimates and CIs.
+-   **Buttons do nothing.** Ensure you clicked **Get info** (MetaSEM) or **Run the meta-analysis** (Meta-analysis) first.
+-   **Large models are slow.** Reduce the number of variables, fit the matrix first, then gradually add paths. Alternatively, download the data and code and run locally (faster).
+
+# Citation
+
+If you use this app or dataset, please cite:
+
+Feraco, T. (2025). *Living SEB Review: a Shiny app for meta-analysis and metaSEM*. GitHub repository: <https://github.com/feracotommaso/living_SEB_review>
+
+**BibTeX**
+
+```         
+  @misc{Feraco2025LivingSEB,   
+      author = {Feraco, Tommaso},   
+      title = {Living SEB Review: a Shiny app for meta-analysis and metaSEM},   
+      year = {2025},   
+      howpublished = {GitHub repository},   
+      url = {https://github.com/feracotommaso/living_SEB_review} } 
+```
+
 # Discussion
+
+The app enables rapid, transparent synthesis of BESSI-related findings and structural models. It is ideal for:
+
+-   **Scoping evidence** and visualizing effect sizes,
+-   **Generating priors/hypotheses** for confirmatory work,
+-   **Literature research and review** on SEB skills. 
+-   **Teaching** meta-analytic and MASEM concepts with real data.
 
 ## Limitations and Future Directions
 
--   Expand the meta-analysis to specific skill facets
+-   Extend meta-analysis to **facet-level** skills.
+-   Add **moderator/meta-regression** capabilities (study-level covariates).
+-   Expand the **Review** schema (e.g., study design, region) for finer filtering.
+-   Consider **multivariate meta-analysis** in the Meta-analysis section.
+-   Extend to non-crossectional analyses
 
 ## Conclusion
+
+The livingSEBapp lowers the barrier to evidence synthesis in SEB research by combining curated data, robust meta-analytic methods, and an accessible interface. It complements, but does not replace, full systematic meta-analysis.
 
 # References
 
@@ -93,7 +221,3 @@ The steps to conduct such analysis are here detailed:
 
 ::: {#refs}
 :::
-
-# This Section Is an Appendix {#apx-a}
-
-# Another Appendix {#apx-b}

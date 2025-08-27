@@ -225,3 +225,114 @@ generateBib <- function(bibAll = bibAll, data = NULL) {
   
   return(filtered_bib)
 }
+
+augment_lavaan_model <- function(user_model, varnames,
+                                 fix_exo_var = TRUE,
+                                 correlate_exogenous = TRUE,
+                                 saturate_endogenous = TRUE,
+                                 include_headings = TRUE) {
+  `%||%` <- function(a, b) if (!is.null(a)) a else b
+  squish <- function(x) gsub("\\s+", " ", trimws(x))
+  
+  # 1) Split, strip comments from user input (we'll add our own later)
+  lines <- unlist(strsplit(user_model %||% "", "\n"))
+  lines <- trimws(gsub("#.*$", "", lines))
+  lines <- lines[nchar(lines) > 0]
+  
+  # 2) Separate regression (~) vs covariance (~~); ignore measurement (=~)
+  is_reg  <- grepl("(^|[^~])~([^~]|$)", lines) & !grepl("~~", lines) & !grepl("=~", lines)
+  reg_raw <- lines[is_reg]
+  cov_existing <- lines[grepl("~~", lines)]
+  cov_existing <- unique(squish(cov_existing))
+  
+  # 3) Sanitize regressions: drop 'label*var' or 'number*var' on RHS
+  sanitize_reg_line <- function(line) {
+    parts <- strsplit(line, "~", fixed = TRUE)[[1]]
+    if (length(parts) < 2) return("")
+    lhs <- squish(parts[1])
+    rhs <- paste(parts[-1], collapse = "~")
+    terms <- strsplit(rhs, "\\+")[[1]]
+    
+    clean_terms <- vapply(terms, function(t) {
+      t <- trimws(gsub("[()]", "", t))
+      if (grepl("\\*", t)) t <- sub(".*\\*", "", t)   # keep after last '*'
+      t <- trimws(gsub("^[-+]", "", t))
+      if (t %in% c("", "1")) return("")
+      t
+    }, character(1))
+    
+    clean_terms <- unique(clean_terms[clean_terms != ""])
+    if (length(clean_terms) == 0) return("")
+    squish(paste(lhs, "~", paste(clean_terms, collapse = " + ")))
+  }
+  
+  reg_clean <- Filter(nzchar, unique(vapply(reg_raw, sanitize_reg_line, character(1))))
+  
+  # 4) Identify endogenous/exogenous from cleaned regressions
+  lhs <- if (length(reg_clean)) trimws(sub("\\~.*$", "", reg_clean)) else character(0)
+  endo <- unique(lhs)
+  exo  <- setdiff(varnames, endo)
+  
+  # 5) Build auto-additions
+  add_cov <- character(0)
+  add_var <- character(0)
+  
+  # Exogenous variances fixed to 1
+  if (fix_exo_var && length(exo) > 0) {
+    add_var <- paste0(exo, " ~~ 1*", exo)
+  }
+  
+  # Exogenous–exogenous covariances
+  if (correlate_exogenous && length(exo) > 1) {
+    pe <- utils::combn(exo, 2)
+    add_cov <- c(add_cov, paste0(pe[1,], " ~~ ", pe[2,]))
+  }
+  
+  # Residual correlations among endogenous variables
+  if (saturate_endogenous && length(endo) > 1) {
+    pi <- utils::combn(endo, 2)
+    add_cov <- c(add_cov, paste0(pi[1,], " ~~ ", pi[2,]))
+  }
+  
+  # De-duplicate against user-provided covariances
+  add_cov <- setdiff(unique(squish(add_cov)), cov_existing)
+  add_var <- setdiff(unique(squish(add_var)), cov_existing)
+  
+  # 6) Warn if regressions reference unknown vars (post-sanitization)
+  rhs_all <- if (length(reg_clean)) trimws(sub(".*~", "", reg_clean)) else character(0)
+  rhs_terms <- trimws(unlist(strsplit(paste(rhs_all, collapse = " + "), "\\+")))
+  used_vars <- unique(c(endo, rhs_terms))
+  used_vars <- used_vars[nzchar(used_vars)]
+  bad <- setdiff(used_vars, varnames)
+  if (length(bad)) {
+    warning("These variables are not in the current data selection: ",
+            paste(bad, collapse = ", "))
+  }
+  
+  # 7) Assemble with headings (only if blocks are non-empty)
+  blocks <- list()
+  
+  user_block <- c(reg_clean, cov_existing)
+  if (length(user_block)) {
+    blocks <- c(blocks,
+                list(if (include_headings) "# USER MODEL SPECIFICATION" else NULL),
+                list(user_block)
+    )
+  }
+  
+  if (length(add_cov)) {
+    blocks <- c(blocks,
+                list(if (include_headings) "# APP-GENERATED COVARIANCES" else NULL),
+                list(add_cov)
+    )
+  }
+  
+  if (length(add_var)) {
+    blocks <- c(blocks,
+                list(if (include_headings) "# APP-GENERATED VARIANCES" else NULL),
+                list(add_var)
+    )
+  }
+  
+  paste(unlist(blocks), collapse = "\n")
+}

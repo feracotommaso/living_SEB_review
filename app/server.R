@@ -1,34 +1,29 @@
 # SERVER ####
 server <- function(input, output, session) {
-## INTRODUCTION ####
-  observeEvent(input$go_to_metasem, {
-    updateNavbarPage(session = session, inputId = "pages", selected = "MetaSEM")
-  })
-  observeEvent(input$go_to_metacor, {
-    updateNavbarPage(session = session, inputId = "pages", selected = "Meta-analysis")
-  })
+## INTRODUCTION ----
+  observeEvent(input$go_to_metasem,   {updateNavbarPage(session, "pages", "MetaSEM") })
+  observeEvent(input$go_to_metacor,   { updateNavbarPage(session, "pages", "Meta-analysis") })
+  observeEvent(input$go_to_review,    { updateNavbarPage(session, "pages", "Review") })
+  observeEvent(input$go_to_refs,      { updateNavbarPage(session, "pages", "About & Citation") })
   
-  # META-ANALYSIS ####
-  # PAGE a ####
+  # META-ANALYSIS ----
+  # PAGE a ----
+  ### Data selection ----
   # Basic info and moderators
   study_info <- reactive({c("download_date","doi","year","age_class","paper_id", "matrix_id", "author_et_al", "n", "title", input$Moderators)})
-  
   # Reactive list of choices
   outlist <- reactive({
     req(input$outcomeTopics)  # ensure it's available
     varlist$column_name[varlist$Topic == input$outcomeTopics]
   })
-  
   # Dynamic UI generation
   output$dynamic_outcome_select <- renderUI({
     selectInput("metaOutcomes", "Select the specific outcome:",
                 choices = outlist(),
                 multiple = FALSE, selected = NULL)
   })
-  
   # Selected outcome
   meta_outcome <- reactive({input$metaOutcomes})
-  
   # Get the requested data
   dm <- reactive({
     # Get outcome variable
@@ -50,7 +45,7 @@ server <- function(input, output, session) {
     
     return(dm)
   })
-  
+  ### Data summary ----
   # Study_table
   metaStudyTab <- reactive({
     uniqueD <- dm()[!duplicated(dm()$matrix_id), ]
@@ -65,7 +60,7 @@ server <- function(input, output, session) {
     rbind(metaStudyTab(),
           c("Total","","","",sum(as.numeric(metaStudyTab()$N)),""))
     })
-  
+  ### Data download ----
   # Downloadable csv of meta-analysis dataset
   output$downloadMetaData <- downloadHandler(
     filename = function() {
@@ -77,6 +72,7 @@ server <- function(input, output, session) {
   )
   
   #PAGE b ####
+  ### Meta analysis ----
   metaAnalysis <- eventReactive({input$meta_analysis},{
     req(dm())
     dm <- dm()
@@ -112,7 +108,7 @@ server <- function(input, output, session) {
     
     list(metaRes = metaRes, outList = outList)
   })
-  
+  ### Output ----
   output$metaResults <- renderTable({
     metaRes <- metaAnalysis()$metaRes
     metaResTable <- data.frame(
@@ -129,11 +125,9 @@ server <- function(input, output, session) {
     metaResTable$Skill <- labels_app[as.character(metaResTable$Skill)]
     metaResTable
   })
-  
   meta_outcome_selected <- eventReactive(input$meta_analysis, {
     input$metaOutcomes
   })
-  
   output$metaPlot <- renderPlot({
     outcomemeta <- meta_outcome_selected()
     outcomelabel <- varlist$label[varlist$column_name == outcomemeta]
@@ -160,6 +154,7 @@ server <- function(input, output, session) {
   })
   
   #PAGE c ####
+  ### Forest plots ----
   output$forestPlot <- renderPlot({
     outList <- metaAnalysis()$outList
     x = input$forestSelected
@@ -205,40 +200,10 @@ server <- function(input, output, session) {
       )
     }
   )
-  # output$report <- downloadHandler(
-  #   filtered_bib <- generateBib(data = dm(), bibAll = bibAll),
-  #   filtered_bib_path <- tempfile(fileext = ".bib"),
-  #   RefManageR::WriteBib(filtered_bib, file = filtered_bib_path),
-  #   # For PDF output, change this to "report.pdf"
-  #   filename = "report_meta.html",
-  #   content = function(file) {
-  #     # Copy the report file to a temporary directory before processing it, in
-  #     # case we don't have write permissions to the current working dir (which
-  #     # can happen when deployed).
-  #     tempReport <- file.path(tempdir(), "report_meta.Rmd")
-  #     file.copy("report_meta.Rmd", tempReport, overwrite = TRUE)
-  #     
-  #     # Set up parameters to pass to Rmd document
-  #     params <- list(descriptives = metaStudyTab(),
-  #                    metaRes = metaAnalysis()$metaRes,
-  #                    outcome = meta_outcome(),
-  #                    outlist = metaAnalysis()$outList,
-  #                    dm = dm(),
-  #                    bibfile = filtered_bib_path)
-  #     
-  #     # Knit the document, passing in the `params` list, and eval it in a
-  #     # child of the global environment (this isolates the code in the document
-  #     # from the code in this app).
-  #     rmarkdown::render(tempReport, output_file = file,
-  #                       params = params,
-  #                       envir = new.env(parent = globalenv())
-  #     )
-  #   }
-  # )
   
   # META-SEM ####
   # PAGE a ####
-  # Select vars
+  ### Data selection ----
   target_vars <- reactive({
     # Combine all selections
     all_selections <- c(input$SEBdomains, input$SEBfacets, input$PersonalityTraits, input$Outcomes)
@@ -248,9 +213,6 @@ server <- function(input, output, session) {
     clean_selections <- clean_selections[clean_selections != ""]
     clean_selections
   })
-  # Basic info and moderators
-  # study_info <- reactive({c("paper_id", "matrix_id", "author_et_al", "n", input$Moderators)})
-  
   # Get the requested data
   metaD <- eventReactive({input$k_info}, {
     # Filter
@@ -267,21 +229,86 @@ server <- function(input, output, session) {
     # Get the data
     getSEMdata(target_vars(),combined_data,study_info())
   })
-  
+  ### Data summary ----
   # K_table
+  Ktab <- reactive({
+    req(metaD())
+    pattern.na(metaD()$cor_matrices, show.na = FALSE)  # counts of studies per correlation
+  })
   output$K_table <- renderPrint({
-    ktab<-pattern.na(metaD()$cor_matrices, show.na = FALSE) # k cors 
+    ktab <- Ktab()
     rownames(ktab) <- paste0(1:nrow(ktab),".",rownames(ktab))
     colnames(ktab) <- paste0(1:ncol(ktab),".")
     ktab
   })
+  # ---- Find zero-coverage pairs
+  zero_pairs <- reactive({
+    ktab <- Ktab()
+    idx <- which(ktab == 0, arr.ind = TRUE)
+    if (nrow(idx) == 0) return(NULL)
+    data.frame(
+      var1 = rownames(ktab)[idx[,1]],
+      var2 = colnames(ktab)[idx[,2]],
+      stringsAsFactors = FALSE
+    )
+  })
+  zero_any <- reactive({ !is.null(zero_pairs()) })
+  # ---- Red banner UI
+  output$zero_banner <- renderUI({
+    if (!zero_any()) return(NULL)
+    pairs <- zero_pairs()
+    
+    # Show a concise list of the first few offending pairs
+    max_show <- 6
+    n <- nrow(pairs)
+    shown <- head(pairs, max_show)
+    pair_labels <- paste0(shown$var1, " \u2013 ", shown$var2)
+    extra <- if (n > max_show) paste0(" +", n - max_show, " more") else ""
+    tags$div(
+      class = "alert alert-danger",
+      role = "alert",
+      tags$strong("STOP — some correlations have ZERO coverage (k = 0)."),
+      tags$br(),
+      HTML(paste0("No studies report: ", paste(pair_labels, collapse = ", "), extra, ".")),
+      tags$br(),
+      "Please adjust your variable selection or filters before proceeding."
+    )
+  })
+  # Warnings
+  observeEvent(metaD(), {
+    req(metaD())
+    ktab<-pattern.na(metaD()$cor_matrices, show.na = FALSE)
+    if (sum(ktab<3)>0) {
+      showNotification("Some correlations will be based on few observations (<3). Please proceed cautiously",
+                       type = "warning", duration = 6)
+    }
+    if (sum(ktab==0)>0) {
+      showNotification("Some correlations will be based on ZERO observations. Please DO NOT proceed",
+                       type = "error", duration = 6)
+    }
+  }, ignoreInit = TRUE)
   # N_table
   output$N_table <- renderPrint({
-    ntab<-pattern.n(metaD()$cor_matrices, metaD()$basic_info$n) # k cors 
+    ntab<-pattern.n(metaD()$cor_matrices, metaD()$basic_info$n) 
     rownames(ntab) <- paste0(1:nrow(ntab),".",rownames(ntab))
     colnames(ntab) <- paste0(1:ncol(ntab),".")
     ntab
   }) 
+  # Warnings
+  observeEvent(metaD(), {
+    req(metaD())
+    ntab<-pattern.n(metaD()$cor_matrices, metaD()$basic_info$n) 
+    
+    if (sum(ntab<1000)>0) {
+      showNotification("Some correlations will be based on small sample size (<1000). Please proceed cautiously",
+                       type = "warning", duration = 6)
+    }
+    if (sum(ntab==0)>0) {
+      showNotification("Some correlations will be based on no samples. Please DO NOT proceed",
+                       type = "error", duration = 6)
+    }
+  }, ignoreInit = TRUE)
+  
   # Study_table
   StudyTab <- reactive({data.frame(
     # Dataset = metaD()$basic_info$download_date,
@@ -292,54 +319,121 @@ server <- function(input, output, session) {
     N = metaD()$basic_info$n,
     doi = metaD()$basic_info$doi)})
   output$Study_table <- renderTable({StudyTab()})
-  
+  ### Data download ----
+  # Download list as RDS
+  output$downloadList <- downloadHandler(
+    filename = function() {
+      paste0(today(), "_livingSEB_SEM_data_list.rds")
+    },
+    content = function(file) {
+      saveRDS(metaD(), file)
+    }
+  )
+  # Download dataframes as separate csv
+  output$downloadZip <- downloadHandler(
+    filename = function() {
+      paste0(today(), "_livingSEB_SEM_data.zip")
+    },
+    content = function(file) {
+      tmpdir <- tempdir()
+      mylist <- metaD()
+      
+      # Track files explicitly
+      files_to_zip <- c()
+      
+      for (nm in names(mylist)) {
+        fpath <- file.path(tmpdir, paste0(nm, ".csv"))
+        write.csv(mylist[[nm]], fpath, row.names = FALSE)
+        files_to_zip <- c(files_to_zip, fpath)
+      }
+      
+      # Zip only the files we just wrote
+      zip::zip(zipfile = file, files = files_to_zip, mode = "cherry-pick")
+    },
+    contentType = "application/zip"
+  )
+
   # PAGE b ####
-  # Run the first-stage SEM
+  ### First-stage SEM ----
   cfa1 <- eventReactive({input$s1_matrix}, {
     metaSEM::tssem1(metaD()$cor_matrices, metaD()$basic_info$n)
   })
+  ### Results ----
   SumTable <- reactive({
     x <- round(metaSEM::vec2symMat(coef(cfa1(),"fixed"),diag=FALSE),3)
     dimnames(x) <- list(paste0(1:nrow(metaD()$cor_matrices[[1]]),".",rownames(metaD()$cor_matrices[[1]])),
                         paste0(1:nrow(metaD()$cor_matrices[[1]]),"."))
     dimnames(x) <- rep(list(labels_app[rownames(metaD()$cor_matrices[[1]])]), 2)
     x})
-  
   # Summary table
   output$s1_table <- renderPrint({SumTable()}) 
   output$s1_figure <- renderPlot({corrplot(SumTable(), method = "ellipse", 
                                            addCoef.col = "black",
                                            tl.col = 'black', tl.srt = 45)})
+  output$download_s1_figure_png <- downloadHandler(
+    filename = function() paste0("correlation_plot_", Sys.Date(), ".png"),
+    content = function(file) {
+      # high-res PNG (2000x2000 px at 300 dpi ≈ ~6.7 in)
+      png(file, width = 2000, height = 2000, res = 300)
+      corrplot(SumTable(), method = "ellipse",
+               addCoef.col = "black",
+               tl.col = "black", tl.srt = 45)
+      dev.off()
+    }
+  )
   
   # PAGE c ####  
-  # Fit the SEM model
-  SEM <- eventReactive({input$fitSEM}, {
-    model <- input$lavmodel
-    varnames <- rownames(metaD()$cor_matrices[[1]]) # Get the names of the variables
-    nvar <- nrow(metaD()$cor_matrices[[1]]) # Get their number
-    RAM1 <- metaSEM::lavaan2RAM(model, obs.variables=varnames) # Generate RAM sintax from lavaan
-    T0 <- metaSEM::create.Tau2(RAM=RAM1, RE.type="Diag", Transform="expLog", RE.startvalues=0.05)
-    my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
-    # Fit the model using one-Stage MASEM with or without test of indirect effect
-    M0 <- create.vechsR(A0=RAM1$A, S0=RAM1$S, F0 = RAM1$F)
-    # ind <- mxAlgebra(beta1*beta2, name="IndirectEffect") 
-    oss <- osmasem(model.name="One Stage MASEM", Mmatrix=M0, Tmatrix=T0, 
-                   data=my.df, intervals.type = "z")
+  ### Model specification ----
+  augmented_model <- reactive({
+    req(input$lavmodel, metaD())
+    augment_lavaan_model(
+      user_model          = input$lavmodel,
+      varnames            = rownames(metaD()$cor_matrices[[1]]),
+      fix_exo_var         = TRUE,
+      correlate_exogenous = input$auto_saturate,
+      saturate_endogenous = input$auto_saturate
+    )
   })
-  
-  # summary of results
+  output$model_preview <- renderText({ augmented_model() })
+  ### Model fit ----
+  SEM <- eventReactive({input$fitSEM}, {
+    user_model <- input$lavmodel
+    varnames   <- rownames(metaD()$cor_matrices[[1]])
+    
+    model_aug <- augment_lavaan_model(
+      user_model          = user_model,
+      varnames            = varnames,
+      fix_exo_var         = TRUE,
+      correlate_exogenous = input$auto_saturate,
+      saturate_endogenous = input$auto_saturate
+    )
+    
+    RAM1 <- metaSEM::lavaan2RAM(model_aug, obs.variables = varnames)
+    T0   <- metaSEM::create.Tau2(RAM = RAM1, RE.type = "Diag",
+                                 Transform = "expLog", RE.startvalues = 0.05)
+    my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
+    M0    <- create.vechsR(A0 = RAM1$A, S0 = RAM1$S, F0 = RAM1$F)
+    
+    osmasem(model.name = "One Stage MASEM (auto_augmented)",
+            Mmatrix = M0, Tmatrix = T0, data = my.df, intervals.type = "z")
+    
+    # model <- input$lavmodel
+    # varnames <- rownames(metaD()$cor_matrices[[1]]) # Get the names of the variables
+    # nvar <- nrow(metaD()$cor_matrices[[1]]) # Get their number
+    # RAM1 <- metaSEM::lavaan2RAM(model, obs.variables=varnames) # Generate RAM sintax from lavaan
+    # T0 <- metaSEM::create.Tau2(RAM=RAM1, RE.type="Diag", Transform="expLog", RE.startvalues=0.05)
+    # my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
+    # # Fit the model using one-Stage MASEM with or without test of indirect effect
+    # M0 <- create.vechsR(A0=RAM1$A, S0=RAM1$S, F0 = RAM1$F)
+    # # ind <- mxAlgebra(beta1*beta2, name="IndirectEffect") 
+    # oss <- osmasem(model.name="One Stage MASEM", Mmatrix=M0, Tmatrix=T0, 
+    #                data=my.df, intervals.type = "z")
+  })
+  ### Results ----
   sumfit <- reactive({
     req(SEM())
     summary(SEM(), fitIndices = TRUE)
   })
-  
-  # # Show results of one-stage MASEM
-  # output$status <- renderText({
-  #   if(sumfit()$statusCode == "OK"){"<font color=\"#008000\"><b>Converged!</b></font>"}
-  #   else{"<font color=\"#FF0000\"><b>No convergence..., maybe rerunning the model helps.</b></font>"
-  #   }
-  # })
-  
   # Fit indices and model fit
   output$fit_ui <- renderUI({
     if (sumfit()$ChiDoF == 0) {
@@ -361,43 +455,151 @@ server <- function(input, output, session) {
     )
   })
   # metaSEM results
-  output$results <- renderPrint({sumfit()$parameters})
-  # Table of model estimates
-  output$SEMresults <- renderTable({
-    parTab <- sumfit()$parameters
-    parTab <- parTab[parTab$matrix %in% c("A0","S0"),
-                     c("row", "matrix", "col", "Estimate", "Std.Error", "z value", "Pr(>|z|)")]
-    colnames(parTab) <- c("outcome", "op", "predictor", "Estimate", "se", "z", "p")
-    parTab[,4:ncol(parTab)] <- round(parTab[,4:ncol(parTab)],3)
-    parTab$op <- ifelse(parTab$op == "A0", "~", "~~")
-    parTab <- parTab[order(parTab$outcome, parTab$op), ]#, -df$var2
-    parTab$p <- ifelse(parTab$p < .001, "<.001", parTab$p)
-    data.frame(parTab)
+  SEMresults_df <- reactive({
+    req(sumfit())
+    my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
     
-    # ciTab <- sumfit()$CI
-    # ciTab <- ciTab[ciTab$estimate %in% parTab$Estimate, ]
-    # ciTab <- ciTab[!duplicated(ciTab$estimate),]
-    # parTab$CI_lower <- ciTab$lbound[match(parTab$Estimate, ciTab$estimate)]
-    # parTab$CI_upper <- ciTab$ubound
-    # colnames(parTab) <- c("outcome", "op", "predictor", "Estimate", "se", "z", "CI_lower", "CI_upper", "p")
-    # parTab[,4:ncol(parTab)] <- round(parTab[,4:ncol(parTab)],3)
-    # parTab$op <- ifelse(parTab$op == "A0", "~", "~~")
-    # parTab <- parTab[order(parTab$outcome, parTab$op), ]#, -df$var2
-    # parTab$p <- ifelse(parTab$p < .001, "<.001", parTab$p)
-    # data.frame(parTab)
+    ## 1) Build your fixed-effects table as before, but keep a copy with IDs
+    fixedRaw <- subset(sumfit()$parameters, matrix %in% c("A0","S0"),
+                       select = c("matrix","row","col","Estimate","Std.Error","z value","Pr(>|z|)"))
+    
+    # create a parameter ID that matches metaSEM naming
+    fixedRaw$param_id <- ifelse(fixedRaw$matrix == "A0",
+                                paste0(fixedRaw$col, "_",  fixedRaw$row),
+                                paste0(fixedRaw$row, "_", fixedRaw$col))
+    
+    ## 2) Get VarCorr and make a named vector of tau variances
+    tauMat   <- metaSEM::VarCorr(SEM())              # random-effects VCV
+    vcor <- round(diag(metaSEM::VarCorr(SEM())),3)
+    tau_diag <- diag(tauMat)
+    tau_ids  <- my.df$ylabels                   # names of parameters with random effects
+    tau_var  <- setNames(as.numeric(tau_diag), tau_ids)
+    tau_sd   <- sqrt(tau_var)
+    
+    ## 3) Map tau back to fixed effects by name; non-random params become NA
+    match_idx <- match(fixedRaw$param_id, names(tau_var))
+    fixedRaw$tau_var <- tau_var[match_idx]
+    fixedRaw$tau_sd  <- tau_sd[match_idx]
+    
+    ## 4) Format the combined "tau (sd)" cell
+    fmt3 <- function(x) ifelse(is.na(x), NA, sprintf("%.3f", x))
+    fixedRaw$Tau <- ifelse(is.na(fixedRaw$tau_var), "NaN",
+                           paste0(fmt3(fixedRaw$tau_var), " (", fmt3(fixedRaw$tau_sd), ")"))
+    
+    ## 5) Now rebuild your presentation table and merge Tau by keys (row/col/op)
+    parTab <- subset(sumfit()$parameters, matrix %in% c("A0","S0"),
+                     select = c("matrix","row","col","Estimate","Std.Error","z value","Pr(>|z|)"))
+    parTab$op <- ifelse(parTab$matrix == "A0", "~", "~~")
+    parTab$outcome   <- parTab$row
+    parTab$predictor <- parTab$col
+    
+    zcrit <- 1.96
+    parTab$CI_lower <- parTab$Estimate - zcrit * parTab$`Std.Error`
+    parTab$CI_upper <- parTab$Estimate + zcrit * parTab$`Std.Error`
+    parTab$CI95 <- paste0("[",round(parTab$CI_lower, 2),"; ",
+                          round(parTab$CI_upper, 2),"]")
+    is_resid_var <- parTab$matrix == "S0" & parTab$row == parTab$col
+    parTab$op[is_resid_var] <- "~~ (resid var)"
+    parTab$predictor[is_resid_var] <- parTab$outcome[is_resid_var]
+    
+    parTab <- parTab[, c("matrix","outcome","op","predictor","Estimate","Std.Error",
+                         "z value","Pr(>|z|)","CI95")]
+    names(parTab) <- c("matrix","outcome","op","predictor","Estimate","SE",
+                       "z","p","CI_95")
+    
+    # merge Tau by the unambiguous key (matrix,row,col)
+    parTab <- merge(parTab,
+                    fixedRaw[, c("matrix","row","col","Tau")],
+                    by.x = c("matrix","outcome","predictor"),
+                    by.y = c("matrix","row","col"),
+                    all.x = TRUE,
+                    sort  = FALSE)
+    
+    # pretty formatting
+    parTab$Estimate <- round(parTab$Estimate, 3)
+    parTab$SE       <- round(parTab$SE, 3)
+    parTab$z        <- round(parTab$z, 3)
+    parTab$p        <- ifelse(is.na(parTab$p), NA,
+                              ifelse(parTab$p < .001, "<.001", sprintf("%.3f", parTab$p)))
+    parTab$outcome <- labels_app[parTab$outcome]
+    parTab$predictor <- labels_app[parTab$predictor]
+    
+    # rename the column at the end (so you can use parTab$Tau internally)
+    names(parTab)[names(parTab) == "Tau"] <- "tau (sd)"
+    
+    # final ordering for display
+    op_order <- c("~","~~","~~ (resid var)")
+    parTab$op <- factor(parTab$op, levels = op_order)
+    parTab <- parTab[order(parTab$op, parTab$outcome, parTab$predictor), ]
+    
+    names(parTab)[names(parTab) == "predictor"] <- "Predictor"
+    names(parTab)[names(parTab) == "matrix"] <- "Matrix"
+    names(parTab)[names(parTab) == "outcome"] <- "Outcome"
+    data.frame(parTab)
+  })
+  output$SEMresults <- renderTable({
+    SEMresults_df()
+  })
+  # Residual variances + R2
+  R2_table <- reactive({
+    req(SEM())
+    # extract residual (unique) variances from the fitted OSMASEM model
+    Sres_mat <- SEM()$mx.fit$Smatrix$result
+    Sres <- diag(Sres_mat)
+    
+    # variable names from your RAM S matrix labels
+    var_names <- colnames(SEM()$Mmatrix$S0$labels)
+    
+    # optional: replace with user-friendly labels if you have labels_app
+    if (exists("labels_app") && !is.null(labels_app)) {
+      clean_names <- ifelse(var_names %in% names(labels_app), labels_app[var_names], var_names)
+    } else {
+      clean_names <- var_names
+    }
+    
+    # build table
+    out <- data.frame(
+      variable = clean_names,
+      residual_var = round(Sres, 4),
+      R2 = round(pmax(0, 1 - Sres), 3),
+      stringsAsFactors = FALSE
+    )
+    
+    # helpful ordering: endogenous first (those appearing on LHS of A paths)
+    parTab <- sumfit()$parameters
+    endo_raw <- unique(parTab$row[parTab$matrix == "A0"])
+    endo <- if (exists("labels_app") && !is.null(labels_app)) {
+      ifelse(endo_raw %in% names(labels_app), labels_app[endo_raw], endo_raw)
+    } else endo_raw
+    out$endo <- out$variable %in% endo
+    out <- out[order(!out$endo, out$variable), c("variable","residual_var","R2")]
+    colnames(out) <- c("Variable","Residual var", "R2")
+    rownames(out) <- NULL
+    out
   })
   
+  output$R2_table <- renderTable({
+    R2_table()
+  }, striped = TRUE, bordered = TRUE, digits = 3)
   # PAGE d. REPORT ####
   output$report_masem <- downloadHandler(
     # For PDF output, change this to "report.pdf"
     filename = "report_masem.html",
+    
     content = function(file) {
+      
+      # Generate filtered bib based on current data
+      filtered_bib <- generateBib(data = metaD()$basic_info, bibAll = bibAll)
+      #filtered_bib_path <- tempfile(fileext = ".bib")
+      filtered_bib_path <- file.path(tempdir(), "filtered_refs.bib")
+      RefManageR::WriteBib(filtered_bib, file = filtered_bib_path)
+      
       # Copy the report file to a temporary directory before processing it, in
       # case we don't have write permissions to the current working dir (which
       # can happen when deployed).
       tempReport <- file.path(tempdir(), "report_masem.Rmd")
       file.copy("report_masem.Rmd", tempReport, overwrite = TRUE)
-      
+
       # Set up parameters to pass to Rmd document
       params <- list(
         target_vars = target_vars(),
@@ -405,12 +607,16 @@ server <- function(input, output, session) {
         age_filter = input$age_filter_masem,
         year_filter = input$year_filter_masem,
         cfa1 = cfa1(),
-        SumTable = SumTable()
-        # ,
-        # lavmodel = input$lavmodel,
-        # sumfit = sumfit()
+        SumTable = SumTable(),
+        lavmodel = input$lavmodel,
+        augmented_model = augmented_model(),
+        SEM = SEM(),
+        sumfit = sumfit(),
+        SEMresults_df = SEMresults_df(),
+        R2_table = R2_table(),
+        bibfile = filtered_bib_path
         )
-      
+
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
       # from the code in this app).
@@ -421,61 +627,87 @@ server <- function(input, output, session) {
     }
   )
   
-  # REVIEW ####
-  # Reactive list of choices
+  # # REVIEW ####
+  ### Data selection ----
+  # Choices for specific topics
   spec_top_list <- reactive({
-    req(input$topics)  # ensure it's available
-    unique(topics_list$Topic_labs[topics_list$Broad_topic_labs == input$topics])
+    # Return empty vector instead of stopping; makes UI easier to manage.
+    if (is.null(input$topics) || !length(input$topics)) return(character(0))
+    sort(unique(topics_list$Topic_labs[topics_list$Broad_topic_labs %in% input$topics]))
   })
   # Dynamic UI generation
   output$dynamic_topic_select <- renderUI({
-    selectInput("filtTopic", "Filtered based on broad topic:",
-                choices = spec_top_list(),
-                multiple = TRUE, selected = NULL)
+    # Show a helpful message until a broad topic is selected
+    if (!length(spec_top_list())) {
+      return(helpText("Select at least one broad topic to filter specific topics."))
+    }
+    selectizeInput(
+      "filtTopic", "Filtered based on broad topic:",
+      choices = spec_top_list(), multiple = TRUE,
+      options = list(placeholder = "Type to filter…")
+    )
   })
+  ### Review results ----
   # Review table
   revSelection <- reactive({
     # Inputs from UI
-    topLab <- input$topics
-    subLab <- input$subtopics
+    topLab    <- input$topics
+    subLab    <- input$subtopics
     filtTopic <- input$filtTopic
     # Expand labels to actual topic names
-    topics <- if (is.null(topLab) || length(topLab) == 0) NULL 
-    else unique(topics_list$Broad_topic[topics_list$Broad_topic_labs %in% topLab])
+    topics <- if (is.null(topLab) || !length(topLab)) NULL else
+      unique(topics_list$Broad_topic[topics_list$Broad_topic_labs %in% topLab])
     # Combine subLab and filtTopic, then match to Topic
     allSubLab <- unique(c(subLab, filtTopic))
-    subtopics <- if (is.null(allSubLab) || length(allSubLab) == 0) NULL 
-    else unique(topics_list$Topic[topics_list$Topic_labs %in% allSubLab])
-    # Run the table function
+    subtopics <- if (is.null(allSubLab) || !length(allSubLab)) NULL else
+      unique(topics_list$Topic[topics_list$Topic_labs %in% allSubLab])
+    
     makeReviewTable(subtopics = subtopics, topics = topics)
   })
-  output$revTableUI <- renderUI({
-    revTab <- revSelection()$revTab
-    
-    if (nrow(revTab) == 0) {
-      tags$p(
-        "Your match of broad and specific topics does not return any results. Please, when filtering for broad topics, try using the filtered specific topic to ensure at least one match.",
-        style = "color: red; font-weight: bold;"
-      )
-    } else {
-      tableOutput("revTable")
+  # Disable download if nothing to download
+  shinyjs::disable("downloadFiltered")
+  observe({
+    rs <- revSelection()
+    has_data <- !is.null(rs$filteredData) && NROW(rs$filteredData) > 0
+    shinyjs::toggleState("downloadFiltered", condition = has_data)
+  })
+  
+  output$revTable <- renderTable({
+    rs <- revSelection()
+    validate(
+      need(!is.null(rs$revTab), "No table available yet."),
+      need(NROW(rs$revTab) > 0,
+           "No results for the current combination. Try using the filtered specific topic that matches the selected broad topic(s).")
+    )
+    rs$revTab
+  })
+  output$revSummary <- renderUI({
+    rs <- revSelection()
+    n <- if (!is.null(rs$revTab)) NROW(rs$revTab) else 0
+    tags$div(
+      role = "status", `aria-live` = "polite",
+      class = if (n > 0) "alert alert-info" else "alert alert-warning",
+      if (n > 0) sprintf("Found %d records matching your topic filters.", n)
+      else "No matching records. Adjust your broad/specific topic filters."
+    )
+  })
+  ### Clean selection ---
+  observeEvent(input$clean_rev, {
+    updateSelectInput(session, "topics",    selected = character(0))
+    updateSelectInput(session, "subtopics", selected = character(0))
+    if ("filtTopic" %in% names(input)) {
+      updateSelectInput(session, "filtTopic", selected = character(0))
     }
   })
-  output$revTable <- renderTable({
-    revSelection()$revTab
-  })
-  # Clean selection
-  observeEvent(input$clean_rev, {
-    updateSelectInput(session, "topics", selected = character(0))
-    updateSelectInput(session, "subtopics", selected = character(0))
-  })
-  # Downloadable csv of filtered data
+  ### Data download ----
   output$downloadFiltered <- downloadHandler(
-    filename = function() {
-      paste(today(),"_topicFilteredSebStudies", ".csv", sep = "")
-    },
+    filename = function() sprintf("%s_topicFilteredSebStudies.csv", Sys.Date()),
+    contentType = "text/csv; charset=utf-8",
     content = function(file) {
-      write.csv(revSelection()$filteredData, file, row.names = FALSE)
+      dat <- revSelection()$filteredData
+      validate(need(NROW(dat) > 0, "Nothing to download."))
+      write.csv(dat, file, row.names = FALSE, fileEncoding = "UTF-8")
     }
   )
+  
 }

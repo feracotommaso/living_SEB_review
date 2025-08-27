@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(kableExtra)
 library(ggplot2)
 
+#   - Labels for the plots and tables
 load_xlsx_url <- function(url) {
   temp_file <- tempfile(fileext = ".xlsx")
   tryCatch({
@@ -36,8 +37,7 @@ admcol <- load_xlsx_url(admcol_url)
 varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that can be used with different grain [Topic, BROAD, specific, and label]
 labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
 
-#   - Labels for the plots and tables
-
+# Results and data from the app
 descriptives <- params$descriptives
 metaRes <- params$metaRes
 metaRes$skill <- labels_app[as.character(metaRes$skill)]
@@ -52,15 +52,25 @@ dm <- params$dm
 
 # Introduction
 
-Through the living SEB app you just conducted a three-level meta-analysis of the cross-sectional associations between the five SEB domains and the outcome of your interest (`r out_selected`).
-Specific information of the meta-analysis conducted:
+This report summarizes a three-level random-effects meta-analysis of the cross-sectional associations between the five SEB skill domains and the selected outcome (`r out_selected`), run via the Living SEB app. The app workflow consisted in the following steps:
 
-  - All materials, data, and analytical code are provided in the GitHub repository associated with this project.
-  - You can download the filtered data used for this analysis from the Shiny app.
-  - All the analyses are conducted in R (R Core Team, 2022) using the ‘metafor’ package (Viechtbauer, 2010). 
-  - Pearson’s r correlation coefficients were transformed to Fisher’s z scale for analysis. The results were then back-transformed to Pearson’s r
-  - We employed three-level meta-analytic random-effects models using restricted maximum likelihood estimation. This approach accounts for heterogeneity both between and within studies. 
-  - Confidence intervals were estimated based on a t-distribution
+-   Select the outcome and filters (e.g., publication years, age groups) and compile all eligible study effects.
+-   Transform correlations from each study: Pearson’s 𝑟 values are converted to Fisher’s 𝑧 to stabilize variance.
+-   Fit a three-level random-effects model (REML estimation) that separates sampling error from between-study and within-study/within-paper heterogeneity, so multiple effects from the same paper/sample are properly handled.
+-   Pool effects and back-transform the model’s summary estimates from 𝑧 back to 𝑟 for interpretation, with t-based confidence intervals.
+
+In practical terms, the app computes a precision-weighted average of study-level Fisher's 𝑧 correlations for each skill–outcome pair, where larger samples carry more weight and a random-effects term allows true effects to vary across studies. Only studies that report a given pair contribute to that pair’s estimate. For transparency, we report per-pair k (number of contributing studies) and ΣN (total participants contributing to that specific pair).
+
+What “three-level” means here. Effect sizes are nested (e.g., multiple correlations from the same sample or paper). A three-level model accounts for dependence by allowing variation within papers/samples and variation between papers, in addition to sampling error. This yields more accurate standard errors and heterogeneity estimates than treating all effects as independent.
+
+General details of the analysis:
+
+-   All materials, data, and code are available in the project’s GitHub repository.
+-   Filtered data used for this run can be downloaded directly from the app.
+-   Analyses were conducted in R (R Core Team, 2022) with metafor (Viechtbauer, 2010).
+-   Pearson’s r correlation coefficients were transformed to Fisher’s z scale for analysis. The results were then back-transformed to Pearson’s r
+-   We employed three-level meta-analytic random-effects models using restricted maximum likelihood estimation. This approach accounts for heterogeneity both between and within studies.
+-   Confidence intervals were estimated based on a t-distribution
 
 ## Descriptive statistics
 
@@ -70,8 +80,7 @@ The outcome selected for this meta-analysis is:
 print(out_selected)
 ```
 
-
-A total of `r length(unique(dm$paper_id))` papers, `r length(unique(dm$matrix_id))` samples, and `r length(dm)` were considered for this meta-analysis.
+A total of `r length(unique(dm$paper_id))` papers, `r length(unique(dm$matrix_id))` samples, and `r length(dm)` effects were considered for this meta-analysis.
 
 The samples included in the meta-analysis are summarized in Table \@ref(tab:descriptives).
 
@@ -86,7 +95,10 @@ knitr::kable(
 # Results
 
 The results of the meta-analysis are synthesized in the following table (Table \@ref(tab:metaRes)).
-`r metaRes$skill[which.max(metaRes$r)]` showed the strongest (`r round(metaRes$r[which.max(metaRes$r)],2)`) association with `r out_selected`, while `r metaRes$skill[which.min(metaRes$r)]` showed the lowest (`r round(metaRes$r[which.min(metaRes$r)],2)`). `r sum(metaRes$p < 0.05)` associations were significant with *p* < 0.05, `r sum(metaRes$p < 0.01)` with *p* < 0.01, and `r sum(metaRes$p < 0.001)` with *p* < 0.001.
+
+-   The strongest association appeared for `r round(metaRes$r[which.max(metaRes$r)],2)` with `r out_selected` (pooled *r* = `r metaRes$skill[which.max(metaRes$r)]`), while the weakest is `r metaRes$skill[which.min(metaRes$r)]` (pooled *r* = `r round(metaRes$r[which.min(metaRes$r)],2)`).
+-   In total, `r sum(metaRes$p < 0.05)` pairs reached *p* \< 0.05 (`r sum(metaRes$p < 0.01)` at *p* \< 0.01; `r sum(metaRes$p < 0.001)` at *p* \< 0.001).
+-   Use the forest plots to verify whether significant results reflect consistent evidence or are driven by a few influential studies.
 
 ```{r metaRes}
 metaResTable <- data.frame(
@@ -112,6 +124,9 @@ knitr::kable(
 Figure \@ref(fig:metaplot) shows the same results graphically. Confidence intervals are plotted together with point estimates.
 
 ```{r metaplot, fig.cap="Graphic representation of the results"}
+metaRes$CI <- paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ",
+                         format(round(metaRes$rciu,3),nsmall=3),"]")
+      
 ggplot(metaRes, aes(x = r, y = reorder(skill,5:1))) +
        geom_point(shape = 18,
                   color = "black",
@@ -120,15 +135,19 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,5:1))) +
        geom_vline(xintercept = c(.00), linetype = "dashed") +
        labs(x = "Meta-analytical association", y = "Skill") +
        theme_bw(base_size = 18) +
-       theme(strip.text = element_text(size = 18)) +
+#       theme(strip.text = element_text(size = 18)) +
+       annotate("text", x = metaRes$r,
+                y = length(pred_vars):1+.20,
+                label = paste0(round(metaRes$r,3)," ",metaRes$CI), 
+                hjust = "center", size = 5) +
        coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.15,
                                        min(metaRes$rcil)),
-                                max(metaRes$rciu)))
+                                 max(metaRes$rciu)))
 ```
 
 ## Forest plots
 
-Forest plots for each individual SEB skill are provided below to inspect heterogeneity in the associations across samples.
+For each skill–outcome pair, the forest plots display the study-level correlations (points with CIs) and the pooled estimate. This view is most useful for judging consistency across studies, spotting outliers, and understanding why a pair may have a wide CI or large 𝜏2. Plotted values are shown on the𝑟scale (back-transformed from Fisher’s𝑧) for interpretability.
 
 ```{r}
 for (i in 1:length(outList)) {
@@ -145,6 +164,5 @@ for (i in 1:length(outList)) {
   )
 }
 ```
-
 
 # References

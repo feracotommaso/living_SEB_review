@@ -16,58 +16,118 @@ library(stringdist)
 
 # UI ####
 ui <- navbarPage(
+  # theme = bs_theme(
+  #   version   = 5,              # Bootstrap 5
+  #   bootswatch = "flatly",      # or "minty", "darkly", NULL for default
+  #   primary   = "#0d6efd",      # brand color
+  #   base_font = font_google("Inter"),
+  #   heading_font = font_google("Inter Tight")
+  # ),
+  header = tagList(
+    useShinyjs(),
+    tags$style(HTML("
+    .home-cta { display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
+    .home-cta .btn { width:auto; }   /* don't stretch */
+                    "))
+  ),
+#  useShinyjs(),
   title = "Making SEB research living",
   id = "pages",
   
 ## INTRODUCTION ####
   tabPanel(
     title = "Home",
-    br(),  # Line break
-    h1("WARNING: THIS IS STILL A DEMO", align = "left", style = "color: red; font-weight: bold;"), # WARNING
     br(),
-    h1("Introduction to the Shiny app", align = "left"),  # Title
-    br(),
-    tags$p("Welcome to our Shiny app for navigating peer-reviewed research on SEB skills,
-      summarize their results and obtain meta-analytical estimates or metaSEM.
-      Here's what you can do in this app:"),
-    
-    br(),
+    tags$div(
+      class = "alert alert-danger",
+      tags$strong("WARNING:"), " THIS IS STILL A DEMO"
+    ),
+    h1("The living SEB app - Introduction and functionalities", align = "left"),
+    p(
+      "Explore peer-reviewed research on SEB skills: run classic meta-analyses of correlations, ",
+      "estimate meta-analytic SEMs, and browse/download curated literature subsets."
+    ),
+    tags$a("DOWNLOAD THE APP MANUAL HERE",
+           href = "https://github.com/feracotommaso/living_SEB_review/blob/main/appManual/livingSEBapp_manual.pdf",
+           target = "_blank"),
     h3("What you can do"),
-    tags$ul(
-      tags$li(tags$b("Meta-analyze correlation coefficients:"), 
-              "This section allows you to estimate the meta-analytical [cross-sectional] 
-              association between SEB skills and outcome variables of your choice 
-              depending on the full set of correlates included in studies using the BESSI
-              or alternative versions of the BESSI."),
-      tags$li(tags$b("Estimate metaSEM:"), 
-              "This section allows you to estimate more complex models using a meta-sem approach.
-              Using lavaan syntax you will be able to estimate uni- and multi-variate regression models
-              and path analysis. SEM models can also be estimated but item-level correlations are not provided.")
-    ),
-    tags$p(tags$b("Want more complex analyses?"), "Download the data from the GitHub repository and get full power."),
-    
-    br(),
-    h3("Info"),
-    tags$p(
-      "Code, data, and all the information needed to run the application locally or for other personal uses ",
-      "are available on the GitHub repository of this project: ",
-      tags$a("https://github.com/feracotommaso/living_SEB_review",
-             href = "https://github.com/feracotommaso/living_SEB_review",
-             target = "_blank")
-      ),
-    tags$p(
-      "We thank all the authors who inspired this work 
-      and Jak and colleagues (2021) for freely sharing the webMASEM app:",
-      tags$a("https://doi.org/10.1002/jrsm.1498",
-             href = "https://doi.org/10.1002/jrsm.1498",
-             target = "_blank")
+    # Meta-analysis section
+    bslib::card(
+      bslib::card_header("Meta-analysis of correlations"),
+      bslib::card_body(
+        tags$ul(
+          tags$li(tags$b("Choose outcomes:"), " pick a broad group and a specific outcome."),
+          tags$li(tags$b("Filter:"), " restrict by ", tags$code("age_class"), " and publication year."),
+          tags$li(tags$b("Run models:"), " multilevel random-effects via ", tags$code("metafor::rma.mv()"), "."),
+          tags$li(tags$b("Inspect:"), " results table, dot–CI plot, forest plots."),
+          tags$li(tags$b("Export:"), " CSV dataset and an HTML report.")
+        )
+      )
     ),
     br(),
-    h3("Begin working"),
-    sidebarPanel(
-      actionButton(inputId = "go_to_metacor", label = "Go to classic meta analysis"),
-      br(),br(),
-      actionButton(inputId = "go_to_metasem", label = "Go to metaSEM")
+    # MetaSEM section
+    bslib::card(
+      bslib::card_header("Meta-analytic SEM (one-stage MASEM)"),
+      bslib::card_body(
+        tags$ul(
+          tags$li(tags$b("Select variables:"), " SEB domains/facets, traits, and outcomes."),
+          tags$li(tags$b("Check coverage:"), " K/N tables with alerts for k=0 / small N."),
+          tags$li(tags$b("Pooled matrix:"), " compute meta-analytic correlations + plot."),
+          tags$li(tags$b("Specify model:"), " write lavaan syntax; app can auto-augment."),
+          tags$li(tags$b("Fit & interpret:"), " fit indices, parameters (with τ), and an R² table."),
+          tags$li(tags$b("Export:"), " RDS/ZIP of data and an HTML report.")
+        )
+      )
+    ),
+    br(),
+    # Review browser section
+    bslib::card(
+      bslib::card_header("Review browser"),
+      bslib::card_body(
+        tags$ul(
+          tags$li(tags$b("Filter by topics:"), " broad and specific topic labels."),
+          tags$li(tags$b("Dynamic filtering:"), " specific topics follow your broad choice."),
+          tags$li(tags$b("Results summary:"), " live count with helpful empty states."),
+          tags$li(tags$b("Export:"), " download the filtered studies as CSV.")
+        )
+      )
+    ),
+    br(),
+    # Quick start (stacked buttons)
+    bslib::card(
+      bslib::card_header("Quick start"),
+      bslib::card_body(
+        p("Jump straight to a workflow:"),
+        div(
+          style = "display:flex; flex-direction:column; gap:10px; max-width:320px;",
+          actionButton("go_to_metacor", "Meta-analysis",    class = "btn btn-dark"),
+          actionButton("go_to_metasem", "metaSEM",          class = "btn btn-dark"),
+          actionButton("go_to_review",  "Review browser",   class = "btn btn-outline-dark"),
+          actionButton("go_to_refs",    "About & Citation", class = "btn btn-outline-dark")
+        )
+      )
+    ),
+    br(),
+    # Resources
+    bslib::card(
+      bslib::card_header("Resources & acknowledgments"),
+      bslib::card_body(
+        p(
+          "Code and data: ",
+          tags$a("GitHub repository",
+                 href = "https://github.com/feracotommaso/living_SEB_review",
+                 target = "_blank")
+        ),
+        p(
+          "We thank prior authors and ",
+          tags$a("Jak et al. (2021)", href = "https://doi.org/10.1002/jrsm.1498", target = "_blank"),
+          " for the webMASEM inspiration."
+        ),
+        p(
+          "Contact: ",
+          tags$a("tommaso.feraco@unipd.it", href = "mailto:tommaso.feraco@unipd.it")
+        )
+      )
     )
   ), #END PAGE 1
 
@@ -97,7 +157,6 @@ ui <- navbarPage(
             h4("Samples included"),
             tableOutput("metaStudy_table"),
             h5("Note: N is the max sample size and may vary across skill domains"),
-            h5(),
             # Button
             downloadButton("downloadMetaData", "Download the data")
           ),
@@ -120,7 +179,7 @@ ui <- navbarPage(
             title="Forest plots",
             selectInput("forestSelected", "Skill to show",
                         pred_vars, 
-                        multiple = FALSE, selected = TRUE ),
+                        multiple = FALSE),
             plotOutput("forestPlot")
           ),
 
@@ -172,15 +231,14 @@ ui <- navbarPage(
       
       mainPanel(
         tabsetPanel(
-          # tabPanel("Summary",
-          #   accordion(
-          #     accordion_panel("K correlations", verbatimTextOutput("K_table")),
-          #     accordion_panel("Sample size per correlation", verbatimTextOutput("N_table")),
-          #     accordion_panel("Studies included", tableOutput("Study_table")),
-          #   )
-          # ),
           tabPanel("Summary",
+                   # Button
+                   downloadButton("downloadList", "Download the data as R list"),
+                   downloadButton("downloadZip", "Download the data as csv files"),
+                   br(),
+                   
                    h4("K correlations"),
+                   uiOutput("zero_banner"),   # persistent red banner when k=0 pairs exist
                    verbatimTextOutput("K_table"),
 
                    h4("Sample size per correlation"),
@@ -192,7 +250,7 @@ ui <- navbarPage(
           
 ### .b meta-matrix ####
           tabPanel(
-            title="First stage SEM",
+            title="SEM matrix",
             br(),  # a capo
             h1("Explore the meta-analytical matrix",align="left"), # titoletto di primo livello
             br(),
@@ -200,7 +258,8 @@ ui <- navbarPage(
             actionButton("s1_matrix", "Get the meta-matrix",
                          style="color: #fff; background-color: black; border-color: black"),
             verbatimTextOutput("s1_table"),
-            plotOutput("s1_figure")
+            plotOutput("s1_figure"),
+            downloadButton("download_s1_figure_png", "Download correlation plot (PNG)")
           ),
 
 ### .c meta-SEM ####
@@ -209,39 +268,42 @@ ui <- navbarPage(
             br(),
             textAreaInput(
               "lavmodel",
-              label = "Specify the model using lavaan syntax",
+              label = "Modify the model using lavaan syntax. The full model sintax is printed below",
               width = "1000px",
               height = "300px",
               value =
                 "
+# ADD THE REGRESSIONS YOU WANT TO ESTIMATE
 # Regression coefficients as 'y ~ x1 + x2' 
 academicachievement ~ selfmanagement + socialengagement + conscientiousness + extraversion
 
+# YOU CAN SATURATE THE MODEL (ESTIMATE ALL COVARIANCES BY THICKING THE BOX BELOW)
 # Covariances as 'x1 ~~ x2'
-selfmanagement ~~ socialengagement + conscientiousness + extraversion
-socialengagement ~~ conscientiousness + extraversion
-conscientiousness ~~ extraversion
 
-# REMEMBER THAT ALL EXOGENOUS VARS SHOULD HAVE VARIANCE FIXED TO 1
-# Variances as 'x1 ~~ 1*x1' 
-socialengagement ~~ 1*socialengagement
-selfmanagement ~~ 1*selfmanagement 
-conscientiousness ~~ 1*conscientiousness
-extraversion ~~ 1*extraversion
+# EXOGENOUS VARIANCE IS SET TO 1 BY DEFAULT. DO NOT ADD IT
 "
             ),
+#            checkboxInput("auto_fix_exo", "Fix exogenous variances to 1", TRUE),
+            checkboxInput("auto_saturate", "Saturate the model by adding residual correlations among all variables", TRUE),
+            verbatimTextOutput("model_preview"),
+            br(),
             actionButton("fitSEM","Fit the specified SEM model",
                          style="color: #fff; background-color: black; border-color: black"),
             h4("Model fit"),
             uiOutput("fit_ui"),  # This will show either text or table dynamically
             h4("Model estimates"),
-            withSpinner(verbatimTextOutput("results")),
-            withSpinner(tableOutput("SEMresults"))#withSpinner
+            withSpinner(tableOutput("SEMresults")), #withSpinner
+            h4("Residual variance"),
+            withSpinner(tableOutput("R2_table"))#withSpinner
+            
           ),
 
 ### .d report ####
           tabPanel(
             title = "Report",
+            h4("You can download a report only if you run both the SEM matrix and the metaSEM", 
+               align = "left", style = "color: red; font-weight: bold;"), # WARNING
+            br(),
             downloadButton("report_masem", "Generate a brief report of the maSEM results")
           )
         )
@@ -272,7 +334,9 @@ extraversion ~~ 1*extraversion
                    ),
       mainPanel(
         h3("Filtered studies"),
-        uiOutput("revTableUI")
+        uiOutput("revSummary"),
+        #uiOutput("revTableUI"),
+        tableOutput("revTable")
         )
       )
   ), #END PAGE REVIEW
@@ -281,20 +345,79 @@ extraversion ~~ 1*extraversion
 
 ## THANKS ####
   tabPanel(
-    title = "References",
-    br(),  # Line break
-    h1("Closing remarks", align = "left"),  # Title
+    title = "About & Citation",
     br(),
-    tags$p(tags$b("Thank you for using this app!"), "Give us your feedback if you want"),
-    tags$ul(
-      tags$li(tags$b("Contacts:"), 
-              "Contact tommaso.feraco@unipd.it for any request or feedback."),
-      tags$li(tags$b("People:"), 
-              "Tommaso Feraco worked to this project alone (at the moment)."),
-      tags$li(tags$b("Next steps:"), 
-              "We will keep the dataset up-to-date and will try to expand the functionalities
-              of this app toward new kind of analyses once the data will allow more complexity.")
-      
+    h1("About this app", align = "left"),
+    p(
+      "This app helps researchers explore SEB literature, run classic meta-analyses of correlations, ",
+      "and estimate meta-analytic SEMs (one-stage MASEM)."
+    ),
+    # How to cite
+    bslib::card(
+      bslib::card_header("How to cite"),
+      bslib::card_body(
+        p("If you use this app or dataset, please cite it as:"),
+        tags$pre(
+          "Feraco, T. (2025). Living SEB Review: a Shiny app for meta-analysis and metaSEM.
+GitHub repository: https://github.com/feracotommaso/living_SEB_review"
+        ),
+        p("BibTeX:"),
+        tags$pre(
+          "@misc{Feraco2025LivingSEB,
+  author       = {Feraco, Tommaso},
+  title        = {Living SEB Review: a Shiny app for meta-analysis and metaSEM},
+  year         = {2025},
+  howpublished = {GitHub repository},
+  url          = {https://github.com/feracotommaso/living_SEB_review}
+}"
+        )
+      )
+    ),
+    br(),
+    # Contact & feedback
+    bslib::card(
+      bslib::card_header("Contact & feedback"),
+      bslib::card_body(
+        p("Questions or suggestions?"),
+        div(
+          style = "display:flex; gap:10px; flex-wrap:wrap;",
+          tags$a(
+            href = "mailto:tommaso.feraco@unipd.it",
+            class = "btn btn-dark btn-sm", "Email the author"
+          ),
+          tags$a(
+            href = "https://github.com/feracotommaso/living_SEB_review/issues",
+            target = "_blank", class = "btn btn-outline-dark btn-sm", "Report an issue"
+          ),
+          tags$a(
+            href = "https://github.com/feracotommaso/living_SEB_review",
+            target = "_blank", class = "btn btn-outline-dark btn-sm", "Open the repository"
+          )
+        )
+      )
+    ),
+    br(),
+    # Credits & acknowledgments
+    bslib::card(
+      bslib::card_header("Credits & acknowledgments"),
+      bslib::card_body(
+        tags$ul(
+          tags$li(HTML("<b>Packages:</b> metafor, metaSEM, ggplot2, corrplot, shiny, bslib, shinyjs")),
+          tags$li(HTML("<b>Inspiration:</b> webMASEM — Jak et al. (2021), <a href='https://doi.org/10.1002/jrsm.1498' target='_blank'>https://doi.org/10.1002/jrsm.1498</a>")),
+          tags$li(HTML("<b>Data & code:</b> see the GitHub repository for sources, scripts, and license"))
+        )
+      )
+    ),
+    
+    br(),
+    # Version / data snapshot (optional placeholder text)
+    bslib::card(
+      bslib::card_header("Version & data snapshot"),
+      bslib::card_body(
+        p("App version: v0.1 (demo)"),
+        p("Dataset last updated: see repository README for the latest snapshot/date.")
+        # If you want this dynamic, you can replace these with textOutput()s and set them in server.
+      )
     )
   ) #END LAST PAGE
 ) #END
