@@ -905,3 +905,86 @@ names(d0053g)[names(d0053g) == "BESSI_XX_Adaptability"] <- "adaptability"
 d0053g <- d0053g[, colnames(d0053g) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0053g, use = "pairwise.complete")),"data/3.meta_data/matrices/0053g.xlsx")
 
+#### --------------------------------------------------- 0068 --------------------------------------------------- ####
+rm(list=ls())
+d0068 <- readxl::read_excel("data/3.meta_data/open_data/d0068.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0068)
+
+# Transform scores
+table(d0068$Gender)
+
+d0068$sex <- ifelse(d0068$Gender == 1, 0, 
+                    ifelse(d0068$Gender == 2, 1, NA)) # Males to 0, Females to 1
+d0068$academicachievement 
+# Transform colnames
+names(d0068)[names(d0068) == "Age"] <- "age"
+
+#Seb
+# SMD
+names(d0068)[names(d0068) == "SMD"] <- "selfmanagement"
+# IND
+names(d0068)[names(d0068) == "IND"] <- "innovation"
+# COD
+names(d0068)[names(d0068) == "COD"] <- "cooperation"
+# SED
+names(d0068)[names(d0068) == "SED"] <- "socialengagement"
+# ESD
+names(d0068)[names(d0068) == "ERD"] <- "emotionalresilience"
+
+# School
+names(d0068)[names(d0068) == "achievement"] <- "academicachievement"
+names(d0068)[names(d0068) == "Efficacy"] <- "academicselfefficacy"
+
+# Job
+names(d0068)[names(d0068) == "adapt"] <- "careeradaptability"
+
+# Select and save
+d0068a <- d0068[, colnames(d0068) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0068a, use = "pairwise.complete")),"data/3.meta_data/matrices/0068a.xlsx")
+
+#### --------------------------------------------------- 0070 --------------------------------------------------- ####
+rm(list=ls())
+d0070 <- readxl::read_excel("data/3.meta_data/open_data/d0070.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0070)
+
+# Transform scores
+d0070$sex <- ifelse(d0070$sex == 1, 0, 
+                    ifelse(d0070$sex == 2, 1, NA)) # Males to 0, Females to 1
+
+# Environmental scores
+d0070$natureconnectedness <- rowMeans(subset(d0070, select = c("CNS_1", "CNS_2", "CNS_3",
+                                           "CNS_4", "CNS_5", "CNS_6", 
+                                           "CNS_7", "CNS_8", "CNS_9",
+                                           "CNS_10", "CNS_11", "CNS_13")))
+d0070$sustainabilitycompetence <- rowMeans(d0070[, which(colnames(d0070)=="SPACS_1"):
+                            which(colnames(d0070)=="SPACS_12")])
+
+# Five BESSI skill domains 
+d0070$selfmanagement<-rowMeans(d0070[,c("bessi_1",  "bessi_6", "bessi_11", "bessi_16",
+                     "bessi_21", "bessi_26", "bessi_31", "bessi_36",
+                     "bessi_41")], na.rm=TRUE) #Self Management skill
+
+d0070$innovation<-rowMeans(d0070[,c("bessi_5", "bessi_10", "bessi_15", "bessi_20",
+                     "bessi_25", "bessi_30", "bessi_35", "bessi_40",
+                     "bessi_45")], na.rm=TRUE) #Innovation skill
+
+d0070$cooperation<-rowMeans(d0070[,c("bessi_3", "bessi_8", "bessi_13", "bessi_18",
+                     "bessi_23", "bessi_28", "bessi_33", "bessi_38",
+                     "bessi_43")], na.rm=TRUE) #Cooperation skill
+
+d0070$socialengagement<-rowMeans(d0070[,c("bessi_2", "bessi_7", "bessi_12", "bessi_17",
+                     "bessi_22", "bessi_27", "bessi_32", "bessi_37",
+                     "bessi_42")], na.rm=TRUE) #Social Engagement skill
+
+d0070$emotionalresilience<-rowMeans(d0070[,c("bessi_4", "bessi_9", "bessi_14", "bessi_19",
+                     "bessi_24", "bessi_29", "bessi_34", "bessi_39",
+                     "bessi_44")], na.rm=TRUE) #Emotional Resilience skill
+
+
+# Select and save
+d0070a <- d0070[, colnames(d0070) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0070a, use = "pairwise.complete")),"data/3.meta_data/matrices/0070a.xlsx")

@@ -30,6 +30,7 @@ author-note:
 # abstract: "Abstract abstract abstract"
 # keywords: [validity; specific factors; spuroius correlations; proliferation]
 bibliography: bibliography.bib
+toc: true
 format: #pdf
   apaquarto-pdf:
     documentmode: man

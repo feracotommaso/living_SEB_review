@@ -29,7 +29,7 @@ update history file
 
 update history file
 
-	- 2.full_exclude.R is used to remove the fulltexts excluded and write a new .xlsx basic info file
+	- 2.full_exclude.R is used to remove the fulltexts excluded and write a new .xlsx basic_info file
 
 ------------------------------------------------------------------------------
 3.meta_data includes all the final data that will be used for the meta-analysis and review

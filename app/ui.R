@@ -48,7 +48,7 @@ ui <- navbarPage(
       "estimate meta-analytic SEMs, and browse/download curated literature subsets."
     ),
     tags$a("DOWNLOAD THE APP MANUAL HERE",
-           href = "https://github.com/feracotommaso/living_SEB_review/blob/main/appManual/livingSEBapp_manual.pdf",
+           href = "https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf",
            target = "_blank"),
     h3("What you can do"),
     # Meta-analysis section

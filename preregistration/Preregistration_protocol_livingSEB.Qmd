@@ -1,34 +1,41 @@
 ---
 title: "Review preregistration protocol: A living systematic review and meta-analysis for SEB skills"
+shorttitle: "living SEB preregistration"
 #author: "Tommaso Feraco, XXX, XXX, XXX"
 date: today
 format: 
     pdf
-# csl: assets/apa.csl
+toc: true
 bibliography: references.bib
 ---
 
-# 1. Objectives and Rationale
+\newpage
 
-The social, emotional, and behavioral (SEB) skills framework, recently proposed by Soto and colleagues, offers an integrative alternative to earlier models of soft skills, bringing conceptual clarity and new measurement tools to the field. Given the framework’s novelty and the longstanding challenges in psychological research —such as fragmented evidence, inconsistent methods, and limited reproducibility— we believe it is crucial to adopt a modern, cumulative, and open approach to studying SEB skills.
+# Objectives and Rationale
+
+The social, emotional, and behavioral (SEB) skills framework, recently proposed by Soto and colleagues [-@soto2021], offers an integrative alternative to earlier models of soft skills, bringing conceptual clarity and new measurement tools [@soto2022] to the field. Given the framework’s novelty and the longstanding challenges in psychological research —such as fragmented evidence, inconsistent methods, and limited reproducibility— we believe it is crucial to adopt a modern, cumulative, and open approach to studying new frameworks, in general, and the SEB skills framework, in particular.
 
 This project introduces a *living systematic review* and *meta-analysis* of research adopting the SEB framework. Unlike traditional reviews, this living review will be continuously updated to incorporate newly published studies, making the accumulated evidence transparent, accessible, and dynamically integrated.
 
 The goals of this project are:
 
--   To **synthesize and review** the literature on SEB skills using the Soto framework.
+-   To **synthesize and review** the literature on SEB skills using the framework proposed by Soto and colleagues [-@soto2021].
 
 -   To provide an **open-access, regularly updated database** of all relevant publications, including metadata on study design, samples, measures, and data availability.
 
--   To **meta-analyze cross-sectional associations** between SEB skills and all other variables reported in the literature, using:
-
-    -   Meta-analytic Structural Equation Modeling (metaSEM)
+-   To **meta-analyze cross-sectional associations** between SEB skills domains and all other variables reported in the literature, using:
 
     -   Multilevel random-effects meta-analysis for correlation coefficients
 
--   To develop a **user-friendly ShinyApp** that allows researchers, educators, and policymakers to explore the meta-analytic findings and conduct rapid, customizable syntheses.
+    -   Meta-analytic Structural Equation Modeling (metaSEM)
+
+-   To develop a **user-friendly ShinyApp** that allows researchers, educators, and policymakers to explore the meta-analytic findings and conduct rapid, ad-hoc syntheses.
 
 This preregistration outlines the planned methods for data extraction, coding, and synthesis, ensuring transparency and reproducibility from the outset.
+
+------------------------------------------------------------------------
+
+**Disclosure of pre-existing pilot of the study;** Before preregistering the methods for this living systematic review and meta-analysis, the author run a pilot study using initial data collected on January 2025 to estimate the feasibility of the project. This preregistration serves as a path toward enlarging the data in a systematic and consistent way through the next future.
 
 ------------------------------------------------------------------------
 
@@ -120,7 +127,7 @@ Given the double aim of this project (review + meta-analysis), broader eligibili
 
     -   The study referred to original data that are not already reported in other included studies;
 
-    -   The population study was either the general population or a clinical population with mild/moderate mental health issues.
+    -   The population of the study was either the general population or a clinical population with mild/moderate mental health issues.
 
 -   **Exclusion from the meta analysis.** Citations are excluded if:
 
@@ -142,89 +149,72 @@ Given the double aim of this project (review + meta-analysis), broader eligibili
 
 This review is not limited to any outcome, but all possible outcomes will be coded and included. Outcomes will be treated in the following way:
 
--   **Broad category:** Each outcome is assigned to the a broad category. Examples might be skills, mental health, school, demographic variables, job, personality traits...
+-   **Broad category:** Each outcome is assigned to a broad category. Examples might be skills, mental health, school, demographic variables, job, personality traits...
 
--   **Second-level category:** Subsequently, within each broad category, each outcome is assigned to a more specific category. For instance, the broad 'traits' category may include the big five, hexaco, character strengths. School may include academic achievement, learning factors.
+-   **Second-level category:** Subsequently, within each broad category, each outcome is assigned to a more specific category. For instance, the broad 'school' category may include academic achievement, learning factors.
 
--   **Specific construct:** Finally, each construct is labeled with its own construct label (e.g., extraversion, self-management).
+-   **Specific construct:** Finally, each construct is labeled with its own construct label (e.g., extraversion, self-management, depression, anxiety, school engagement).
 
 ### Measures of effect
 
-Correlations (Pearson's *r*) between skills and outcomes will be coded in form of correlation matrices.
+Correlations (Pearson's *r*) between skills and outcomes will be coded in the form of correlation matrices.
 
 ## Coding procedure
 
 @tbl-coding reports the variables that will be coded for each included study.
 
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| **Variable Name**        | **Description**                                                                                                                           | **Value Type** |
-+:=========================+:==========================================================================================================================================+:===============+
-| *Download date*          | The day the BibTex was downloaded.                                                                                                        | Date           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Paper ID*               | The progressive number of the paper.                                                                                                      | Integer        |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Sample ID*              | The progressive letter identifying each sample within the same study.                                                                     | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Matrix ID*              | The unique identifier of each matrix of correlations composed by paper ID + sample ID.                                                    | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *DOI*                    | The link-formatted digital object identifier.                                                                                             | Text (link)    |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Title*                  | Title of the article.                                                                                                                     | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Abstract*               | Abstract of the paper.                                                                                                                    | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Journal*                | Name of the journal in which the article was published.                                                                                   | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Authors*                | Full list of authors' names.                                                                                                              | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Author et al*           | Abbreviated authors' list.                                                                                                                | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Year*                   | Year of publication.                                                                                                                      | Integer        |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Exclusion general*      | Whether the paper should be included or the reason why the paper was excluded during fulltext screening.                                  | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Exclusion meta*         | The reason why the paper cannot be included in the meta-analysis (blank if 'exclusion_general' != 'include').                             | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Review topics*          | What are the main topics of the paper (blank if 'exclusion_general' != 'include').                                                        | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Final decision*         | Whether the paper should be excluded ('exclude'), included in the meta-analysis ('meta'), in the review ('review') or both ('both')     . | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Email*                  | Corresponding author email.                                                                                                               | Text (email)   |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Open data*              | Link to the available data, if any.                                                                                                       | Text (link)    |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Study design*           | The design of the study (cross-sectional, longitudinal, experimental).                                                                    | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Country*                | Participants' country.                                                                                                                    | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Gender*                 | The percentage of females included in the study.                                                                                          | Percentage     |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Age*                    | The mean age of the sample.                                                                                                               | Numeric        |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *N*                      | The sample size.                                                                                                                          | Integer        |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Age class*              | Whether the sample is composed by children, school-age students, young adults, adults, or older adults.                                   | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Clinical*               | Whether the sample is a clinical sample or not.                                                                                           | Boolean        |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Clinical specification* | If clinical, what specific clinical sample is.                                                                                            | Text           |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *SEB measure*            | The SEB/BESSI measure used.                                                                                                               | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *SEB measure type*       | Whether the SEB measure is a short or long form.                                                                                          | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
-| *Trait framework*        | What framework of personality traits is adopted (e.g., Big Five, HEXACO).                                                                 | Category       |
-+--------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+----------------+
+| **Variable Name** | **Description** | **Value Type** |
+|:---|:---|:---|
+| *Download date* | The day the BibTex was downloaded. | Date |
+| *Paper ID* | The progressive number of the paper. | Integer |
+| *Sample ID* | The progressive letter identifying each sample within the same study. | Text |
+| *Matrix ID* | The unique identifier of each matrix of correlations composed by paper ID + sample ID. | Text |
+| *DOI* | The link-formatted digital object identifier. | Text (link) |
+| *Title* | Title of the article. | Text |
+| *Abstract* | Abstract of the paper. | Text |
+| *Journal* | Name of the journal in which the article was published. | Text |
+| *Authors* | Full list of authors' names. | Text |
+| *Author et al* | Abbreviated authors' list. | Text |
+| *Year* | Year of publication. | Integer |
+| *Exclusion general* | Whether the paper should be included or the reason why the paper was excluded during full text screening. | Category |
+| *Exclusion meta* | The reason why the paper cannot be included in the meta-analysis (blank if 'exclusion_general' != 'include'). | Category |
+| *Review topics* | What are the main topics of the paper (blank if 'exclusion_general' != 'include'). | Category |
+| *Final decision* | Whether the paper should be excluded ('exclude'), included in the meta-analysis ('meta'), in the review ('review') or both ('both') . | Category |
+| *Email* | Corresponding author email. | Text (email) |
+| *Open data* | Link to the available data, if any. | Text (link) |
+| *Study design* | The design of the study (cross-sectional, longitudinal, experimental). | Category |
+| *Country* | Participants' country. | Category |
+| *Gender* | The percentage of females included in the study. | Percentage |
+| *Age* | The mean age of the sample. | Numeric |
+| *N* | The sample size. | Integer |
+| *Age class* | Whether the sample is composed by children, school-age students, young adults, adults, or older adults. | Category |
+| *Clinical* | Whether the sample is a clinical sample or not. | Boolean |
+| *Clinical specification* | If clinical, what specific clinical sample is. | Text |
+| *SEB measure* | The SEB/BESSI measure used. | Category |
+| *SEB measure type* | Whether the SEB measure is a short or long form. | Category |
+| *Trait framework* | What framework of personality traits is adopted (e.g., Big Five, HEXACO). | Category |
 
 : Coding scheme {#tbl-coding}
 
 ## Risk of bias (quality) assessment
 
+We will not conduct a formal risk-of-bias assessment primarily because we expect that included data are derived from self-report measures and most studies will be non-experimental in nature. Furthermore, we expect the majority of studies will not explicitly aim to test the specific associations under investigation through the different meta-analysis that might be conducted with our data. In many cases, SEB skills will not be measured with the intent of examining their relationship with the outcomes at hand. For this reason, we believe that traditional risk-of-bias evaluations would not offer meaningful insights for this study. Nonetheless, we invite people who will use our data for specific meta-analysis to consider adding a risk of bias assessment based on their aims.
+
 ## Data synthesis
+
+Data will be analyzed using three-level random effect meta-analytic models with effects nested within studies or with one-stage metaSEM.
+
+The meta-analytic models used to synthesize bivariate associations between SEB skills and other variables will be run using `metafor` [@viechtbauer2010]. Correlations will be transformed to Fisher *Z* using the `escalc` function. The `rma.mv` function will be used for multilevel random-effects models. Estimates will be back-transformed to *r*.
+
+For the metaSEM analyses, we use the metaSEM package [@cheungaut2024]. The `tssem1` function will be used to estimate the pooled correlation matrices. SEM models will be estimated using one-stage MASEM with the `osmasem` function.
 
 ### Analysis of subgroups or subsets
 
+We will not provide functionality for conducting subgroup or moderator analyses.
+
 ## Open science
+
+All the data, codes, and materials will be freely available on the [GitHub page](https://github.com/feracotommaso/living_SEB_review) of the project.
 
 # Information
 
@@ -232,13 +222,13 @@ Correlations (Pearson's *r*) between skills and outcomes will be coded in form o
 
 -   Fundings: none
 
--   Keywords:
+-   Keywords: socio-emotional skills; SEB skills; meta-analysis; systematic review; living meta-analysis; living review
 
 # Expected future development
 
--   Longitudinal and experimental studies
+-   Synthesis of longitudinal and experimental studies
 
--   Moderators
+-   Moderators and subgroup analyses
 
 -   Bibliometric analysis
 
