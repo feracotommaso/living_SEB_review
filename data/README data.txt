@@ -18,9 +18,10 @@ update history file
 
 ------------------------------------------------------------------------------
 2.full_abstracting includes clear decision data through full-text analysis
-	- copy and create a new dataset from the previous "[...]decision_progress.xlsx"
+	- copy and create a new dataset from the previous "[...]full_decisions.xlsx"
 	- name it with current YY_MM_DD_decision_progress
 	- manually add the available infos from the current fullabstracting xlsx
+	- remove previous articles and start counting paper id from the last
 	- fill empty info (doi, author_etal, title, journal)
 	- download all the pdfs and save them XXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	- start screening and take decisions

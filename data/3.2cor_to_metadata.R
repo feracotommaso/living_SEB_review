@@ -22,7 +22,7 @@ matrix_paths <- list.files(path = "data/3.meta_data/matrices/", pattern = "*.xls
 combined_data <- map_dfr(matrix_paths, ~ data_combine(.x, basic_info_data))
 
 # Write and save the excel
-writexl::write_xlsx(combined_data, "data/3.meta_data/meta_data/25_01_31_metadata.xlsx")
+writexl::write_xlsx(combined_data, "data/3.meta_data/meta_data/metadata.xlsx")
 # write.csv(combined_data, "data/3.meta_data/meta_data/25_01_31_metadata.csv")
 
 # Write and save the review data excel

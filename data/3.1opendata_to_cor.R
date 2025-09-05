@@ -496,6 +496,190 @@ d0049$task_emotionalresilience <- rowMeans (select(d0049,Resilience_Observed_R1,
 d0049a <- d0049[, colnames(d0049) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0049a, use = "pairwise.complete")),"data/3.meta_data/matrices/0049a.xlsx")
 
+#### --------------------------------------------------- 0050a --------------------------------------------------- ####
+rm(list=ls())
+load("data/3.meta_data/open_data/d0050.Rdata")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Skill domains
+d0050a <- adults_t4 %>% 
+  rowwise() %>% 
+  mutate(
+    selfmanagement = mean(c_across(c("tafo_prm", "time_prm", "deta_prm", "orga_prm", "resp_prm",
+                                     "cons_prm", "goal_prm", "rule_prm", "deci_prm"))),
+    socialengagement= mean(c_across(c("lead_prm", "pers_prm", "conv_prm", "expr_prm"))),
+    emotionalresilience = mean(c_across(c("stre_prm", "opti_prm", "angm_prm", "scon_prm"))),
+    cooperation = mean(c_across(c("team_prm", "trus_prm", "empa_prm", "soha_prm"))),
+    innovation = mean(c_across(c("crea_prm", "curi_prm", "arti_prm", "cult_prm")))
+  ) %>% 
+  ungroup()
+
+# Sex
+d0050a$sex <- ifelse(d0050a$sex == 1, 0,
+                     ifelse(d0050a$sex == 2, 1, NA)) # 0 = M; 1=F
+
+# SMD
+names(d0050a)[names(d0050a) == "goal_prm"] <- "goalregulation"
+names(d0050a)[names(d0050a) == "tafo_prm"] <- "taskmanagement"
+names(d0050a)[names(d0050a) == "deci_prm"] <- "decisionmakingskill"
+names(d0050a)[names(d0050a) == "deta_prm"] <- "detailmanagement"
+names(d0050a)[names(d0050a) == "cons_prm"] <- "capacityforconsistency"
+names(d0050a)[names(d0050a) == "orga_prm"] <- "organizationalskill"
+names(d0050a)[names(d0050a) == "time_prm"] <- "timemanagement"
+names(d0050a)[names(d0050a) == "resp_prm"] <- "responsibilitymanagement"
+names(d0050a)[names(d0050a) == "rule_prm"] <- "rulefollowingskill"
+
+# IND
+names(d0050a)[names(d0050a) == "curi_prm"] <- "abstractthinkingskill"
+names(d0050a)[names(d0050a) == "crea_prm"] <- "creativeskill"
+names(d0050a)[names(d0050a) == "info_prm"] <- "informationprocessingskill"
+names(d0050a)[names(d0050a) == "cult_prm"] <- "culturalcompetence"
+names(d0050a)[names(d0050a) == "arti_prm"] <- "artisticskill"
+
+# COD
+names(d0050a)[names(d0050a) == "empa_prm"] <- "perspectivetakingskill"
+names(d0050a)[names(d0050a) == "soha_prm"] <- "capacityforsocialwarmth"
+names(d0050a)[names(d0050a) == "team_prm"] <- "teamworkskill"
+names(d0050a)[names(d0050a) == "inte_prm"] <- "ethicalcompetence"
+names(d0050a)[names(d0050a) == "trus_prm"] <- "capacityfortrust"
+
+# SED
+names(d0050a)[names(d0050a) == "lead_prm"] <- "leadershipskill"
+names(d0050a)[names(d0050a) == "expr_prm"] <- "expressiveskill"
+names(d0050a)[names(d0050a) == "conv_prm"] <- "conversationalskill"
+names(d0050a)[names(d0050a) == "pers_prm"] <- "persuasiveskill"
+names(d0050a)[names(d0050a) == "ener_prm"] <- "energyregulation"
+
+# ESD
+names(d0050a)[names(d0050a) == "stre_prm"] <- "stressregulation"
+names(d0050a)[names(d0050a) == "opti_prm"] <- "capacityforoptimism"
+names(d0050a)[names(d0050a) == "scon_prm"] <- "confidenceregulation"
+names(d0050a)[names(d0050a) == "impu_prm"] <- "impulseregulation"
+names(d0050a)[names(d0050a) == "angm_prm"] <- "angermanagement"
+
+# Interstitial
+names(d0050a)[names(d0050a) == "refl_prm"] <- "selfreflectionskill"
+names(d0050a)[names(d0050a) == "inde_prm"] <- "capacityforindependence"
+names(d0050a)[names(d0050a) == "adap_prm"] <- "adaptability"
+
+# Select and save
+d0050a <- d0050a[, colnames(d0050a) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0050a, use = "pairwise.complete")),"data/3.meta_data/matrices/0050a.xlsx")
+
+
+#### --------------------------------------------------- 0050b --------------------------------------------------- ####
+rm(list=ls())
+load("data/3.meta_data/open_data/d0050.Rdata")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Skill domains
+d0050b <- adults_teens_t0_t1_t2 %>% 
+  rowwise() %>% 
+  mutate(
+    selfmanagement = mean(c_across(c("tafo_prm", "time_prm", "deta_prm", "orga_prm", "resp_prm",
+                                      "cons_prm", "goal_prm", "rule_prm", "deci_prm"))),
+    socialengagement= mean(c_across(c("lead_prm", "pers_prm", "conv_prm", "expr_prm"))),
+    emotionalresilience = mean(c_across(c("stre_prm", "opti_prm", "angm_prm", "scon_prm"))),
+    cooperation = mean(c_across(c("team_prm", "trus_prm", "empa_prm", "soha_prm"))),
+    innovation = mean(c_across(c("crea_prm", "curi_prm", "arti_prm", "cult_prm")))
+  ) %>% 
+  ungroup()
+
+# AGE
+d0050b$age <- rowMeans(subset(d0050b, select = c(age.x,age.y)),na.rm=TRUE) 
+
+# SEX
+d0050b$sex <- rowMeans(subset(d0050b, select = c(sex.x,sex.y)),na.rm=TRUE)  
+d0050b$sex <- ifelse(d0050b$sex == 1, 0,
+                ifelse(d0050b$sex == 2, 1, NA)) # 0 = M; 1=F
+
+# Intelligence
+d0050b$intelligencecrystallized <- scale(d0050b$IQGC)
+d0050b$intelligencefluid <- scale(d0050b$IQGF)
+d0050b$intelligence <- rowMeans(cbind(scale(d0050b$intelligencecrystallized),
+                                  scale(d0050b$intelligencefluid)),
+                            na.rm=TRUE)
+
+# SMD
+names(d0050b)[names(d0050b) == "goal_prm"] <- "goalregulation"
+names(d0050b)[names(d0050b) == "tafo_prm"] <- "taskmanagement"
+names(d0050b)[names(d0050b) == "deci_prm"] <- "decisionmakingskill"
+names(d0050b)[names(d0050b) == "deta_prm"] <- "detailmanagement"
+names(d0050b)[names(d0050b) == "cons_prm"] <- "capacityforconsistency"
+names(d0050b)[names(d0050b) == "orga_prm"] <- "organizationalskill"
+names(d0050b)[names(d0050b) == "time_prm"] <- "timemanagement"
+names(d0050b)[names(d0050b) == "resp_prm"] <- "responsibilitymanagement"
+names(d0050b)[names(d0050b) == "rule_prm"] <- "rulefollowingskill"
+
+# IND
+names(d0050b)[names(d0050b) == "curi_prm"] <- "abstractthinkingskill"
+names(d0050b)[names(d0050b) == "crea_prm"] <- "creativeskill"
+names(d0050b)[names(d0050b) == "info_prm"] <- "informationprocessingskill"
+names(d0050b)[names(d0050b) == "cult_prm"] <- "culturalcompetence"
+names(d0050b)[names(d0050b) == "arti_prm"] <- "artisticskill"
+
+# COD
+names(d0050b)[names(d0050b) == "empa_prm"] <- "perspectivetakingskill"
+names(d0050b)[names(d0050b) == "soha_prm"] <- "capacityforsocialwarmth"
+names(d0050b)[names(d0050b) == "team_prm"] <- "teamworkskill"
+names(d0050b)[names(d0050b) == "inte_prm"] <- "ethicalcompetence"
+names(d0050b)[names(d0050b) == "trus_prm"] <- "capacityfortrust"
+
+# SED
+names(d0050b)[names(d0050b) == "lead_prm"] <- "leadershipskill"
+names(d0050b)[names(d0050b) == "expr_prm"] <- "expressiveskill"
+names(d0050b)[names(d0050b) == "conv_prm"] <- "conversationalskill"
+names(d0050b)[names(d0050b) == "pers_prm"] <- "persuasiveskill"
+names(d0050b)[names(d0050b) == "ener_prm"] <- "energyregulation"
+
+# ESD
+names(d0050b)[names(d0050b) == "stre_prm"] <- "stressregulation"
+names(d0050b)[names(d0050b) == "opti_prm"] <- "capacityforoptimism"
+names(d0050b)[names(d0050b) == "scon_prm"] <- "confidenceregulation"
+names(d0050b)[names(d0050b) == "impu_prm"] <- "impulseregulation"
+names(d0050b)[names(d0050b) == "angm_prm"] <- "angermanagement"
+
+# Interstitial
+names(d0050b)[names(d0050b) == "refl_prm"] <- "selfreflectionskill"
+names(d0050b)[names(d0050b) == "inde_prm"] <- "capacityforindependence"
+names(d0050b)[names(d0050b) == "adap_prm"] <- "adaptability"
+
+# BF
+d0050b$b5_emos_prm <- (-1)*d0050b$b5_emos_prm
+names(d0050b)[names(d0050b) == "b5_cons_prm"] <- "conscientiousness"
+names(d0050b)[names(d0050b) == "b5_open_prm"] <- "openness"
+names(d0050b)[names(d0050b) == "b5_agre_prm"] <- "agreeableness"
+names(d0050b)[names(d0050b) == "b5_extr_prm"] <- "extraversion"
+names(d0050b)[names(d0050b) == "b5_emos_prm"] <- "neuroticism"
+
+# O
+names(d0050b)[names(d0050b) == "b5_open_int_prm"] <- "bf_curiosity"
+names(d0050b)[names(d0050b) == "b5_open_aes_prm"] <- "bf_aesthetic"
+names(d0050b)[names(d0050b) == "b5_open_cre_prm"] <- "bf_creativity"
+# C
+names(d0050b)[names(d0050b) == "b5_cons_org_prm"] <- "bf_organization"
+names(d0050b)[names(d0050b) == "b5_cons_pro_prm"] <- "bf_productiveness"
+names(d0050b)[names(d0050b) == "b5_cons_res_prm"] <- "bf_responsibility"
+# E
+names(d0050b)[names(d0050b) == "b5_extr_soc_prm"] <- "bf_sociability"
+names(d0050b)[names(d0050b) == "b5_extr_ass_prm"] <- "bf_assertiveness"
+names(d0050b)[names(d0050b) == "b5_extr_ene_prm"] <- "bf_energy"
+# A
+names(d0050b)[names(d0050b) == "b5_agre_com_prm"] <- "bf_compassion"
+names(d0050b)[names(d0050b) == "b5_agre_res_prm"] <- "bf_respectfulness"
+names(d0050b)[names(d0050b) == "b5_agre_tru_prm"] <- "bf_trust"
+# N
+names(d0050b)[names(d0050b) == "b5_emos_anx_prm"] <- "bf_anxiety"
+d0050b$bf_anxiety <- (-1)*d0050b$bf_anxiety
+names(d0050b)[names(d0050b) == "b5_emos_dep_prm"] <- "bf_depression"
+d0050b$bf_depression <- (-1)*d0050b$bf_depression
+names(d0050b)[names(d0050b) == "b5_emos_vol_prm"] <- "bf_emotionalvolatility"
+d0050b$bf_emotionalvolatility <- (-1)*d0050b$bf_emotionalvolatility
+
+# Select and save
+d0050b <- d0050b[, colnames(d0050b) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0050b, use = "pairwise.complete")),"data/3.meta_data/matrices/0050b.xlsx")
+
 #### --------------------------------------------------- 0053c --------------------------------------------------- ####
 rm(list=ls())
 d0053c <- readxl::read_excel("data/3.meta_data/open_data/d0053c.xlsx")
