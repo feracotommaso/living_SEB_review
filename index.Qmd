@@ -17,7 +17,7 @@ editor: visual
 
 ## Resources for all
 
-Here you can find the basic resources that everyone may want to use or read:
+Here you can find the basic resources that everyone may want to use or read :
 
 -   **Living SEB paper** - [html](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html)
 -   **Living SEB app -** [link v0](https://feracoshiny.shinyapps.io/livingSEBapp/) ([user manual](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf))

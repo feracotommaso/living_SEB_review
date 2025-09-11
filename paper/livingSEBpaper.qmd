@@ -32,9 +32,9 @@ abstract: "The social, emotional, and behavioral (SEB) skills framework was rece
 keywords: [meta-analysis; systematic review; living review; socio-emotional skills; open science]
 bibliography: bibliography.bib
 format: #quarto render paper/livingSEBpaper.qmd --to all
+  apaquarto-html: default
   apaquarto-pdf:
     documentmode: man
-  apaquarto-html: default
   apaquarto-typst: default
   apaquarto-docx: default
 execute:
@@ -315,75 +315,6 @@ At the time of writing, the systematic search identified `r totDownload` publica
 Across these studies, a total of `r nTotEff` correlation coefficients were coded, representing `r nTotCor` unique pairwise associations. Of these, `r nTotBessiEff` correlations (`r nTotBessiCor` unique associations) involved at least one SEB domain or facet measured with a BESSI instrument. This provides the foundation for both the living database and the illustrative analyses reported below.
 
 A continuously updated summary of descriptive statistics is available online in the living version of this manuscript.
-
-```{r eval=FALSE}
-#| label: prisma-fig-prisma
-##| fig.cap: "PRISMA"
-library(rsvg)
-library(glue)
-library(DiagrammeR)
-library(DiagrammeRsvg)
-
-# ----------------------------------------------------- Total records identified
-records_identified <- totDownload
-# ----------------------------------------- Total records screened (abstracting)
-screened_files <- list.files(here::here("data/1.abstracting"), pattern = "\\.xlsx$", full.names = TRUE)
-records_screened <- screened_files %>%
-  lapply(readxl::read_excel) %>%        # read each file
-  lapply(nrow) %>%              # count rows in each
-  unlist() %>%                  # flatten to vector
-  sum()                         # sum them up
-# --------------------------------------------- Total record screened (fulltext)
-full_screen_files <- list.files(
-  path = here::here("data/2.full_abstracting"),
-  pattern = "fullabstracting.*\\.xlsx$",  # regex: contains fullabstracting + ends with .xlsx
-  full.names = TRUE
-)
-records_fullabstracting <- full_screen_files %>%
-  lapply(readxl::read_excel) %>%
-  lapply(nrow) %>%
-  unlist() %>%
-  sum()
-# --------------------------------------------------------------- Included final
-included_total <- length(unique(c(metaData$paper_id,reviewData$paper_id)))
-included_meta <- nMetaPapers
-included_review <- nReviewPapers
-
-# ------------------------------------------------------------- Excluded records
-abstract_exclude <- records_screened - records_fullabstracting
-fulltext_exclude <- records_fullabstracting - included_total 
-
-prisma_code <- glue("
-digraph prisma {{
-  graph [bgcolor = white]
-
-  node [shape = box,
-        style = filled,
-        fillcolor = white,
-        fontname = 'Times New Roman',
-        fontsize = 10]
-
-  A [label = 'Records identified (n = {records_identified})']
-  B [label = 'Records screened (n = {records_screened})']
-  C [label = 'Records excluded (n = {abstract_exclude})']
-  D [label = 'Full-text assessed (n = {records_fullabstracting})']
-  E [label = 'Excluded (n = {fulltext_exclude})']
-  F [label = 'Included (n = {included_total})']
-  G [label = 'Studies included for meta-analysis (n = {included_meta})']
-  H [label = 'Studies included for review (n = {included_review})']
-
-  A -> B -> C
-  B -> D -> E
-  D -> F -> G
-  F -> H
-  
-}}
-")
-g <- grViz(prisma_code) 
-svg_raw <- charToRaw(export_svg(g))
-rsvg_pdf(svg_raw, "prisma.pdf")
-rsvg::rsvg_png(svg_raw, "prisma.png", width = 3000, height = 3000)
-```
 
 ```{r}
 #| label: prisma-fig-prisma
