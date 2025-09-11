@@ -307,7 +307,7 @@ nTotBessiEff <- sum(!is.na(df_BessiSubset))
 ```{r}
 #| label: reviewData
 reviewData <- readxl::read_excel(here::here("data/3.meta_data/review_data/review_data.xlsx"))
-nReviewPapers <- nrow(metaData)
+nReviewPapers <- nrow(reviewData)
 ```
 
 At the time of writing, the systematic search identified `r totDownload` publications (Scopus = `r totSc`; WOS = `r totWs`). After removing duplicates, screening titles and abstracts, and reviewing full texts, `r nReviewPapers` studies were retained for the living review and `r nMetaPapers` studies met criteria for quantitative synthesis. These include a total of `r nMetaSamples` indipendent samples (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`).
@@ -316,7 +316,7 @@ Across these studies, a total of `r nTotEff` correlation coefficients were coded
 
 A continuously updated summary of descriptive statistics is available online in the living version of this manuscript.
 
-```{r}
+```{r eval=FALSE}
 #| label: prisma-fig-prisma
 ##| fig.cap: "PRISMA"
 library(rsvg)
@@ -384,6 +384,87 @@ svg_raw <- charToRaw(export_svg(g))
 rsvg_pdf(svg_raw, "prisma.pdf")
 rsvg::rsvg_png(svg_raw, "prisma.png", width = 3000, height = 3000)
 ```
+
+```{r}
+#| label: prisma-fig-prisma
+#| fig-cap: "PRISMA flow chart"
+#| echo: false
+#| message: false
+#| warning: false
+#| results: "hide"
+
+library(here)
+library(readxl)
+library(glue)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+library(rsvg)
+
+# ------------------------------ Inputs / counts
+records_identified <- totDownload
+
+# Abstract screening
+screened_files <- list.files(here("data/1.abstracting"), pattern = "\\.xlsx$", full.names = TRUE)
+records_screened <- screened_files |>
+  lapply(read_excel) |>
+  lapply(nrow) |>
+  unlist() |>
+  sum()
+
+# Full-text screening
+full_screen_files <- list.files(here("data/2.full_abstracting"),
+                                pattern = "fullabstracting.*\\.xlsx$", full.names = TRUE)
+records_fullabstracting <- full_screen_files |>
+  lapply(read_excel) |>
+  lapply(nrow) |>
+  unlist() |>
+  sum()
+
+# Included
+# NOTE: make sure 'metaData' exists; otherwise replace with the right object.
+included_total <- length(unique(c(metaData$paper_id, reviewData$paper_id)))
+included_meta  <- nMetaPapers
+included_review <- nReviewPapers
+
+# Excluded
+abstract_exclude  <- records_screened - records_fullabstracting
+fulltext_exclude  <- records_fullabstracting - included_total
+
+# ------------------------------ Graphviz code via glue with safe delimiters
+prisma_code <- glue(
+"
+digraph prisma {{
+  graph [bgcolor = white]
+
+  node [shape = box, style = filled, fillcolor = white, fontname = 'Times New Roman', fontsize = 10]
+
+  A [label = 'Records identified (n = <<records_identified>>)']
+  B [label = 'Records screened (n = <<records_screened>>)']
+  C [label = 'Records excluded (n = <<abstract_exclude>>)']
+  D [label = 'Full-text assessed (n = <<records_fullabstracting>>)']
+  E [label = 'Excluded (n = <<fulltext_exclude>>)']
+  F [label = 'Included (n = <<included_total>>)']
+  G [label = 'Studies included for meta-analysis (n = <<included_meta>>)']
+  H [label = 'Studies included for review (n = <<included_review>>)']
+
+  A -> B -> C
+  B -> D -> E
+  D -> F -> G
+  F -> H
+}}
+",
+  .open = "<<", .close = ">>"
+)
+
+# ------------------------------ Render SVG -> PNG/PDF
+g <- DiagrammeR::grViz(prisma_code)
+
+svg_raw <- charToRaw(DiagrammeRsvg::export_svg(g))
+rsvg_pdf(svg_raw,  file = "prisma.pdf")
+rsvg_png(svg_raw,  file = "prisma.png", width = 3000, height = 3000)  # hi-res
+
+```
+
 
 ![PRISMA flow chart](prisma.png){#fig-prisma}
 
