@@ -16,19 +16,20 @@ Shiny app for running meta-analytic synthesis: <https://feracoshiny.shinyapps.io
 
 This repository contains all the open materials of the *living SEB project*:
 
-```{=html}
-<pre> ├── <b>app/</b> # The R code to run the *living SEB app* 
- ├── <b>appManual/</b> # Reproducible instruction manual for the *living SEB app* (Quarto)
- ├── <b>materials/</b> # Some initial materials for the review
- ├── <b>paper/</b> # Reproducible living manuscript (APA-style) 
- ├── <b>preregistration/</b> # Reproducible preregistration file 
- ├── <b>R/</b> # Additional R functions used in the project 
- ├── <b>slides/</b> # Slides for presentation of the project (Quarto Reveal.js) 
- ├── <b>index.qmd</b> # Main homepage
- ├── <b>index.html</b> # Main homepage HTML  
- ├── <b>LICENSE</b> # License information 
- └── <b>living_SEB_review.Rproj</b> # RStudio project file </pre>
+```{text}
+├── app/             # The R code to run the living SEB app
+├── appManual/       # Reproducible instruction manual for the living SEB app (Quarto)
+├── materials/       # Some initial materials for the review
+├── paper/           # Reproducible living manuscript (APA-style)
+├── preregistration/ # Reproducible preregistration file
+├── R/               # Additional R functions used in the project
+├── slides/          # Slides for presentation of the project (Quarto Reveal.js)
+├── index.qmd        # Main homepage
+├── index.html       # Main homepage HTML
+├── LICENSE          # License information
+└── living_SEB_review.Rproj  # RStudio project file
 ```
+
 ## Citation
 
 To cite the {Living SEB project} in publications use:
