@@ -1,0 +1,1028 @@
+---
+# title: "Cumulative, open, and accessible"
+# subtitle: "Introducing a living systematic review and meta-analysis of social, emotional, and behavioral skills research—the Living SEB Project"
+title: "The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills" 
+shorttitle: "the Living SEB Project"
+author:
+  - name: Tommaso Feraco
+    corresponding: true
+    orcid: 0000-0002-8920-5330
+    email: tommaso.feraco@unipd.it
+    affiliations:
+      - name: University of Padova
+        department: Department of General Psychology
+        address: Via Venezia 8
+        city: Padova
+        region: Veneto
+        country: Italy
+        postal-code: 35129
+author-note:
+  status-changes: 
+    affiliation-change: ~
+    deceased: ~
+  disclosures:
+    study-registration: The study was preregistered at https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf
+    data-sharing: Data, code, and materials are available at https://github.com/feracotommaso/living_SEB_review
+    related-report: ~
+    conflict-of-interest: The authors have no conflict of interest to declare
+    financial-support: The authors received no funding for this study
+    gratitude: ~
+    authorship-agreements: ~
+abstract: "The social, emotional, and behavioral (SEB) skills framework was recently proposed as an integrative model for soft skills, socio-emotional competences, and 21st-century skills. To keep this research field open, accessible, and cumulative from its inception, we introduce the Living SEB Project, the first living systematic review and meta-analysis dedicated to SEB skills. This initiative integrates continuous literature searches, an open database of coded studies and effect sizes, and an interactive web application (the Living SEB App) that enables customized analyses. Following PRISMA guidelines, we identified -at the time of writing- 259 publications, of which 21 met criteria for the living review and 14 for quantitative synthesis, encompassing 21 independent samples. Two tutorial analyses illustrate the project’s utility: a multilevel meta-analysis of SEB–academic achievement associations and a meta-analytic structural equation model testing SEB skills’ incremental validity beyond personality traits. Preliminary findings suggest that SEB domains such as self-management are significantly associated with academic achievement, with self-management also showing unique predictive value beyond Big Five traits. By providing a transparent, dynamic, and openly accessible dataset and an interactive Shiny app, the Living SEB Project offers a sustainable infrastructure to consolidate evidence, accelerate cumulative science, and model living evidence synthesis within the SEB framework and psychology more broadly."
+keywords: [meta-analysis; systematic review; living review; socio-emotional skills; open science]
+bibliography: bibliography.bib
+format: #quarto render paper/livingSEBpaper.qmd --to all
+  apaquarto-pdf:
+    documentmode: man
+  apaquarto-html: default
+  apaquarto-typst: default
+  apaquarto-docx: default
+execute:
+  echo: false
+  warning: false
+  message: false
+  error: false
+---
+
+```{r}
+source(here::here("R/utils.R"))
+
+library(metafor)
+library(ggplot2)
+library(kableExtra)
+library(flextable)
+
+library(purrr)
+library(metaSEM)
+
+library(english)
+```
+
+<!-- The introduction should not have a level-1 heading such as Introduction. -->
+
+Social, emotional, and behavioral (SEB) skills—sometimes referred to as “soft skills,” “21st-century skills,” or “social-emotional skills”—are increasingly recognized as essential for success, well-being, and social functioning [@heckman2012; @feracoIntegratedModelSchool2023]. In recent years, new frameworks have sought to overcome the field’s long-standing challenges of fragmented conceptualizations and reliance on personality trait measures [@abrahamsSocialemotionalSkillAssessment2019; @guoRolesSocialEmotional2023; @sotoIntegrativeFrameworkConceptualizing2022]. The Behavioral, Emotional, and Social Skills Inventory [BESSI; @sotoIntegrativeFrameworkConceptualizing2022] and related adaptations now provide a systematic way to assess SEB skills as functional capacities, distinct from but complementary to personality traits. This progress has created a timely opportunity to consolidate evidence and accelerate research on SEB skills.
+
+At the same time, psychology as a discipline faces a broader methodological challenge: the absence of infrastructures that make knowledge cumulative, dynamic, and accessible. Traditional meta-analyses and systematic reviews provide rigorous syntheses of evidence but are static by design. Given the accelerating pace of publication, they often become outdated within just a few years [@elliottLivingSystematicReviews2014; @sakalukReconsideringWhatMakes2023; @elliottLivingSystematicReview2017]. As a result, promising frameworks—such as SEB skills—risk fragmentation or premature stagnation if evidence cannot be continually updated and integrated.
+
+To address this challenge, the concept of *living systematic reviews* has been developed in medicine and health sciences: reviews that are continually updated as new studies are published [@elliottLivingSystematicReview2017]. However, their adoption in psychology has been limited, and to our knowledge, no living meta-analysis has yet been devoted to SEB skills. This gap is particularly striking given that SEB research is a young and rapidly growing field—precisely the type of domain where static reviews are most vulnerable to obsolescence.
+
+The present article introduces the *Living SEB Project*: the first living systematic review and meta-analysis dedicated to SEB skills. This initiative integrates (a) ongoing systematic literature searches, (b) centralized open databases of coded study information and effect sizes, and (c) a user-friendly web application for customized analyses. Together, these tools are designed to provide researchers, reviewers, editors, and even practitioners with continually updated, openly accessible evidence.
+
+We position the Living SEB Project primarily as an infrastructure for cumulative science. To illustrate its utility, we also present two tutorial analyses of the current database: a multilevel meta-analysis of the associations between SEB domains and academic achievement, and a meta-analytic structural equation model testing incremental validity of SEB skills beyond personality traits. These results should be regarded as illustrative demonstrations of the living framework rather than definitive conclusions, given the small number of studies currently available and the rapidly increasing number of publications on the topic. However, an updated version of the results of this paper will be published monthly.
+
+Our overarching goal is to prevent SEB research from repeating the familiar cycle of fragmentation and stagnation. By building a transparent and adaptable infrastructure for evidence integration, we hope not only to support progress in this field, but also to offer a model for living evidence synthesis in psychology more broadly.
+
+## Social, Emotional, and Behavioral Skills
+
+The Living SEB Project is grounded in the conceptualization of SEB skills proposed by Soto and colleagues [-@sotoTakingSkillsSeriously2021; -@sotoIntegrativeFrameworkConceptualizing2022]. In this framework, SEB skills are defined as the functional capacities individuals can draw upon to build relationships, pursue goals, think creatively, and regulate emotions. Importantly, skills differ from personality traits: whereas traits capture enduring patterns of thought, feeling, and behavior, skills reflect what individuals *can do when required*. For example, a person may typically avoid public speaking (a trait tendency) but still be able to deliver an effective presentation when needed (a skill capacity).
+
+To assess these skills, the Behavioral, Emotional, and Social Skills Inventory (BESSI) was developed [@sotoIntegrativeFrameworkConceptualizing2022]. BESSI items are phrased to measure capacities (“How well can you…?”) rather than frequencies (“How often do you…?”), distinguishing skills from traits and are grouped into five broad domains, paralleling the Big Five but from a skills-based perspective:
+
+-   Innovation skills, including the capacities used to process and engage novel ideas and experiences (linked to the openness personality trait).
+
+-   Self-management skills, including the capacities used to manage and complete goal-related tasks (linked to the conscientiousness personality trait).
+
+-   Social engagement skills, including the capacities used to actively and efficiently engage and communicate with other people (linked to the extraversion personality trait).
+
+-   Cooperation skills, including the capacities used to maintain positive social relationships (linked to the agreeableness personality trait).
+
+-   Emotional resilience skills, including the capacities used to regulate emotions and moods (linked to the emotional stability personality trait).
+
+Research adopting the SEB framework has reported promising findings. SEB skills show both overlap with, and incremental validity beyond, personality traits [@feracoItalianBehavioralEmotional2024; @lechnerBehavioralEmotionalSocial2022; @postigoBehavioralEmotionalSocial2024; @sotoGoingTraitsSocial2024; @sotoWhatWhatCan2023; @yoonExaminingSEBSkills2024; @chenSocialEmotionalBehavioral2024]. Additionally, skills–traits mismatches (e.g., high extraversion but low social engagement skills) predict unique outcomes for adolescents [@ringwaldMoreSkillTrait2025]. For instance, students with higher skills than traits reported better outcomes than students with higher traits than skills (i.e., a person that usually does something but is not very good at it). Evidence also suggests that skills and traits follow similar but distinct developmental trajectories [@napolitanoChangesSocialEmotional2025; @feracoSocialEmotionalBehavioral2023], and laypeople perceive them as meaningfully different constructs [@feracoDifferencesChangeGoals2025].
+
+Despite this progress, results are already becoming complex and sometimes contradictory, making integration difficult. In such a rapidly developing area, reliance on static reviews or individuals' literature searches risks selective citation, cherry-picking of results, and conceptual fragmentation. This provides a strong rationale for a living and cumulative approach to synthesis of SEB research.
+
+## Introducing Living Reviews and Meta-Analyses
+
+Current approaches to theoretical and quantitative synthesis of scientific materials mainly rely on solid meta-analyses and systematic reviews. However, especially in view of the steeply increasing number of publications, both of them become outdated soon, requiring continuous updates often conducted by different authors and, even if data sharing is becoming more common nowadays, building on previous meta-analysis often requires running a new database search or coding additional information leading new authors to run meta-analysis (even on the same effect) from scratch, requiring duplicate screening of the materials and loss of resources, time and possibly increasing human error.
+
+Traditional systematic reviews and meta-analyses remain cornerstones of evidence synthesis, but they are constrained by their static nature. With accelerating publication rates, even well-conducted reviews become outdated within a few years, requiring repeated duplication of labor [@elliottLivingSystematicReview2017; @boscoCloudbasedMetaanalysisBridge2015]. Indeed, each new meta-analysis often starts from scratch: searching, screening, and coding the same studies anew, which consumes resources, risks errors, and slows cumulative progress.
+
+To overcome these issues, living meta-analysis and databases are now appearing in the literature, especially for medical studies, clinical trials, and interventions [@cuijpersLivingSystematicReviews2022; @elliottLivingSystematicReviews2014; @howardWhyWeNeed2025; @sakalukReconsideringWhatMakes2023; @spadaroCooperationDatabankMachineReadable2022; @boscoCloudbasedMetaanalysisBridge2015]. These approaches maintain a continually updated database of eligible studies, alongside transparent procedures for incorporating new evidence. These approaches might have their largest benefits for rapidly evolving fields where timely integration of knowledge is critical. Nonetheless, these systems usually rely on users to upload new data or remain limited to very narrow topics or effects. With our proposal, we aim to overcome these limitations by (a) covering an entire research framework, similarly to what Howard and colleagues proposed [-@howardWhyWeNeed2025], and (b) making the review systematic, thus following Preferred Reporting Items for Systematic Reviews and Meta-Analysis guidelines [PRISMA; @moherPreferredReportingItems2015] repeatedly across time.
+
+Providing a similar tool will speed and facilitate researchers' literature search, support a standardized and evidence-based understanding of the literature, and inform future research. Given the recency of the SEB framework, fragmentation risks, and rapid expansion of this research area, SEB skills represent an ideal case for introducing a living review system from the first stages of research in the framework.
+
+## Rationale, aims, and hypotheses
+
+The *Living SEB Project* was designed to create a sustainable, transparent, and cumulative system for synthesizing SEB skills research. Its development rests on three core rationales:
+
+-   **Preventing Fragmentation:** Without cumulative tools, SEB research risks repeating the cycle seen in other fields where inconsistent findings and selective reporting hinder theoretical progress.
+
+-   **Enabling Timely Integration:** Living reviews provide a means to keep pace with ongoing publication and to ensure that syntheses remain relevant and comprehensive.
+
+-   **Advancing Open Science:** To maximize transparency and accessibility, cumulative evidence must be not only available but also *usable*. Researchers, reviewers, and practitioners need tools that allow them to interact with data, run analyses, and test claims without advanced technical expertise.
+
+To achieve these goals, we developed not only a continuously updated database but also the **Living SEB App**, a user-friendly web platform that integrates literature search, data visualization, and statistical analysis. The app embodies the open-science ethos of the project: by lowering technical barriers and providing reproducible outputs, it ensures that cumulative evidence is accessible to the entire community.
+
+Accordingly, the Living SEB Project has three main aims:
+
+-   **Review Aim:** To provide a living, organized cartography of SEB literature, freely accessible and filterable by topic, population, or publication years.
+
+-   **Meta-analytic Aim:** To continually synthesize associations between SEB skills and all other constructs and variables measured alongside, starting with cross-sectional correlations but expandable to longitudinal and experimental data.
+
+-   **Open Science Aim:** To provide, together with open materials, the Living SEB App—an open-access, interactive platform that integrates the database and analysis tools, enabling replication, rapid evidence checks, preregistration support, and community contributions.
+
+To demonstrate feasibility, we also include a tutorial analysis of the current database. This example tests the associations between SEB domains and academic achievement using both multilevel meta-analysis of correlations and meta-analytic structural equation modeling (MASEM). These results should be understood as illustrative demonstrations of the *Living SEB Project* infrastructure rather than definitive conclusions, given the small number of studies currently available and their increasing publications.
+
+# Methods
+
+## Preregistration and Open Materials
+
+All procedures for this project were preregistered and are publicly available on [GitHub](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.html) . The repository (<https://github.com/feracotommaso/living_SEB_review>) also hosts all materials, data, and R code used in this article. Analyses will strictly follow the preregistration unless otherwise noted. The systematic search and review was conducted according to the PRISMA guidelines [@moherPreferredReportingItems2015].
+
+## Search Strategy
+
+The comprehensive literature search was conducted and will be conducted on two electronic databases: Web of Science (WOS) and Scopus. To balance comprehensiveness with feasibility, we adopted a citation-chaining strategy: all papers citing one or more seminal theoretical or measurement works on SEB skills were retrieved. This strategy ensures that all studies using the SEB framework or BESSI measures are captured while reducing noise from unrelated keyword-based searches.
+
+While efficient, this approach may miss studies that contradict research guidelines and measure SEB skills but do not cite neither the seminal works nor the validation papers. To mitigate this risk, the database is continuously updated, and authors are invited to submit missing studies.
+
+The initial reference papers included in the search string are:
+
+-   **Theoretical basis**
+
+    -   Taking Skills Seriously: Toward an Integrative Model and Agenda for Social, Emotional, and Behavioral Skills [@sotoTakingSkillsSeriously2021].
+
+-   **Measurement**
+
+    -   An Integrative Framework for Conceptualizing and Assessing Social, Emotional, and Behavioral Skills: The BESSI [@sotoIntegrativeFrameworkConceptualizing2022].
+
+    -   The Behavioral, Emotional, and Social Skills Inventory (BESSI): Psychometric Properties of a German-Language Adaptation, Temporal Stabilities of the Skills, and Associations with Personality and Intelligence [@lechnerBehavioralEmotionalSocial2022].
+
+    -   The Italian Behavioral, Emotional, and Social Skills Inventory (BESSI-I) [@feracoItalianBehavioralEmotional2024].
+
+    -   The Behavioral, Emotional, and Social Skills Inventory: A Spanish Adaptation and Further Validation in Adult Population [@postigoBehavioralEmotionalSocial2024].
+
+-   **Short measurement versions**
+
+    -   Assessing Social, Emotional, and Behavioral Skills in Just a Few Minutes: 96-, 45-, and 20-Item Short Forms of the BESSI [@sewellAssessingSocialEmotional2024a].
+
+The full search string is available in the preregistration protocol for readability.
+
+## Study Eligibility Criteria
+
+Citations are completely excluded if they were not focusing on the SEB skill framework AND did not use any BESSI measure. For example, citations referencing to the SEB framework, but focusing on different frameworks, such as the OECD or CASEL, are not considered for inclusion. Similarly, a study focusing on the development of the Big Five should be excluded although it cites the reference papers. However, if it focuses on the development of the Big Five but also collects side data using the BESSI, it will be included in the meta-analysis.
+
+Citations are also excluded if they were published as books or in language that were not comprehensible for the authors.
+
+### Meta-analysis Inclusion
+
+To be included in the quantitative synthesis, studies had to:
+
+1.  Be written in a language comprehensible to the authors (i.e., English, Italian, and Spanish at the time of writing);
+
+2.  Include original quantitative data using a validated BESSI-based measure;
+
+3.  Report correlations or provide correlations after authors' request;
+
+4.  Include original data not already reported in other included studies;
+
+5.  Sample either the general population or a clinical population with mild/moderate issues;
+
+Contrarily, a study is excluded from the meta-analysis if:
+
+1.  Data were duplicated across publications,
+
+2.  Measures were not validated or outside the SEB/BESSI framework
+
+3.  The study did not report correlations at baseline or data could not be reduced to correlations;
+
+4.  Participants had severe clinical conditions (e.g., schizophrenia)
+
+### Coding Procedures
+
+For each included study, the following information was systematically coded:
+
+-   *Bibliographic metadata* (DOI, title, authors, journal, year, download date)
+
+-   *Paper, sample, and matrix IDs*. The unique progressive identifiers of each paper, sample, and correlation matrix.
+
+-   *Exclusion reason* both for the review and the meta-analysis.
+
+-   *Review topics*. The main topics covered by the study.
+
+-   *Open data.* Whether data were openly available or not and the link to the data.
+
+-   *Study design.* Whether the study is cross-sectional, longitudinal, or experimental.
+
+-   *Country*. Country of origin of the participants. In case participants from multiple countries were included in the same sample, the sample was coded as “mixed”.
+
+-   *Gender*. The percentage of females.
+
+-   *Age*. The mean age of the sample.
+
+-   *Sample size*. The sample size of each population on which correlations were estimated.
+
+-   *Age category:* An additional category was added to distinguish between samples of children, school age (all participants younger than 19 years old or in high schools), young adults (university students or younger than 30), adults (younger than 55) older adults (55 or older). Adults was used also if the study included participants of all ages or between 19 and 55 years old.
+
+-   *Clinical population*. Samples are divided between clinical populations and non-clinical populations. In case a clinical population was included, we specify the diagnosis.
+
+-   *SEB* *measure*. BESSI 192, 96, 45, 20 or other versions.
+
+-   *Measure type*. Long (if it measures facets) or short (if it only measures domains).
+
+-   *Trait framework.* In case personality traits are measured, whether they are measured with a BF measure or an HEXACO measure.
+
+-   *Effect sizes*. Pearson’s correlations are extracted from the papers as measure of effect size. In particular, the entire correlation matrix is extracted.
+
+-   *Non-SEB indicators*. All measures, outcomes, and correlates are manually classified within the names of the correlation matrix. A codebook with all measures coded is available on GitHub page of the project allowing categorizations of variables in specifc and broader categories.
+
+## Updating Procedures
+
+To maintain the “living” nature of the review, the search and coding procedures are repeated on the first working day of each month. New studies are added to the database, and version-controlled monthly snapshots are archived. When new theoretical or measurement works are published, the seed references for the search are expanded accordingly. Additionally, at each new search, the database search will be limited by adding the day the last search was conducted as a starting search limit.
+
+A continuously updated version of this paper is published online, with results revised each month to reflect the latest data.
+
+## The Living SEB App
+
+In parallel with the database, we developed the **Living SEB App**, a Shiny-based web platform that provides direct access to the database and analytic tools. The app enables users to:
+
+-   **Search and filter literature** by topic, population, or design;
+
+-   **Run meta-analyses** of SEB associations with outcomes, using multilevel models;
+
+-   **Conduct meta-analytic structural equation modeling (metaSEM)** for incremental validity analyses or for estimating more complex correlation matrices;
+
+-   **Download datasets and correlation matrices** for further analyses;
+
+-   **Generate reproducible reports** to support preregistration, peer review, and editorial decision-making.
+
+The app is hosted openly and mirrored on GitHub to ensure sustainability and version control. While designed to lower barriers for non-technical users, the raw datasets and R code remain freely available for advanced analyses.
+
+The *Living SEB App* link can be found on the GitHub web page of the project as it may change with server updates: [https://feracotommaso.github.io](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)[/living_SEB_review](https://feracotommaso.github.io/living_SEB_review/).
+
+# Results
+
+
+Given the adaptive nature of a living meta-analysis, we report temporary results and descriptive statistics of the data available at the time of writing. A continuously updated version of the results is available at: [https://feracotommaso.github.io](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)[/living_SEB_review](https://feracotommaso.github.io/living_SEB_review/)[/paper/livingSEBpaper.html](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html).
+
+## Database Overview
+
+```{r}
+#| label: countStudies
+#| cache: true
+
+library(RefManageR)
+sc1 <- ReadBib(here::here("data/0.bib_download/25_01_31_scopus.bib"))
+sc2 <- ReadBib(here::here("data/0.bib_download/25_04_30_scopus.bib"))
+ws1 <- ReadBib(here::here("data/0.bib_download/25_01_31_wos.bib"))
+ws2 <- ReadBib(here::here("data/0.bib_download/25_04_30_wos.bib"))
+totSc <- sum(c(length(sc1),length(sc2)))
+totWs <- sum(c(length(ws1),length(ws2)))
+totDownload <- totSc + totWs
+```
+
+```{r}
+#| label: generalData
+admcol <- readxl::read_excel(here::here("data/matrix_codebook.xlsx"))
+varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that can be used with different grain [Topic, BROAD, specific, and label]
+labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
+
+```
+
+```{r}
+#| label: metaData
+
+metaData <- readxl::read_excel(here::here("data/3.meta_data/meta_data/metadata.xlsx"))
+nMetaPapers <- length(unique(metaData$paper_id))
+nMetaSamples <- length(unique(metaData$matrix_id))
+minSampleSize <- min(metaData$n)
+maxSampleSize <- max(metaData$n)
+medSampleSize <- median(metaData$n)
+
+subMeta <- subset(metaData,select = -c(download_date:additional))
+
+nTotCor <- ncol(metaData)-ncol(subset(metaData,select = c(download_date:additional)))
+nTotEff <- sum(!is.na(subset(metaData,select = -c(download_date:additional))))
+
+# SEB effects
+library(dplyr)
+bessiVars <- admcol$column_name[admcol$broad %in% c("BESSI","BESSI_facet")]
+bessiCorPattern <- paste(bessiVars, collapse = "|")   # "varA|varC"
+df_BessiSubset <- metaData %>% select(matches(bessiCorPattern))
+
+nTotBessiCor <- ncol(df_BessiSubset)
+nTotBessiEff <- sum(!is.na(df_BessiSubset))
+```
+
+```{r}
+#| label: reviewData
+reviewData <- readxl::read_excel(here::here("data/3.meta_data/review_data/review_data.xlsx"))
+nReviewPapers <- nrow(metaData)
+```
+
+At the time of writing, the systematic search identified `r totDownload` publications (Scopus = `r totSc`; WOS = `r totWs`). After removing duplicates, screening titles and abstracts, and reviewing full texts, `r nReviewPapers` studies were retained for the living review and `r nMetaPapers` studies met criteria for quantitative synthesis. These include a total of `r nMetaSamples` indipendent samples (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`).
+
+Across these studies, a total of `r nTotEff` correlation coefficients were coded, representing `r nTotCor` unique pairwise associations. Of these, `r nTotBessiEff` correlations (`r nTotBessiCor` unique associations) involved at least one SEB domain or facet measured with a BESSI instrument. This provides the foundation for both the living database and the illustrative analyses reported below.
+
+A continuously updated summary of descriptive statistics is available online in the living version of this manuscript.
+
+```{r}
+#| label: prisma-fig-prisma
+##| fig.cap: "PRISMA"
+library(rsvg)
+library(glue)
+library(DiagrammeR)
+library(DiagrammeRsvg)
+
+# ----------------------------------------------------- Total records identified
+records_identified <- totDownload
+# ----------------------------------------- Total records screened (abstracting)
+screened_files <- list.files(here::here("data/1.abstracting"), pattern = "\\.xlsx$", full.names = TRUE)
+records_screened <- screened_files %>%
+  lapply(readxl::read_excel) %>%        # read each file
+  lapply(nrow) %>%              # count rows in each
+  unlist() %>%                  # flatten to vector
+  sum()                         # sum them up
+# --------------------------------------------- Total record screened (fulltext)
+full_screen_files <- list.files(
+  path = here::here("data/2.full_abstracting"),
+  pattern = "fullabstracting.*\\.xlsx$",  # regex: contains fullabstracting + ends with .xlsx
+  full.names = TRUE
+)
+records_fullabstracting <- full_screen_files %>%
+  lapply(readxl::read_excel) %>%
+  lapply(nrow) %>%
+  unlist() %>%
+  sum()
+# --------------------------------------------------------------- Included final
+included_total <- length(unique(c(metaData$paper_id,reviewData$paper_id)))
+included_meta <- nMetaPapers
+included_review <- nReviewPapers
+
+# ------------------------------------------------------------- Excluded records
+abstract_exclude <- records_screened - records_fullabstracting
+fulltext_exclude <- records_fullabstracting - included_total 
+
+prisma_code <- glue("
+digraph prisma {{
+  graph [bgcolor = white]
+
+  node [shape = box,
+        style = filled,
+        fillcolor = white,
+        fontname = 'Times New Roman',
+        fontsize = 10]
+
+  A [label = 'Records identified (n = {records_identified})']
+  B [label = 'Records screened (n = {records_screened})']
+  C [label = 'Records excluded (n = {abstract_exclude})']
+  D [label = 'Full-text assessed (n = {records_fullabstracting})']
+  E [label = 'Excluded (n = {fulltext_exclude})']
+  F [label = 'Included (n = {included_total})']
+  G [label = 'Studies included for meta-analysis (n = {included_meta})']
+  H [label = 'Studies included for review (n = {included_review})']
+
+  A -> B -> C
+  B -> D -> E
+  D -> F -> G
+  F -> H
+  
+}}
+")
+g <- grViz(prisma_code) 
+svg_raw <- charToRaw(export_svg(g))
+rsvg_pdf(svg_raw, "prisma.pdf")
+rsvg::rsvg_png(svg_raw, "prisma.png", width = 3000, height = 3000)
+```
+
+![PRISMA flow chart](prisma.png){#fig-prisma}
+
+@fig-prisma *about here*
+
+## Tutorial Analysis 1: Multilevel Meta-analysis of correlations
+
+As a demonstration of the project’s multilevel meta-analytic pipeline, we tested the associations between the five SEB skill domains and academic achievement. Following preregistered procedures, a three-level random-effects model was used, with effects nested within samples and studies. In line with Borenstein and colleagues [-@borenstein2021], Fisher’s *z* transformations were applied and then back-transformed to Pearson’s *r* for interpretation. The metafor package was used for the meta-analysis [@viechtbauer2010ConductingMetaanalysesMetafor].
+
+```{r}
+#| label: meta-analysis-scripts
+
+# Variables of interest
+study_info <- c("download_date","doi","year","age_class",
+                "paper_id","matrix_id", 
+                "author_et_al","n","title")
+pred_vars <- sort(c("selfmanagement","cooperation","socialengagement", 
+                    "innovation", "emotionalresilience"))
+out_vars <- "academicachievement"
+# Get the data in good format
+dm <- getMETAdata(pred_vars, out_vars, metaData, study_info)
+# Compute effect sizes
+dm <- escalc(measure = "ZCOR", ri = value, ni = n, data = dm)
+
+# Descriptive stats of the data
+uniqueD <- dm[!duplicated(dm$matrix_id), ]
+metaStudyTab <- data.frame(
+  StudyID = uniqueD$matrix_id, 
+  Authors = uniqueD$author_et_al,
+  Year = as.character(uniqueD$year),
+  Age = uniqueD$age_class,
+  N = as.character(uniqueD$n),
+  doi = uniqueD$doi
+)
+metaStudy_table <- rbind(
+  metaStudyTab,
+  c("Total","","","",sum(as.numeric(metaStudyTab$N)),"")
+)
+
+# Meta-analysis    
+outList <- list()
+metaCol <- c("b","cil","ciu","se","z","p",
+             "r","rcil","rciu","rpil","rpiu",
+             "tau2",
+             "k","N",
+             "q","qdf","qp")
+metaRes <- matrix(nrow = length(pred_vars), ncol = length(metaCol))
+colnames(metaRes) <- metaCol
+rownames(metaRes) <- pred_vars
+
+for (i in 1:length(pred_vars)) {
+  di <- dm[dm$pred == pred_vars[i] & is.na(dm$yi) == F,]
+  outList[[i]] <- rma.mv(yi = yi, V = vi, random = ~ 1 | paper_id / matrix_id,
+                         test = "t", data = di)
+  mres <- summary(outList[[i]])
+  pred <- predict(mres, transf=transf.ztor)
+  tau2 <- sum(mres$sigma2)
+  metaRes[i,] <- c(mres$beta,mres$ci.lb,mres$ci.ub,mres$se,mres$zval,mres$pval,
+                   pred$pred,pred$ci.lb,pred$ci.ub,pred$pi.lb,pred$pi.ub,
+                   tau2,
+                   nrow(di),sum(di$n[di$matrix_id %in% unique(di$matrix_id)]),
+                   mres$QE,mres$QEdf,mres$QEp
+                   )
+}
+names(outList) <- pred_vars
+metaRes <- data.frame(metaRes)
+metaRes$skill = pred_vars     
+
+```
+
+```{r}
+#| label: tbl-meta-results
+#| tbl-cap: Meta-analytical associations between SEB skills and academic achievement
+#| apa-note: \\* *p* < .05; \\*\\* *p* < .01; \\*\\*\\* *p* < .001; CI = Confidence intervals; PI = Prediction intervals; se = Standard error
+
+metaResTable <- data.frame(
+  Skill = metaRes$skill,
+  N = paste0(metaRes$N, " (", metaRes$k, ")"),
+  r = paste0(format(round(metaRes$r, 2),nsmall=2),
+             ifelse(metaRes$p < .001, "***",
+                    ifelse(metaRes$p < .01, "**",
+                           ifelse(metaRes$p < .05, "*", "")))),
+  CI = paste0(format(round(metaRes$rcil,2),nsmall=2),"; ",
+              format(round(metaRes$rciu,2),nsmall=2)),
+  PI = paste0(format(round(metaRes$rpil,2),nsmall=2),"; ",
+              format(round(metaRes$rpiu,2),nsmall=2)),
+  se = format(round(metaRes$se,2),nsmall=2),
+  # p = format(round(metaRes$p,4),3),
+  q = paste0(round(metaRes$q), " (",metaRes$qdf,")",
+             ifelse(metaRes$qp < .05, "*",
+                    ifelse(metaRes$qp < .01, "**",
+                           ifelse(metaRes$qp < .001, "***","")))),
+  tau2 = format(round(metaRes$tau2,2),nsmall=2))
+
+# Replace factor levels
+metaResTable$Skill <- labels_app[as.character(metaResTable$Skill)]
+metaResTable <- as.data.frame(metaResTable)
+metaResTable |>
+  flextable() |>
+  theme_apa() |>
+  valign(valign = "top") |>
+  autofit() |>
+  set_header_labels(N = "N (k)")
+#kable(metaResTable)
+```
+
+```{r}
+#| label: fig-meta-analysis-plot
+#| fig-cap: "Meta-analytical associations between the five SEB domains and academic achievement."
+
+# outcomemeta <- "academicachievement"
+# outcomelabel <- varlist$label[varlist$column_name == outcomemeta]
+metaRes$skill <- labels_app[as.character(metaRes$skill)]
+metaRes$CI <- paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ",
+                     format(round(metaRes$rciu,3),nsmall=3),"]")
+
+ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
+  geom_point(shape = 18,
+             color = "black",
+             size = 4) +
+  geom_errorbar(aes(xmin = rcil, xmax = rciu), width = 0, linewidth = .8) +
+  geom_vline(xintercept = c(.00), linetype = "dashed") +
+  labs(y = element_blank()) +
+  scale_x_continuous(breaks = seq(-.10,.50,by=.10),
+                       name = expression("Back-transformed " * hat(r))) +
+  theme_bw(base_size = 16) +
+  #theme(strip.text = element_text(size = 1)) +
+  annotate("text", 
+           x = metaRes$r,
+           y = length(pred_vars):1+.20,
+           label = paste0(round(metaRes$r,3)," ",metaRes$CI), 
+           hjust = "center", size = 5) +
+  coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.10,
+                                  min(metaRes$rcil)),
+                           max(metaRes$rciu)))
+
+```
+
+A total of `r nrow(dm)` effect sizes from `r length(unique(dm$paper_id))` studies and `r length(unique(dm$matrix_id))` samples were included. For each SEB domain, the median available sample size was `r median(dm$n)` (minimum sample size = `r min(dm$n)`; maximum sample size = `r max(dm$n)`).
+
+Of the five meta-analysed correlations with academic achievement, `r as.character(english(sum(metaRes$p<.05)))` were significant, with significant effects ranging between `r round(min(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < 0.05, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < 0.05, Inf, metaRes$r))]`). `r paste0(c("","","and "), metaRes$skill[metaRes$p > 0.05])` were not significantly associated with academic achievement.
+
+The *Q* test for heterogeneity shows that there is significant heterogeneity across studies in at least `r as.character(english(sum(metaRes$qp<.05)))` of the meta-analyses, but the standard deviation of the effects was generally small and ranged between `r round(min(sqrt(metaRes$tau2[metaRes$qp<.05])),2)` and `r round(max(sqrt(metaRes$tau2[metaRes$qp<.05])),2)`. The full set of results is available in @tbl-meta-results and @fig-meta-analysis-plot. 
+
+Though representing the more extensive analysis of the assocation between SEB domains and academic achievement, these results should be regarded as preliminary and illustrative.
+
+## Tutorial Analysis 2: Meta-analytic Structural Equation Modeling
+
+To illustrate the use of meta-analytic structural equation modeling within the Living SEB Project, we tested whether SEB skills predict academic achievement beyond their corresponding Big Five traits. Initially, using the first stage of the two-staged structural equation modelling (TSSEM) procedure we estimated a descriptive pooled correlation matrix of the associations between all the Big Five traits and the five SEB domains [@cheung2015MetaAnalysisStructuralEquation]. Then, using one-stage meta-analytic structural equation modelling (OSMASEM) procedures [@jak2020MetaanalyticStructuralEquation], five saturated regression models were estimated, each including one SEB domain and its matched Big Five trait as predictors of academic achievement. 
+
+The metaSEM [@cheung2024MetaSEMMetaAnalysisUsing] and lavaan [@rosseel2012LavaanPackageStructural] R packages were used for these analysis and the open code of the webMASEM app [@jak2021MetaanalyticStructuralEquation] was used to guide coding of the *Living SEB App* section for MASEM.
+
+```{r}
+#| label: masem-initial-scripts
+#| cache: true
+
+study_info <- c("download_date","doi","year","age_class",
+                "paper_id","matrix_id", 
+                "author_et_al","n","title")
+target_vars <- sort(c("selfmanagement","cooperation","socialengagement", 
+                      "innovation", "emotionalresilience",
+                      "conscientiousness","agreeableness","extraversion",
+                      "openness","neuroticism",
+                      "academicachievement"
+                      ))
+# Get the data in good format
+metaD<-getSEMdata(target_vars,metaData,study_info)
+
+ktab <- pattern.na(metaD$cor_matrices, show.na = FALSE) 
+ntab<-pattern.n(metaD$cor_matrices, metaD$basic_info$n) 
+
+StudyTab <- data.frame(
+    # Dataset = metaD()$basic_info$download_date,
+    StudyID = metaD$basic_info$matrix_id,
+    Authors = metaD$basic_info$author_et_al,
+    Year = as.character(metaD$basic_info$year),
+    Age = as.character(metaD$basic_info$age_class),
+    N = metaD$basic_info$n,
+    doi = metaD$basic_info$doi)
+
+```
+
+```{r}
+#| label: tssem-scripts
+#| cache: true
+
+cfa1 <- metaSEM::tssem1(metaD$cor_matrices, metaD$basic_info$n)
+x <- round(metaSEM::vec2symMat(coef(cfa1,"fixed"),diag=FALSE),2)
+dimnames(x) <- list(paste0(rownames(metaD$cor_matrices[[1]])),
+                    paste0(rownames(metaD$cor_matrices[[1]])))
+```
+
+```{r}
+#| label: tssem-summary
+new_order <- c("selfmanagement","cooperation","socialengagement", 
+                      "innovation", "emotionalresilience",
+                      "conscientiousness","agreeableness","extraversion",
+                      "openness","neuroticism",
+                      "academicachievement"
+                      )
+x_reordered <- x[new_order, new_order]
+
+dimnames(x_reordered) <- list(
+  labels_app[rownames(x_reordered)],
+  labels_app[colnames(x_reordered)]
+)
+
+SumTable <- x_reordered
+dimnames(SumTable) <- list(paste0(1:nrow(SumTable),".",rownames(SumTable)),
+                           paste0(1:nrow(SumTable),"."))
+
+```
+
+MetaSEM analyses were based on varying number of effect sizes per pairwise correlation (i.e., different correlation matrices), with the minimum available effects per correlation being `r min(ktab)` and the maximum being `r max(ktab)`. As a consequence, also sample sizes differed, with the minimum being `r min(ntab)` and the maximum being `r as.character(max(ntab))`. Correlation matrices were taken from `r length(unique(metaD$basic_info$matrix_id))` samples included in `r length(unique(metaD$basic_info$paper_id))` different studies.
+
+```{r}
+#| label: tbl-pooled-cor
+#| tbl-cap: Pooled correlation matrix
+# apa-note:
+#   - Pooled correlations are based on different sample sizes and effects and their precision may vary
+
+pooledTab <- as.data.frame(SumTable)
+pooledTab$Variable <- rownames(pooledTab)
+rownames(pooledTab) <- NULL
+pooledTab <- pooledTab[,c(ncol(pooledTab),1:(ncol(pooledTab)-1))]
+
+# kable(pooledTab)
+pooledTab |>
+  flextable() |>
+  set_caption(caption = "") |>
+  theme_apa() |>
+  valign(valign = "top") |>
+  padding(part = "all", padding = 1) |>
+  fontsize(size = 10, part = "all") |>
+  autofit()
+```
+
+```{r}
+#| label: fig-corrplot
+#| fig-cap: "Pooled correlation matrix"
+library(corrplot)
+corrPlot <- corrplot(SumTable, method = "ellipse", 
+                    addCoef.col = "black", number.cex = 0.8,
+                    tl.col = 'black', tl.srt = 0)
+```
+
+**Pooled correlations**
+
+```{r}
+#| label: pooled-text
+cutoffR <- 0.20
+sumTableRes <- as.data.frame(x_reordered)
+
+highCorVars <- rownames(sumTableRes)[sumTableRes$`Academic achievement` >= cutoffR &
+                                 sumTableRes$`Academic achievement` < 1]
+highCorValue <- sumTableRes$`Academic achievement`[
+  sumTableRes$`Academic achievement` >= cutoffR &
+  sumTableRes$`Academic achievement` < 1
+]
+highCorText <- paste0(highCorVars, 
+                    " (r = ", highCorValue,")")
+
+CorSebTrait <- abs(diag(as.matrix(sumTableRes[1:5,6:10])))
+```
+
+The pooled correlation matrix is reported in @tbl-pooled-cor and in @fig-corrplot. As clear from the diagonal cells linking each skill to the corresponding trait, their correlation is substantial (*r* \> `r min(CorSebTrait)`), with the highest correlation reaching `r max(CorSebTrait)`. For what concerns academic achievement, `r highCorText` were the only variables among SEB skills and Big Five traits showing a pooled correlation higher than *r* \> `r cutoffR` with academic achievement.
+
+**Regression models**
+
+
+```{r}
+#| label: OI-model
+# Openness-innovation
+study_info <- c("download_date","doi","year","age_class",
+                "paper_id","matrix_id", 
+                "author_et_al","n","title")
+target_vars_oi <- sort(c("innovation", 
+                         "openness",
+                         "academicachievement"
+                         ))
+# Get the data in good format
+metaDoi<-getSEMdata(target_vars_oi,metaData,study_info)
+
+model_oi <- "
+  academicachievement ~ openness + innovation
+  openness ~~ innovation
+  openness ~~ 1*openness
+  innovation ~~ 1*innovation
+"
+varnames_oi <- c("academicachievement","openness","innovation")
+RAMoi <- metaSEM::lavaan2RAM(model_oi, obs.variables = varnames_oi)
+T0oi   <- metaSEM::create.Tau2(RAM = RAMoi, 
+                             RE.type = "Diag",
+                             Transform = "expLog", 
+                             RE.startvalues = 0.05)
+my.dfoi <- metaSEM::Cor2DataFrame(metaDoi$cor_matrices, 
+                                metaDoi$basic_info$n, 
+                                acov = "weighted")
+M0oi    <- create.vechsR(A0 = RAMoi$A, 
+                       S0 = RAMoi$S, 
+                       F0 = RAMoi$F)
+    
+fit_oi <- osmasem(model.name = "osmasem oi",
+                  Mmatrix = M0oi, 
+                  Tmatrix = T0oi, 
+                  data = my.dfoi, 
+                  intervals.type = "z")
+
+sumfit_oi <- summary(fit_oi, fitIndices = TRUE)
+
+tab_oi <- sem_results_df(
+  sumfit    = sumfit_oi,
+  sem       = fit_oi,
+  metaD     = list(
+    cor_matrices = metaDoi$cor_matrices,  
+    basic_info   = list(n = metaDoi$basic_info$n)
+  ),
+  labels_app = labels_app   
+)
+
+```
+
+```{r}
+#| label: CS-model
+# Openness-innovation
+target_vars_cs <- sort(c("selfmanagement", 
+                         "conscientiousness",
+                         "academicachievement"
+                         ))
+# Get the data in good format
+metaDcs<-getSEMdata(target_vars_cs,metaData,study_info)
+
+model_cs <- "
+  academicachievement ~ conscientiousness + selfmanagement
+  conscientiousness ~~ selfmanagement
+  conscientiousness ~~ 1*conscientiousness
+  selfmanagement ~~ 1*selfmanagement
+"
+varnames_cs <- c("academicachievement","conscientiousness","selfmanagement")
+RAMcs <- metaSEM::lavaan2RAM(model_cs, obs.variables = varnames_cs)
+T0cs   <- metaSEM::create.Tau2(RAM = RAMcs, 
+                             RE.type = "Diag",
+                             Transform = "expLog", 
+                             RE.startvalues = 0.05)
+my.dfcs <- metaSEM::Cor2DataFrame(metaDcs$cor_matrices, 
+                                metaDcs$basic_info$n, 
+                                acov = "weighted")
+M0cs    <- create.vechsR(A0 = RAMcs$A, 
+                       S0 = RAMcs$S, 
+                       F0 = RAMcs$F)
+    
+fit_cs <- osmasem(model.name = "osmasem cs",
+                  Mmatrix = M0cs, 
+                  Tmatrix = T0cs, 
+                  data = my.dfcs, 
+                  intervals.type = "z")
+
+sumfit_cs <- summary(fit_cs, fitIndices = TRUE)
+
+tab_cs <- sem_results_df(
+  sumfit    = sumfit_cs,
+  sem       = fit_cs,
+  metaD     = list(
+    cor_matrices = metaDcs$cor_matrices,  
+    basic_info   = list(n = metaDcs$basic_info$n)
+  ),
+  labels_app = labels_app   
+)
+
+
+```
+
+```{r}
+#| label: ESE-model
+# Openness-innovation
+target_vars_ese <- sort(c("socialengagement", 
+                         "extraversion",
+                         "academicachievement"
+                         ))
+# Get the data in good format
+metaDese<-getSEMdata(target_vars_ese,metaData,study_info)
+
+model_ese <- "
+  academicachievement ~ extraversion + socialengagement
+  extraversion ~~ socialengagement
+  extraversion ~~ 1*extraversion
+  socialengagement ~~ 1*socialengagement
+"
+varnames_ese <- c("academicachievement","extraversion","socialengagement")
+RAMese <- metaSEM::lavaan2RAM(model_ese, obs.variables = varnames_ese)
+T0ese   <- metaSEM::create.Tau2(RAM = RAMese, 
+                             RE.type = "Diag",
+                             Transform = "expLog", 
+                             RE.startvalues = 0.05)
+my.dfese <- metaSEM::Cor2DataFrame(metaDese$cor_matrices, 
+                                metaDese$basic_info$n, 
+                                acov = "weighted")
+M0ese    <- create.vechsR(A0 = RAMese$A, 
+                       S0 = RAMese$S, 
+                       F0 = RAMese$F)
+    
+fit_ese <- osmasem(model.name = "osmasem ese",
+                  Mmatrix = M0ese, 
+                  Tmatrix = T0ese, 
+                  data = my.dfese, 
+                  intervals.type = "z")
+
+sumfit_ese <- summary(fit_ese, fitIndices = TRUE)
+
+tab_ese <- sem_results_df(
+  sumfit    = sumfit_ese,
+  sem       = fit_ese,
+  metaD     = list(
+    cor_matrices = metaDese$cor_matrices,  
+    basic_info   = list(n = metaDese$basic_info$n)
+  ),
+  labels_app = labels_app   
+)
+
+```
+
+```{r}
+#| label: AC-model
+# Openness-innovation
+target_vars_ac <- sort(c("cooperation", 
+                         "agreeableness",
+                         "academicachievement"
+                         ))
+# Get the data in good format
+metaDac<-getSEMdata(target_vars_ac,metaData,study_info)
+
+model_ac <- "
+  academicachievement ~ agreeableness + cooperation
+  agreeableness ~~ cooperation
+  agreeableness ~~ 1*agreeableness
+  cooperation ~~ 1*cooperation
+"
+varnames_ac <- c("academicachievement","agreeableness","cooperation")
+RAMac <- metaSEM::lavaan2RAM(model_ac, obs.variables = varnames_ac)
+T0ac   <- metaSEM::create.Tau2(RAM = RAMac, 
+                             RE.type = "Diag",
+                             Transform = "expLog", 
+                             RE.startvalues = 0.05)
+my.dfac <- metaSEM::Cor2DataFrame(metaDac$cor_matrices, 
+                                metaDac$basic_info$n, 
+                                acov = "weighted")
+M0ac    <- create.vechsR(A0 = RAMac$A, 
+                       S0 = RAMac$S, 
+                       F0 = RAMac$F)
+    
+fit_ac <- osmasem(model.name = "osmasem ac",
+                  Mmatrix = M0ac, 
+                  Tmatrix = T0ac, 
+                  data = my.dfac, 
+                  intervals.type = "z")
+
+sumfit_ac <- summary(fit_ac, fitIndices = TRUE)
+
+tab_ac <- sem_results_df(
+  sumfit    = sumfit_ac,
+  sem       = fit_ac,
+  metaD     = list(
+    cor_matrices = metaDac$cor_matrices,  
+    basic_info   = list(n = metaDac$basic_info$n)
+  ),
+  labels_app = labels_app   
+)
+
+```
+
+```{r}
+#| label: NER-model
+# Openness-innovation
+target_vars_ner <- sort(c("emotionalresilience", 
+                         "neuroticism",
+                         "academicachievement"
+                         ))
+# Get the data in good format
+metaDner<-getSEMdata(target_vars_ner,metaData,study_info)
+
+model_ner <- "
+  academicachievement ~ neuroticism + emotionalresilience
+  neuroticism ~~ emotionalresilience
+  neuroticism ~~ 1*neuroticism
+  emotionalresilience ~~ 1*emotionalresilience
+"
+varnames_ner <- c("academicachievement","neuroticism","emotionalresilience")
+RAMner <- metaSEM::lavaan2RAM(model_ner, obs.variables = varnames_ner)
+T0ner   <- metaSEM::create.Tau2(RAM = RAMner, 
+                             RE.type = "Diag",
+                             Transform = "expLog", 
+                             RE.startvalues = 0.05)
+my.dfner <- metaSEM::Cor2DataFrame(metaDner$cor_matrices, 
+                                metaDner$basic_info$n, 
+                                acov = "weighted")
+M0ner    <- create.vechsR(A0 = RAMner$A, 
+                       S0 = RAMner$S, 
+                       F0 = RAMner$F)
+    
+fit_ner <- osmasem(model.name = "osmasem ner",
+                  Mmatrix = M0ner, 
+                  Tmatrix = T0ner, 
+                  data = my.dfner, 
+                  intervals.type = "z")
+
+sumfit_ner <- summary(fit_ner, fitIndices = TRUE)
+
+tab_ner <- sem_results_df(
+  sumfit    = sumfit_ner,
+  sem       = fit_ner,
+  metaD     = list(
+    cor_matrices = metaDner$cor_matrices,  
+    basic_info   = list(n = metaDner$basic_info$n)
+  ),
+  labels_app = labels_app   
+)
+
+```
+
+```{r}
+#| label: tbl-osmasem-summary
+#| tbl-cap: OSMASEM regression and correlation coefficients for the five models
+#| apa-note: \\~ = regression path; \\~~ correlation; \\* *p* < .05; \\*\\* *p* < .01; \\*\\*\\* *p* < .001; CI = Confidence intervals; se = Standard error
+
+osmasemTab <- rbind(
+  tab_oi,
+  tab_cs,
+  tab_ese,
+  tab_ac,
+  tab_ner
+)
+
+# Reorder table
+osmasemTab2 <- subset(osmasemTab, 
+                     select = c(Outcome, op, Predictor,
+                                Estimate, SE, CI_95, z, p, `tau (sd)`))
+osmasemTab2$Estimate <- 
+  paste0(osmasemTab2$Estimate,
+             ifelse(osmasemTab2$p < .001, "***",
+                    ifelse(osmasemTab2$p < .01, "**",
+                           ifelse(osmasemTab2$p < .05, "*", ""))))
+osmasemTab2 <- subset(osmasemTab2, select = -c(p))
+osmasemTab2  |>
+  flextable() |>
+  set_caption(caption = "") |>
+  theme_apa() |>
+  valign(valign = "top") |>
+  padding(part = "all", padding = 1) |>
+  fontsize(size = 10, part = "all") |>
+  autofit() |>
+  set_header_labels(op = "",
+                    CI_95 = "CI",
+                    SE = "se")
+
+```
+
+```{r}
+#| label: osmasem-text-results
+osmaskills <- c(
+  "Innovation","Self-management","Social engagement",
+  "Cooperation","Emotional resilience"
+)
+sigSkills <- osmasemTab$Predictor[osmasemTab$Predictor %in%  osmaskills 
+                                  & osmasemTab$op == "~"
+                                  & osmasemTab$p <0.05]
+NsigSkills <- sum(osmasemTab$p[osmasemTab$Predictor %in%  osmaskills
+                               & osmasemTab$op == "~"]<0.05)
+betaSigSkills <- osmasemTab$Estimate[osmasemTab$Predictor %in%  osmaskills 
+                                  & osmasemTab$op == "~"
+                                  & osmasemTab$p <0.05]
+ciSigSkills <- osmasemTab$CI_95[osmasemTab$Predictor %in%  osmaskills 
+                                  & osmasemTab$op == "~"
+                                  & osmasemTab$p <0.05]
+
+sigTraits <- osmasemTab$Predictor[!osmasemTab$Predictor %in%  osmaskills 
+                                  & osmasemTab$op == "~"
+                                  & osmasemTab$p <0.05]
+NsigTraits <- sum(osmasemTab$p[!osmasemTab$Predictor %in%  osmaskills
+                               & osmasemTab$op == "~"]<0.05)
+betaSigTraits <- osmasemTab$Estimate[!osmasemTab$Predictor %in%  osmaskills 
+                                  & osmasemTab$op == "~"
+                                  & osmasemTab$p <0.05]
+ciSigTraits <- osmasemTab$CI_95[!osmasemTab$Predictor %in%  osmaskills 
+                                  & osmasemTab$op == "~"
+                                  & osmasemTab$p <0.05]
+
+nonSigMaxBeta <- max(abs(osmasemTab$Estimate[
+  osmasemTab$op == "~"
+  & osmasemTab$p > 0.05]))
+
+# Effects text
+skillText <- paste0(sigSkills, 
+                    " (b = ", betaSigSkills, 
+                    "; CI = ", ciSigSkills,
+                    ")")
+
+traitText <- paste0(sigTraits, 
+                    " (b = ", betaSigTraits, 
+                    "; CI = ", ciSigTraits,
+                    ")")
+```
+
+From @tbl-osmasem-summary, we can see that `r as.character(english(NsigSkills))` of the SEB skills and `r as.character(english(NsigTraits))` of the personality traits show significant association with academic achievement beyond the corresponding trait/skill. Specifically, `r skillText` and `r traitText` showed significant associations with academic achievement, while all other associations were lower than \|`r nonSigMaxBeta`\| and non-significant.
+
+It should be noted that, for our purposes, we used only the data available from the database search we conducted, but a more refined analysis would require enlarging the research to all studies testing the association between the Big Five and academic achievement to produce better estimates of the covariance between the Big Five themselves and academic achievement. These results should be interpreted as illustrative: they demonstrate the functionality of the metaSEM pipeline within the Living SEB App rather than offering final conclusions about SEB–trait relationships.
+
+## Reproducibility via the Living SEB App
+
+Both tutorial analyses can be reproduced in the Meta-analysis and MetaSEM modules of the Living SEB App. Users can select specific subsets of studies, download data and R code, and generate updated reports. This ensures that results presented here remain transparent, reproducible, and adaptable as the evidence base grows.
+
+# Discussion
+
+In this article, we introduced the *Living SEB Project* and the associated *Living SEB App*, a shiny app for searching and analysing SEB data and papers. Two tutorial meta-analyses were also conduted to exemplify the use that can be done of the data collected in the *Living SEB Project* and the *Living SEB App* and test meta-analytical associations between SEB skills and academic achievement and their incremental validity beyond personality traits. To do this, we employed the two main meta-analysis functions available in the *Living SEB App*, namely three-level meta-analysis of correlation coefficients and MASEM. The results of these analyses show that `r as.character(english(sum(metaRes$p<.05)))` skills were significantly associated with academic achievement, with pooled correlations ranging between `r round(min(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < 0.05, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < 0.05, Inf, metaRes$r))]`). When controlling for personality traits in OSMASEM regression models, `r as.character(english(NsigSkills))` of the SEB skills and `r as.character(english(NsigTraits))` of the personality traits showed significant association with academic achievement beyond the corresponding trait/skill. Specifically, only `r skillText` and `r traitText` showed significant associations with academic achievement. More precise estimates of these associations will be available each month in the living version of this manuscript if new research on the topic is published.
+
+As exemplified in these analysis, the *Living SEB Project* provides the necessary tools for responding research questions and synthesizing the available evidence using meta-analysis. However, different uses can be made of this data and of the *Living SEB App*.
+
+## Use and Utility the Open Data and the *Living SEB App*
+
+First of all, the *Living SEB Project* materials and the app can be used to synthesize the literature based on the SEB framework using meta-analytic procedures and speeding up literature search with useful tools to find all the SEB papers covering a specific topic or using/measuring a specific variable. However, considering the limitations detailed below, the results and the reports that can be obtained using the *Living SEB App* should not be considered as publication-ready meta-analysis, which would require additional steps and integration (e.g., risk of bias analysis, tests for publication bias, moderator analysis, different modelling approaches). For this reason, we suggest using the *Living SEB App* and the open data available to inform hypotheses and Bayesian priors for future studies (e.g., the meta-analytical estimates and confidence intervals obtained might be directly used as quantitative priors). Additionally, the reports downloaded from the app (or the data downloaded together with users' R code) could be directly used to support preregistrations and, for instance, uploaded on the OSF or other preferred platforms as evidence for the justification of the effect sizes used in power analyses. On the other side, reviewers and editors may benefit from this project for their work. Indeed, they can rapidly check whether authors' assertions correspond to up-to-date evidence within the SEB framework, whether the necessary literature has been cited or whether the theoretical introduction and hypotheses are based on the full breadth of evidence or on selected papers. Reports and results obtained from the app could thus be used by reviewers and editors to support their suggestions, without conducting long literature reviews.
+
+Beyond its practical utility, the Living SEB Project has broader implications for the theoretical development of SEB research and psychology more generally. By maintaining a continuously updated, transparent synthesis of findings, the project helps guard against the selective citation, cherry-picking, and conceptual fragmentation that have historically slowed theoretical progress in emerging areas. For SEB research specifically, where competing frameworks and rapid publication rates can easily obscure cumulative patterns, a living evidence base ensures that theories can be tested against the full breadth of available data rather than isolated studies. More broadly, the Living SEB Project illustrates how infrastructures of cumulative evidence can shift psychology toward a more dynamic and self-correcting science. Instead of relying on static reviews that quickly become outdated, researchers can build and refine theoretical models with a continually refreshed evidence base. In this sense, the project does not simply provide a database or app but models a new standard for how psychological theory and evidence can co-evolve.
+
+## Limitations
+
+When designing the Living SEB Project and app, we aimed at finding a good balance between providing enough functionality for the users, while keeping the systematic review process feasible and the application user friendly and intuitive to use. As a consequence, there are many situations in which using the Living SEB App only is not the appropriate choice, but more refined analyses should be conducted locally by the researcher. In particular, only cross-sectional data are available and to analyze experimental and longitudinal data, the necessary data should be manually coded. Additionally, the specific measures used are not coded in the data and different measures are automatically meta-analysed as indicators of a specific outcome or construct. For instance, school engagement could be measured with different questionnaires. Authors interested in more specific and moderator analyses should code those specific information. Similarly, study topics are manually and qualitatively defined by the authors and may not correspond to everybody’s opinion. We acknowledge that our reliance on citation-chaining of seminal SEB works may result in missed eligible publications, particularly those that employ BESSI measures without directly citing the foundational articles. While this approach ensures feasibility and reduces noise, it compromises full systematic comprehensiveness. In the long term, we plan to supplement this strategy with periodic keyword-based searches and, where possible, semi-automated text-mining or machine-learning methods to identify overlooked studies. Meanwhile, we actively encourage researchers to notify us of missing contributions so that the database can remain as inclusive as possible. To date, we are not aware of any published studies within the SEB framework that are excluded.
+
+## Future Perspectives
+
+Given the current limitations, we suggest a use of the *Living SEB Project* and *app* that respect the boundaries of the functionality offered. However, future updates of the project may enlarge the aims of the project and its uses. In particular, with increasing number of longitudinal and experimental publications within the SEB framework, we aim to extend the meta-analysis options to incorporate both possibilities. We also plan to include options for the analysis of moderators and for publication bias. Depending on future funding and resources, we also plan to automatize the database search and coding procedures through the use of ad-hoc alghoritms and artificial intelligence. Finally, we plan to provide users with the possibility to upload additional data to be directly included in the main database.
+
+## Conclusions
+
+To conclude, the current paper provides an initial description of the *Living SEB Project* and we hope that researchers, reviewers, editors, and laypeople will use and appreciate the potentialities offered and that our work may facilitate theirs. We also hope that other colleagues will follow our example and build additional platforms covering their specific field of research.
+
+\newpage
+
+<!-- References will auto-populate in the refs div below -->
+
+# References
+
+::: {#refs}
+:::

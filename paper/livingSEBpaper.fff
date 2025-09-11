@@ -1,0 +1,44 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{fig-prisma}PRISMA flow chart}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{prisma.png}}
+
+}
+
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{fig-meta-analysis-plot}Meta-analytical associations
+between the five SEB domains and academic achievement.}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{livingSEBpaper_files/figure-pdf/fig-meta-analysis-plot-1.pdf}}
+
+}
+
+\end{figure*}
+\efloatseparator
+ 
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{\label{fig-corrplot}Pooled correlation matrix}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{livingSEBpaper_files/figure-pdf/fig-corrplot-1.pdf}}
+
+}
+
+\end{figure*}

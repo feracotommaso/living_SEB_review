@@ -1,0 +1,353 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\caption{{Meta-analytical associations between SEB skills and academic
+achievement}{\label{tbl-meta-results}}}
+\vspace{-20pt}}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{1.55in}|p{0.88in}|p{0.78in}|p{0.90in}|p{0.95in}|p{0.55in}|p{0.73in}|p{0.55in}}
+
+
+
+\ascline{0.75pt}{000000}{1-8}
+
+\multicolumn{1}{>{\centering}m{\dimexpr 1.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{Skill}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{N\ (k)}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.78in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{r}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.9in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{CI}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.95in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{PI}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{se}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.73in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{q}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{tau2}}}} \\
+
+\ascline{0.75pt}{000000}{1-8}\endfirsthead
+
+\ascline{0.75pt}{000000}{1-8}
+
+\multicolumn{1}{>{\centering}m{\dimexpr 1.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{Skill}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{N\ (k)}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.78in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{r}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.9in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{CI}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.95in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{PI}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{se}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.73in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{q}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{tau2}}}} \\
+
+\ascline{0.75pt}{000000}{1-8}\endhead
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{Cooperation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{11601\ (8)}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.78in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.08*}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.9in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.02;\ 0.14}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.95in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{-0.08;\ 0.23}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.73in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{32\ (7)*}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.00}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{Emotional\ resilience}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{11601\ (8)}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.78in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.04**}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.9in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.02;\ 0.06}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.95in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{\ 0.02;\ 0.06}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.01}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.73in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{7\ (7)}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.00}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{Innovation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{11601\ (8)}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.78in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.11*}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.9in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.02;\ 0.20}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.95in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{-0.15;\ 0.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.04}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.73in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{68\ (7)*}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.01}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{Self-management}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{11601\ (8)}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.78in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.23***}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.9in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.16;\ 0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.95in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{\ 0.04;\ 0.40}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.73in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{48\ (7)*}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.01}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{Social\ engagement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.88in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{11601\ (8)}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.78in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.08**}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.9in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.04;\ 0.13}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.95in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{-0.02;\ 0.18}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.02}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.73in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{18\ (7)*}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.55in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{11}{22}\selectfont{\global\setmainfont{Times New Roman}{0.00}}}} \\
+
+\ascline{0.75pt}{000000}{1-8}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+{\vspace{-20pt}
+\noindent \emph{Note.} * \emph{p} \textless{} .05; ** \emph{p}
+\textless{} .01; *** \emph{p} \textless{} .001; CI = Confidence
+intervals; PI = Prediction intervals; se = Standard error}
+
+\end{table*}
+\efloatseparator
+ 
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\caption{{Pooled correlation matrix}{\label{tbl-pooled-cor}}}
+\vspace{-20pt}}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{1.61in}|p{0.43in}|p{0.43in}|p{0.43in}|p{0.43in}|p{0.43in}|p{0.43in}|p{0.43in}|p{0.43in}|p{0.38in}|p{0.43in}|p{0.43in}}
+
+
+
+\ascline{0.75pt}{000000}{1-12}
+
+\multicolumn{1}{>{\centering}m{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Variable}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{2.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{3.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{4.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{5.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{6.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{7.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{8.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{9.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{10.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{11.}}}} \\
+
+\ascline{0.75pt}{000000}{1-12}\endfirsthead
+
+\ascline{0.75pt}{000000}{1-12}
+
+\multicolumn{1}{>{\centering}m{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Variable}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{2.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{3.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{4.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{5.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{6.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{7.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{8.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{9.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{10.}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{11.}}}} \\
+
+\ascline{0.75pt}{000000}{1-12}\endhead
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.Self-management}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.54}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.47}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.43}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.54}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.73}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.32}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.24}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.18}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.31}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.21}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{2.Cooperation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.54}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.53}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.51}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.48}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.64}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.40}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.27}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.06}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{3.Social\ engagement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.47}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.53}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.48}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.49}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.34}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.17}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.75}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.07}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{4.Innovation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.43}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.51}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.48}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.20}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.23}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.30}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.71}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.11}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.10}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{5.Emotional\ resilience}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.54}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.48}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.49}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.36}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.33}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.17}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.72}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.01}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{6.BF\ Conscientiousness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.73}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.34}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.20}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.24}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.12}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.32}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.20}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{7.BF\ Agreeableness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.32}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.64}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.17}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.23}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.36}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.19}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.19}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.26}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.04}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{8.BF\ Extraversion}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.24}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.40}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.75}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.30}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.33}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.24}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.19}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.23}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{9.BF\ Openness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.18}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.71}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.17}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.12}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.19}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.23}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.02}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.05}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{10.BF\ Neuroticism}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.31}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.27}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.11}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.72}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.32}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.26}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.29}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.02}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.02}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.61in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{11.Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.21}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.06}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.07}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.10}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.01}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.20}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.04}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.38in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.05}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.02}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.43in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.00}}}} \\
+
+\ascline{0.75pt}{000000}{1-12}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+\end{table*}
+\efloatseparator
+ 
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\caption{{OSMASEM regression and correlation coefficients for the five
+models}{\label{tbl-osmasem-summary}}}
+\vspace{-20pt}}
+
+\global\setlength{\Oldarrayrulewidth}{\arrayrulewidth}
+
+\global\setlength{\Oldtabcolsep}{\tabcolsep}
+
+\setlength{\tabcolsep}{2pt}
+
+\renewcommand*{\arraystretch}{1.5}
+
+
+
+\providecommand{\ascline}[3]{\noalign{\global\arrayrulewidth #1}\arrayrulecolor[HTML]{#2}\cline{#3}}
+
+\begin{longtable*}[c]{|p{1.44in}|p{0.29in}|p{1.37in}|p{0.70in}|p{0.52in}|p{1.11in}|p{0.50in}|p{0.89in}}
+
+
+
+\ascline{0.75pt}{000000}{1-8}
+
+\multicolumn{1}{>{\centering}m{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Outcome}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Predictor}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Estimate}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{se}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{CI}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{z}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{tau\ (sd)}}}} \\
+
+\ascline{0.75pt}{000000}{1-8}\endfirsthead
+
+\ascline{0.75pt}{000000}{1-8}
+
+\multicolumn{1}{>{\centering}m{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Outcome}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Predictor}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Estimate}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{se}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{CI}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{z}}}} & \multicolumn{1}{>{\centering}m{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{tau\ (sd)}}}} \\
+
+\ascline{0.75pt}{000000}{1-8}\endhead
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Openness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.207}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{86.74}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-169.8;\ 170.21]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.000\ (0.000)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Innovation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.15}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{108.79}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-213.37;\ 213.07]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.008\ (0.089)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Innovation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde \textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Openness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.675}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{54.28}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-105.72;\ 107.07]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.01}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{NaN}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Conscientiousness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.079}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.04}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-0.01;\ 0.17]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.78}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.000\ (0.000)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Self-management}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.171***}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.05}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[0.07;\ 0.27]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{3.43}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.004\ (0.062)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Self-management}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde \textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Conscientiousness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.696***}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[0.64;\ 0.75]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{23.42}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.006\ (0.076)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Extraversion}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.016}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{132.95}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-260.59;\ 260.56]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.000\ (0.000)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Social\ engagement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.099}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{145.67}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-285.42;\ 285.62]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.00}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.001\ (0.025)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Social\ engagement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde \textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Extraversion}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.722}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{73.28}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-142.92;\ 144.36]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.01}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.006\ (0.075)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Agreeableness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.044}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-0.02;\ 0.11]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.35}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.000\ (0.000)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Cooperation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.05}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.04}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-0.02;\ 0.12]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.38}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.003\ (0.053)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Cooperation}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde \textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Agreeableness}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.599***}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.04}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[0.52;\ 0.68]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{15.07}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.012\ (0.109)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Neuroticism}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.074***}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.02}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[0.03;\ 0.12]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{3.34}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.000\ (0.000)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Academic\ achievement}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Emotional\ resilience}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.053}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[0;\ 0.11]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{1.87}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.000\ (0.000)}}}} \\
+
+
+
+
+
+\multicolumn{1}{>{\centering}p{\dimexpr 1.44in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{Emotional\ resilience}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.29in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{\textasciitilde \textasciitilde }}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.37in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{BF\ Neuroticism}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.7in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-0.699***}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.52in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{0.03}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 1.11in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{[-0.75;\ -0.64]}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.5in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{-24.67}}}} & \multicolumn{1}{>{\centering}p{\dimexpr 0.89in+0\tabcolsep}}{\textcolor[HTML]{000000}{\fontsize{10}{20}\selectfont{\global\setmainfont{Times New Roman}{NaN}}}} \\
+
+\ascline{0.75pt}{000000}{1-8}
+
+
+
+\end{longtable*}
+
+
+
+\arrayrulecolor[HTML]{000000}
+
+\global\setlength{\arrayrulewidth}{\Oldarrayrulewidth}
+
+\global\setlength{\tabcolsep}{\Oldtabcolsep}
+
+\renewcommand*{\arraystretch}{1}
+
+{\vspace{-20pt}
+\noindent \emph{Note.} \textasciitilde{} = regression path;
+\textasciitilde\textasciitilde{} correlation; * \emph{p} \textless{}
+.05; ** \emph{p} \textless{} .01; *** \emph{p} \textless{} .001; CI =
+Confidence intervals; se = Standard error}
+
+\end{table*}

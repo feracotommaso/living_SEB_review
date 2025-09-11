@@ -19,13 +19,15 @@ editor: visual
 
 Here you can find the basic resources that everyone may want to use or read:
 
+-   **Living SEB paper** - [html](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html)
+-   **Living SEB app -** [link v0](https://feracoshiny.shinyapps.io/livingSEBapp/) ([user manual](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf))
+-   **Preregistration** - [pdf](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)
 -   **Presentations**
     -   Lab meeting 2025 - 05 - 21 [html](https://feracotommaso.github.io/living_SEB_review/slides/labMeeting/LabMeetingLMA.html){target="_blank"}
--   **Preregistration** - [pdf](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)
--   **Living review**
--   **ShinyApp -** [link v0](https://feracoshiny.shinyapps.io/livingSEBapp/)
 
 ## Navigate the materials
+
+All the materials, including analysis, pdfs, and app are open and reproducible via R, Quarto, or R markdown. Navigate the main GitHub repository to access all.
 
 -   **R code:**
 
@@ -33,14 +35,43 @@ Here you can find the basic resources that everyone may want to use or read:
 
     -   Analysis
 
-    -   Publication
+    -   Papers
+
+    -   Slides
 
 -   **Data**
+
+    -   All literature search bibs and screening procedures
+
+    -   All correlation matrices used
+
+    -   Review and meta-analysis data
+
+    -   Processed participant-level open data from included publications are not shared because we have no right to do so, but are available on request
+
+## Citation
+
+To cite the {*Living SEB project*} in publications use:
+
+Feraco, T. (2025). The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. <https://github.com/feracotommaso/living_SEB_review>
+
+A BibTeX entry for LaTeX users is
+
+```         
+@Misc{,
+    author       = {Feraco Tommaso},
+    title        = {The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
+    year         = 2025,
+    howpublished = {GitHub repository},
+    publisher    = {NA},
+    url          = {https://github.com/feracotommaso/living_SEB_review}
+  }
+```
 
 ------------------------------------------------------------------------
 
 ::: {style="font-size:11px;"}
 GitHub repository associated to the present course website: <https://github.com/feracotommaso/living_SEB_review>
 
-Many thanks to Filippo Gambarota and Enrico Toffalini for sharing their expertise in using GitHub, Quarto, and creating GitHub Pages websites.
+Many thanks to [Filippo](https://filippogambarota.github.io/) Gambarota, [Enrico](https://github.com/EnricoToffalini) Toffalini, and [Margherita](https://github.com/Mar-Cald) Calderan for sharing their expertise in using GitHub, Quarto, and creating GitHub Pages websites.
 :::

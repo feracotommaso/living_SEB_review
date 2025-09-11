@@ -35,6 +35,10 @@ names(d0013)[names(d0013) == "LifeSatisfaction"] <- "satisfactionwithlife"
 d0013a <- d0013[, colnames(d0013) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0013a, use = "pairwise.complete")),"data/3.meta_data/matrices/0013a.xlsx")
 
+# Individual data with age
+d0013 <- d0013[, colnames(d0013) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0013),"data/3.meta_data/open_data/individual_data/0013a.xlsx")
+
 #### --------------------------------------------------- 0018 --------------------------------------------------- ####
 
 rm(list=ls())
@@ -112,13 +116,21 @@ d0018$italian <- d0018$ita
 d0018$academicachievement <- rowMeans(d0018[,c("math","italian")])
 
 # Sex
-d0018$sex <- d0018$sex - 1
+d0018$sex <- d0018$sex - 1 # Males to 0, females to 1
+d0018$age <- d0018$birth
 
 d0018a <- d0018[d0018$dsa == "dsa", colnames(d0018) %in% admcol$column_name]
 d0018b <- d0018[d0018$dsa == "typical", colnames(d0018) %in% admcol$column_name]
 
 writexl::write_xlsx(data.frame(cor(d0018a, use = "pairwise.complete")),"data/3.meta_data/matrices/0018a.xlsx")
 writexl::write_xlsx(data.frame(cor(d0018b, use = "pairwise.complete")),"data/3.meta_data/matrices/0018b.xlsx")
+
+# Individual data with age
+d0018a2 <- d0018[d0018$dsa == "dsa" , colnames(d0018) %in% c(admcol$column_name,"age")]
+d0018b2 <- d0018[d0018$dsa == "typical", colnames(d0018) %in% c(admcol$column_name,"age")]
+
+writexl::write_xlsx(data.frame(d0018a2),"data/3.meta_data/open_data/individual_data/0018a.xlsx")
+writexl::write_xlsx(data.frame(d0018b2),"data/3.meta_data/open_data/individual_data/0018b.xlsx")
 
 #### --------------------------------------------------- 0026 --------------------------------------------------- ####
 rm(list=ls())
@@ -150,6 +162,11 @@ names(d0026)[names(d0026) == "JSB"] <- "jobsatisfaction"
 d0026a <- d0026[, colnames(d0026) %in% admcol$column_name]
 
 writexl::write_xlsx(data.frame(cor(d0026a, use = "pairwise.complete")),"data/3.meta_data/matrices/0026a.xlsx")
+
+
+# Individual data with age
+d0026 <- d0026[, colnames(d0026) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0026),"data/3.meta_data/open_data/individual_data/0026a.xlsx")
 
 #### --------------------------------------------------- 0030a --------------------------------------------------- ####
 rm(list=ls())
@@ -222,8 +239,13 @@ d0030a$socialengagement<-rowMeans(d0030a[,c("leadershipskill", "leadershipskill"
 d0030a$emotionalresilience<-rowMeans(d0030a[,c("stressregulation", "stressregulation", "capacityforoptimism", "capacityforoptimism", "confidenceregulation", "confidenceregulation",
                                              "angermanagement", "angermanagement", "impulseregulation")], na.rm=TRUE) #Emotional Resilience skill
 
+d0030a2 <- d0030a
 d0030a <- d0030a[, colnames(d0030a) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0030a, use = "pairwise.complete")),"data/3.meta_data/matrices/0030a.xlsx")
+
+# Individual data with age
+d0030a2 <- d0030a2[, colnames(d0030a2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0030a2),"data/3.meta_data/open_data/individual_data/0030a.xlsx")
 
 #### --------------------------------------------------- 0030b --------------------------------------------------- ####
 rm(list=ls())
@@ -296,9 +318,13 @@ names(d0030b)[names(d0030b) == "suppression"] <- "suppressionstrat"
 names(d0030b)[names(d0030b) == "reappraisal"] <- "reappraisalstrat"
 
 # Select and save
+d0030b2 <- d0030b
 d0030b <- d0030b[, colnames(d0030b) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0030b, use = "pairwise.complete")),"data/3.meta_data/matrices/0030b.xlsx")
 
+# Individual data with age
+d0030b2 <- d0030b2[, colnames(d0030b2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0030b2),"data/3.meta_data/open_data/individual_data/0030b.xlsx")
 
 #### --------------------------------------------------- 0035 --------------------------------------------------- ####
 rm(list=ls())
@@ -317,7 +343,7 @@ names(d0035)[names(d0035) == "bfi_A"] <- "agreeableness"
 names(d0035)[names(d0035) == "bfi_E"] <- "extraversion"
 names(d0035)[names(d0035) == "bfi_ES"] <- "neuroticism"
 
-names(d0035)[names(d0035) == "RPTD_STDSCN_C"] <- "academicachievement"
+names(d0035)[names(d0035) == "RPTD_STDSCN_C"] <- "standardizedacademicachievement"
 
 # Transform emotional stability to neuroticism
 d0035$neuroticism <- d0035$neuroticism*(-1)
@@ -326,13 +352,61 @@ d0035$neuroticism <- d0035$neuroticism*(-1)
 d0035a <- d0035[, colnames(d0035) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0035a, use = "pairwise.complete")),"data/3.meta_data/matrices/0035a.xlsx")
 
+# Individual data with age
+d0035 <- d0035[, colnames(d0035) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0035),"data/3.meta_data/open_data/individual_data/0035a.xlsx")
+
+#### --------------------------------------------------- 0043 --------------------------------------------------- ####
+rm(list=ls())
+d0043 <- haven::read_sav("data/3.meta_data/open_data/d0043.sav")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0043$sex <- ifelse(d0043$Gender == -1, 0, d0043$Gender)
+
+#ses
+names(d0043)[names(d0043) == "ParentsEducation"] <- "ParentEducation"
+#Seb
+names(d0043)[names(d0043) == "Skill_SelfManagement"] <- "selfmanagement"
+names(d0043)[names(d0043) == "Skill_SocialEngagement"] <- "socialengagement"
+names(d0043)[names(d0043) == "Skill_Cooperation"] <- "cooperation"
+names(d0043)[names(d0043) == "Skill_EmotionalResilience"] <- "emotionalresilience"
+names(d0043)[names(d0043) == "Skill_Innovation"] <- "innovation"
+#Traits
+names(d0043)[names(d0043) == "Trait_SelfManagement"] <- "conscientiousness"
+names(d0043)[names(d0043) == "Trait_Innovation"] <- "openness"
+names(d0043)[names(d0043) == "Trait_Cooperation"] <- "agreeableness"
+names(d0043)[names(d0043) == "Trait_SocialEngagement"] <- "extraversion"
+names(d0043)[names(d0043) == "Trait_EmotionalResilience"] <- "neuroticism"
+d0043$neuroticism <- (-1)*d0043$neuroticism
+#Mosaic
+names(d0043)[names(d0043) == "Mosaic_SustainingEffort"] <- "mosaicSustainingEffort"
+names(d0043)[names(d0043) == "Mosaic_SocialConnection"] <- "mosaicSocialConnection"
+names(d0043)[names(d0043) == "Mosaic_GettingAlongWithOthers"] <- "mosaicGettingAlong"
+names(d0043)[names(d0043) == "Mosaic_MaintainingComposure"] <- "mosaicComposure"
+names(d0043)[names(d0043) == "Mosaic_KeepingAnOpenMind"] <- "mosaicOpenMind"
+#School
+names(d0043)[names(d0043) == "ActTestScore"] <- "standardizedacademicachievement"
+names(d0043)[names(d0043) == "OverallGPA"] <- "academicachievement"
+names(d0043)[names(d0043) == "SchoolAttendance"] <- "schoolattendance"
+names(d0043)[names(d0043) == "EducationalAspirations"] <- "educationalaspiration"
+
+
+# Select and save
+d0043a <- d0043[, colnames(d0043) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0043a, use = "pairwise.complete")),"data/3.meta_data/matrices/0043a.xlsx")
+
+# Individual data with age
+d0043 <- d0043[, colnames(d0043) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0043),"data/3.meta_data/open_data/individual_data/0043a.xlsx")
+
 #### --------------------------------------------------- 0045 --------------------------------------------------- ####
 rm(list=ls())
 d0045 <- readxl::read_excel("data/3.meta_data/open_data/d0045.xlsx")
 admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
 
 # Transform scores
-d0045$sex <- ifelse(d0045$gender == 2, NA, ifelse(d0045$gender==0,2, d0045$gender))
+d0045$sex <- ifelse(d0045$gender == 2, NA, ifelse(d0045$gender==0,1,0))
 d0045$volunteering <- d0045$hour_group
 
 #Self-Management skill facets
@@ -351,6 +425,10 @@ d0045$stressregulation<-rowMeans(d0045[,c("bessi_5", "bessi_37", "bessi_69", "be
 # Select and save
 d0045a <- d0045[, colnames(d0045) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0045a, use = "pairwise.complete")),"data/3.meta_data/matrices/0045a.xlsx")
+
+# Individual data with age
+d0045 <- d0045[, colnames(d0045) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0045),"data/3.meta_data/open_data/individual_data/0045a.xlsx")
 
 #### --------------------------------------------------- 0048 --------------------------------------------------- ####
 rm(list=ls())
@@ -415,6 +493,10 @@ names(d0048)[names(d0048) == "LifeSatisfaction"] <- "satisfactionwithlife"
 # Select and save
 d0048a <- d0048[, colnames(d0048) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0048a, use = "pairwise.complete")),"data/3.meta_data/matrices/0048a.xlsx")
+
+# Individual data with age
+d0048 <- d0048[, colnames(d0048) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0048),"data/3.meta_data/open_data/individual_data/0048a.xlsx")
 
 #### --------------------------------------------------- 0049 --------------------------------------------------- ####
 rm(list=ls())
@@ -496,6 +578,10 @@ d0049$task_emotionalresilience <- rowMeans (select(d0049,Resilience_Observed_R1,
 d0049a <- d0049[, colnames(d0049) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0049a, use = "pairwise.complete")),"data/3.meta_data/matrices/0049a.xlsx")
 
+# Individual data with age
+d0049 <- d0049[, colnames(d0049) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0049),"data/3.meta_data/open_data/individual_data/0049a.xlsx")
+
 #### --------------------------------------------------- 0050a --------------------------------------------------- ####
 rm(list=ls())
 load("data/3.meta_data/open_data/d0050.Rdata")
@@ -563,9 +649,13 @@ names(d0050a)[names(d0050a) == "inde_prm"] <- "capacityforindependence"
 names(d0050a)[names(d0050a) == "adap_prm"] <- "adaptability"
 
 # Select and save
+d0050a2 <- d0050a
 d0050a <- d0050a[, colnames(d0050a) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0050a, use = "pairwise.complete")),"data/3.meta_data/matrices/0050a.xlsx")
 
+# Individual data with age
+d0050a2 <- d0050a2[, colnames(d0050a2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0050a2),"data/3.meta_data/open_data/individual_data/0050a.xlsx")
 
 #### --------------------------------------------------- 0050b --------------------------------------------------- ####
 rm(list=ls())
@@ -677,8 +767,13 @@ names(d0050b)[names(d0050b) == "b5_emos_vol_prm"] <- "bf_emotionalvolatility"
 d0050b$bf_emotionalvolatility <- (-1)*d0050b$bf_emotionalvolatility
 
 # Select and save
+d0050b2 <- d0050b
 d0050b <- d0050b[, colnames(d0050b) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0050b, use = "pairwise.complete")),"data/3.meta_data/matrices/0050b.xlsx")
+
+# Individual data with age
+d0050b2 <- d0050b2[, colnames(d0050b2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0050b2),"data/3.meta_data/open_data/individual_data/0050b.xlsx")
 
 #### --------------------------------------------------- 0053c --------------------------------------------------- ####
 rm(list=ls())
@@ -744,8 +839,13 @@ names(d0053c)[names(d0053c) == "BESSI_XX_CapacityForIndependence"] <- "capacityf
 names(d0053c)[names(d0053c) == "BESSI_XX_Adaptability"] <- "adaptability"
 
 # Select and save
+d0053c2<-d0053c
 d0053c <- d0053c[, colnames(d0053c) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0053c, use = "pairwise.complete")),"data/3.meta_data/matrices/0053c.xlsx")
+
+# Individual data with age
+d0053c2 <- d0053c2[, colnames(d0053c2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0053c2),"data/3.meta_data/open_data/individual_data/0053c.xlsx")
 
 #### --------------------------------------------------- 0053d --------------------------------------------------- ####
 rm(list=ls())
@@ -809,8 +909,13 @@ names(d0053d)[names(d0053d) == "BESSI_XX_CapacityForIndependence"] <- "capacityf
 names(d0053d)[names(d0053d) == "BESSI_XX_Adaptability"] <- "adaptability"
 
 # Select and save
+d0053d2<-d0053d
 d0053d <- d0053d[, colnames(d0053d) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0053d, use = "pairwise.complete")),"data/3.meta_data/matrices/0053d.xlsx")
+
+# Individual data with age
+d0053d2 <- d0053d2[, colnames(d0053d2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0053d2),"data/3.meta_data/open_data/individual_data/0053d.xlsx")
 
 #### --------------------------------------------------- 0053e --------------------------------------------------- ####
 rm(list=ls())
@@ -935,8 +1040,13 @@ names(d0053e)[names(d0053e) == "SELS_SocialAwareness"] <- "selsocial"
 
 names(d0053e)
 # Select and save
+d0053e2<-d0053e
 d0053e <- d0053e[, colnames(d0053e) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0053e, use = "pairwise.complete")),"data/3.meta_data/matrices/0053e.xlsx")
+
+# Individual data with age
+d0053e2 <- d0053e2[, colnames(d0053e2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0053e2),"data/3.meta_data/open_data/individual_data/0053e.xlsx")
 
 #### --------------------------------------------------- 0053f --------------------------------------------------- ####
 rm(list=ls())
@@ -1019,8 +1129,13 @@ names(d0053f)[names(d0053f) == "MIP_Conventional"] <- "conventionalinterests"
 
 
 # Select and save
+d0053f2<-d0053f
 d0053f <- d0053f[, colnames(d0053f) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0053f, use = "pairwise.complete")),"data/3.meta_data/matrices/0053f.xlsx")
+
+# Individual data with age
+d0053f2 <- d0053f2[, colnames(d0053f2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0053f2),"data/3.meta_data/open_data/individual_data/0053f.xlsx")
 
 #### --------------------------------------------------- 0053g --------------------------------------------------- ####
 rm(list=ls())
@@ -1086,8 +1201,13 @@ names(d0053g)[names(d0053g) == "BESSI_XX_CapacityForIndependence"] <- "capacityf
 names(d0053g)[names(d0053g) == "BESSI_XX_Adaptability"] <- "adaptability"
 
 # Select and save
+d0053g2<-d0053g
 d0053g <- d0053g[, colnames(d0053g) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0053g, use = "pairwise.complete")),"data/3.meta_data/matrices/0053g.xlsx")
+
+# Individual data with age
+d0053g2 <- d0053g2[, colnames(d0053g2) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0053g2),"data/3.meta_data/open_data/individual_data/0053g.xlsx")
 
 #### --------------------------------------------------- 0068 --------------------------------------------------- ####
 rm(list=ls())
@@ -1127,6 +1247,10 @@ names(d0068)[names(d0068) == "adapt"] <- "careeradaptability"
 # Select and save
 d0068a <- d0068[, colnames(d0068) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0068a, use = "pairwise.complete")),"data/3.meta_data/matrices/0068a.xlsx")
+
+# Individual data with age
+d0068 <- d0068[, colnames(d0068) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0068),"data/3.meta_data/open_data/individual_data/0068a.xlsx")
 
 #### --------------------------------------------------- 0070 --------------------------------------------------- ####
 rm(list=ls())
@@ -1172,3 +1296,68 @@ d0070$emotionalresilience<-rowMeans(d0070[,c("bessi_4", "bessi_9", "bessi_14", "
 # Select and save
 d0070a <- d0070[, colnames(d0070) %in% admcol$column_name]
 writexl::write_xlsx(data.frame(cor(d0070a, use = "pairwise.complete")),"data/3.meta_data/matrices/0070a.xlsx")
+
+# Individual data with age
+d0070 <- d0070[, colnames(d0070) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0070),"data/3.meta_data/open_data/individual_data/0070a.xlsx")
+
+#### --------------------------------------------------- 0071 --------------------------------------------------- ####
+rm(list=ls())
+d0071 <- readxl::read_excel("data/3.meta_data/open_data/d0071.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0071)
+
+# Transform scores
+d0071$sex <- ifelse(d0071$Gender == "Male", 0, 
+                    ifelse(d0071$Gender == "Female", 1, NA)) # Males to 0, Females to 1
+d0071$age <- d0071$Age
+
+# Five BESSI skill domains 
+d0071$selfmanagement<-rowMeans(d0071[,c("bessi_1",  "bessi_6", "bessi_11", "bessi_16",
+                                        "bessi_21", "bessi_26", "bessi_31", "bessi_36",
+                                        "bessi_41")], na.rm=TRUE) #Self Management skill
+
+d0071$innovation<-rowMeans(d0071[,c("bessi_5", "bessi_10", "bessi_15", "bessi_20",
+                                    "bessi_25", "bessi_30", "bessi_35", "bessi_40",
+                                    "bessi_45")], na.rm=TRUE) #Innovation skill
+
+d0071$cooperation<-rowMeans(d0071[,c("bessi_3", "bessi_8", "bessi_13", "bessi_18",
+                                     "bessi_23", "bessi_28", "bessi_33", "bessi_38",
+                                     "bessi_43")], na.rm=TRUE) #Cooperation skill
+
+d0071$socialengagement<-rowMeans(d0071[,c("bessi_2", "bessi_7", "bessi_12", "bessi_17",
+                                          "bessi_22", "bessi_27", "bessi_32", "bessi_37",
+                                          "bessi_42")], na.rm=TRUE) #Social Engagement skill
+
+d0071$emotionalresilience<-rowMeans(d0071[,c("bessi_4", "bessi_9", "bessi_14", "bessi_19",
+                                             "bessi_24", "bessi_29", "bessi_34", "bessi_39",
+                                             "bessi_44")], na.rm=TRUE) #Emotional Resilience skill
+
+
+# School factors
+d0071$srlstrategies <- rowMeans(d0071[,c("qas_1","qas_10","qas_12","qas_15","qas_2",
+                                             "qas_3","qas_7","qas_13","qas_4","qas_8",
+                                             "qas_9","qas_14","qas_5","qas_6","qas_11","qas_16")])
+d0071$masterygoals <- rowMeans(subset(d0071, select = c(qc_5,qc_6,qc_7,qc_8 )))
+d0071$academicselfefficacy <- rowMeans(subset(d0071, select = c( qc_9,qc_10,qc_11,qc_12)))
+d0071$positiveachievementemotions <- rowMeans(subset(d0071, select = c(qe_2,qe_4,qe_6,qe_8,qe_10,qe_12,qe_14)))
+d0071$negativeachievementemotions <- rowMeans(subset(d0071, select = c(qe_1,qe_3,qe_5,qe_7,qe_9,qe_11,qe_13)))
+d0071$academicachievement <- d0071$media
+
+# Broad factors
+d0071$growthmindset <- rowMeans(subset(d0071, select = c(qc_1,qc_2,qc_3,qc_4)))
+
+d0071$satisfactionwithlife <- rowMeans(subset(d0071, select = c(swls_1,swls_2,swls_3,swls_4,swls_5)))
+d0071$peeracceptance <- rowMeans(subset(d0071, select = c(acc_1,acc_2,acc_3,acc_4,acc_5,
+                                                            acc_6,acc_7,acc_8,acc_9,acc_10,
+                                                            acc_11,acc_12)))
+
+# Select and save
+d0071a <- d0071[, colnames(d0071) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0071a, use = "pairwise.complete")),"data/3.meta_data/matrices/0071a.xlsx")
+
+# Individual data with age
+d0071 <- d0071[, colnames(d0071) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0071),"data/3.meta_data/open_data/individual_data/0071a.xlsx")
+

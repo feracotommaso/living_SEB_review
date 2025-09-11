@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tommaso Feraco">
+<meta name="keywords" content="meta-analysis; systematic review; living review; socio-emotional skills; open science">
+<meta name="description" content="THE LIVING SEB PROJECT">
+
+<title>The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="livingSEBpaper_files/libs/clipboard/clipboard.min.js"></script>
+<script src="livingSEBpaper_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="livingSEBpaper_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="livingSEBpaper_files/libs/quarto-html/popper.min.js"></script>
+<script src="livingSEBpaper_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="livingSEBpaper_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="livingSEBpaper_files/libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="livingSEBpaper_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="livingSEBpaper_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="livingSEBpaper_files/libs/bootstrap/bootstrap-accd75c2bd871f03c4c02dcc9260e8c4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="livingSEBpaper_files/libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+
+<script src="livingSEBpaper_files/libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+
+<link rel="stylesheet" href="_extensions/wjschne/apaquarto/apa.css">
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#preregistration-and-open-materials" id="toc-preregistration-and-open-materials" class="nav-link" data-scroll-target="#preregistration-and-open-materials">Preregistration and Open Materials</a></li>
+  <li><a href="#search-strategy" id="toc-search-strategy" class="nav-link" data-scroll-target="#search-strategy">Search Strategy</a></li>
+  <li><a href="#study-eligibility-criteria" id="toc-study-eligibility-criteria" class="nav-link" data-scroll-target="#study-eligibility-criteria">Study Eligibility Criteria</a>
+  <ul class="collapse">
+  <li><a href="#meta-analysis-inclusion" id="toc-meta-analysis-inclusion" class="nav-link" data-scroll-target="#meta-analysis-inclusion">Meta-analysis Inclusion</a></li>
+  <li><a href="#coding-procedures" id="toc-coding-procedures" class="nav-link" data-scroll-target="#coding-procedures">Coding Procedures</a></li>
+  </ul></li>
+  <li><a href="#updating-procedures" id="toc-updating-procedures" class="nav-link" data-scroll-target="#updating-procedures">Updating Procedures</a></li>
+  <li><a href="#the-living-seb-app" id="toc-the-living-seb-app" class="nav-link" data-scroll-target="#the-living-seb-app">The Living SEB App</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#database-overview" id="toc-database-overview" class="nav-link" data-scroll-target="#database-overview">Database Overview</a></li>
+  <li><a href="#tutorial-analysis-1-multilevel-meta-analysis-of-correlations" id="toc-tutorial-analysis-1-multilevel-meta-analysis-of-correlations" class="nav-link" data-scroll-target="#tutorial-analysis-1-multilevel-meta-analysis-of-correlations">Tutorial Analysis 1: Multilevel Meta-analysis of correlations</a></li>
+  <li><a href="#tutorial-analysis-2-meta-analytic-structural-equation-modeling" id="toc-tutorial-analysis-2-meta-analytic-structural-equation-modeling" class="nav-link" data-scroll-target="#tutorial-analysis-2-meta-analytic-structural-equation-modeling">Tutorial Analysis 2: Meta-analytic Structural Equation Modeling</a></li>
+  <li><a href="#reproducibility-via-the-living-seb-app" id="toc-reproducibility-via-the-living-seb-app" class="nav-link" data-scroll-target="#reproducibility-via-the-living-seb-app">Reproducibility via the Living SEB App</a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
+  <ul class="collapse">
+  <li><a href="#use-and-utility-the-open-data-and-the-living-seb-app" id="toc-use-and-utility-the-open-data-and-the-living-seb-app" class="nav-link" data-scroll-target="#use-and-utility-the-open-data-and-the-living-seb-app">Use and Utility the Open Data and the <em>Living SEB App</em></a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  <li><a href="#future-perspectives" id="toc-future-perspectives" class="nav-link" data-scroll-target="#future-perspectives">Future Perspectives</a></li>
+  <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\livingSEBpaper.pdf"><i class="bi bi-file-pdf"></i>PDF (apaquarto)</a></li><li><a href="..\livingSEBpaper.pdf"><i class="bi bi-file-pdf"></i>Typst (apaquarto)</a></li><li><a href="livingSEBpaper.docx"><i class="bi bi-file-word"></i>MS Word (apaquarto)</a></li></ul></div></nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+
+
+
+<br>
+
+<br>
+
+<section id="title" class="level1 title unnumbered unlisted">
+<h1 class="title unnumbered unlisted">The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills</h1>
+<div class="Author">
+<br>
+
+<p>Tommaso Feraco</p>
+<p>Department of General Psychology, University of Padova</p>
+</div>
+<br>
+
+<br>
+
+</section>
+<section id="author-note" class="level1 unnumbered unlisted AuthorNote">
+<h1 class="unnumbered unlisted AuthorNote">Author Note</h1>
+<p>Tommaso Feraco <img src="_extensions/wjschne/apaquarto/ORCID-iD_icon-vector.svg" id="orchid" class="img-fluid" style="width:4.23mm" alt="Orcid ID Logo: A green circle with white letters ID"> <a href="https://orcid.org/0000-0002-8920-5330">https://orcid.org/0000-0002-8920-5330</a></p>
+<p>The study was preregistered at https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf Data, code, and materials are available at https://github.com/feracotommaso/living_SEB_review The authors have no conflict of interest to declare The authors received no funding for this study</p>
+<p>Correspondence concerning this article should be addressed to Tommaso Feraco, Department of General Psychology, University of Padova, Via Venezia 8, Padova, Veneto 35129, Italy, Email: <a href="mailto:tommaso.feraco@unipd.it">tommaso.feraco@unipd.it</a></p>
+<br>
+</section>
+<section id="abstract" class="level1 unnumbered unlisted AuthorNote">
+<h1 class="unnumbered unlisted AuthorNote">Abstract</h1>
+<div class="AbstractFirstParagraph">
+<p>The social, emotional, and behavioral (SEB) skills framework was recently proposed as an integrative model for soft skills, socio-emotional competences, and 21st-century skills. To keep this research field open, accessible, and cumulative from its inception, we introduce the Living SEB Project, the first living systematic review and meta-analysis dedicated to SEB skills. This initiative integrates continuous literature searches, an open database of coded studies and effect sizes, and an interactive web application (the Living SEB App) that enables customized analyses. Following PRISMA guidelines, we identified -at the time of writing- 259 publications, of which 21 met criteria for the living review and 14 for quantitative synthesis, encompassing 21 independent samples. Two tutorial analyses illustrate the project’s utility: a multilevel meta-analysis of SEB–academic achievement associations and a meta-analytic structural equation model testing SEB skills’ incremental validity beyond personality traits. Preliminary findings suggest that SEB domains such as self-management are significantly associated with academic achievement, with self-management also showing unique predictive value beyond Big Five traits. By providing a transparent, dynamic, and openly accessible dataset and an interactive Shiny app, the Living SEB Project offers a sustainable infrastructure to consolidate evidence, accelerate cumulative science, and model living evidence synthesis within the SEB framework and psychology more broadly.</p>
+</div>
+<p><em>Keywords</em>: meta-analysis; systematic review; living review; socio-emotional skills; open science</p>
+<br>
+</section>
+<section id="firstheader" class="level1 title unnumbered unlisted">
+<h1 class="title unnumbered unlisted">The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills</h1>
+<!-- The introduction should not have a level-1 heading such as Introduction. -->
+<p>Social, emotional, and behavioral (SEB) skills—sometimes referred to as “soft skills,” “21st-century skills,” or “social-emotional skills”—are increasingly recognized as essential for success, well-being, and social functioning <span class="citation" data-cites="heckman2012 feracoIntegratedModelSchool2023">(<a href="#ref-feracoIntegratedModelSchool2023" role="doc-biblioref">Feraco et al., 2023</a>; <a href="#ref-heckman2012" role="doc-biblioref">Heckman &amp; Kautz, 2012</a>)</span>. In recent years, new frameworks have sought to overcome the field’s long-standing challenges of fragmented conceptualizations and reliance on personality trait measures <span class="citation" data-cites="abrahamsSocialemotionalSkillAssessment2019 guoRolesSocialEmotional2023 sotoIntegrativeFrameworkConceptualizing2022">(<a href="#ref-abrahamsSocialemotionalSkillAssessment2019" role="doc-biblioref">Abrahams et al., 2019</a>; <a href="#ref-guoRolesSocialEmotional2023" role="doc-biblioref">Guo et al., 2023</a>; <a href="#ref-sotoIntegrativeFrameworkConceptualizing2022" role="doc-biblioref">Soto et al., 2022</a>)</span>. The Behavioral, Emotional, and Social Skills Inventory [BESSI; <span class="citation" data-cites="sotoIntegrativeFrameworkConceptualizing2022">Soto et al. (<a href="#ref-sotoIntegrativeFrameworkConceptualizing2022" role="doc-biblioref">2022</a>)</span>] and related adaptations now provide a systematic way to assess SEB skills as functional capacities, distinct from but complementary to personality traits. This progress has created a timely opportunity to consolidate evidence and accelerate research on SEB skills.</p>
+<p>At the same time, psychology as a discipline faces a broader methodological challenge: the absence of infrastructures that make knowledge cumulative, dynamic, and accessible. Traditional meta-analyses and systematic reviews provide rigorous syntheses of evidence but are static by design. Given the accelerating pace of publication, they often become outdated within just a few years <span class="citation" data-cites="elliottLivingSystematicReviews2014 sakalukReconsideringWhatMakes2023 elliottLivingSystematicReview2017">(<a href="#ref-elliottLivingSystematicReviews2014" role="doc-biblioref">Elliott et al., 2014</a>; <a href="#ref-elliottLivingSystematicReview2017" role="doc-biblioref">Elliott et al., 2017</a>; <a href="#ref-sakalukReconsideringWhatMakes2023" role="doc-biblioref">Sakaluk et al., 2023</a>)</span>. As a result, promising frameworks—such as SEB skills—risk fragmentation or premature stagnation if evidence cannot be continually updated and integrated.</p>
+<p>To address this challenge, the concept of <em>living systematic reviews</em> has been developed in medicine and health sciences: reviews that are continually updated as new studies are published <span class="citation" data-cites="elliottLivingSystematicReview2017">(<a href="#ref-elliottLivingSystematicReview2017" role="doc-biblioref">Elliott et al., 2017</a>)</span>. However, their adoption in psychology has been limited, and to our knowledge, no living meta-analysis has yet been devoted to SEB skills. This gap is particularly striking given that SEB research is a young and rapidly growing field—precisely the type of domain where static reviews are most vulnerable to obsolescence.</p>
+<p>The present article introduces the <em>Living SEB Project</em>: the first living systematic review and meta-analysis dedicated to SEB skills. This initiative integrates (a) ongoing systematic literature searches, (b) centralized open databases of coded study information and effect sizes, and (c) a user-friendly web application for customized analyses. Together, these tools are designed to provide researchers, reviewers, editors, and even practitioners with continually updated, openly accessible evidence.</p>
+<p>We position the Living SEB Project primarily as an infrastructure for cumulative science. To illustrate its utility, we also present two tutorial analyses of the current database: a multilevel meta-analysis of the associations between SEB domains and academic achievement, and a meta-analytic structural equation model testing incremental validity of SEB skills beyond personality traits. These results should be regarded as illustrative demonstrations of the living framework rather than definitive conclusions, given the small number of studies currently available and the rapidly increasing number of publications on the topic. However, an updated version of the results of this paper will be published monthly.</p>
+<p>Our overarching goal is to prevent SEB research from repeating the familiar cycle of fragmentation and stagnation. By building a transparent and adaptable infrastructure for evidence integration, we hope not only to support progress in this field, but also to offer a model for living evidence synthesis in psychology more broadly.</p>
+<section id="social-emotional-and-behavioral-skills" class="level2">
+<h2 data-anchor-id="social-emotional-and-behavioral-skills">Social, Emotional, and Behavioral Skills</h2>
+<p>The Living SEB Project is grounded in the conceptualization of SEB skills proposed by Soto and colleagues <span class="citation" data-cites="sotoTakingSkillsSeriously2021 sotoIntegrativeFrameworkConceptualizing2022">(<a href="#ref-sotoTakingSkillsSeriously2021" role="doc-biblioref">2021</a>; <a href="#ref-sotoIntegrativeFrameworkConceptualizing2022" role="doc-biblioref">2022</a>)</span>. In this framework, SEB skills are defined as the functional capacities individuals can draw upon to build relationships, pursue goals, think creatively, and regulate emotions. Importantly, skills differ from personality traits: whereas traits capture enduring patterns of thought, feeling, and behavior, skills reflect what individuals <em>can do when required</em>. For example, a person may typically avoid public speaking (a trait tendency) but still be able to deliver an effective presentation when needed (a skill capacity).</p>
+<p>To assess these skills, the Behavioral, Emotional, and Social Skills Inventory (BESSI) was developed <span class="citation" data-cites="sotoIntegrativeFrameworkConceptualizing2022">(<a href="#ref-sotoIntegrativeFrameworkConceptualizing2022" role="doc-biblioref">Soto et al., 2022</a>)</span>. BESSI items are phrased to measure capacities (“How well can you…?”) rather than frequencies (“How often do you…?”), distinguishing skills from traits and are grouped into five broad domains, paralleling the Big Five but from a skills-based perspective:</p>
+<ul>
+<li><p>Innovation skills, including the capacities used to process and engage novel ideas and experiences (linked to the openness personality trait).</p></li>
+<li><p>Self-management skills, including the capacities used to manage and complete goal-related tasks (linked to the conscientiousness personality trait).</p></li>
+<li><p>Social engagement skills, including the capacities used to actively and efficiently engage and communicate with other people (linked to the extraversion personality trait).</p></li>
+<li><p>Cooperation skills, including the capacities used to maintain positive social relationships (linked to the agreeableness personality trait).</p></li>
+<li><p>Emotional resilience skills, including the capacities used to regulate emotions and moods (linked to the emotional stability personality trait).</p></li>
+</ul>
+<p>Research adopting the SEB framework has reported promising findings. SEB skills show both overlap with, and incremental validity beyond, personality traits <span class="citation" data-cites="feracoItalianBehavioralEmotional2024 lechnerBehavioralEmotionalSocial2022 postigoBehavioralEmotionalSocial2024 sotoGoingTraitsSocial2024 sotoWhatWhatCan2023 yoonExaminingSEBSkills2024 chenSocialEmotionalBehavioral2024">(<a href="#ref-chenSocialEmotionalBehavioral2024" role="doc-biblioref">Chen et al., 2024</a>; <a href="#ref-feracoItalianBehavioralEmotional2024" role="doc-biblioref">Feraco et al., 2024</a>; <a href="#ref-lechnerBehavioralEmotionalSocial2022" role="doc-biblioref">Lechner et al., 2022</a>; <a href="#ref-postigoBehavioralEmotionalSocial2024" role="doc-biblioref">Postigo et al., 2024</a>; <a href="#ref-sotoWhatWhatCan2023" role="doc-biblioref">Soto et al., 2023</a>; <a href="#ref-sotoGoingTraitsSocial2024" role="doc-biblioref">Soto et al., 2024</a>; <a href="#ref-yoonExaminingSEBSkills2024" role="doc-biblioref">Yoon et al., 2024</a>)</span>. Additionally, skills–traits mismatches (e.g., high extraversion but low social engagement skills) predict unique outcomes for adolescents <span class="citation" data-cites="ringwaldMoreSkillTrait2025">(<a href="#ref-ringwaldMoreSkillTrait2025" role="doc-biblioref">Ringwald et al., 2025</a>)</span>. For instance, students with higher skills than traits reported better outcomes than students with higher traits than skills (i.e., a person that usually does something but is not very good at it). Evidence also suggests that skills and traits follow similar but distinct developmental trajectories <span class="citation" data-cites="napolitanoChangesSocialEmotional2025 feracoSocialEmotionalBehavioral2023">(<a href="#ref-feracoSocialEmotionalBehavioral2023" role="doc-biblioref">Feraco &amp; Meneghetti, 2023</a>; <a href="#ref-napolitanoChangesSocialEmotional2025" role="doc-biblioref">Napolitano et al., 2025</a>)</span>, and laypeople perceive them as meaningfully different constructs <span class="citation" data-cites="feracoDifferencesChangeGoals2025">(<a href="#ref-feracoDifferencesChangeGoals2025" role="doc-biblioref">Feraco et al., 2025</a>)</span>.</p>
+<p>Despite this progress, results are already becoming complex and sometimes contradictory, making integration difficult. In such a rapidly developing area, reliance on static reviews or individuals’ literature searches risks selective citation, cherry-picking of results, and conceptual fragmentation. This provides a strong rationale for a living and cumulative approach to synthesis of SEB research.</p>
+</section>
+<section id="introducing-living-reviews-and-meta-analyses" class="level2">
+<h2 data-anchor-id="introducing-living-reviews-and-meta-analyses">Introducing Living Reviews and Meta-Analyses</h2>
+<p>Current approaches to theoretical and quantitative synthesis of scientific materials mainly rely on solid meta-analyses and systematic reviews. However, especially in view of the steeply increasing number of publications, both of them become outdated soon, requiring continuous updates often conducted by different authors and, even if data sharing is becoming more common nowadays, building on previous meta-analysis often requires running a new database search or coding additional information leading new authors to run meta-analysis (even on the same effect) from scratch, requiring duplicate screening of the materials and loss of resources, time and possibly increasing human error.</p>
+<p>Traditional systematic reviews and meta-analyses remain cornerstones of evidence synthesis, but they are constrained by their static nature. With accelerating publication rates, even well-conducted reviews become outdated within a few years, requiring repeated duplication of labor <span class="citation" data-cites="elliottLivingSystematicReview2017 boscoCloudbasedMetaanalysisBridge2015">(<a href="#ref-boscoCloudbasedMetaanalysisBridge2015" role="doc-biblioref">Bosco et al., 2015</a>; <a href="#ref-elliottLivingSystematicReview2017" role="doc-biblioref">Elliott et al., 2017</a>)</span>. Indeed, each new meta-analysis often starts from scratch: searching, screening, and coding the same studies anew, which consumes resources, risks errors, and slows cumulative progress.</p>
+<p>To overcome these issues, living meta-analysis and databases are now appearing in the literature, especially for medical studies, clinical trials, and interventions <span class="citation" data-cites="cuijpersLivingSystematicReviews2022 elliottLivingSystematicReviews2014 howardWhyWeNeed2025 sakalukReconsideringWhatMakes2023 spadaroCooperationDatabankMachineReadable2022 boscoCloudbasedMetaanalysisBridge2015">(<a href="#ref-boscoCloudbasedMetaanalysisBridge2015" role="doc-biblioref">Bosco et al., 2015</a>; <a href="#ref-cuijpersLivingSystematicReviews2022" role="doc-biblioref">Cuijpers et al., 2022</a>; <a href="#ref-elliottLivingSystematicReviews2014" role="doc-biblioref">Elliott et al., 2014</a>; <a href="#ref-howardWhyWeNeed2025" role="doc-biblioref">Howard &amp; Slemp, 2025</a>; <a href="#ref-sakalukReconsideringWhatMakes2023" role="doc-biblioref">Sakaluk et al., 2023</a>; <a href="#ref-spadaroCooperationDatabankMachineReadable2022" role="doc-biblioref">Spadaro et al., 2022</a>)</span>. These approaches maintain a continually updated database of eligible studies, alongside transparent procedures for incorporating new evidence. These approaches might have their largest benefits for rapidly evolving fields where timely integration of knowledge is critical. Nonetheless, these systems usually rely on users to upload new data or remain limited to very narrow topics or effects. With our proposal, we aim to overcome these limitations by (a) covering an entire research framework, similarly to what Howard and colleagues proposed <span class="citation" data-cites="howardWhyWeNeed2025">(<a href="#ref-howardWhyWeNeed2025" role="doc-biblioref">2025</a>)</span>, and (b) making the review systematic, thus following Preferred Reporting Items for Systematic Reviews and Meta-Analysis guidelines [PRISMA; <span class="citation" data-cites="moherPreferredReportingItems2015">Moher et al. (<a href="#ref-moherPreferredReportingItems2015" role="doc-biblioref">2015</a>)</span>] repeatedly across time.</p>
+<p>Providing a similar tool will speed and facilitate researchers’ literature search, support a standardized and evidence-based understanding of the literature, and inform future research. Given the recency of the SEB framework, fragmentation risks, and rapid expansion of this research area, SEB skills represent an ideal case for introducing a living review system from the first stages of research in the framework.</p>
+</section>
+<section id="rationale-aims-and-hypotheses" class="level2">
+<h2 data-anchor-id="rationale-aims-and-hypotheses">Rationale, aims, and hypotheses</h2>
+<p>The <em>Living SEB Project</em> was designed to create a sustainable, transparent, and cumulative system for synthesizing SEB skills research. Its development rests on three core rationales:</p>
+<ul>
+<li><p><strong>Preventing Fragmentation:</strong> Without cumulative tools, SEB research risks repeating the cycle seen in other fields where inconsistent findings and selective reporting hinder theoretical progress.</p></li>
+<li><p><strong>Enabling Timely Integration:</strong> Living reviews provide a means to keep pace with ongoing publication and to ensure that syntheses remain relevant and comprehensive.</p></li>
+<li><p><strong>Advancing Open Science:</strong> To maximize transparency and accessibility, cumulative evidence must be not only available but also <em>usable</em>. Researchers, reviewers, and practitioners need tools that allow them to interact with data, run analyses, and test claims without advanced technical expertise.</p></li>
+</ul>
+<p>To achieve these goals, we developed not only a continuously updated database but also the <strong>Living SEB App</strong>, a user-friendly web platform that integrates literature search, data visualization, and statistical analysis. The app embodies the open-science ethos of the project: by lowering technical barriers and providing reproducible outputs, it ensures that cumulative evidence is accessible to the entire community.</p>
+<p>Accordingly, the Living SEB Project has three main aims:</p>
+<ul>
+<li><p><strong>Review Aim:</strong> To provide a living, organized cartography of SEB literature, freely accessible and filterable by topic, population, or publication years.</p></li>
+<li><p><strong>Meta-analytic Aim:</strong> To continually synthesize associations between SEB skills and all other constructs and variables measured alongside, starting with cross-sectional correlations but expandable to longitudinal and experimental data.</p></li>
+<li><p><strong>Open Science Aim:</strong> To provide, together with open materials, the Living SEB App—an open-access, interactive platform that integrates the database and analysis tools, enabling replication, rapid evidence checks, preregistration support, and community contributions.</p></li>
+</ul>
+<p>To demonstrate feasibility, we also include a tutorial analysis of the current database. This example tests the associations between SEB domains and academic achievement using both multilevel meta-analysis of correlations and meta-analytic structural equation modeling (MASEM). These results should be understood as illustrative demonstrations of the <em>Living SEB Project</em> infrastructure rather than definitive conclusions, given the small number of studies currently available and their increasing publications.</p>
+</section>
+</section>
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<section id="preregistration-and-open-materials" class="level2">
+<h2 data-anchor-id="preregistration-and-open-materials">Preregistration and Open Materials</h2>
+<p>All procedures for this project were preregistered and are publicly available on <a href="https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.html">GitHub</a> . The repository (<a href="https://github.com/feracotommaso/living_SEB_review" class="uri">https://github.com/feracotommaso/living_SEB_review</a>) also hosts all materials, data, and R code used in this article. Analyses will strictly follow the preregistration unless otherwise noted. The systematic search and review was conducted according to the PRISMA guidelines <span class="citation" data-cites="moherPreferredReportingItems2015">(<a href="#ref-moherPreferredReportingItems2015" role="doc-biblioref">Moher et al., 2015</a>)</span>.</p>
+</section>
+<section id="search-strategy" class="level2">
+<h2 data-anchor-id="search-strategy">Search Strategy</h2>
+<p>The comprehensive literature search was conducted and will be conducted on two electronic databases: Web of Science (WOS) and Scopus. To balance comprehensiveness with feasibility, we adopted a citation-chaining strategy: all papers citing one or more seminal theoretical or measurement works on SEB skills were retrieved. This strategy ensures that all studies using the SEB framework or BESSI measures are captured while reducing noise from unrelated keyword-based searches.</p>
+<p>While efficient, this approach may miss studies that contradict research guidelines and measure SEB skills but do not cite neither the seminal works nor the validation papers. To mitigate this risk, the database is continuously updated, and authors are invited to submit missing studies.</p>
+<p>The initial reference papers included in the search string are:</p>
+<ul>
+<li><p><strong>Theoretical basis</strong></p>
+<ul>
+<li>Taking Skills Seriously: Toward an Integrative Model and Agenda for Social, Emotional, and Behavioral Skills <span class="citation" data-cites="sotoTakingSkillsSeriously2021">(<a href="#ref-sotoTakingSkillsSeriously2021" role="doc-biblioref">Soto et al., 2021</a>)</span>.</li>
+</ul></li>
+<li><p><strong>Measurement</strong></p>
+<ul>
+<li><p>An Integrative Framework for Conceptualizing and Assessing Social, Emotional, and Behavioral Skills: The BESSI <span class="citation" data-cites="sotoIntegrativeFrameworkConceptualizing2022">(<a href="#ref-sotoIntegrativeFrameworkConceptualizing2022" role="doc-biblioref">Soto et al., 2022</a>)</span>.</p></li>
+<li><p>The Behavioral, Emotional, and Social Skills Inventory (BESSI): Psychometric Properties of a German-Language Adaptation, Temporal Stabilities of the Skills, and Associations with Personality and Intelligence <span class="citation" data-cites="lechnerBehavioralEmotionalSocial2022">(<a href="#ref-lechnerBehavioralEmotionalSocial2022" role="doc-biblioref">Lechner et al., 2022</a>)</span>.</p></li>
+<li><p>The Italian Behavioral, Emotional, and Social Skills Inventory (BESSI-I) <span class="citation" data-cites="feracoItalianBehavioralEmotional2024">(<a href="#ref-feracoItalianBehavioralEmotional2024" role="doc-biblioref">Feraco et al., 2024</a>)</span>.</p></li>
+<li><p>The Behavioral, Emotional, and Social Skills Inventory: A Spanish Adaptation and Further Validation in Adult Population <span class="citation" data-cites="postigoBehavioralEmotionalSocial2024">(<a href="#ref-postigoBehavioralEmotionalSocial2024" role="doc-biblioref">Postigo et al., 2024</a>)</span>.</p></li>
+</ul></li>
+<li><p><strong>Short measurement versions</strong></p>
+<ul>
+<li>Assessing Social, Emotional, and Behavioral Skills in Just a Few Minutes: 96-, 45-, and 20-Item Short Forms of the BESSI <span class="citation" data-cites="sewellAssessingSocialEmotional2024a">(<a href="#ref-sewellAssessingSocialEmotional2024a" role="doc-biblioref">Sewell et al., 2024</a>)</span>.</li>
+</ul></li>
+</ul>
+<p>The full search string is available in the preregistration protocol for readability.</p>
+</section>
+<section id="study-eligibility-criteria" class="level2">
+<h2 data-anchor-id="study-eligibility-criteria">Study Eligibility Criteria</h2>
+<p>Citations are completely excluded if they were not focusing on the SEB skill framework AND did not use any BESSI measure. For example, citations referencing to the SEB framework, but focusing on different frameworks, such as the OECD or CASEL, are not considered for inclusion. Similarly, a study focusing on the development of the Big Five should be excluded although it cites the reference papers. However, if it focuses on the development of the Big Five but also collects side data using the BESSI, it will be included in the meta-analysis.</p>
+<p>Citations are also excluded if they were published as books or in language that were not comprehensible for the authors.</p>
+<section id="meta-analysis-inclusion" class="level3">
+<h3 data-anchor-id="meta-analysis-inclusion">Meta-analysis Inclusion</h3>
+<p>To be included in the quantitative synthesis, studies had to:</p>
+<ol type="1">
+<li><p>Be written in a language comprehensible to the authors (i.e., English, Italian, and Spanish at the time of writing);</p></li>
+<li><p>Include original quantitative data using a validated BESSI-based measure;</p></li>
+<li><p>Report correlations or provide correlations after authors’ request;</p></li>
+<li><p>Include original data not already reported in other included studies;</p></li>
+<li><p>Sample either the general population or a clinical population with mild/moderate issues;</p></li>
+</ol>
+<p>Contrarily, a study is excluded from the meta-analysis if:</p>
+<ol type="1">
+<li><p>Data were duplicated across publications,</p></li>
+<li><p>Measures were not validated or outside the SEB/BESSI framework</p></li>
+<li><p>The study did not report correlations at baseline or data could not be reduced to correlations;</p></li>
+<li><p>Participants had severe clinical conditions (e.g., schizophrenia)</p></li>
+</ol>
+</section>
+<section id="coding-procedures" class="level3">
+<h3 data-anchor-id="coding-procedures">Coding Procedures</h3>
+<p>For each included study, the following information was systematically coded:</p>
+<ul>
+<li><p><em>Bibliographic metadata</em> (DOI, title, authors, journal, year, download date)</p></li>
+<li><p><em>Paper, sample, and matrix IDs</em>. The unique progressive identifiers of each paper, sample, and correlation matrix.</p></li>
+<li><p><em>Exclusion reason</em> both for the review and the meta-analysis.</p></li>
+<li><p><em>Review topics</em>. The main topics covered by the study.</p></li>
+<li><p><em>Open data.</em> Whether data were openly available or not and the link to the data.</p></li>
+<li><p><em>Study design.</em> Whether the study is cross-sectional, longitudinal, or experimental.</p></li>
+<li><p><em>Country</em>. Country of origin of the participants. In case participants from multiple countries were included in the same sample, the sample was coded as “mixed”.</p></li>
+<li><p><em>Gender</em>. The percentage of females.</p></li>
+<li><p><em>Age</em>. The mean age of the sample.</p></li>
+<li><p><em>Sample size</em>. The sample size of each population on which correlations were estimated.</p></li>
+<li><p><em>Age category:</em> An additional category was added to distinguish between samples of children, school age (all participants younger than 19 years old or in high schools), young adults (university students or younger than 30), adults (younger than 55) older adults (55 or older). Adults was used also if the study included participants of all ages or between 19 and 55 years old.</p></li>
+<li><p><em>Clinical population</em>. Samples are divided between clinical populations and non-clinical populations. In case a clinical population was included, we specify the diagnosis.</p></li>
+<li><p><em>SEB</em> <em>measure</em>. BESSI 192, 96, 45, 20 or other versions.</p></li>
+<li><p><em>Measure type</em>. Long (if it measures facets) or short (if it only measures domains).</p></li>
+<li><p><em>Trait framework.</em> In case personality traits are measured, whether they are measured with a BF measure or an HEXACO measure.</p></li>
+<li><p><em>Effect sizes</em>. Pearson’s correlations are extracted from the papers as measure of effect size. In particular, the entire correlation matrix is extracted.</p></li>
+<li><p><em>Non-SEB indicators</em>. All measures, outcomes, and correlates are manually classified within the names of the correlation matrix. A codebook with all measures coded is available on GitHub page of the project allowing categorizations of variables in specifc and broader categories.</p></li>
+</ul>
+</section>
+</section>
+<section id="updating-procedures" class="level2">
+<h2 data-anchor-id="updating-procedures">Updating Procedures</h2>
+<p>To maintain the “living” nature of the review, the search and coding procedures are repeated on the first working day of each month. New studies are added to the database, and version-controlled monthly snapshots are archived. When new theoretical or measurement works are published, the seed references for the search are expanded accordingly. Additionally, at each new search, the database search will be limited by adding the day the last search was conducted as a starting search limit.</p>
+<p>A continuously updated version of this paper is published online, with results revised each month to reflect the latest data.</p>
+</section>
+<section id="the-living-seb-app" class="level2">
+<h2 data-anchor-id="the-living-seb-app">The Living SEB App</h2>
+<p>In parallel with the database, we developed the <strong>Living SEB App</strong>, a Shiny-based web platform that provides direct access to the database and analytic tools. The app enables users to:</p>
+<ul>
+<li><p><strong>Search and filter literature</strong> by topic, population, or design;</p></li>
+<li><p><strong>Run meta-analyses</strong> of SEB associations with outcomes, using multilevel models;</p></li>
+<li><p><strong>Conduct meta-analytic structural equation modeling (metaSEM)</strong> for incremental validity analyses or for estimating more complex correlation matrices;</p></li>
+<li><p><strong>Download datasets and correlation matrices</strong> for further analyses;</p></li>
+<li><p><strong>Generate reproducible reports</strong> to support preregistration, peer review, and editorial decision-making.</p></li>
+</ul>
+<p>The app is hosted openly and mirrored on GitHub to ensure sustainability and version control. While designed to lower barriers for non-technical users, the raw datasets and R code remain freely available for advanced analyses.</p>
+<p>The <em>Living SEB App</em> link can be found on the GitHub web page of the project as it may change with server updates: <a href="https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf">https://feracotommaso.github.io</a><a href="https://feracotommaso.github.io/living_SEB_review/">/living_SEB_review</a>.</p>
+</section>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<p>Given the adaptive nature of a living meta-analysis, we report temporary results and descriptive statistics of the data available at the time of writing. A continuously updated version of the results is available at: <a href="https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf">https://feracotommaso.github.io</a><a href="https://feracotommaso.github.io/living_SEB_review/">/living_SEB_review</a><a href="https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html">/paper/livingSEBpaper.html</a>.</p>
+<section id="database-overview" class="level2">
+<h2 data-anchor-id="database-overview">Database Overview</h2>
+<p>At the time of writing, the systematic search identified 259 publications (Scopus = 136; WOS = 123). After removing duplicates, screening titles and abstracts, and reviewing full texts, 21 studies were retained for the living review and 14 studies met criteria for quantitative synthesis. These include a total of 21 indipendent samples (see <a href="#fig-prisma" class="quarto-xref" aria-expanded="false">Figure&nbsp;1</a>), with sample sizes ranging from 137 to 5075 (median = 702).</p>
+<p>Across these studies, a total of 14599 correlation coefficients were coded, representing 5232 unique pairwise associations. Of these, 12235 correlations (3518 unique associations) involved at least one SEB domain or facet measured with a BESSI instrument. This provides the foundation for both the living database and the illustrative analyses reported below.</p>
+<p>A continuously updated summary of descriptive statistics is available online in the living version of this manuscript.</p>
+<p><a href="#fig-prisma" class="quarto-xref" aria-expanded="false">Figure&nbsp;1</a> <em>about here</em></p>
+</section>
+<section id="tutorial-analysis-1-multilevel-meta-analysis-of-correlations" class="level2">
+<h2 data-anchor-id="tutorial-analysis-1-multilevel-meta-analysis-of-correlations">Tutorial Analysis 1: Multilevel Meta-analysis of correlations</h2>
+<p>As a demonstration of the project’s multilevel meta-analytic pipeline, we tested the associations between the five SEB skill domains and academic achievement. Following preregistered procedures, a three-level random-effects model was used, with effects nested within samples and studies. In line with Borenstein and colleagues <span class="citation" data-cites="borenstein2021">(<a href="#ref-borenstein2021" role="doc-biblioref">2021</a>)</span>, Fisher’s <em>z</em> transformations were applied and then back-transformed to Pearson’s <em>r</em> for interpretation. The metafor package was used for the meta-analysis <span class="citation" data-cites="viechtbauer2010ConductingMetaanalysesMetafor">(<a href="#ref-viechtbauer2010ConductingMetaanalysesMetafor" role="doc-biblioref">Viechtbauer, 2010</a>)</span>.</p>
+<p>A total of 40 effect sizes from 7 studies and 8 samples were included. For each SEB domain, the median available sample size was 868.5 (minimum sample size = 350; maximum sample size = 5075).</p>
+<p>Of the five meta-analysed correlations with academic achievement, five were significant, with significant effects ranging between 0.04 (i.e., Emotional resilience) and 0.23 (i.e., Cooperation). , , and were not significantly associated with academic achievement.</p>
+<p>The <em>Q</em> test for heterogeneity shows that there is significant heterogeneity across studies in at least four of the meta-analyses, but the standard deviation of the effects was generally small and ranged between 0.04 and 0.1. The full set of results is available in <a href="#tbl-meta-results" class="quarto-xref" aria-expanded="false">Table&nbsp;1</a> and <a href="#fig-meta-analysis-plot" class="quarto-xref" aria-expanded="false">Figure&nbsp;2</a>.</p>
+<p>Though representing the more extensive analysis of the assocation between SEB domains and academic achievement, these results should be regarded as preliminary and illustrative.</p>
+</section>
+<section id="tutorial-analysis-2-meta-analytic-structural-equation-modeling" class="level2">
+<h2 data-anchor-id="tutorial-analysis-2-meta-analytic-structural-equation-modeling">Tutorial Analysis 2: Meta-analytic Structural Equation Modeling</h2>
+<p>To illustrate the use of meta-analytic structural equation modeling within the Living SEB Project, we tested whether SEB skills predict academic achievement beyond their corresponding Big Five traits. Initially, using the first stage of the two-staged structural equation modelling (TSSEM) procedure we estimated a descriptive pooled correlation matrix of the associations between all the Big Five traits and the five SEB domains <span class="citation" data-cites="cheung2015MetaAnalysisStructuralEquation">(<a href="#ref-cheung2015MetaAnalysisStructuralEquation" role="doc-biblioref">Cheung, 2015</a>)</span>. Then, using one-stage meta-analytic structural equation modelling (OSMASEM) procedures <span class="citation" data-cites="jak2020MetaanalyticStructuralEquation">(<a href="#ref-jak2020MetaanalyticStructuralEquation" role="doc-biblioref">Jak &amp; Cheung, 2020</a>)</span>, five saturated regression models were estimated, each including one SEB domain and its matched Big Five trait as predictors of academic achievement.</p>
+<p>The metaSEM <span class="citation" data-cites="cheung2024MetaSEMMetaAnalysisUsing">(<a href="#ref-cheung2024MetaSEMMetaAnalysisUsing" role="doc-biblioref">Cheung, 2024</a>)</span> and lavaan <span class="citation" data-cites="rosseel2012LavaanPackageStructural">(<a href="#ref-rosseel2012LavaanPackageStructural" role="doc-biblioref">Rosseel, 2012</a>)</span> R packages were used for these analysis and the open code of the webMASEM app <span class="citation" data-cites="jak2021MetaanalyticStructuralEquation">(<a href="#ref-jak2021MetaanalyticStructuralEquation" role="doc-biblioref">Jak et al., 2021</a>)</span> was used to guide coding of the <em>Living SEB App</em> section for MASEM.</p>
+<p>MetaSEM analyses were based on varying number of effect sizes per pairwise correlation (i.e., different correlation matrices), with the minimum available effects per correlation being 3 and the maximum being 19. As a consequence, also sample sizes differed, with the minimum being 2712 and the maximum being 20763. Correlation matrices were taken from 20 samples included in 13 different studies.</p>
+<p><strong>Pooled correlations</strong></p>
+<p>The pooled correlation matrix is reported in <a href="#tbl-pooled-cor" class="quarto-xref" aria-expanded="false">Table&nbsp;2</a> and in <a href="#fig-corrplot" class="quarto-xref" aria-expanded="false">Figure&nbsp;3</a>. As clear from the diagonal cells linking each skill to the corresponding trait, their correlation is substantial (<em>r</em> &gt; 0.61), with the highest correlation reaching 0.73. For what concerns academic achievement, Self-management (r = 0.23), BF Conscientiousness (r = 0.21) were the only variables among SEB skills and Big Five traits showing a pooled correlation higher than <em>r</em> &gt; 0.2 with academic achievement.</p>
+<p><strong>Regression models</strong></p>
+<p>From <a href="#tbl-osmasem-summary" class="quarto-xref" aria-expanded="false">Table&nbsp;3</a>, we can see that one of the SEB skills and one of the personality traits show significant association with academic achievement beyond the corresponding trait/skill. Specifically, Self-management (b = 0.171; CI = [0.07; 0.27]) and BF Neuroticism (b = 0.074; CI = [0.03; 0.12]) showed significant associations with academic achievement, while all other associations were lower than |0.207| and non-significant.</p>
+<p>It should be noted that, for our purposes, we used only the data available from the database search we conducted, but a more refined analysis would require enlarging the research to all studies testing the association between the Big Five and academic achievement to produce better estimates of the covariance between the Big Five themselves and academic achievement. These results should be interpreted as illustrative: they demonstrate the functionality of the metaSEM pipeline within the Living SEB App rather than offering final conclusions about SEB–trait relationships.</p>
+</section>
+<section id="reproducibility-via-the-living-seb-app" class="level2">
+<h2 data-anchor-id="reproducibility-via-the-living-seb-app">Reproducibility via the Living SEB App</h2>
+<p>Both tutorial analyses can be reproduced in the Meta-analysis and MetaSEM modules of the Living SEB App. Users can select specific subsets of studies, download data and R code, and generate updated reports. This ensures that results presented here remain transparent, reproducible, and adaptable as the evidence base grows.</p>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>In this article, we introduced the <em>Living SEB Project</em> and the associated <em>Living SEB App</em>, a shiny app for searching and analysing SEB data and papers. Two tutorial meta-analyses were also conduted to exemplify the use that can be done of the data collected in the <em>Living SEB Project</em> and the <em>Living SEB App</em> and test meta-analytical associations between SEB skills and academic achievement and their incremental validity beyond personality traits. To do this, we employed the two main meta-analysis functions available in the <em>Living SEB App</em>, namely three-level meta-analysis of correlation coefficients and MASEM. The results of these analyses show that five skills were significantly associated with academic achievement, with pooled correlations ranging between 0.04 (i.e., Emotional resilience) and 0.23 (i.e., Cooperation). When controlling for personality traits in OSMASEM regression models, one of the SEB skills and one of the personality traits showed significant association with academic achievement beyond the corresponding trait/skill. Specifically, only Self-management (b = 0.171; CI = [0.07; 0.27]) and BF Neuroticism (b = 0.074; CI = [0.03; 0.12]) showed significant associations with academic achievement. More precise estimates of these associations will be available each month in the living version of this manuscript if new research on the topic is published.</p>
+<p>As exemplified in these analysis, the <em>Living SEB Project</em> provides the necessary tools for responding research questions and synthesizing the available evidence using meta-analysis. However, different uses can be made of this data and of the <em>Living SEB App</em>.</p>
+<section id="use-and-utility-the-open-data-and-the-living-seb-app" class="level2">
+<h2 data-anchor-id="use-and-utility-the-open-data-and-the-living-seb-app">Use and Utility the Open Data and the <em>Living SEB App</em></h2>
+<p>First of all, the <em>Living SEB Project</em> materials and the app can be used to synthesize the literature based on the SEB framework using meta-analytic procedures and speeding up literature search with useful tools to find all the SEB papers covering a specific topic or using/measuring a specific variable. However, considering the limitations detailed below, the results and the reports that can be obtained using the <em>Living SEB App</em> should not be considered as publication-ready meta-analysis, which would require additional steps and integration (e.g., risk of bias analysis, tests for publication bias, moderator analysis, different modelling approaches). For this reason, we suggest using the <em>Living SEB App</em> and the open data available to inform hypotheses and Bayesian priors for future studies (e.g., the meta-analytical estimates and confidence intervals obtained might be directly used as quantitative priors). Additionally, the reports downloaded from the app (or the data downloaded together with users’ R code) could be directly used to support preregistrations and, for instance, uploaded on the OSF or other preferred platforms as evidence for the justification of the effect sizes used in power analyses. On the other side, reviewers and editors may benefit from this project for their work. Indeed, they can rapidly check whether authors’ assertions correspond to up-to-date evidence within the SEB framework, whether the necessary literature has been cited or whether the theoretical introduction and hypotheses are based on the full breadth of evidence or on selected papers. Reports and results obtained from the app could thus be used by reviewers and editors to support their suggestions, without conducting long literature reviews.</p>
+<p>Beyond its practical utility, the Living SEB Project has broader implications for the theoretical development of SEB research and psychology more generally. By maintaining a continuously updated, transparent synthesis of findings, the project helps guard against the selective citation, cherry-picking, and conceptual fragmentation that have historically slowed theoretical progress in emerging areas. For SEB research specifically, where competing frameworks and rapid publication rates can easily obscure cumulative patterns, a living evidence base ensures that theories can be tested against the full breadth of available data rather than isolated studies. More broadly, the Living SEB Project illustrates how infrastructures of cumulative evidence can shift psychology toward a more dynamic and self-correcting science. Instead of relying on static reviews that quickly become outdated, researchers can build and refine theoretical models with a continually refreshed evidence base. In this sense, the project does not simply provide a database or app but models a new standard for how psychological theory and evidence can co-evolve.</p>
+</section>
+<section id="limitations" class="level2">
+<h2 data-anchor-id="limitations">Limitations</h2>
+<p>When designing the Living SEB Project and app, we aimed at finding a good balance between providing enough functionality for the users, while keeping the systematic review process feasible and the application user friendly and intuitive to use. As a consequence, there are many situations in which using the Living SEB App only is not the appropriate choice, but more refined analyses should be conducted locally by the researcher. In particular, only cross-sectional data are available and to analyze experimental and longitudinal data, the necessary data should be manually coded. Additionally, the specific measures used are not coded in the data and different measures are automatically meta-analysed as indicators of a specific outcome or construct. For instance, school engagement could be measured with different questionnaires. Authors interested in more specific and moderator analyses should code those specific information. Similarly, study topics are manually and qualitatively defined by the authors and may not correspond to everybody’s opinion. We acknowledge that our reliance on citation-chaining of seminal SEB works may result in missed eligible publications, particularly those that employ BESSI measures without directly citing the foundational articles. While this approach ensures feasibility and reduces noise, it compromises full systematic comprehensiveness. In the long term, we plan to supplement this strategy with periodic keyword-based searches and, where possible, semi-automated text-mining or machine-learning methods to identify overlooked studies. Meanwhile, we actively encourage researchers to notify us of missing contributions so that the database can remain as inclusive as possible. To date, we are not aware of any published studies within the SEB framework that are excluded.</p>
+</section>
+<section id="future-perspectives" class="level2">
+<h2 data-anchor-id="future-perspectives">Future Perspectives</h2>
+<p>Given the current limitations, we suggest a use of the <em>Living SEB Project</em> and <em>app</em> that respect the boundaries of the functionality offered. However, future updates of the project may enlarge the aims of the project and its uses. In particular, with increasing number of longitudinal and experimental publications within the SEB framework, we aim to extend the meta-analysis options to incorporate both possibilities. We also plan to include options for the analysis of moderators and for publication bias. Depending on future funding and resources, we also plan to automatize the database search and coding procedures through the use of ad-hoc alghoritms and artificial intelligence. Finally, we plan to provide users with the possibility to upload additional data to be directly included in the main database.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2 data-anchor-id="conclusions">Conclusions</h2>
+<p>To conclude, the current paper provides an initial description of the <em>Living SEB Project</em> and we hope that researchers, reviewers, editors, and laypeople will use and appreciate the potentialities offered and that our work may facilitate theirs. We also hope that other colleagues will follow our example and build additional platforms covering their specific field of research.</p>
+<div style="page-break-after: always;"></div>
+<!-- References will auto-populate in the refs div below -->
+</section>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-abrahamsSocialemotionalSkillAssessment2019" class="csl-entry" role="listitem">
+Abrahams, L., Pancorbo, G., Primi, R., Santos, D., Kyllonen, P., John, O. P., &amp; De Fruyt, F. (2019). Social-emotional skill assessment in children and adolescents: Advances and challenges in personality, clinical, and educational contexts. <em>Psychological Assessment</em>, <em>31</em>, 460–473. <a href="https://doi.org/10.1037/pas0000591">https://doi.org/10.1037/pas0000591</a>
+</div>
+<div id="ref-borenstein2021" class="csl-entry" role="listitem">
+Borenstein, M., Hedges, L. V., Higgins, J. P. T., &amp; Rothstein, H. R. (2021). <em>Introduction to Meta-Analysis</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-boscoCloudbasedMetaanalysisBridge2015" class="csl-entry" role="listitem">
+Bosco, F., Steel, P., Oswald, F., Uggerslev, K., &amp; Field, J. (2015). Cloud-based meta-analysis to bridge science and practice: Welcome to metaBUS. <em>Personnel Assessment and Decisions</em>, <em>1</em>(1). https://doi.org/<a href="https://doi.org/10.25035/pad.2015.002">https://doi.org/10.25035/pad.2015.002</a>
+</div>
+<div id="ref-chenSocialEmotionalBehavioral2024" class="csl-entry" role="listitem">
+Chen, L., Zhang, B., &amp; Li, J. (2024). Social, emotional, and behavioral (SEB) skills in the workplace. <em>Collabra: Psychology</em>, <em>10</em>(1), 120531. <a href="https://doi.org/10.1525/collabra.120531">https://doi.org/10.1525/collabra.120531</a>
+</div>
+<div id="ref-cheung2015MetaAnalysisStructuralEquation" class="csl-entry" role="listitem">
+Cheung, M. W.-L. (2015). <em>Meta-Analysis: A Structural Equation Modeling Approach</em>. John Wiley &amp; Sons.
+</div>
+<div id="ref-cheung2024MetaSEMMetaAnalysisUsing" class="csl-entry" role="listitem">
+Cheung, M. W.-L. (2024). <em>metaSEM: Meta-analysis using structural equation modeling</em>. <a href="https://cran.r-project.org/web/packages/metaSEM/index.html">https://cran.r-project.org/web/packages/metaSEM/index.html</a>
+</div>
+<div id="ref-cuijpersLivingSystematicReviews2022" class="csl-entry" role="listitem">
+Cuijpers, P., Miguel, C., Papola, D., Harrer, M., &amp; Karyotaki, E. (2022). From living systematic reviews to meta-analytical research domains. <em>Evidence Based Mental Health</em>, <em>25</em>(4). <a href="https://doi.org/10.1136/ebmental-2022-300509">https://doi.org/10.1136/ebmental-2022-300509</a>
+</div>
+<div id="ref-elliottLivingSystematicReview2017" class="csl-entry" role="listitem">
+Elliott, J. H., Synnot, A., Turner, T., Simmonds, M., Akl, E. A., McDonald, S., Salanti, G., Meerpohl, J., MacLehose, H., Hilton, J., Tovey, D., Shemilt, I., Thomas, J., Agoritsas, T., Hilton, J., Perron, C., Akl, E., Hodder, R., Pestridge, C., … Pearson, L. (2017). Living systematic review: 1. Introduction<span></span>the why, what, when, and how. <em>Journal of Clinical Epidemiology</em>, <em>91</em>, 23–30. <a href="https://doi.org/10.1016/j.jclinepi.2017.08.010">https://doi.org/10.1016/j.jclinepi.2017.08.010</a>
+</div>
+<div id="ref-elliottLivingSystematicReviews2014" class="csl-entry" role="listitem">
+Elliott, J. H., Turner, T., Clavisi, O., Thomas, J., Higgins, J. P. T., Mavergames, C., &amp; Gruen, R. L. (2014). Living Systematic Reviews: An Emerging Opportunity to Narrow the Evidence-Practice Gap. <em>PLOS Medicine</em>, <em>11</em>(2), e1001603. <a href="https://doi.org/10.1371/journal.pmed.1001603">https://doi.org/10.1371/journal.pmed.1001603</a>
+</div>
+<div id="ref-feracoItalianBehavioralEmotional2024" class="csl-entry" role="listitem">
+Feraco, T., Casali, N., Pellegrino, G., Soto, C. J., Napolitano, C. M., Carretti, B., &amp; Meneghetti, C. (2024). The italian behavioral, emotional, and social skills inventory (BESSI-i). <em>Journal of Personality Assessment</em>, <em>106</em>(6), 750–764. <a href="https://doi.org/10.1080/00223891.2024.2335912">https://doi.org/10.1080/00223891.2024.2335912</a>
+</div>
+<div id="ref-feracoDifferencesChangeGoals2025" class="csl-entry" role="listitem">
+Feraco, T., Hudson, N. W., &amp; Soto, C. J. (2025). Differences in change goals between personality traits and social, emotional, and behavioral skills. <em>Personality and Individual Differences</em>, <em>241</em>, 113200. <a href="https://doi.org/10.1016/j.paid.2025.113200">https://doi.org/10.1016/j.paid.2025.113200</a>
+</div>
+<div id="ref-feracoSocialEmotionalBehavioral2023" class="csl-entry" role="listitem">
+Feraco, T., &amp; Meneghetti, C. (2023). Social, Emotional, and Behavioral Skills: Age and Gender Differences at 12 to 19 Years Old. <em>Journal of Intelligence</em>, <em>11</em>(6), 118. <a href="https://doi.org/10.3390/jintelligence11060118">https://doi.org/10.3390/jintelligence11060118</a>
+</div>
+<div id="ref-feracoIntegratedModelSchool2023" class="csl-entry" role="listitem">
+Feraco, T., Resnati, D., Fregonese, D., Spoto, A., &amp; Meneghetti, C. (2023). An integrated model of school students<span>’</span> academic achievement and life satisfaction. Linking soft skills, extracurricular activities, self-regulated learning, motivation, and emotions. <em>European Journal of Psychology of Education</em>, <em>38</em>, 109–130. <a href="https://doi.org/10.1007/s10212-022-00601-4">https://doi.org/10.1007/s10212-022-00601-4</a>
+</div>
+<div id="ref-guoRolesSocialEmotional2023" class="csl-entry" role="listitem">
+Guo, J., Tang, X., Marsh, H. W., Parker, P., Basarkod, G., Sahdra, B., Ranta, M., &amp; Salmela-Aro, K. (2023). The roles of social<span></span>emotional skills in students<span>’</span> academic and life success: A multi-informant and multicohort perspective. <em>Journal of Personality and Social Psychology</em>, <em>124</em>(5), 1079–1110. <a href="https://doi.org/10.1037/pspp0000426">https://doi.org/10.1037/pspp0000426</a>
+</div>
+<div id="ref-heckman2012" class="csl-entry" role="listitem">
+Heckman, J. J., &amp; Kautz, T. (2012). Hard evidence on soft skills. <em>Labour Economics</em>, <em>19</em>(4), 451–464. <a href="https://doi.org/10.1016/j.labeco.2012.05.014">https://doi.org/10.1016/j.labeco.2012.05.014</a>
+</div>
+<div id="ref-howardWhyWeNeed2025" class="csl-entry" role="listitem">
+Howard, J. L., &amp; Slemp, G. R. (2025). Why we need a living meta-analysis of self-determination theory: an illustration examining temporal changes in need supportive education. <em>Motivation and Emotion</em>. <a href="https://doi.org/10.1007/s11031-025-10132-2">https://doi.org/10.1007/s11031-025-10132-2</a>
+</div>
+<div id="ref-jak2020MetaanalyticStructuralEquation" class="csl-entry" role="listitem">
+Jak, S., &amp; Cheung, M. W.-L. (2020). Meta-analytic structural equation modeling with moderating effects on SEM parameters. <em>Psychological Methods</em>, <em>25</em>(4), 430–455. <a href="https://doi.org/10.1037/met0000245">https://doi.org/10.1037/met0000245</a>
+</div>
+<div id="ref-jak2021MetaanalyticStructuralEquation" class="csl-entry" role="listitem">
+Jak, S., Li, H., Kolbe, L., Jonge, H. de, &amp; Cheung, M. W.-L. (2021). Meta-analytic structural equation modeling made easy: A tutorial and web application for one-stage MASEM. <em>Research Synthesis Methods</em>, <em>12</em>(5), 590–606. <a href="https://doi.org/10.1002/jrsm.1498">https://doi.org/10.1002/jrsm.1498</a>
+</div>
+<div id="ref-lechnerBehavioralEmotionalSocial2022" class="csl-entry" role="listitem">
+Lechner, C. M., Knopf, T., Napolitano, C. M., Rammstedt, B., Roberts, B. W., Soto, C. J., &amp; Spengler, M. (2022). The Behavioral, Emotional, and Social Skills Inventory (BESSI): Psychometric Properties of a German-Language Adaptation, Temporal Stabilities of the Skills, and Associations with Personality and Intelligence. <em>Journal of Intelligence</em>, <em>10</em>(3), 63. <a href="https://doi.org/10.3390/jintelligence10030063">https://doi.org/10.3390/jintelligence10030063</a>
+</div>
+<div id="ref-moherPreferredReportingItems2015" class="csl-entry" role="listitem">
+Moher, D., Shamseer, L., Clarke, M., Ghersi, D., Liberati, A., Petticrew, M., Shekelle, P., Stewart, L. A., &amp; PRISMA-P Group. (2015). Preferred reporting items for systematic review and meta-analysis protocols (PRISMA-P) 2015 statement. <em>Systematic Reviews</em>, <em>4</em>(1), 1. <a href="https://doi.org/10.1186/2046-4053-4-1">https://doi.org/10.1186/2046-4053-4-1</a>
+</div>
+<div id="ref-napolitanoChangesSocialEmotional2025" class="csl-entry" role="listitem">
+Napolitano, C. M., Soto, C. J., Sewell, M. N., Yoon, H. J., &amp; Roberts, B. W. (2025). Changes in social, emotional, and behavioral skills are associated with changes in secondary school students<span>’</span> important outcomes. <em>European Journal of Personality</em>, 08902070251328046. <a href="https://doi.org/10.1177/08902070251328046">https://doi.org/10.1177/08902070251328046</a>
+</div>
+<div id="ref-postigoBehavioralEmotionalSocial2024" class="csl-entry" role="listitem">
+Postigo, Á., González-Nuevo, C., García-Fernández, J., García-Cueto, E., Soto, C. J., Napolitano, C. M., Roberts, B. W., &amp; Cuesta, M. (2024). The Behavioral, Emotional, and Social Skills Inventory: A Spanish Adaptation and Further Validation in Adult Population. <em>Assessment</em>, 10731911231225197. <a href="https://doi.org/10.1177/10731911231225197">https://doi.org/10.1177/10731911231225197</a>
+</div>
+<div id="ref-ringwaldMoreSkillTrait2025" class="csl-entry" role="listitem">
+Ringwald, W. R., Napolitano, C. M., Sewell, M. N., Soto, C. J., Yoon, H. J., &amp; Wright, A. G. C. (2025). More skill than trait, or more trait than skill? Relations of (mis)matches between personality traits and social, emotional, and behavioral skills with adolescent outcomes. <em>European Journal of Personality</em>. <a href="https://doi.org/10.1177/08902070241309960">https://doi.org/10.1177/08902070241309960</a>
+</div>
+<div id="ref-rosseel2012LavaanPackageStructural" class="csl-entry" role="listitem">
+Rosseel, Y. (2012). <em>lavaan: an R package for structural equation modeling and more Version 0.5-12 (BETA)</em>. 37.
+</div>
+<div id="ref-sakalukReconsideringWhatMakes2023" class="csl-entry" role="listitem">
+Sakaluk, J. K., De Santis, C., Kilshaw, R., Pittelkow, M.-M., Brandes, C. M., Boness, C. L., Botanov, Y., Williams, A. J., Wendt, D. C., Lorenzo-Luaces, L., Schleider, J., &amp; Ravenzwaaij, D. van. (2023). Reconsidering what makes syntheses of psychological intervention studies useful. <em>Nature Reviews Psychology</em>, <em>2</em>(9), 569–583. <a href="https://doi.org/10.1038/s44159-023-00213-9">https://doi.org/10.1038/s44159-023-00213-9</a>
+</div>
+<div id="ref-sewellAssessingSocialEmotional2024a" class="csl-entry" role="listitem">
+Sewell, M. N., Yoon, H. J., Lechner, C. M., Napolitano, C. M., Rammstedt, B., Roberts, B. W., &amp; Soto, C. J. (2024). Assessing social, emotional, and behavioral skills in just a few minutes: 96-, 45-, and 20-item short forms of the BESSI. <em>Assessment</em>. <a href="https://doi.org/10.1177/10731911241256434">https://doi.org/10.1177/10731911241256434</a>
+</div>
+<div id="ref-sotoTakingSkillsSeriously2021" class="csl-entry" role="listitem">
+Soto, C. J., Napolitano, C. M., &amp; Roberts, B. W. (2021). Taking Skills Seriously: Toward an Integrative Model and Agenda for Social, Emotional, and Behavioral Skills. <em>Current Directions in Psychological Science</em>, <em>30</em>(1), 26–33. <a href="https://doi.org/10.1177/0963721420978613">https://doi.org/10.1177/0963721420978613</a>
+</div>
+<div id="ref-sotoWhatWhatCan2023" class="csl-entry" role="listitem">
+Soto, C. J., Napolitano, C. M., Sewell, M. N., Yoon, H. J., Murano, D., Casillas, A., &amp; Roberts, B. W. (2023). What i do and what i can do: Testing the convergence and incremental validity of social, emotional, and behavioral skills vs. Traits for predicting academic success. <em>Journal of Research in Personality</em>, <em>104</em>, 104382. <a href="https://doi.org/10.1016/j.jrp.2023.104382">https://doi.org/10.1016/j.jrp.2023.104382</a>
+</div>
+<div id="ref-sotoIntegrativeFrameworkConceptualizing2022" class="csl-entry" role="listitem">
+Soto, C. J., Napolitano, C. M., Sewell, M. N., Yoon, H. J., &amp; Roberts, B. W. (2022). An integrative framework for conceptualizing and assessing social, emotional, and behavioral skills: The BESSI. <em>Journal of Personality and Social Psychology</em>. <a href="https://doi.org/10.1037/pspp0000401">https://doi.org/10.1037/pspp0000401</a>
+</div>
+<div id="ref-sotoGoingTraitsSocial2024" class="csl-entry" role="listitem">
+Soto, C. J., Napolitano, C., Sewell, M. N., Yoon, H. J. R., &amp; Roberts, B. (2024). Going beyond traits: Social, emotional, and behavioral skills matter for adolescents’ success. <em>Social Psychological and Personality Sciencce</em>, <em>15</em>(1), 33–45. <a href="https://doi.org/10.1177/19485506221127483">https://doi.org/10.1177/19485506221127483</a>
+</div>
+<div id="ref-spadaroCooperationDatabankMachineReadable2022" class="csl-entry" role="listitem">
+Spadaro, G., Tiddi, I., Columbus, S., Jin, S., Teije, A. ten, &amp; Balliet, D. (2022). The Cooperation Databank: Machine-Readable Science Accelerates Research Synthesis. <em>Perspectives on Psychological Science</em>, <em>17</em>(5), 1472–1489. <a href="https://doi.org/10.1177/17456916211053319">https://doi.org/10.1177/17456916211053319</a>
+</div>
+<div id="ref-viechtbauer2010ConductingMetaanalysesMetafor" class="csl-entry" role="listitem">
+Viechtbauer, W. (2010). Conducting meta-analyses in R with the metafor package. <em>Journal of Statistical Software</em>, <em>36</em>(3), 1–48. <a href="https://doi.org/10.18637/jss.v036.i03">https://doi.org/10.18637/jss.v036.i03</a>
+</div>
+<div id="ref-yoonExaminingSEBSkills2024" class="csl-entry" role="listitem">
+Yoon, H. J., Roberts, B. W., Sewell, M. N., Napolitano, C. M., Soto, C. J., Murano, D., &amp; Casillas, A. (2024). Examining SEB skills’ incremental validity over personality traits in predicting academic achievement. <em>PLOS ONE</em>, <em>19</em>(1). <a href="https://doi.org/10.1371/journal.pone.0296484">https://doi.org/10.1371/journal.pone.0296484</a>
+</div>
+</div>
+<div class="cell FigureWithNote" data-apa-note="\* *p* < .05; \*\* *p* < .01; \*\*\* *p* < .001; CI = Confidence intervals; PI = Prediction intervals; se = Standard error" prefix="" data-tblnum="1" data-custom-style="FigureWithNote">
+<div id="tbl-meta-results" class="cell quarto-float quarto-figure quarto-figure-center" data-apa-note="\* *p* < .05; \*\* *p* < .01; \*\*\* *p* < .001; CI = Confidence intervals; PI = Prediction intervals; se = Standard error" data-tblnum="1" prefix="">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-meta-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="FigureTitle" data-custom-style="FigureTitle">
+<p>Table&nbsp;1</p>
+</div>
+<div class="Caption" data-custom-style="Caption">
+<p>Meta-analytical associations between SEB skills and academic achievement</p>
+</div>
+</figcaption>
+<div aria-describedby="tbl-meta-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-48cf8272{}.cl-48c265f6{font-family:'Times New Roman';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-48c81b72{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 2;background-color:transparent;}.cl-48c81b7c{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 2;background-color:transparent;}.cl-48c8469c{width:1.545in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846a6{width:0.883in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846a7{width:0.782in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846b0{width:0.901in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846b1{width:0.951in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846b2{width:0.553in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846ba{width:0.731in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846bb{width:1.545in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846bc{width:0.883in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846c4{width:0.782in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846c5{width:0.901in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846c6{width:0.951in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846ce{width:0.553in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846cf{width:0.731in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846d8{width:1.545in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846d9{width:0.883in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846e2{width:0.782in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846e3{width:0.901in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846e4{width:0.951in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846ec{width:0.553in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846ed{width:0.731in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846f6{width:1.545in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c846f7{width:0.883in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c84700{width:0.782in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c84701{width:0.901in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c8470a{width:0.951in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c8470b{width:0.553in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-48c84714{width:0.731in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-48cf8272"><thead><tr style="overflow-wrap:break-word;"><th class="cl-48c8469c"><p class="cl-48c81b72"><span class="cl-48c265f6">Skill</span></p></th><th class="cl-48c846a6"><p class="cl-48c81b72"><span class="cl-48c265f6">N (k)</span></p></th><th class="cl-48c846a7"><p class="cl-48c81b72"><span class="cl-48c265f6">r</span></p></th><th class="cl-48c846b0"><p class="cl-48c81b72"><span class="cl-48c265f6">CI</span></p></th><th class="cl-48c846b1"><p class="cl-48c81b72"><span class="cl-48c265f6">PI</span></p></th><th class="cl-48c846b2"><p class="cl-48c81b72"><span class="cl-48c265f6">se</span></p></th><th class="cl-48c846ba"><p class="cl-48c81b72"><span class="cl-48c265f6">q</span></p></th><th class="cl-48c846b2"><p class="cl-48c81b72"><span class="cl-48c265f6">tau2</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-48c846bb"><p class="cl-48c81b7c"><span class="cl-48c265f6">Cooperation</span></p></td><td class="cl-48c846bc"><p class="cl-48c81b7c"><span class="cl-48c265f6">11601 (8)</span></p></td><td class="cl-48c846c4"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.08*</span></p></td><td class="cl-48c846c5"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.02; 0.14</span></p></td><td class="cl-48c846c6"><p class="cl-48c81b7c"><span class="cl-48c265f6">-0.08; 0.23</span></p></td><td class="cl-48c846ce"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.03</span></p></td><td class="cl-48c846cf"><p class="cl-48c81b7c"><span class="cl-48c265f6">32 (7)*</span></p></td><td class="cl-48c846ce"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.00</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-48c846bb"><p class="cl-48c81b7c"><span class="cl-48c265f6">Emotional resilience</span></p></td><td class="cl-48c846bc"><p class="cl-48c81b7c"><span class="cl-48c265f6">11601 (8)</span></p></td><td class="cl-48c846c4"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.04**</span></p></td><td class="cl-48c846c5"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.02; 0.06</span></p></td><td class="cl-48c846c6"><p class="cl-48c81b7c"><span class="cl-48c265f6"> 0.02; 0.06</span></p></td><td class="cl-48c846ce"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.01</span></p></td><td class="cl-48c846cf"><p class="cl-48c81b7c"><span class="cl-48c265f6">7 (7)</span></p></td><td class="cl-48c846ce"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.00</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-48c846bb"><p class="cl-48c81b7c"><span class="cl-48c265f6">Innovation</span></p></td><td class="cl-48c846bc"><p class="cl-48c81b7c"><span class="cl-48c265f6">11601 (8)</span></p></td><td class="cl-48c846c4"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.11*</span></p></td><td class="cl-48c846c5"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.02; 0.20</span></p></td><td class="cl-48c846c6"><p class="cl-48c81b7c"><span class="cl-48c265f6">-0.15; 0.35</span></p></td><td class="cl-48c846ce"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.04</span></p></td><td class="cl-48c846cf"><p class="cl-48c81b7c"><span class="cl-48c265f6">68 (7)*</span></p></td><td class="cl-48c846ce"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.01</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-48c846d8"><p class="cl-48c81b7c"><span class="cl-48c265f6">Self-management</span></p></td><td class="cl-48c846d9"><p class="cl-48c81b7c"><span class="cl-48c265f6">11601 (8)</span></p></td><td class="cl-48c846e2"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.23***</span></p></td><td class="cl-48c846e3"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.16; 0.29</span></p></td><td class="cl-48c846e4"><p class="cl-48c81b7c"><span class="cl-48c265f6"> 0.04; 0.40</span></p></td><td class="cl-48c846ec"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.03</span></p></td><td class="cl-48c846ed"><p class="cl-48c81b7c"><span class="cl-48c265f6">48 (7)*</span></p></td><td class="cl-48c846ec"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.01</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-48c846f6"><p class="cl-48c81b7c"><span class="cl-48c265f6">Social engagement</span></p></td><td class="cl-48c846f7"><p class="cl-48c81b7c"><span class="cl-48c265f6">11601 (8)</span></p></td><td class="cl-48c84700"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.08**</span></p></td><td class="cl-48c84701"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.04; 0.13</span></p></td><td class="cl-48c8470a"><p class="cl-48c81b7c"><span class="cl-48c265f6">-0.02; 0.18</span></p></td><td class="cl-48c8470b"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.02</span></p></td><td class="cl-48c84714"><p class="cl-48c81b7c"><span class="cl-48c265f6">18 (7)*</span></p></td><td class="cl-48c8470b"><p class="cl-48c81b7c"><span class="cl-48c265f6">0.00</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</figure>
+</div>
+<div class="FigureNote" data-custom-style="FigureNote">
+<p><em>Note</em>. * <em>p</em> &lt; .05; ** <em>p</em> &lt; .01; *** <em>p</em> &lt; .001; CI = Confidence intervals; PI = Prediction intervals; se = Standard error</p>
+</div>
+</div>
+<div class="cell FigureWithoutNote" prefix="" data-tblnum="2" data-custom-style="FigureWithoutNote">
+<div id="tbl-pooled-cor" class="cell quarto-float quarto-figure quarto-figure-center" data-tblnum="2" prefix="">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-pooled-cor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="FigureTitle" data-custom-style="FigureTitle">
+<p>Table&nbsp;2</p>
+</div>
+<div class="Caption" data-custom-style="Caption">
+<p>Pooled correlation matrix</p>
+</div>
+</figcaption>
+<div aria-describedby="tbl-pooled-cor-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-49370f5a{}.cl-492d5b86{font-family:'Times New Roman';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4930b9b6{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:1pt;padding-top:1pt;padding-left:1pt;padding-right:1pt;line-height: 2;background-color:transparent;}.cl-4930b9c0{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:1pt;padding-top:1pt;padding-left:1pt;padding-right:1pt;line-height: 2;background-color:transparent;}.cl-4930dad6{width:1.61in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930dad7{width:0.426in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930dae0{width:1.61in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930dae1{width:0.426in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930daea{width:1.61in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930daeb{width:0.426in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930daec{width:1.61in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930daf4{width:0.426in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930daf5{width:1.61in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930dafe{width:0.426in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930daff{width:1.61in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930db00{width:0.426in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930db08{width:1.61in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4930db12{width:0.426in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-49370f5a"><thead><tr style="overflow-wrap:break-word;"><th class="cl-4930dad6"><p class="cl-4930b9b6"><span class="cl-492d5b86">Variable</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">1.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">2.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">3.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">4.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">5.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">6.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">7.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">8.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">9.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">10.</span></p></th><th class="cl-4930dad7"><p class="cl-4930b9b6"><span class="cl-492d5b86">11.</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-4930dae0"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.Self-management</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.55</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.48</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.44</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.53</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.71</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.35</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.30</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.24</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.35</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.23</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930daea"><p class="cl-4930b9c0"><span class="cl-492d5b86">2.Cooperation</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.55</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.55</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.51</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.50</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.32</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.61</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.42</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.32</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.31</span></p></td><td class="cl-4930daeb"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.08</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930dae0"><p class="cl-4930b9c0"><span class="cl-492d5b86">3.Social engagement</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.48</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.55</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.50</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.50</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.35</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.19</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.73</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.33</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.37</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.10</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930daec"><p class="cl-4930b9c0"><span class="cl-492d5b86">4.Innovation</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.44</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.51</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.50</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.39</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.22</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.23</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.34</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.68</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.17</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.11</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930daec"><p class="cl-4930b9c0"><span class="cl-492d5b86">5.Emotional resilience</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.53</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.50</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.50</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.39</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.36</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.36</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.37</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.23</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.71</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.04</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930daf5"><p class="cl-4930b9c0"><span class="cl-492d5b86">6.BF Conscientiousness</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.71</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.32</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.35</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.22</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.36</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.34</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.28</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.19</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.36</span></p></td><td class="cl-4930dafe"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.21</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930dae0"><p class="cl-4930b9c0"><span class="cl-492d5b86">7.BF Agreeableness</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.35</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.61</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.19</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.23</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.36</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.34</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.21</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.24</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.30</span></p></td><td class="cl-4930dae1"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.08</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930daec"><p class="cl-4930b9c0"><span class="cl-492d5b86">8.BF Extraversion</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.30</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.42</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.73</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.34</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.37</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.28</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.21</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.28</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.33</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.07</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930daff"><p class="cl-4930b9c0"><span class="cl-492d5b86">9.BF Openness</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.24</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.32</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.33</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.68</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.23</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.19</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.24</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.28</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.13</span></p></td><td class="cl-4930db00"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.01</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930daec"><p class="cl-4930b9c0"><span class="cl-492d5b86">10.BF Neuroticism</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.35</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.31</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.37</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.17</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.71</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.36</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.30</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.33</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.13</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td><td class="cl-4930daf4"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.00</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4930db08"><p class="cl-4930b9c0"><span class="cl-492d5b86">11.Academic achievement</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.23</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.08</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.10</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.11</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.04</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.21</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.08</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.07</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">0.01</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">-0.00</span></p></td><td class="cl-4930db12"><p class="cl-4930b9c0"><span class="cl-492d5b86">1.00</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell FigureWithNote" data-apa-note="\~ = regression path; \~~ correlation; \* *p* < .05; \*\* *p* < .01; \*\*\* *p* < .001; CI = Confidence intervals; se = Standard error" prefix="" data-tblnum="3" data-custom-style="FigureWithNote">
+<div id="tbl-osmasem-summary" class="cell quarto-float quarto-figure quarto-figure-center" data-apa-note="\~ = regression path; \~~ correlation; \* *p* < .05; \*\* *p* < .01; \*\*\* *p* < .001; CI = Confidence intervals; se = Standard error" data-tblnum="3" prefix="">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-osmasem-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="FigureTitle" data-custom-style="FigureTitle">
+<p>Table&nbsp;3</p>
+</div>
+<div class="Caption" data-custom-style="Caption">
+<p>OSMASEM regression and correlation coefficients for the five models</p>
+</div>
+</figcaption>
+<div aria-describedby="tbl-osmasem-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-4a86846c{}.cl-4a7dd876{font-family:'Times New Roman';font-size:10pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-4a8135b6{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:1pt;padding-top:1pt;padding-left:1pt;padding-right:1pt;line-height: 2;background-color:transparent;}.cl-4a8135c0{margin:0;text-align:center;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:1pt;padding-top:1pt;padding-left:1pt;padding-right:1pt;line-height: 2;background-color:transparent;}.cl-4a8155b4{width:1.436in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155be{width:0.287in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155c8{width:1.368in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155d2{width:0.704in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155d3{width:0.519in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155dc{width:1.113in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155dd{width:0.496in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155e6{width:0.889in;background-color:transparent;vertical-align: middle;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0.75pt solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155f0{width:1.436in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155f1{width:0.287in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155f2{width:1.368in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155fa{width:0.704in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a8155fb{width:0.519in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815604{width:1.113in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815605{width:0.496in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81560e{width:0.889in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81560f{width:1.436in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815610{width:0.287in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815618{width:1.368in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815619{width:0.704in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81561a{width:0.519in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815622{width:1.113in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815623{width:0.496in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815624{width:0.889in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81562c{width:1.436in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81562d{width:0.287in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81562e{width:1.368in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815636{width:0.704in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815637{width:0.519in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815640{width:1.113in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815641{width:0.496in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815642{width:0.889in;background-color:transparent;vertical-align: top;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81564a{width:1.436in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81564b{width:0.287in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815654{width:1.368in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815655{width:0.704in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81565e{width:0.519in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a81565f{width:1.113in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815668{width:0.496in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-4a815669{width:0.889in;background-color:transparent;vertical-align: top;border-bottom: 0.75pt solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-4a86846c"><thead><tr style="overflow-wrap:break-word;"><th class="cl-4a8155b4"><p class="cl-4a8135b6"><span class="cl-4a7dd876">Outcome</span></p></th><th class="cl-4a8155be"><p class="cl-4a8135b6"><span class="cl-4a7dd876"></span></p></th><th class="cl-4a8155c8"><p class="cl-4a8135b6"><span class="cl-4a7dd876">Predictor</span></p></th><th class="cl-4a8155d2"><p class="cl-4a8135b6"><span class="cl-4a7dd876">Estimate</span></p></th><th class="cl-4a8155d3"><p class="cl-4a8135b6"><span class="cl-4a7dd876">se</span></p></th><th class="cl-4a8155dc"><p class="cl-4a8135b6"><span class="cl-4a7dd876">CI</span></p></th><th class="cl-4a8155dd"><p class="cl-4a8135b6"><span class="cl-4a7dd876">z</span></p></th><th class="cl-4a8155e6"><p class="cl-4a8135b6"><span class="cl-4a7dd876">tau (sd)</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-4a8155f0"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a8155f1"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a8155f2"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Openness</span></p></td><td class="cl-4a8155fa"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.207</span></p></td><td class="cl-4a8155fb"><p class="cl-4a8135c0"><span class="cl-4a7dd876">86.74</span></p></td><td class="cl-4a815604"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-169.8; 170.21]</span></p></td><td class="cl-4a815605"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.00</span></p></td><td class="cl-4a81560e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.000 (0.000)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a8155f0"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a8155f1"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a8155f2"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Innovation</span></p></td><td class="cl-4a8155fa"><p class="cl-4a8135c0"><span class="cl-4a7dd876">-0.15</span></p></td><td class="cl-4a8155fb"><p class="cl-4a8135c0"><span class="cl-4a7dd876">108.79</span></p></td><td class="cl-4a815604"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-213.37; 213.07]</span></p></td><td class="cl-4a815605"><p class="cl-4a8135c0"><span class="cl-4a7dd876">-0.00</span></p></td><td class="cl-4a81560e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.008 (0.089)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81560f"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Innovation</span></p></td><td class="cl-4a815610"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~~</span></p></td><td class="cl-4a815618"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Openness</span></p></td><td class="cl-4a815619"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.675</span></p></td><td class="cl-4a81561a"><p class="cl-4a8135c0"><span class="cl-4a7dd876">54.28</span></p></td><td class="cl-4a815622"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-105.72; 107.07]</span></p></td><td class="cl-4a815623"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.01</span></p></td><td class="cl-4a815624"><p class="cl-4a8135c0"><span class="cl-4a7dd876">NaN</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a8155f0"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a8155f1"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a8155f2"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Conscientiousness</span></p></td><td class="cl-4a8155fa"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.079</span></p></td><td class="cl-4a8155fb"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.04</span></p></td><td class="cl-4a815604"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-0.01; 0.17]</span></p></td><td class="cl-4a815605"><p class="cl-4a8135c0"><span class="cl-4a7dd876">1.78</span></p></td><td class="cl-4a81560e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.000 (0.000)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81562c"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a81562d"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a81562e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Self-management</span></p></td><td class="cl-4a815636"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.171***</span></p></td><td class="cl-4a815637"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.05</span></p></td><td class="cl-4a815640"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[0.07; 0.27]</span></p></td><td class="cl-4a815641"><p class="cl-4a8135c0"><span class="cl-4a7dd876">3.43</span></p></td><td class="cl-4a815642"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.004 (0.062)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81562c"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Self-management</span></p></td><td class="cl-4a81562d"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~~</span></p></td><td class="cl-4a81562e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Conscientiousness</span></p></td><td class="cl-4a815636"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.696***</span></p></td><td class="cl-4a815637"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.03</span></p></td><td class="cl-4a815640"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[0.64; 0.75]</span></p></td><td class="cl-4a815641"><p class="cl-4a8135c0"><span class="cl-4a7dd876">23.42</span></p></td><td class="cl-4a815642"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.006 (0.076)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a8155f0"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a8155f1"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a8155f2"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Extraversion</span></p></td><td class="cl-4a8155fa"><p class="cl-4a8135c0"><span class="cl-4a7dd876">-0.016</span></p></td><td class="cl-4a8155fb"><p class="cl-4a8135c0"><span class="cl-4a7dd876">132.95</span></p></td><td class="cl-4a815604"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-260.59; 260.56]</span></p></td><td class="cl-4a815605"><p class="cl-4a8135c0"><span class="cl-4a7dd876">-0.00</span></p></td><td class="cl-4a81560e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.000 (0.000)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81562c"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a81562d"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a81562e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Social engagement</span></p></td><td class="cl-4a815636"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.099</span></p></td><td class="cl-4a815637"><p class="cl-4a8135c0"><span class="cl-4a7dd876">145.67</span></p></td><td class="cl-4a815640"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-285.42; 285.62]</span></p></td><td class="cl-4a815641"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.00</span></p></td><td class="cl-4a815642"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.001 (0.025)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81562c"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Social engagement</span></p></td><td class="cl-4a81562d"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~~</span></p></td><td class="cl-4a81562e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Extraversion</span></p></td><td class="cl-4a815636"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.722</span></p></td><td class="cl-4a815637"><p class="cl-4a8135c0"><span class="cl-4a7dd876">73.28</span></p></td><td class="cl-4a815640"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-142.92; 144.36]</span></p></td><td class="cl-4a815641"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.01</span></p></td><td class="cl-4a815642"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.006 (0.075)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81562c"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a81562d"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a81562e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Agreeableness</span></p></td><td class="cl-4a815636"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.044</span></p></td><td class="cl-4a815637"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.03</span></p></td><td class="cl-4a815640"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-0.02; 0.11]</span></p></td><td class="cl-4a815641"><p class="cl-4a8135c0"><span class="cl-4a7dd876">1.35</span></p></td><td class="cl-4a815642"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.000 (0.000)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a8155f0"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a8155f1"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a8155f2"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Cooperation</span></p></td><td class="cl-4a8155fa"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.05</span></p></td><td class="cl-4a8155fb"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.04</span></p></td><td class="cl-4a815604"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-0.02; 0.12]</span></p></td><td class="cl-4a815605"><p class="cl-4a8135c0"><span class="cl-4a7dd876">1.38</span></p></td><td class="cl-4a81560e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.003 (0.053)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81562c"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Cooperation</span></p></td><td class="cl-4a81562d"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~~</span></p></td><td class="cl-4a81562e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Agreeableness</span></p></td><td class="cl-4a815636"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.599***</span></p></td><td class="cl-4a815637"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.04</span></p></td><td class="cl-4a815640"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[0.52; 0.68]</span></p></td><td class="cl-4a815641"><p class="cl-4a8135c0"><span class="cl-4a7dd876">15.07</span></p></td><td class="cl-4a815642"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.012 (0.109)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a8155f0"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a8155f1"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a8155f2"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Neuroticism</span></p></td><td class="cl-4a8155fa"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.074***</span></p></td><td class="cl-4a8155fb"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.02</span></p></td><td class="cl-4a815604"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[0.03; 0.12]</span></p></td><td class="cl-4a815605"><p class="cl-4a8135c0"><span class="cl-4a7dd876">3.34</span></p></td><td class="cl-4a81560e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.000 (0.000)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a8155f0"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Academic achievement</span></p></td><td class="cl-4a8155f1"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~</span></p></td><td class="cl-4a8155f2"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Emotional resilience</span></p></td><td class="cl-4a8155fa"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.053</span></p></td><td class="cl-4a8155fb"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.03</span></p></td><td class="cl-4a815604"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[0; 0.11]</span></p></td><td class="cl-4a815605"><p class="cl-4a8135c0"><span class="cl-4a7dd876">1.87</span></p></td><td class="cl-4a81560e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.000 (0.000)</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-4a81564a"><p class="cl-4a8135c0"><span class="cl-4a7dd876">Emotional resilience</span></p></td><td class="cl-4a81564b"><p class="cl-4a8135c0"><span class="cl-4a7dd876">~~</span></p></td><td class="cl-4a815654"><p class="cl-4a8135c0"><span class="cl-4a7dd876">BF Neuroticism</span></p></td><td class="cl-4a815655"><p class="cl-4a8135c0"><span class="cl-4a7dd876">-0.699***</span></p></td><td class="cl-4a81565e"><p class="cl-4a8135c0"><span class="cl-4a7dd876">0.03</span></p></td><td class="cl-4a81565f"><p class="cl-4a8135c0"><span class="cl-4a7dd876">[-0.75; -0.64]</span></p></td><td class="cl-4a815668"><p class="cl-4a8135c0"><span class="cl-4a7dd876">-24.67</span></p></td><td class="cl-4a815669"><p class="cl-4a8135c0"><span class="cl-4a7dd876">NaN</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</figure>
+</div>
+<div class="FigureNote" data-custom-style="FigureNote">
+<p><em>Note</em>. ~ = regression path; ~~ correlation; * <em>p</em> &lt; .05; ** <em>p</em> &lt; .01; *** <em>p</em> &lt; .001; CI = Confidence intervals; se = Standard error</p>
+</div>
+</div>
+<div id="fig-prisma" class="quarto-float quarto-figure quarto-figure-center FigureWithoutNote" data-fignum="1" prefix="" data-custom-style="FigureWithoutNote">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-prisma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="FigureTitle" data-custom-style="FigureTitle">
+<p>Figure&nbsp;1</p>
+</div>
+<div class="Caption" data-custom-style="Caption">
+<p>PRISMA flow chart</p>
+</div>
+</figcaption>
+<div aria-describedby="fig-prisma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="prisma.png" class="img-fluid figure-img">
+</div>
+</figure>
+</div>
+<div class="cell FigureWithoutNote" data-custom-style="FigureWithoutNote">
+<div class="cell-output-display">
+<div id="fig-meta-analysis-plot" class="quarto-float quarto-figure quarto-figure-center" data-fignum="2" prefix="">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-meta-analysis-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="FigureTitle" data-custom-style="FigureTitle">
+<p>Figure&nbsp;2</p>
+</div>
+<div class="Caption" data-custom-style="Caption">
+<p>Meta-analytical associations between the five SEB domains and academic achievement.</p>
+</div>
+</figcaption>
+<div aria-describedby="fig-meta-analysis-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="livingSEBpaper_files/figure-html/fig-meta-analysis-plot-1.svg" class="img-fluid figure-img" width="624">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell FigureWithoutNote" data-custom-style="FigureWithoutNote">
+<div class="cell-output-display">
+<div id="fig-corrplot" class="quarto-float quarto-figure quarto-figure-center" data-fignum="3" prefix="">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-corrplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="FigureTitle" data-custom-style="FigureTitle">
+<p>Figure&nbsp;3</p>
+</div>
+<div class="Caption" data-custom-style="Caption">
+<p>Pooled correlation matrix</p>
+</div>
+</figcaption>
+<div aria-describedby="fig-corrplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="livingSEBpaper_files/figure-html/fig-corrplot-1.svg" class="img-fluid figure-img" width="624">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
