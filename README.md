@@ -1,5 +1,7 @@
 # A living systematic review and meta-analysis for SEB skills
 
+**DATA LAST UPDATED** 2025-09-01
+
 This repository contains all the open materials of the *living SEB project*.
 
 Navigate, download, and use the materials as you prefer, but always share them (GPL-3 licence)!
