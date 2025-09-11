@@ -60,6 +60,8 @@ library(english)
 
 <!-- The introduction should not have a level-1 heading such as Introduction. -->
 
+# Introduction
+
 Social, emotional, and behavioral (SEB) skills—sometimes referred to as “soft skills,” “21st-century skills,” or “social-emotional skills”—are increasingly recognized as essential for success, well-being, and social functioning [@heckman2012; @feracoIntegratedModelSchool2023]. In recent years, new frameworks have sought to overcome the field’s long-standing challenges of fragmented conceptualizations and reliance on personality trait measures [@abrahamsSocialemotionalSkillAssessment2019; @guoRolesSocialEmotional2023; @sotoIntegrativeFrameworkConceptualizing2022]. The Behavioral, Emotional, and Social Skills Inventory [BESSI; @sotoIntegrativeFrameworkConceptualizing2022] and related adaptations now provide a systematic way to assess SEB skills as functional capacities, distinct from but complementary to personality traits. This progress has created a timely opportunity to consolidate evidence and accelerate research on SEB skills.
 
 At the same time, psychology as a discipline faces a broader methodological challenge: the absence of infrastructures that make knowledge cumulative, dynamic, and accessible. Traditional meta-analyses and systematic reviews provide rigorous syntheses of evidence but are static by design. Given the accelerating pace of publication, they often become outdated within just a few years [@elliottLivingSystematicReviews2014; @sakalukReconsideringWhatMakes2023; @elliottLivingSystematicReview2017]. As a result, promising frameworks—such as SEB skills—risk fragmentation or premature stagnation if evidence cannot be continually updated and integrated.
@@ -464,6 +466,7 @@ names(outList) <- pred_vars
 metaRes <- data.frame(metaRes)
 metaRes$skill = pred_vars     
 
+pcrit <- 0.01
 ```
 
 ```{r}
@@ -536,7 +539,7 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
 
 A total of `r nrow(dm)` effect sizes from `r length(unique(dm$paper_id))` studies and `r length(unique(dm$matrix_id))` samples were included. For each SEB domain, the median available sample size was `r median(dm$n)` (minimum sample size = `r min(dm$n)`; maximum sample size = `r max(dm$n)`).
 
-Of the five meta-analysed correlations with academic achievement, `r as.character(english(sum(metaRes$p<.05)))` were significant, with significant effects ranging between `r round(min(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < 0.05, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < 0.05, Inf, metaRes$r))]`). `r paste0(c("","","and "), metaRes$skill[metaRes$p > 0.05])` were not significantly associated with academic achievement.
+Of the five meta-analysed correlations with academic achievement, `r as.character(english(sum(metaRes$r>.10)))` were larger than 0.10 (see @tbl-meta-results and @fig-meta-analysis-plot), with significant effects (p < `r pcrit`) ranging between `r round(min(metaRes$r[metaRes$p<pcrit]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < pcrit, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < pcrit, Inf, metaRes$r))]`).
 
 The *Q* test for heterogeneity shows that there is significant heterogeneity across studies in at least `r as.character(english(sum(metaRes$qp<.05)))` of the meta-analyses, but the standard deviation of the effects was generally small and ranged between `r round(min(sqrt(metaRes$tau2[metaRes$qp<.05])),2)` and `r round(max(sqrt(metaRes$tau2[metaRes$qp<.05])),2)`. The full set of results is available in @tbl-meta-results and @fig-meta-analysis-plot. 
 
