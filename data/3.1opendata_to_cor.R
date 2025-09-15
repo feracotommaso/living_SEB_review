@@ -326,6 +326,53 @@ writexl::write_xlsx(data.frame(cor(d0030b, use = "pairwise.complete")),"data/3.m
 d0030b2 <- d0030b2[, colnames(d0030b2) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0030b2),"data/3.meta_data/open_data/individual_data/0030b.xlsx")
 
+#### --------------------------------------------------- 0034 --------------------------------------------------- ####
+rm(list=ls())
+d0034 <- haven::read_sav("data/3.meta_data/open_data/d0034.sav")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Transform scores
+d0034$sex <- ifelse(d0034$sexo == 2, 0, d0034$sexo)
+d0034$age <- d0034$edad
+names(d0034)[names(d0034) == "estudios"] <- "educationlevel"
+
+
+# #ses
+# names(d0043)[names(d0043) == "ParentsEducation"] <- "ParentEducation"
+# #Seb
+# names(d0043)[names(d0043) == "Skill_SelfManagement"] <- "selfmanagement"
+# names(d0043)[names(d0043) == "Skill_SocialEngagement"] <- "socialengagement"
+# names(d0043)[names(d0043) == "Skill_Cooperation"] <- "cooperation"
+# names(d0043)[names(d0043) == "Skill_EmotionalResilience"] <- "emotionalresilience"
+# names(d0043)[names(d0043) == "Skill_Innovation"] <- "innovation"
+# #Traits
+# names(d0043)[names(d0043) == "Trait_SelfManagement"] <- "conscientiousness"
+# names(d0043)[names(d0043) == "Trait_Innovation"] <- "openness"
+# names(d0043)[names(d0043) == "Trait_Cooperation"] <- "agreeableness"
+# names(d0043)[names(d0043) == "Trait_SocialEngagement"] <- "extraversion"
+# names(d0043)[names(d0043) == "Trait_EmotionalResilience"] <- "neuroticism"
+# d0043$neuroticism <- (-1)*d0043$neuroticism
+# #Mosaic
+# names(d0043)[names(d0043) == "Mosaic_SustainingEffort"] <- "mosaicSustainingEffort"
+# names(d0043)[names(d0043) == "Mosaic_SocialConnection"] <- "mosaicSocialConnection"
+# names(d0043)[names(d0043) == "Mosaic_GettingAlongWithOthers"] <- "mosaicGettingAlong"
+# names(d0043)[names(d0043) == "Mosaic_MaintainingComposure"] <- "mosaicComposure"
+# names(d0043)[names(d0043) == "Mosaic_KeepingAnOpenMind"] <- "mosaicOpenMind"
+# #School
+# names(d0043)[names(d0043) == "ActTestScore"] <- "standardizedacademicachievement"
+# names(d0043)[names(d0043) == "OverallGPA"] <- "academicachievement"
+# names(d0043)[names(d0043) == "SchoolAttendance"] <- "schoolattendance"
+# names(d0043)[names(d0043) == "EducationalAspirations"] <- "educationalaspiration"
+# 
+# 
+# # Select and save
+# d0043a <- d0043[, colnames(d0043) %in% admcol$column_name]
+# writexl::write_xlsx(data.frame(cor(d0043a, use = "pairwise.complete")),"data/3.meta_data/matrices/0043a.xlsx")
+# 
+# # Individual data with age
+# d0043 <- d0043[, colnames(d0043) %in% c(admcol$column_name,"age")]
+# writexl::write_xlsx(data.frame(d0043),"data/3.meta_data/open_data/individual_data/0043a.xlsx")
+
 #### --------------------------------------------------- 0035 --------------------------------------------------- ####
 rm(list=ls())
 d0035 <- readr::read_csv("data/3.meta_data/open_data/d0035.csv")

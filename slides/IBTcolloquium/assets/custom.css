@@ -1,0 +1,62 @@
+a {
+    color: #096040;
+}
+
+a:hover {
+    color: black;
+}
+
+::selection {
+    background-color: #096040; /* Replace with your preferred background color */
+    color: white; /* Replace with your preferred text color */
+}
+
+.sidebar nav[role="doc-toc"] ul > li > a.active {
+    color: #096040 !important;
+    border-left: 2px solid #096040 !important;
+}
+
+.sidebar nav[role="doc-toc"] ul > li > a:hover {
+    color: #096040 !important;
+    border-left: 4px solid #096040 !important;
+}
+
+
+.sidebar nav[role="doc-toc"] ul > li > ul > li > a.active {
+    color: #096040 !important;
+    border-left: 2px solid #096040 !important;
+}
+
+.sidebar nav[role="doc-toc"] ul > li > ul > li > a:hover {
+    color: #096040 !important;
+    border-left: 4px solid #096040 !important;
+}
+
+.sourceCode.r span.co {
+    color: #777799 !important;
+    font-style: italic !important;
+}
+.sourceCode.r span.fu {
+    color: #darkblue !important;
+}
+.sourceCode.python span.dv  {
+    color: #EE5522!important;
+}
+.sourceCode.python span.co {
+    color: #779997 !important;
+    font-style: italic !important;
+}
+.sourceCode.python span.op {
+    color: #004400 !important;
+}
+.sourceCode.python span.im {
+    color: #1881cc !important;
+}
+.reveal a {
+  color: #096040;
+  border-radius: 3px;
+}
+.reveal ::selection {
+    background-color: #096040 !important;
+    color: white;
+}
