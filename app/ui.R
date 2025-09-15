@@ -358,16 +358,17 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
       bslib::card_body(
         p("If you use this app or dataset, please cite it as:"),
         tags$pre(
-          "Feraco, T. (2025). Living SEB Review: a Shiny app for meta-analysis and metaSEM.
-GitHub repository: https://github.com/feracotommaso/living_SEB_review"
+          "Feraco, T. (2025). The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. 
+          https://github.com/feracotommaso/living_SEB_review"
         ),
         p("BibTeX:"),
         tags$pre(
           "@misc{Feraco2025LivingSEB,
   author       = {Feraco, Tommaso},
-  title        = {Living SEB Review: a Shiny app for meta-analysis and metaSEM},
+  title        = {The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year         = {2025},
   howpublished = {GitHub repository},
+  publisher    = {NA},
   url          = {https://github.com/feracotommaso/living_SEB_review}
 }"
         )

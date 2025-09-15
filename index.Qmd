@@ -23,7 +23,8 @@ Here you can find the basic resources that everyone may want to use or read :
 -   **Living SEB app -** [link v0](https://feracoshiny.shinyapps.io/livingSEBapp/) ([user manual](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf))
 -   **Preregistration** - [pdf](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)
 -   **Presentations**
-    -   Lab meeting 2025 - 05 - 21 [html](https://feracotommaso.github.io/living_SEB_review/slides/labMeeting/LabMeetingLMA.html){target="_blank"}
+    -   IBT colloquium 2025-09-17 [html](https://feracotommaso.github.io/living_SEB_review/slides/IBTcolloquium/IBTcolloquium.html#/title-slide)
+    -   Lab meeting 2025-10-01 [html](https://feracotommaso.github.io/living_SEB_review/slides/labMeeting/LabMeetingLMA.html){target="_blank"}
 
 ## Navigate the materials
 
