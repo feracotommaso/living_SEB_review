@@ -399,6 +399,10 @@ For instance, school anxiety effects seem to vary across continents and countrie
 :::
 :::::
 
+## Preliminary results - consistency
+
+![](imgs/anxiety_trt.png)
+
 ## Preliminary results - math slopes
 
 ::::: columns
@@ -408,6 +412,18 @@ For instance, school anxiety effects seem to vary across continents and countrie
 
 ::: {.column width="38%"}
 ![](imgs/mat_slope_dist.png){height=650px}
+:::
+:::::
+
+## Preliminary results - reading slopes
+
+::::: columns
+::: {.column width="61%"}
+![](imgs/black_rdn_slope_map.png){height=650px}
+:::
+
+::: {.column width="38%"}
+![](imgs/rdn_slope_dist.png){height=650px}
 :::
 :::::
 

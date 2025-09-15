@@ -328,7 +328,7 @@ writexl::write_xlsx(data.frame(d0030b2),"data/3.meta_data/open_data/individual_d
 
 #### --------------------------------------------------- 0034 --------------------------------------------------- ####
 rm(list=ls())
-d0034 <- haven::read_sav("data/3.meta_data/open_data/d0034.sav")
+d0034 <- haven::read_sav("data/3.meta_data/open_data/d0034t.sav")
 admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
 
 # Transform scores
@@ -336,42 +336,117 @@ d0034$sex <- ifelse(d0034$sexo == 2, 0, d0034$sexo)
 d0034$age <- d0034$edad
 names(d0034)[names(d0034) == "estudios"] <- "educationlevel"
 
+#Seb
+names(d0034)[names(d0034) == "DOMINIO_SelfManagement"] <- "selfmanagement"
+names(d0034)[names(d0034) == "DOMINIO_SocialEngagement"] <- "socialengagement"
+names(d0034)[names(d0034) == "DOMINIO_Cooperation"] <- "cooperation"
+names(d0034)[names(d0034) == "DOMINIO_EmotionalResilience"] <- "emotionalresilience"
+names(d0034)[names(d0034) == "DOMINIO_Innovation"] <- "innovation"
+# Facets
+# SMD
+names(d0034)[names(d0034) == "GR"] <- "goalregulation"
+names(d0034)[names(d0034) == "TaskM"] <- "taskmanagement"
+names(d0034)[names(d0034) == "DecM"] <- "decisionmakingskill"
+names(d0034)[names(d0034) == "DM"] <- "detailmanagement"
+names(d0034)[names(d0034) == "CC"] <- "capacityforconsistency"
+names(d0034)[names(d0034) == "ORR"] <- "organizationalskill"
+names(d0034)[names(d0034) == "TM"] <- "timemanagement"
+names(d0034)[names(d0034) == "RM"] <- "responsibilitymanagement"
+names(d0034)[names(d0034) == "RF"] <- "rulefollowingskill"
+# IND
+names(d0034)[names(d0034) == "ABS"] <- "abstractthinkingskill"
+names(d0034)[names(d0034) == "CREA"] <- "creativeskill"
+names(d0034)[names(d0034) == "IP"] <- "informationprocessingskill"
+names(d0034)[names(d0034) == "CU"] <- "culturalcompetence"
+names(d0034)[names(d0034) == "ART"] <- "artisticskill"
+# COD
+names(d0034)[names(d0034) == "PT"] <- "perspectivetakingskill"
+names(d0034)[names(d0034) == "CSW"] <- "capacityforsocialwarmth"
+names(d0034)[names(d0034) == "TW"] <- "teamworkskill"
+names(d0034)[names(d0034) == "EC"] <- "ethicalcompetence"
+names(d0034)[names(d0034) == "CT"] <- "capacityfortrust"
+# SED
+names(d0034)[names(d0034) == "LS"] <- "leadershipskill"
+names(d0034)[names(d0034) == "Ex"] <- "expressiveskill"
+names(d0034)[names(d0034) == "CV"] <- "conversationalskill"
+names(d0034)[names(d0034) == "PS"] <- "persuasiveskill"
+names(d0034)[names(d0034) == "ER"] <- "energyregulation"
+# ESD
+names(d0034)[names(d0034) == "SR"] <- "stressregulation"
+names(d0034)[names(d0034) == "COP"] <- "capacityforoptimism"
+names(d0034)[names(d0034) == "CR"] <- "confidenceregulation"
+names(d0034)[names(d0034) == "IR"] <- "impulseregulation"
+names(d0034)[names(d0034) == "AM"] <- "angermanagement"
+# Interstitial
+names(d0034)[names(d0034) == "REF"] <- "selfreflectionskill"
+names(d0034)[names(d0034) == "IND"] <- "capacityforindependence"
+names(d0034)[names(d0034) == "ADA"] <- "adaptability"
 
-# #ses
-# names(d0043)[names(d0043) == "ParentsEducation"] <- "ParentEducation"
-# #Seb
-# names(d0043)[names(d0043) == "Skill_SelfManagement"] <- "selfmanagement"
-# names(d0043)[names(d0043) == "Skill_SocialEngagement"] <- "socialengagement"
-# names(d0043)[names(d0043) == "Skill_Cooperation"] <- "cooperation"
-# names(d0043)[names(d0043) == "Skill_EmotionalResilience"] <- "emotionalresilience"
-# names(d0043)[names(d0043) == "Skill_Innovation"] <- "innovation"
-# #Traits
-# names(d0043)[names(d0043) == "Trait_SelfManagement"] <- "conscientiousness"
-# names(d0043)[names(d0043) == "Trait_Innovation"] <- "openness"
-# names(d0043)[names(d0043) == "Trait_Cooperation"] <- "agreeableness"
-# names(d0043)[names(d0043) == "Trait_SocialEngagement"] <- "extraversion"
-# names(d0043)[names(d0043) == "Trait_EmotionalResilience"] <- "neuroticism"
+# Rescale to mean item values
+d0034[,which(colnames(d0034)=="goalregulation"):
+        which(colnames(d0034)=="adaptability")] <-
+  d0034[,which(colnames(d0034)=="goalregulation"):
+          which(colnames(d0034)=="adaptability")]/6
+d0034$selfmanagement <- d0034$selfmanagement / 54
+d0034$cooperation <- d0034$cooperation / 30
+d0034$emotionalresilience <- d0034$emotionalresilience / 30
+d0034$innovation <- d0034$innovation / 30
+d0034$socialengagement <- d0034$socialengagement / 30
+
+# Traits
+names(d0034)[names(d0034) == "Conscientiousness"] <- "conscientiousness"
+names(d0034)[names(d0034) == "OpenMindedness"] <- "openness"
+names(d0034)[names(d0034) == "Agreeableness"] <- "agreeableness"
+names(d0034)[names(d0034) == "Extraversion"] <- "extraversion"
+names(d0034)[names(d0034) == "Negative_Emotionality"] <- "neuroticism"
 # d0043$neuroticism <- (-1)*d0043$neuroticism
-# #Mosaic
-# names(d0043)[names(d0043) == "Mosaic_SustainingEffort"] <- "mosaicSustainingEffort"
-# names(d0043)[names(d0043) == "Mosaic_SocialConnection"] <- "mosaicSocialConnection"
-# names(d0043)[names(d0043) == "Mosaic_GettingAlongWithOthers"] <- "mosaicGettingAlong"
-# names(d0043)[names(d0043) == "Mosaic_MaintainingComposure"] <- "mosaicComposure"
-# names(d0043)[names(d0043) == "Mosaic_KeepingAnOpenMind"] <- "mosaicOpenMind"
-# #School
-# names(d0043)[names(d0043) == "ActTestScore"] <- "standardizedacademicachievement"
-# names(d0043)[names(d0043) == "OverallGPA"] <- "academicachievement"
-# names(d0043)[names(d0043) == "SchoolAttendance"] <- "schoolattendance"
-# names(d0043)[names(d0043) == "EducationalAspirations"] <- "educationalaspiration"
-# 
-# 
-# # Select and save
-# d0043a <- d0043[, colnames(d0043) %in% admcol$column_name]
-# writexl::write_xlsx(data.frame(cor(d0043a, use = "pairwise.complete")),"data/3.meta_data/matrices/0043a.xlsx")
-# 
-# # Individual data with age
-# d0043 <- d0043[, colnames(d0043) %in% c(admcol$column_name,"age")]
-# writexl::write_xlsx(data.frame(d0043),"data/3.meta_data/open_data/individual_data/0043a.xlsx")
+# O
+names(d0034)[names(d0034) == "Curiosity"] <- "bf_curiosity"
+names(d0034)[names(d0034) == "AestheticSensitivity"] <- "bf_aesthetic"
+names(d0034)[names(d0034) == "Creativity"] <- "bf_creativity"
+# C
+names(d0034)[names(d0034) == "Organization"] <- "bf_organization"
+names(d0034)[names(d0034) == "Productiveness"] <- "bf_productiveness"
+names(d0034)[names(d0034) == "Responsability"] <- "bf_responsibility"
+# E
+names(d0034)[names(d0034) == "Sociabilidad"] <- "bf_sociability"
+names(d0034)[names(d0034) == "Assertiviness"] <- "bf_assertiveness"
+names(d0034)[names(d0034) == "Energy"] <- "bf_energy"
+# A
+names(d0034)[names(d0034) == "Compassion"] <- "bf_compassion"
+names(d0034)[names(d0034) == "Respectfulness"] <- "bf_respectfulness"
+names(d0034)[names(d0034) == "Trust"] <- "bf_trust"
+# N
+names(d0034)[names(d0034) == "Anxiety"] <- "bf_anxiety"
+names(d0034)[names(d0034) == "Depression"] <- "bf_depression"
+names(d0034)[names(d0034) == "Volatility"] <- "bf_emotionalvolatility"
+
+#Casel
+names(d0034)[names(d0034) == "SelfmanagementMotivation"] <- "secaSelfmanagement"
+names(d0034)[names(d0034) == "SocialawarenessProsocialbehavior"] <- "secaSocialawareness"
+names(d0034)[names(d0034) == "Selfawareness"] <- "secaSelfawareness"
+names(d0034)[names(d0034) == "DecisionMaking"] <- "secaDecisionmaking"
+
+#Mindset
+names(d0034)[names(d0034) == "MindsetGrowth"] <- "growthmindset"
+names(d0034)[names(d0034) == "MindsetFixed"] <- "fixedmindset"
+
+names(d0034)[names(d0034) == "Grit"] <- "grit"
+names(d0034)[names(d0034) == "Curiosity_Test"] <- "epistemiccuriosity"
+
+names(d0034)[names(d0034) == "PersonalidadEmprendedora"] <- "enterprisingpersonality"
+
+# Internet
+names(d0034)[names(d0034) == "ComparaciónSocial_Redes"] <- "socialnetworkaddictiveconsequences"
+names(d0034)[names(d0034) == "ConsecuenciasAdictivas_Redes"] <- "socialnetworknegativesocialcomparison"
+
+# Select and save
+d0034a <- d0034[, colnames(d0034) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0034a, use = "pairwise.complete")),"data/3.meta_data/matrices/0034a.xlsx")
+
+# Individual data with age
+d0034 <- d0034[, colnames(d0034) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0034),"data/3.meta_data/open_data/individual_data/0034a.xlsx")
 
 #### --------------------------------------------------- 0035 --------------------------------------------------- ####
 rm(list=ls())
