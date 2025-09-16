@@ -11,7 +11,7 @@ format:
   revealjs:
     css: custom.css
     footer: "IBT colloquium 17/09/2025"
-    logo: "imgs/logo.png"
+    logo: "imgs/ibt.jpg"
     theme: default
     slide-number: c/t
     self-contained: false
@@ -34,7 +34,9 @@ execute:
 :::::: {style="font-size:30px;"}
 ::::: columns
 ::: {.column width="50%"}
--   Assistant Professor at the University of Padova
+**Roles**
+
+-   Junior Assistant Professor at UniPD
 -   Memory & learning lab member
 -   [Psicostat](https://psicostat.dpss.psy.unipd.it/) core team member
 
@@ -172,6 +174,7 @@ This approach is designed to better align the measurement method with the constr
 :::::
 
 # Rationale
+Replication crisis, QRPs...what's the future like for new frameworks?
 
 ## State of the things
 
@@ -263,6 +266,30 @@ This review is not limited to any outcome, but all possible outcomes will be cod
 
 -   **Specific construct:** Finally, each construct is labeled with its own construct label (e.g., extraversion, self-management).
 
+## Meta-analytic methods
+
+Only cross-sectional data (now)
+
+::::: columns
+::: {.column width="50%"}
+**Three-level models for correlation coefficients
+**
+
+
+![](imgs/multilevelmeta.png){fig-align="left" width="100%"}
+:::
+
+::: {.column width="50%"}
+**Meta-SEM for pooled correlations and 'advanced' multivariate analyses**
+
+
+![](imgs/metasem.png){fig-align="left" width="100%"}
+:::
+:::::
+
+
+
+
 # Temporary results
 
 Do SEB skills predict (correlate with) academic achievement?
@@ -304,7 +331,7 @@ Do SEB skills predict (correlate with) academic achievement?
 
 ## Pooled correlations
 
-![](imgs/metaCor.png){fig-align="left" width="100%"}
+![](imgs/metaCor.png){fig-align="left" width="80%"}
 
 ## Incremental validity
 
@@ -361,13 +388,11 @@ For instance, school anxiety effects seem to vary across continents and countrie
 
 1.  Does test anxiety vary across Italian municipalities?
 
-2.  RQ1b. How stable are these differences across time?
+2.  How stable are these differences across time?
 
-3.  RQ1c. To what extent do municipalities\` key socio-ecological characteristics (e.g., demographic, economic, and natural geographic features) relate to this variation?
+3.  Does the association between test anxiety and math and reading skills vary across Italian municipalities?
 
-4.  RQ2a. Does the association between test anxiety and math and reading skills vary across Italian municipalities?
-
-5.  RQ2b. To what extent do municipalities average anxiety levels and key socio-ecological characteristics (demographic, economic, and natural geographic features) relate to this variation?
+4.  To what extent do municipalities\` key socio-ecological characteristics (e.g., demographic, social, economic, and natural geographic features) relate to this variation?
 
 ## Methods
 
@@ -381,11 +406,13 @@ For instance, school anxiety effects seem to vary across continents and countrie
 
 -   **Municipalities**: \~3.000 municipalities (Italy has \~7.000)
 
-    -   demographic
+    -   demographic (age, gender, population density)
+    
+    -   social (immigrants share, migration rates, married couples, children)
 
-    -   economic
+    -   economic (income, education, job levels)
 
-    -   natural geographic features
+    -   natural geographic features (altitude, coasts, kmq)
 
 ## Preliminary results - average anxiety
 
@@ -426,6 +453,10 @@ For instance, school anxiety effects seem to vary across continents and countrie
 ![](imgs/rdn_slope_dist.png){height=650px}
 :::
 :::::
+
+## Correlates
+
+![](imgs/corrs1.png)
 
 # THANK YOU!
 

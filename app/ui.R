@@ -258,7 +258,7 @@ ui <- navbarPage(
             actionButton("s1_matrix", "Get the meta-matrix",
                          style="color: #fff; background-color: black; border-color: black"),
             verbatimTextOutput("s1_table"),
-            plotOutput("s1_figure"),
+            withSpinner(plotOutput("s1_figure")),
             downloadButton("download_s1_figure_png", "Download correlation plot (PNG)")
           ),
 
