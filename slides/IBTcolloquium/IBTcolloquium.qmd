@@ -290,9 +290,11 @@ Only cross-sectional data (now)
 
 
 
-# Temporary results
+# Do SEB skills predict (correlate with) academic achievement?
 
-Do SEB skills predict (correlate with) academic achievement?
+Temporary results
+
+
 
 ## Database
 
@@ -359,8 +361,6 @@ Try it yourself: <https://feracoshiny.shinyapps.io/livingSEBapp/>
 ShinyUrl <- "https://feracoshiny.shinyapps.io/livingSEBapp/" 
 plot(qrcode::qr_code(ShinyUrl))
 ```
-
-A shiny app!
 
 # Next steps
 
