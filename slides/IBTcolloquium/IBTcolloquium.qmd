@@ -136,6 +136,8 @@ SEB skills mainly fall into five areas [@soto2021TakingSkillsSeriously; @napolit
 :::
 :::::
 
+These domains clearly parallel the Big Five in terms of their cognitive, affective, and behavioral referents.
+
 ## Measurement: The BESSI
 
 ![](imgs/items.png)

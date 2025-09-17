@@ -51,81 +51,87 @@ ui <- navbarPage(
            href = "https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf",
            target = "_blank"),
     h3("What you can do"),
-    # Meta-analysis section
-    bslib::card(
-      bslib::card_header("Meta-analysis of correlations"),
-      bslib::card_body(
-        tags$ul(
-          tags$li(tags$b("Choose outcomes:"), " pick a broad group and a specific outcome."),
-          tags$li(tags$b("Filter:"), " restrict by ", tags$code("age_class"), " and publication year."),
-          tags$li(tags$b("Run models:"), " multilevel random-effects via ", tags$code("metafor::rma.mv()"), "."),
-          tags$li(tags$b("Inspect:"), " results table, dot–CI plot, forest plots."),
-          tags$li(tags$b("Export:"), " CSV dataset and an HTML report.")
-        )
-      )
-    ),
-    br(),
-    # MetaSEM section
-    bslib::card(
-      bslib::card_header("Meta-analytic SEM (one-stage MASEM)"),
-      bslib::card_body(
-        tags$ul(
-          tags$li(tags$b("Select variables:"), " SEB domains/facets, traits, and outcomes."),
-          tags$li(tags$b("Check coverage:"), " K/N tables with alerts for k=0 / small N."),
-          tags$li(tags$b("Pooled matrix:"), " compute meta-analytic correlations + plot."),
-          tags$li(tags$b("Specify model:"), " write lavaan syntax; app can auto-augment."),
-          tags$li(tags$b("Fit & interpret:"), " fit indices, parameters (with τ), and an R² table."),
-          tags$li(tags$b("Export:"), " RDS/ZIP of data and an HTML report.")
-        )
-      )
-    ),
-    br(),
-    # Review browser section
-    bslib::card(
-      bslib::card_header("Review browser"),
-      bslib::card_body(
-        tags$ul(
-          tags$li(tags$b("Filter by topics:"), " broad and specific topic labels."),
-          tags$li(tags$b("Dynamic filtering:"), " specific topics follow your broad choice."),
-          tags$li(tags$b("Results summary:"), " live count with helpful empty states."),
-          tags$li(tags$b("Export:"), " download the filtered studies as CSV.")
-        )
-      )
-    ),
-    br(),
-    # Quick start (stacked buttons)
-    bslib::card(
-      bslib::card_header("Quick start"),
-      bslib::card_body(
-        p("Jump straight to a workflow:"),
-        div(
-          style = "display:flex; flex-direction:column; gap:10px; max-width:320px;",
-          actionButton("go_to_metacor", "Meta-analysis",    class = "btn btn-dark"),
-          actionButton("go_to_metasem", "metaSEM",          class = "btn btn-dark"),
-          actionButton("go_to_review",  "Review browser",   class = "btn btn-outline-dark"),
-          actionButton("go_to_refs",    "About & Citation", class = "btn btn-outline-dark")
-        )
-      )
-    ),
-    br(),
-    # Resources
-    bslib::card(
-      bslib::card_header("Resources & acknowledgments"),
-      bslib::card_body(
-        p(
-          "Code and data: ",
-          tags$a("GitHub repository",
-                 href = "https://github.com/feracotommaso/living_SEB_review",
-                 target = "_blank")
+  
+    # Use a 2-column layout
+    bslib::layout_columns(
+      col_widths = c(8, 4), # left 2/3, right 1/3
+      gap = "20px",
+    
+      # LEFT COLUMN (all your workflow cards)
+      div(
+        bslib::card(
+          bslib::card_header("Meta-analysis of correlations"),
+          bslib::card_body(
+            tags$ul(
+              tags$li(tags$b("Choose outcomes:"), " pick a broad group and a specific outcome."),
+              tags$li(tags$b("Filter:"), " restrict by ", tags$code("age_class"), " and publication year."),
+              tags$li(tags$b("Run models:"), " multilevel random-effects via ", tags$code("metafor::rma.mv()"), "."),
+              tags$li(tags$b("Inspect:"), " results table, dot–CI plot, forest plots."),
+              tags$li(tags$b("Export:"), " CSV dataset and an HTML report.")
+            )
+          )
         ),
-        p(
-          "We thank prior authors and ",
-          tags$a("Jak et al. (2021)", href = "https://doi.org/10.1002/jrsm.1498", target = "_blank"),
-          " for the webMASEM inspiration."
+        br(),
+        bslib::card(
+          bslib::card_header("Meta-analytic SEM (one-stage MASEM)"),
+          bslib::card_body(
+            tags$ul(
+              tags$li(tags$b("Select variables:"), " SEB domains/facets, traits, and outcomes."),
+              tags$li(tags$b("Check coverage:"), " K/N tables with alerts for k=0 / small N."),
+              tags$li(tags$b("Pooled matrix:"), " compute meta-analytic correlations + plot."),
+              tags$li(tags$b("Specify model:"), " write lavaan syntax; app can auto-augment."),
+              tags$li(tags$b("Fit & interpret:"), " fit indices, parameters (with τ), and an R² table."),
+              tags$li(tags$b("Export:"), " RDS/ZIP of data and an HTML report.")
+            )
+          )
         ),
-        p(
-          "Contact: ",
-          tags$a("tommaso.feraco@unipd.it", href = "mailto:tommaso.feraco@unipd.it")
+        br(),
+        bslib::card(
+          bslib::card_header("Review browser"),
+          bslib::card_body(
+            tags$ul(
+              tags$li(tags$b("Filter by topics:"), " broad and specific topic labels."),
+              tags$li(tags$b("Dynamic filtering:"), " specific topics follow your broad choice."),
+              tags$li(tags$b("Results summary:"), " live count with helpful empty states."),
+              tags$li(tags$b("Export:"), " download the filtered studies as CSV.")
+            )
+          )
+        ),
+        br(),
+        bslib::card(
+          bslib::card_header("Quick start"),
+          bslib::card_body(
+            p("Jump straight to a workflow:"),
+            div(
+              style = "display:flex; flex-direction:column; gap:10px; max-width:320px;",
+              actionButton("go_to_metacor", "Meta-analysis",    class = "btn btn-dark"),
+              actionButton("go_to_metasem", "metaSEM",          class = "btn btn-dark"),
+              actionButton("go_to_review",  "Review browser",   class = "btn btn-outline-dark"),
+              actionButton("go_to_refs",    "About & Citation", class = "btn btn-outline-dark")
+            )
+          )
+        )
+      ),
+    
+      # RIGHT COLUMN (resources card only)
+      bslib::card(
+        bslib::card_header(tags$strong("Resources & acknowledgments")),
+        bslib::card_body(
+          p(
+            "Code and data: ",
+            tags$a("GitHub repository",
+                   href = "https://github.com/feracotommaso/living_SEB_review",
+                   target = "_blank")
+          ),
+          p(
+            "We thank prior authors and ",
+            tags$a("Jak et al. (2021)", href = "https://doi.org/10.1002/jrsm.1498", target = "_blank"),
+            " for the webMASEM inspiration."
+          ),
+          p(
+            "Contact: ",
+            tags$a("tommaso.feraco@unipd.it", href = "mailto:tommaso.feraco@unipd.it")
+          )
         )
       )
     )
