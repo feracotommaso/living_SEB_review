@@ -376,6 +376,25 @@ plot(qrcode::qr_code(ShinyUrl))
 
 -   More? (quality assessment, search string, inclusion criteria..)
 
+# 'Hidden' features
+
+::::: columns
+::: {.column width="30%"}
+-   IPD meta-analysis
+
+-   Rapid meta-analysis
+
+-   Analysis of all available open data
+:::
+
+::: {.column width="70%"}
+
+![Age trends of \~20.000 participants](imgs/age_trends.png){fig-align="left"}
+
+:::
+:::::
+
+
 # References
 
 ::: {#refs}
