@@ -46,6 +46,28 @@ server <- function(input, output, session) {
     return(dm)
   })
   ### Data summary ----
+  # ---- Check study count
+  too_few_studies <- reactive({
+    d <- dm()
+    if (is.null(d)) return(TRUE)
+    k <- length(unique(d$matrix_id))   # number of unique studies
+    k <= 1
+  })
+  # ---- Red banner UI
+  output$studycount_banner <- renderUI({
+    if (!too_few_studies()) return(NULL)
+    
+    tags$div(
+      class = "alert alert-danger",
+      role = "alert",
+      tags$strong("STOP — insufficient data for meta-analysis."),
+      tags$br(),
+      "Only ", length(unique(dm()$matrix_id)), " study/studies available. ",
+      "Meta-analysis requires at least 2 studies.",
+      tags$br(),
+      "Please adjust your outcome selection or filters before proceeding."
+    )
+  })
   # Study_table
   metaStudyTab <- reactive({
     uniqueD <- dm()[!duplicated(dm()$matrix_id), ]
@@ -279,7 +301,7 @@ server <- function(input, output, session) {
     req(metaD())
     ktab<-pattern.na(metaD()$cor_matrices, show.na = FALSE)
     if (sum(ktab<3)>0) {
-      showNotification("Some correlations will be based on few observations (<3). Please proceed cautiously",
+      showNotification("Some correlations will be based on few observations (< 3). Please proceed cautiously",
                        type = "warning", duration = 6)
     }
     if (sum(ktab==0)>0) {
@@ -363,7 +385,7 @@ server <- function(input, output, session) {
     x <- round(metaSEM::vec2symMat(coef(cfa1(),"fixed"),diag=FALSE),3)
     dimnames(x) <- list(paste0(1:nrow(metaD()$cor_matrices[[1]]),".",rownames(metaD()$cor_matrices[[1]])),
                         paste0(1:nrow(metaD()$cor_matrices[[1]]),"."))
-    dimnames(x) <- rep(list(labels_app[rownames(metaD()$cor_matrices[[1]])]), 2)
+    #dimnames(x) <- rep(list(labels_app[rownames(metaD()$cor_matrices[[1]])]), 2)
     x})
   # Summary table
   output$s1_table <- renderPrint({SumTable()}) 
@@ -377,7 +399,7 @@ server <- function(input, output, session) {
       png(file, width = 2000, height = 2000, res = 300)
       corrplot(SumTable(), method = "ellipse",
                addCoef.col = "black",
-               tl.col = "black", tl.srt = 45)
+               tl.col = "black", tl.srt = 0)
       dev.off()
     }
   )

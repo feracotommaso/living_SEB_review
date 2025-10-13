@@ -1,5 +1,5 @@
 ---
-title: "Cumulative, open, and accessible."
+title: "The living SEB project"
 subtitle: "A living systematic review and meta-analysis for SEB skills"
 author: "Tommaso Feraco"
 format:
@@ -7,7 +7,7 @@ format:
     slide-number: c/t
     width: 1600
     height: 900
-    footer: "A living systematic review and meta-analysis for SEB skills"
+    footer: "Lab meeting M&L, 2025-10-15"
     logo: "imgs/logo.png"
     theme: simple
     echo: false
@@ -44,41 +44,27 @@ bibliography: references.bib
 
 ## Putting things together
 
-::: columns
-::: {.column width="50%"}
-What they are:
+::::: columns
+::: {.column width="40%"}
+**Personality traits** represent characteristics patterns of thinking, feeling, and behaving.
 
--   Qualities that are beneficial to the individual and their social partners
-
--   Expressed mostly in relevant situation
-
--   Distinct from measured intelligence
-
--   Potentially responsive to interventions
+What someone ***tends to do*** across situations.
 :::
 
-::: {.column width="50%"}
-What they are NOT:
+::: {.column width="60%"}
+**Soft skills** represent functional capacities to establish and maintain social relationships, regulate emotions, and effectively manage behaviors toward goals and learning.
 
--   Personality traits
+What someone ***can do*** when the situation calls for it.
 :::
-:::
+:::::
 
-## How to organize them
-
-Despite the differences between these models, their key areas of overlap resemble the Big Five personality traits in terms of their social, emotional, and behavioral content.
-
--   Breadth
-
--   Facet-level constructs
-
--   Allow researchers to readily compare findings regarding skills and traits
+Traits and skills levels can be congruent or discrepant. For instance, an introvert might be able to (at least in some cases) act as a leader or efficiently speak in public.
 
 ## From soft to SEB (social, emotional, and behavioral) skills
 
-These represent the abilities to establish and maintain social relationships, regulate emotions, and effectively manage behaviors toward goals and learning and mainly fall into five areas [@soto2021TakingSkillsSeriously; @napolitano2021SocialEmotionalBehavioral] that resemble the Big Five.
+These represent the abilities to establish and maintain social relationships, regulate emotions, and effectively manage behaviors toward goals and learning [@soto2021TakingSkillsSeriously; @napolitano2021SocialEmotionalBehavioral].
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 -   **Self-management skills**
 -   **Social engagement skills**
@@ -98,15 +84,17 @@ These represent the abilities to establish and maintain social relationships, re
 
 -   **Emotional stability**
 :::
-:::
+:::::
+
+These domains clearly parallel the Big Five in terms of their cognitive, affective, and behavioral referents.
 
 ## From soft to SEB (social, emotional, and behavioral) skills
 
-::: columns
+:::: columns
 ::: {.column width="66%"}
 ![](imgs/sebmodel.png){fig-align="left" width="75%"}
 :::
-:::
+::::
 
 ## Assessing SEB skills
 
@@ -114,11 +102,40 @@ These represent the abilities to establish and maintain social relationships, re
 
 This approach is designed to better align the measurement method with the construct being assessed.
 
+## What we know about SEB skills
+
+::::: columns
+::: {.column width="50%"}
+-   SEB skills predict achievement
+
+    -   At school
+    -   At work
+
+-   SEB domains have differential predictive power
+
+-   Skill-trait mismatches predict well-being
+
+-   Changes in SEB predict changes in outcomes
+:::
+
+::: {.column width="50%"}
+-   Laypeople see changing skills as desirable
+
+-   Changing skills perceived easier than changing traits
+
+-   Especially for teachers!
+
+-   It seems actually possible and more feasible to change skills
+:::
+:::::
+
 # Rationale
+
+Replication crisis, QRPs…what’s the future like for new frameworks?
 
 ## State of the things
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 **New opportunities**
 
@@ -134,9 +151,9 @@ This approach is designed to better align the measurement method with the constr
 
 -   Meta-analysis and reviews are static, slow, and specific
 
--   
+-   People can select their preferred results to support their hypotheses
 :::
-:::
+:::::
 
 **HOW CAN WE MAKE THIS NEW LINE OF RESEARCH TRULY RELIABLE, ACCESSIBLE, AND SCIENTIFIC?**
 
@@ -146,29 +163,25 @@ This approach is designed to better align the measurement method with the constr
 
 ## Structures and aims
 
-<div style="font-size: 0.8em; line-height: 1.2;">
+::::: columns
+::: {.column width="30%"}
+Three core rationales:
 
--   **'Systematic' review:** Building a continuously updated and systematic organization of our knowledge about SEB skills, descriptively synthesizing and organizing all the studies conducted that focus on the SEB framework.
+-   **Prevent fragmentation**
 
-    -   Measurement
+-   **Enable timely integration**
 
-    -   Nomological validity
+-   **Advance open science**
+:::
 
-    -   Development
+::: {.column width="70%"}
+Three main aims:
 
-    -   Applied settings
-
-    -   ....
-
--   **Meta-analysis**: Develop a meta-analytical database of correlational studies that may facilitate the synthesis of evidence about the association between SEB skills, related constructs, and outcomes.
-
-    -   Classic correlational synthesis:
-
-    -   SEM synthesis using metaSEM:
-
--   **Open materials:** Provide an **open-access, regularly updated database** of all relevant publications, including metadata on study design, samples, measures, and data availability
-
-<div>
+-   **Review aim**: provide a living, organized cartography of SEB literature, freely accessible and filterable;
+-   **Meta-analytic aim**: continually synthesize (cross-sectional) associations between SEB skills and all other constructs and variables measured alongside;
+-   **Open science aim**: open materials and the Living SEB App to enable replication, rapid evidence checks, preregistration support, and community contributions.
+:::
+:::::
 
 # Method
 
@@ -176,29 +189,17 @@ see [preregistration](https://feracotommaso.github.io/living_SEB_review/preregis
 
 ## Search strategy (WOS + Scopus)
 
-<div style="font-size: 0.8em; line-height: 1.2;">
-
--   **Seminal theoretical papers**
-
-    -   Taking Skills Seriously: Toward an Integrative Model and Agenda for Social, Emotional, and Behavioral Skills [@soto2021TakingSkillsSeriously]
-
--   **Measurement**
-
-    -   An Integrative Framework for Conceptualizing and Assessing Social, Emotional, and Behavioral Skills: The BESSI [@soto2022IntegrativeFrameworkConceptualizing]
-
-    -   The Behavioral, Emotional, and Social Skills Inventory (BESSI): Psychometric Properties of a German-Language Adaptation, Temporal Stabilities of the Skills, and Associations with Personality and Intelligence [@lechner2022BehavioralEmotionalSocial]
-
-    -   The Italian Behavioral, Emotional, and Social Skills Inventory (BESSI-I) [@feraco2024ItalianBehavioralEmotional]
-
-    -   The Behavioral, Emotional, and Social Skills Inventory: A Spanish Adaptation and Further Validation in Adult Population [@postigo2024BehavioralEmotionalSocial]
-
--   **Short measurement versions**
-
-    -   Assessing Social, Emotional, and Behavioral Skills in Just a Few Minutes: 96-, 45-, and 20-Item Short Forms of the BESSI [@sewell2024AssessingSocialEmotional]
-
-<div>
+-   **Citation-chaining approach:**
+    -   **Seminal theoretical papers** [@soto2021TakingSkillsSeriously]
+    -   **Measurement and adaptations**
+        -   Original measurement paper [@soto2022IntegrativeFrameworkConceptualizing]
+        -   Language adaptations [@lechner2022BehavioralEmotionalSocial] [@feraco2024ItalianBehavioralEmotional] [@postigo2024BehavioralEmotionalSocial]
+        -   Shorter versions [@sewell2024AssessingSocialEmotional]
 
 ## Updating the search
+
+-   The query is replicated every first working day of each month
+-   **Search updates**
 
 +--------------------+----------------------------------------------------------+
 | Database           | String                                                   |
@@ -214,8 +215,6 @@ see [preregistration](https://feracotommaso.github.io/living_SEB_review/preregis
 
 ## Eligibility criteria - review
 
-<div style="font-size: 0.8em; line-height: 1.2;">
-
 -   **Review eligibility:** Citations are included in the review synthesis if:
 
     -   The main topic of the paper is SEB skills.
@@ -224,49 +223,26 @@ see [preregistration](https://feracotommaso.github.io/living_SEB_review/preregis
 
 -   **Exclusion from the review.** Citations are completely excluded from the review synthesis if:
 
-    -   They were not focusing on or adopting the SEB skill framework or emerging frameworks based on it. For example, a study focusing on the development of the Big Five should be excluded although it cites the reference papers. However, if it focuses on the development of the Big Five but also collects side data using the BESSI, it will be included in the meta-analysis and -if it also interprets and discuss SEB results- in the review;
-
+    -   They were not focusing on or adopting the SEB skill framework or emerging frameworks based on it.
     -   They were published as books;
-
     -   They were published in languages that were not comprehensible for the authors;
-
-    -   Referer to the SEB framework, but focus on different frameworks, such as the OECD or CASEL.
-
-<div>
+    -   Refer to the SEB framework, but focus on different frameworks, such as the OECD or CASEL.
 
 ## Eligibility criteria - meta-analysis
-
-<div style="font-size: 0.8em; line-height: 1.2;">
 
 -   **Meta analysis eligibility.** Citations are included in the meta-analysis if:
 
     -   The study assessed SEB skills using a validated skill-based assessment referencing to the SEB framework;
 
+    -   The study reports correlations at baseline or the data could be reduced to correlations or obtained by the authors;
+
     -   The study referred to original data that are not already reported in other included studies;
 
     -   The population study was either the general population or a clinical population with mild/moderate mental health issues.
 
--   **Exclusion from the meta analysis.** Citations are excluded if:
-
-    -   It is a qualitative study;
-
-    -   The study does not measure participants' SEB skills;
-
-    -   SEB skills were measured with a non-validated measure or with a measure that does follow the SEB framework;
-
-    -   The study does not report correlations at baseline or the data could not be reduced to correlations nor obtained by the authors;
-
-    -   It was a study whose data were previously used in a paper already included in the meta-analysis;
-
-    -   The study focused on severe mental health issues (e.g., schizophrenia, bipolar disorder);
-
-    -   They were published in languages that were not comprehensible for the authors.
-
-<div>
-
 ## Outcomes
 
-This review is not limited to any outcome, but all possible outcomes will be coded and included. Outcomes will be treated in the following way:
+**This review is not limited to any outcome**, but all possible outcomes will be coded and included. Outcomes will be treated in the following way:
 
 -   **Broad category:** Each outcome is assigned to the a broad category. Examples might be skills, mental health, school, demographic variables, job, personality traits...
 
@@ -274,45 +250,107 @@ This review is not limited to any outcome, but all possible outcomes will be cod
 
 -   **Specific construct:** Finally, each construct is labeled with its own construct label (e.g., extraversion, self-management).
 
-# Results
+## Meta-analytic methods
 
-A shiny app!
+Only cross-sectional data (now)
 
-# Open questions
+::::: columns
+::: {.column width="50%"}
+**Three-level models for correlation coefficients**
 
-<div style="font-size: 0.8em; line-height: 1.2;">
+![](imgs/multilevelmeta.png){fig-align="left" width="100%"}
+:::
 
--   Quality assessment?
+::: {.column width="50%"}
+**Meta-SEM for pooled correlations and 'advanced' multivariate analyses**
 
--   How do we collaborate without using word files?
+![](imgs/metasem.png){fig-align="left" width="100%"}
+:::
+:::::
 
--   Preregistration
+# How does it work?
 
-    -   Databases
+## Different resources
 
-    -   String
+-   An [open repository](https://github.com/feracotommaso/living_SEB_review) (including [these slides](https://feracotommaso.github.io/living_SEB_review/slides/labMeeting/LabMeetingLMA.html))
+-   The [*Living SEB App*](https://feracoshiny.shinyapps.io/livingSEBapp/)
+    -   With [instructions](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf)
+    -   Adaptable reports of meta-analytic results
+    -   Review of the literature
+-   A [living paper](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html)
+-   Anything else?
 
-    -   Criteria for review and meta-analysis
+## Tutorial (momentary) results
 
--   Publication
+Do SEB skills predict (correlate with) academic achievement?
 
-    -   Who could accept this and in which format?
+## Database
 
-    -   Why should we publish it?
+::::: columns
+::: {.column width="50%"}
+**In general**
 
--   Long-term feasibility
+-   Records identified: 259
+-   Records for review: 26
+-   Records for meta-analysis: 15
+    -   22 samples
+    -   137-5075 participants per sample (med = 702)
+    -   17.014 correlations (SEB = 14.154)
+    -   5.750 unique associations (SEB = 3.817)
+:::
 
-    -   Can I (we) keep updating it forever?
+::: {.column width="50%"}
+**With achievement**
 
-    -   Can we involve the community? How?
+-   Meta-analysis of correlations:
+    -   Studies: 7
+    -   Samples: 8
+    -   Effects: 40
+    -   Median N = 868 (350-5.075)
+-   Meta-SEM
+    -   Studies: 13
+    -   Samples: 20
+    -   Effects: 3-19
+    -   Ns: 2712-20.763
+:::
+:::::
 
-<div>
+## Meta-analytic associations
 
-# Next steps
+![](imgs/metaRes.png){fig-align="left" width="100%"}
 
--   Involve the BESSI team
+## Pooled correlations
 
--   Finalize the preregistration
+![](imgs/metaCor.png){fig-align="left" width="80%"}
+
+## Incremental validity
+
++----------------------------------------+-------------------------+---------------------------+
+| Domain                                 | Trait                   | Skill                     |
++========================================+=========================+===========================+
+| **Openness - Innovation**              | **0.22 \[0.08; 0.35\]** | **-0.16 \[-0.27;-0.04\]** |
++----------------------------------------+-------------------------+---------------------------+
+| **Conscientiousness - Selfmanagement** | 0.08 \[-0.01; 0.17\]    | **0.17 \[0.07; 0.27\]**   |
++----------------------------------------+-------------------------+---------------------------+
+| **Extraversion - Social engagement**   | -0.02 \[-0.09; 0.06\]   | **0.10 \[0.04; 0.16\]**   |
++----------------------------------------+-------------------------+---------------------------+
+| **Agreeableness - Cooperation**        | 0.04 \[-0.02; 0.11\]    | 0.05 \[-0.02; 0.12\]      |
++----------------------------------------+-------------------------+---------------------------+
+| **Neuroticism - Emotional resilience** | 0.08 \[NA\]             | 0.06 \[NA\]               |
++----------------------------------------+-------------------------+---------------------------+
+
+Some convergence issues but...
+
+## Don't you trust me?
+
+Try it yourself: <https://feracoshiny.shinyapps.io/livingSEBapp/>
+
+```{r, fig.align='right'}
+ShinyUrl <- "https://feracoshiny.shinyapps.io/livingSEBapp/" 
+plot(qrcode::qr_code(ShinyUrl))
+```
+
+# Next steps and open questions
 
 -   Finalize the app
 
@@ -322,7 +360,21 @@ A shiny app!
 
         -   Non-correlational designs
 
--   
+    -   Add features for other-uploaded data
+
+-   Publication
+
+    -   Who could accept this and in which format?
+
+    -   Why should we publish it?
+
+-   Feasibility
+
+    -   Can I (we) keep updating it forever?
+
+    -   Can we involve the community? How?
+
+-   More? (quality assessment, search string, inclusion criteria..)
 
 # References
 

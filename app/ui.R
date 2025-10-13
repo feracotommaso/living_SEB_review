@@ -54,13 +54,13 @@ ui <- navbarPage(
   
     # Use a 2-column layout
     bslib::layout_columns(
-      col_widths = c(8, 4), # left 2/3, right 1/3
-      gap = "20px",
+      col_widths = c(4, 8), # left 2/3, right 1/3
+      gap = "10px",
     
       # LEFT COLUMN (all your workflow cards)
       div(
         bslib::card(
-          bslib::card_header("Meta-analysis of correlations"),
+          bslib::card_header(tags$strong("Meta-analysis of correlations")),
           bslib::card_body(
             tags$ul(
               tags$li(tags$b("Choose outcomes:"), " pick a broad group and a specific outcome."),
@@ -73,7 +73,7 @@ ui <- navbarPage(
         ),
         br(),
         bslib::card(
-          bslib::card_header("Meta-analytic SEM (one-stage MASEM)"),
+          bslib::card_header(tags$strong("Meta-analytic SEM (one-stage MASEM)")),
           bslib::card_body(
             tags$ul(
               tags$li(tags$b("Select variables:"), " SEB domains/facets, traits, and outcomes."),
@@ -87,7 +87,7 @@ ui <- navbarPage(
         ),
         br(),
         bslib::card(
-          bslib::card_header("Review browser"),
+          bslib::card_header(tags$strong("Review browser")),
           bslib::card_body(
             tags$ul(
               tags$li(tags$b("Filter by topics:"), " broad and specific topic labels."),
@@ -99,7 +99,7 @@ ui <- navbarPage(
         ),
         br(),
         bslib::card(
-          bslib::card_header("Quick start"),
+          bslib::card_header(tags$strong("Quick start")),
           bslib::card_body(
             p("Jump straight to a workflow:"),
             div(
@@ -115,6 +115,25 @@ ui <- navbarPage(
     
       # RIGHT COLUMN (resources card only)
       bslib::card(
+        bslib::card_header(tags$strong("Cite this app")),
+        bslib::card_body(
+          p("If you use this app or dataset, please cite it as:"),
+          tags$pre(
+            "Feraco, T. (2025). The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. 
+          https://github.com/feracotommaso/living_SEB_review"
+          ),
+          p("BibTeX:"),
+          tags$pre(
+            "@misc{Feraco2025LivingSEB,
+  author       = {Feraco, Tommaso},
+  title        = {The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
+  year         = {2025},
+  howpublished = {GitHub repository},
+  publisher    = {NA},
+  url          = {https://github.com/feracotommaso/living_SEB_review}
+}"
+          )
+        ),
         bslib::card_header(tags$strong("Resources & acknowledgments")),
         bslib::card_body(
           p(
@@ -133,7 +152,7 @@ ui <- navbarPage(
             tags$a("tommaso.feraco@unipd.it", href = "mailto:tommaso.feraco@unipd.it")
           )
         )
-      )
+      ) 
     )
   ), #END PAGE 1
 
@@ -163,6 +182,7 @@ ui <- navbarPage(
             h4("Samples included"),
             tableOutput("metaStudy_table"),
             h5("Note: N is the max sample size and may vary across skill domains"),
+            uiOutput("studycount_banner"),
             # Button
             downloadButton("downloadMetaData", "Download the data")
           ),
@@ -172,7 +192,6 @@ ui <- navbarPage(
             title="Meta results",
             actionButton("meta_analysis", "Run the meta-analysis",
                          style="color: #fff; background-color: black; border-color: black"),
-            
             br(),
             h4("Estimated correlations"),
             tableOutput("metaResults"),
