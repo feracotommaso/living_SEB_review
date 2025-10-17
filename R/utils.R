@@ -159,7 +159,7 @@ getMETAdata <- function(pred_vars, out_vars, combined_data, study_info){
 #' @param acov     Passed to metaSEM::Cor2DataFrame() (default "weighted")
 #' @return data.frame
 sem_results_df <- function(sumfit, sem, metaD, labels_app = NULL, acov = "weighted") {
-  # --- checks ---------------------------------------------------------------
+  # checks
   if (!requireNamespace("metaSEM", quietly = TRUE)) {
     stop("Package 'metaSEM' is required.")
   }
@@ -170,10 +170,10 @@ sem_results_df <- function(sumfit, sem, metaD, labels_app = NULL, acov = "weight
     stop("metaD must have $cor_matrices and $basic_info$n.")
   }
   
-  # --- data needed for tau id labels ---------------------------------------
+  # data needed for tau id labels
   my.df <- metaSEM::Cor2DataFrame(metaD$cor_matrices, metaD$basic_info$n, acov = acov)
   
-  # --- 1) fixed-effects rows (+ param_id matching metaSEM naming) ----------
+  # 1) fixed-effects rows (+ param_id matching metaSEM naming) 
   keep_cols <- c("matrix","row","col","Estimate","Std.Error","z value","Pr(>|z|)")
   fixedRaw <- subset(sumfit$parameters, matrix %in% c("A0", "S0"), select = keep_cols)
   
@@ -183,7 +183,7 @@ sem_results_df <- function(sumfit, sem, metaD, labels_app = NULL, acov = "weight
     paste0(fixedRaw$row, "_", fixedRaw$col)    # variances/covariances: row_col
   )
   
-  # --- 2) random-effects VarCorr (tau variances) ---------------------------
+  # 2) random-effects VarCorr (tau variances) 
   tauMat  <- metaSEM::VarCorr(sem)              # VCV of random effects
   tau_diag <- diag(tauMat)
   
@@ -200,19 +200,19 @@ sem_results_df <- function(sumfit, sem, metaD, labels_app = NULL, acov = "weight
   tau_var <- stats::setNames(as.numeric(tau_diag), tau_ids)
   tau_sd  <- sqrt(tau_var)
   
-  # --- 3) map tau back to fixed effects by name ----------------------------
+  # 3) map tau back to fixed effects by name
   match_idx <- match(fixedRaw$param_id, names(tau_var))
   fixedRaw$tau_var <- tau_var[match_idx]
   fixedRaw$tau_sd  <- tau_sd[match_idx]
   
-  # --- 4) format "tau (sd)" column ----------------------------------------
+  # 4) format "tau (sd)" column
   fmt3 <- function(x) ifelse(is.na(x), NA, sprintf("%.3f", x))
   fixedRaw$Tau <- ifelse(
     is.na(fixedRaw$tau_var), "NaN",
     paste0(fmt3(fixedRaw$tau_var), " (", fmt3(fixedRaw$tau_sd), ")")
   )
   
-  # --- 5) presentation table ----------------------------------------------
+  # 5) presentation table
   parTab <- subset(sumfit$parameters, matrix %in% c("A0","S0"), select = keep_cols)
   parTab$op       <- ifelse(parTab$matrix == "A0", "~", "~~")
   parTab$outcome  <- parTab$row
@@ -269,3 +269,144 @@ sem_results_df <- function(sumfit, sem, metaD, labels_app = NULL, acov = "weight
   rownames(parTab) <- NULL
   parTab
 }
+
+augment_lavaan_model <- function(user_model, varnames,
+                                 fix_exo_var = TRUE,
+                                 correlate_exogenous = TRUE,
+                                 saturate_endogenous = TRUE,
+                                 include_headings = TRUE) {
+  `%||%` <- function(a, b) if (!is.null(a)) a else b
+  squish <- function(x) gsub("\\s+", " ", trimws(x))
+  
+  # 1) Split, strip comments
+  lines <- unlist(strsplit(user_model %||% "", "\n"))
+  lines <- trimws(gsub("#.*$", "", lines))
+  lines <- lines[nchar(lines) > 0]
+  
+  # 2) Separate parts
+  meas_raw <- lines[grepl("=~", lines)]
+  meas_clean <- unique(squish(meas_raw))
+  
+  is_reg  <- grepl("(^|[^~])~([^~]|$)", lines) & !grepl("~~", lines) & !grepl("=~", lines)
+  reg_raw <- lines[is_reg]
+  
+  cov_existing <- unique(squish(lines[grepl("~~", lines)]))
+  
+  # 3) Sanitize regressions
+  sanitize_reg_line <- function(line) {
+    parts <- strsplit(line, "~", fixed = TRUE)[[1]]
+    if (length(parts) < 2) return("")
+    lhs <- squish(parts[1])
+    rhs <- paste(parts[-1], collapse = "~")
+    terms <- strsplit(rhs, "\\+")[[1]]
+    
+    clean_terms <- vapply(terms, function(t) {
+      t <- trimws(gsub("[()]", "", t))
+      if (grepl("\\*", t)) t <- sub(".*\\*", "", t)
+      t <- trimws(gsub("^[-+]", "", t))
+      if (t %in% c("", "1")) return("")
+      t
+    }, character(1))
+    
+    clean_terms <- unique(clean_terms[clean_terms != ""])
+    if (length(clean_terms) == 0) return("")
+    squish(paste(lhs, "~", paste(clean_terms, collapse = " + ")))
+  }
+  
+  reg_clean <- Filter(nzchar, unique(vapply(reg_raw, sanitize_reg_line, character(1))))
+  
+  # 4) Identify endogenous/exogenous
+  lhs <- if (length(reg_clean)) trimws(sub("\\~.*$", "", reg_clean)) else character(0)
+  endo <- unique(lhs)
+  exo  <- setdiff(varnames, endo)
+  
+  # 4b) Parse indicators from measurement model
+  parse_indicators <- function(line) {
+    parts <- strsplit(line, "=~", fixed = TRUE)[[1]]
+    if (length(parts) < 2) return(character(0))
+    rhs <- squish(parts[2])
+    terms <- strsplit(rhs, "\\+")[[1]]
+    inds <- vapply(terms, function(t) {
+      t <- trimws(gsub("[()]", "", t))
+      if (grepl("\\*", t)) t <- sub(".*\\*", "", t)
+      t <- trimws(gsub("^[-+]", "", t))
+      if (t %in% c("", "1")) return("")
+      t
+    }, character(1))
+    unique(inds[nzchar(inds)])
+  }
+  indicator_items <- unique(unlist(lapply(meas_clean, parse_indicators)))
+  
+  # 5) Build auto-additions
+  add_cov <- character(0)
+  add_var <- character(0)
+  
+  # Exogenous variances fixed to 1 (not for indicators if measurement present)
+  if (fix_exo_var && length(exo) > 0) {
+    exo_to_fix <- if (length(meas_clean) > 0) setdiff(exo, indicator_items) else exo
+    if (length(exo_to_fix) > 0) {
+      add_var <- paste0(exo_to_fix, " ~~ 1*", exo_to_fix)
+    }
+  }
+  
+  # Exogenous–exogenous covariances
+  if (correlate_exogenous && length(exo) > 1) {
+    pe <- utils::combn(exo, 2)
+    add_cov <- c(add_cov, paste0(pe[1,], " ~~ ", pe[2,]))
+  }
+  
+  # Residual correlations among endogenous variables
+  if (saturate_endogenous && length(endo) > 1) {
+    pi <- utils::combn(endo, 2)
+    add_cov <- c(add_cov, paste0(pi[1,], " ~~ ", pi[2,]))
+  }
+  
+  add_cov <- setdiff(unique(squish(add_cov)), cov_existing)
+  add_var <- setdiff(unique(squish(add_var)), cov_existing)
+  
+  # 6) Warn about unknown variables
+  rhs_all <- if (length(reg_clean)) trimws(sub(".*~", "", reg_clean)) else character(0)
+  rhs_terms <- trimws(unlist(strsplit(paste(rhs_all, collapse = " + "), "\\+")))
+  used_vars <- unique(c(endo, rhs_terms))
+  used_vars <- used_vars[nzchar(used_vars)]
+  bad <- setdiff(used_vars, varnames)
+  if (length(bad)) {
+    warning("These variables are not in the current data selection: ",
+            paste(bad, collapse = ", "))
+  }
+  
+  # 7) Assemble with headings
+  blocks <- list()
+  
+  # --- Measurement block ---
+  if (length(meas_clean)) {
+    blocks <- c(blocks,
+                list(if (include_headings) "# MEASUREMENT MODEL" else NULL),
+                list(meas_clean))
+  }
+  
+  # --- Structural + user covariances ---
+  user_block <- c(reg_clean, cov_existing)
+  if (length(user_block)) {
+    blocks <- c(blocks,
+                list(if (include_headings) "# USER MODEL SPECIFICATION" else NULL),
+                list(user_block))
+  }
+  
+  # --- Generated covariances ---
+  if (length(add_cov)) {
+    blocks <- c(blocks,
+                list(if (include_headings) "# APP-GENERATED COVARIANCES" else NULL),
+                list(add_cov))
+  }
+  
+  # --- Generated variances ---
+  if (length(add_var)) {
+    blocks <- c(blocks,
+                list(if (include_headings) "# APP-GENERATED VARIANCES" else NULL),
+                list(add_var))
+  }
+  
+  paste(unlist(blocks), collapse = "\n")
+}
+

@@ -16,13 +16,6 @@ library(stringdist)
 
 # UI ####
 ui <- navbarPage(
-  # theme = bs_theme(
-  #   version   = 5,              # Bootstrap 5
-  #   bootswatch = "flatly",      # or "minty", "darkly", NULL for default
-  #   primary   = "#0d6efd",      # brand color
-  #   base_font = font_google("Inter"),
-  #   heading_font = font_google("Inter Tight")
-  # ),
   header = tagList(
     useShinyjs(),
     tags$style(HTML("
@@ -64,7 +57,7 @@ ui <- navbarPage(
           bslib::card_body(
             tags$ul(
               tags$li(tags$b("Choose outcomes:"), " pick a broad group and a specific outcome."),
-              tags$li(tags$b("Filter:"), " restrict by ", tags$code("age_class"), " and publication year."),
+              tags$li(tags$b("Filter:"), " restrict by age class and publication year."),
               tags$li(tags$b("Run models:"), " multilevel random-effects via ", tags$code("metafor::rma.mv()"), "."),
               tags$li(tags$b("Inspect:"), " results table, dot–CI plot, forest plots."),
               tags$li(tags$b("Export:"), " CSV dataset and an HTML report.")
@@ -77,6 +70,7 @@ ui <- navbarPage(
           bslib::card_body(
             tags$ul(
               tags$li(tags$b("Select variables:"), " SEB domains/facets, traits, and outcomes."),
+              tags$li(tags$b("Filter:"), " restrict by age class and publication year."),
               tags$li(tags$b("Check coverage:"), " K/N tables with alerts for k=0 / small N."),
               tags$li(tags$b("Pooled matrix:"), " compute meta-analytic correlations + plot."),
               tags$li(tags$b("Specify model:"), " write lavaan syntax; app can auto-augment."),
@@ -107,6 +101,7 @@ ui <- navbarPage(
               actionButton("go_to_metacor", "Meta-analysis",    class = "btn btn-dark"),
               actionButton("go_to_metasem", "metaSEM",          class = "btn btn-dark"),
               actionButton("go_to_review",  "Review browser",   class = "btn btn-outline-dark"),
+              actionButton("go_to_res",     "Resources",        class = "btn btn-outline-dark"),
               actionButton("go_to_refs",    "About & Citation", class = "btn btn-outline-dark")
             )
           )
@@ -119,14 +114,14 @@ ui <- navbarPage(
         bslib::card_body(
           p("If you use this app or dataset, please cite it as:"),
           tags$pre(
-            "Feraco, T. (2025). The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. 
+            "Feraco, T. (2025). The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. 
           https://github.com/feracotommaso/living_SEB_review"
           ),
           p("BibTeX:"),
           tags$pre(
             "@misc{Feraco2025LivingSEB,
   author       = {Feraco, Tommaso},
-  title        = {The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
+  title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year         = {2025},
   howpublished = {GitHub repository},
   publisher    = {NA},
@@ -134,24 +129,6 @@ ui <- navbarPage(
 }"
           )
         ),
-        bslib::card_header(tags$strong("Resources & acknowledgments")),
-        bslib::card_body(
-          p(
-            "Code and data: ",
-            tags$a("GitHub repository",
-                   href = "https://github.com/feracotommaso/living_SEB_review",
-                   target = "_blank")
-          ),
-          p(
-            "We thank prior authors and ",
-            tags$a("Jak et al. (2021)", href = "https://doi.org/10.1002/jrsm.1498", target = "_blank"),
-            " for the webMASEM inspiration."
-          ),
-          p(
-            "Contact: ",
-            tags$a("tommaso.feraco@unipd.it", href = "mailto:tommaso.feraco@unipd.it")
-          )
-        )
       ) 
     )
   ), #END PAGE 1
@@ -368,84 +345,145 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
 
 # ---------------------------------------------------------------------------------------------------------------- #
 
-## THANKS ####
+## RESOURCES ####
+  tabPanel(
+    title = "Resources",
+    bslib::card(
+      bslib::card_header(tags$strong("Resources")),
+      bslib::card_body(
+        br(),
+        actionButton(
+          inputId = "go_to_gitrepo",
+          label = "GitHub repository, data, and materials",
+          class = "btn btn-dark",
+          onclick = "window.open('https://github.com/feracotommaso/living_SEB_review/', '_blank')"
+          ),
+        br(),
+        actionButton(
+          inputId = "go_to_gitsite",
+          label = "Project site",
+          class = "btn btn-dark",
+          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/', '_blank')"
+        ),
+        br(),
+        actionButton(
+          inputId = "go_to_manual",
+          label = "Instruction manual",
+          class = "btn btn-dark",
+          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf/', '_blank')"
+        ),
+        br(),
+        actionButton(
+          inputId = "go_to_preregistration",
+          label = "Preregistration",
+          class = "btn btn-dark",
+          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf', '_blank')"
+        ),
+        br(),
+        actionButton(
+          inputId = "go_to_livingpaper",
+          label = "Living paper",
+          class = "btn btn-dark",
+          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html', '_blank')"
+        )
+      ),
+      br(),
+      
+      # Contact & feedback
+      bslib::card(
+        bslib::card_header(tags$strong("Contact & feedback")),
+        bslib::card_body(
+          p("Questions or suggestions?"),
+          div(
+            style = "display:flex; gap:10px; flex-wrap:wrap;",
+            tags$a(
+              href = "mailto:tommaso.feraco@unipd.it",
+              class = "btn btn-dark btn-sm", "Email the author"
+            ),
+            tags$a(
+              href = "https://github.com/feracotommaso/living_SEB_review/issues",
+              target = "_blank", class = "btn btn-outline-dark btn-sm", "Report an issue"
+            ),
+            tags$a(
+              href = "https://github.com/feracotommaso/living_SEB_review",
+              target = "_blank", class = "btn btn-outline-dark btn-sm", "Open the repository"
+            )
+          )
+        )
+      ),
+    )
+  ), 
+
+# ---------------------------------------------------------------------------------------------------------------- #
+
+## ABOUT ####
   tabPanel(
     title = "About & Citation",
     br(),
     h1("About this app", align = "left"),
     p(
-      "This app helps researchers explore SEB literature, run classic meta-analyses of correlations, ",
+      "This app was developed by Tommaso Feraco to help researchers explore SEB literature, run classic meta-analyses of correlations, ",
       "and estimate meta-analytic SEMs (one-stage MASEM)."
     ),
-    # How to cite
-    bslib::card(
-      bslib::card_header("How to cite"),
-      bslib::card_body(
-        p("If you use this app or dataset, please cite it as:"),
-        tags$pre(
-          "Feraco, T. (2025). The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. 
-          https://github.com/feracotommaso/living_SEB_review"
-        ),
-        p("BibTeX:"),
-        tags$pre(
-          "@misc{Feraco2025LivingSEB,
+    # Two-column layout
+    bslib::layout_columns(
+      col_widths = c(9, 3), # left 2/3, right 1/3
+      gap = "10px",
+      
+      # ===== LEFT COLUMN ===
+      div(
+        # How to cite
+        bslib::card_header(tags$strong("Cite this app")),
+        bslib::card_body(
+          p("If you use this app or dataset, please cite it as:"),
+          tags$pre(
+            "Feraco, T. (2025). The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills.
+https://github.com/feracotommaso/living_SEB_review"
+          ),
+          p("BibTeX:"),
+          tags$pre(
+            "@misc{Feraco2025LivingSEB,
   author       = {Feraco, Tommaso},
-  title        = {The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
+  title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year         = {2025},
   howpublished = {GitHub repository},
   publisher    = {NA},
   url          = {https://github.com/feracotommaso/living_SEB_review}
 }"
-        )
-      )
-    ),
-    br(),
-    # Contact & feedback
-    bslib::card(
-      bslib::card_header("Contact & feedback"),
-      bslib::card_body(
-        p("Questions or suggestions?"),
-        div(
-          style = "display:flex; gap:10px; flex-wrap:wrap;",
-          tags$a(
-            href = "mailto:tommaso.feraco@unipd.it",
-            class = "btn btn-dark btn-sm", "Email the author"
-          ),
-          tags$a(
-            href = "https://github.com/feracotommaso/living_SEB_review/issues",
-            target = "_blank", class = "btn btn-outline-dark btn-sm", "Report an issue"
-          ),
-          tags$a(
-            href = "https://github.com/feracotommaso/living_SEB_review",
-            target = "_blank", class = "btn btn-outline-dark btn-sm", "Open the repository"
+          )
+        ),
+        br(),
+        
+        # Version / data snapshot
+        bslib::card(
+          bslib::card_header(tags$strong("Version & data snapshot")),
+          bslib::card_body(
+            p("App version: v0.1 (demo)"),
+            p("Dataset last updated: see repository README for the latest snapshot/date.")
           )
         )
-      )
-    ),
-    br(),
-    # Credits & acknowledgments
-    bslib::card(
-      bslib::card_header("Credits & acknowledgments"),
-      bslib::card_body(
-        tags$ul(
-          tags$li(HTML("<b>Packages:</b> metafor, metaSEM, ggplot2, corrplot, shiny, bslib, shinyjs")),
-          tags$li(HTML("<b>Inspiration:</b> webMASEM — Jak et al. (2021), <a href='https://doi.org/10.1002/jrsm.1498' target='_blank'>https://doi.org/10.1002/jrsm.1498</a>")),
-          tags$li(HTML("<b>Data & code:</b> see the GitHub repository for sources, scripts, and license"))
+      ), # <-- CLOSE LEFT COLUMN DIV
+      
+      # ===== RIGHT COLUMN ===
+      div(
+        bslib::card(
+          # Credits & acknowledgments
+          bslib::card(
+            bslib::card_header(tags$strong("Credits & acknowledgments")),
+            br(),
+            bslib::card_body(
+              tags$ul(
+                tags$li(HTML("<b>Packages:</b> metafor, metaSEM, ggplot2, corrplot, shiny, bslib, shinyjs")),
+                tags$li(HTML("<b>Inspiration:</b> webMASEM — Jak et al. (2021), <a href='https://doi.org/10.1002/jrsm.1498' target='_blank'>https://doi.org/10.1002/jrsm.1498</a>")),
+                tags$li(HTML("<b>People:</b> I thank, Chris Soto and Brent Roberts for supporting and motivating the development of this app and Enrico Toffalini, Filippo Gambarota, and Margherita Calderan for teaching me how to manage all this.",
+                             "A special thank to Jak and colleagues (2021) for the webMASEM inspiration."))
+              )
+            )
+          ),
         )
-      )
-    ),
-    
-    br(),
-    # Version / data snapshot (optional placeholder text)
-    bslib::card(
-      bslib::card_header("Version & data snapshot"),
-      bslib::card_body(
-        p("App version: v0.1 (demo)"),
-        p("Dataset last updated: see repository README for the latest snapshot/date.")
-        # If you want this dynamic, you can replace these with textOutput()s and set them in server.
-      )
+      ) # <-- CLOSE RIGHT COLUMN DIV
     )
-  ) #END LAST PAGE
-) #END
+  )
+) #END LAST PAGE
 
 # # rsconnect::deployApp(getwd())

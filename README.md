@@ -1,4 +1,4 @@
-# A living systematic review and meta-analysis for SEB skills
+# A living database for review and meta-analysis of SEB skills studies
 
 **DATA LAST UPDATED** 2025-09-01
 
@@ -36,14 +36,14 @@ This repository contains all the open materials of the *living SEB project*:
 
 To cite the {Living SEB project} in publications use:
 
-Feraco, T. (2025). The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. <https://github.com/feracotommaso/living_SEB_review>
+Feraco, T. (2025). The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. <https://github.com/feracotommaso/living_SEB_review>
 
-A BibTeX entry for LaTeX users is
+A BibTeX entry is
 
 ```         
 @Misc{,
     author       = {Feraco Tommaso},
-    title        = {The Living SEB Project: A Living Systematic Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
+    title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
     year         = 2025,
     howpublished = {GitHub repository},
     publisher    = {NA},

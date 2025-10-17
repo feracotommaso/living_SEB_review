@@ -107,9 +107,9 @@ This section builds a **meta-analytic correlation matrix** across selected varia
     You can **download** the correlation plot (PNG).
 3.  **Specify and fit a model (MetaSEM → metaSEM).**
 -   Move to the *metaSEM* tab and insert your **lavaan syntax** in the text area (e.g., `y ~ x1 + x2`). If you are not familiar with `lavaan` or `R`, please see https://lavaan.ugent.be/tutorial/syntax1.html.
-    -   You can insert the regression part of the model only.
+    -   You can fit both regression models and measurement models.
     -   The app **auto-augments** your model to:
-        -   Fix exogenous variances,
+        -   Fix exogenous variances correctly,
         -   And saturate the residual covariances.
     -   If you do not want the model to be saturated, unclick the **checkbox**.
         -   You can now specify the covariances you want to estimate using `~~`.
@@ -182,17 +182,21 @@ The **Review** tab lets you filter the curated literature by **broad topics** an
 
 If you use this app or dataset, please cite:
 
-Feraco, T. (2025). *Living SEB Review: a Shiny app for meta-analysis and metaSEM*. GitHub repository: <https://github.com/feracotommaso/living_SEB_review>
+Feraco, T. (2025). The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills.
+https://github.com/feracotommaso/living_SEB_review.
 
 **BibTeX**
 
 ```         
-  @misc{Feraco2025LivingSEB,   
-      author = {Feraco, Tommaso},   
-      title = {Living SEB Review: a Shiny app for meta-analysis and metaSEM},   
-      year = {2025},   
-      howpublished = {GitHub repository},   
-      url = {https://github.com/feracotommaso/living_SEB_review} } 
+  @misc{Feraco2025LivingSEB,
+  author       = {Feraco, Tommaso},
+  title        = {The Living SEB Project: A Living Database for Review and 
+  Meta-Analysis of Social, Emotional, and Behavioral Skills},
+  year         = {2025},
+  howpublished = {GitHub repository},
+  publisher    = {NA},
+  url          = {https://github.com/feracotommaso/living_SEB_review}
+}
 ```
 
 # Discussion
