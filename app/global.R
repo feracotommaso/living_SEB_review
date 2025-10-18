@@ -52,3 +52,31 @@ library(RefManageR)
 bibAll <- ReadBib(dest_file)
 
 # bibAll <- RefManageR::ReadBib(here::here("data/0.bib_download/bibAll.bib"))
+
+
+# Citations app
+load_text_url <- function(url, fallback = NULL, keep_newlines = TRUE) {
+  temp_file <- tempfile(fileext = ".txt")
+  tryCatch({
+    download.file(url, destfile = temp_file, mode = "wb", quiet = TRUE)
+    txt <- readLines(temp_file, warn = FALSE, encoding = "UTF-8")
+    paste(txt, collapse = if (keep_newlines) "\n" else "")
+  }, error = function(e) {
+    if (!is.null(fallback) && file.exists(fallback)) {
+      txt <- readLines(fallback, warn = FALSE, encoding = "UTF-8")
+      return(paste(txt, collapse = if (keep_newlines) "\n" else ""))
+    }
+    stop("Failed to download or read text file: ", e$message)
+  })
+}
+
+# ---- Download citation text ----
+cat(">>> Downloading citations...\n")
+
+# Direct links to the raw GitHub files on 'main'
+apa_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/R/apa.txt"
+bib_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/R/cite.bib"
+
+# Load once at app startup
+apa_text <- load_text_url(apa_url, fallback = "apa.txt", keep_newlines = TRUE)
+bib_text <- load_text_url(bib_url, fallback = "cite.bib", keep_newlines = TRUE)

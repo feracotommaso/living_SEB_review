@@ -742,4 +742,20 @@ server <- function(input, output, session) {
     }
   )
   
+  # Show APA (keeps line breaks)
+  output$apa_cite <- renderText({
+    apa_text
+  })
+  
+  # Show BibTeX (preformatted)
+  output$bib_cite <- renderText({
+    bib_text
+  })
+  
+  # Optional: let users download the .bib
+  output$download_bib <- downloadHandler(
+    filename = function() "livingSEB.bib",
+    content  = function(file) writeLines(bib_text, file, useBytes = TRUE)
+  )
+  
 }

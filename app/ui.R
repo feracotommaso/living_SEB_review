@@ -90,8 +90,11 @@ ui <- navbarPage(
               tags$li(tags$b("Export:"), " download the filtered studies as CSV.")
             )
           )
-        ),
-        br(),
+        )
+      ),
+    
+      # RIGHT COLUMN (resources card only)
+      bslib::card(
         bslib::card(
           bslib::card_header(tags$strong("Quick start")),
           bslib::card_body(
@@ -106,29 +109,6 @@ ui <- navbarPage(
             )
           )
         )
-      ),
-    
-      # RIGHT COLUMN (resources card only)
-      bslib::card(
-        bslib::card_header(tags$strong("Cite this app")),
-        bslib::card_body(
-          p("If you use this app or dataset, please cite it as:"),
-          tags$pre(
-            "Feraco, T. (2025). The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. 
-          https://github.com/feracotommaso/living_SEB_review"
-          ),
-          p("BibTeX:"),
-          tags$pre(
-            "@misc{Feraco2025LivingSEB,
-  author       = {Feraco, Tommaso},
-  title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
-  year         = {2025},
-  howpublished = {GitHub repository},
-  publisher    = {NA},
-  url          = {https://github.com/feracotommaso/living_SEB_review}
-}"
-          )
-        ),
       ) 
     )
   ), #END PAGE 1
@@ -423,7 +403,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
     h1("About this app", align = "left"),
     p(
       "This app was developed by Tommaso Feraco to help researchers explore SEB literature, run classic meta-analyses of correlations, ",
-      "and estimate meta-analytic SEMs (one-stage MASEM)."
+      "and estimate meta-analytic SEMs."
     ),
     # Two-column layout
     bslib::layout_columns(
@@ -436,22 +416,13 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
         bslib::card_header(tags$strong("Cite this app")),
         bslib::card_body(
           p("If you use this app or dataset, please cite it as:"),
-          tags$pre(
-            "Feraco, T. (2025). The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills.
-https://github.com/feracotommaso/living_SEB_review"
-          ),
+          # preformatted APA (multi-line)
+          verbatimTextOutput("apa_cite"),
           p("BibTeX:"),
-          tags$pre(
-            "@misc{Feraco2025LivingSEB,
-  author       = {Feraco, Tommaso},
-  title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
-  year         = {2025},
-  howpublished = {GitHub repository},
-  publisher    = {NA},
-  url          = {https://github.com/feracotommaso/living_SEB_review}
-}"
-          )
-        ),
+          verbatimTextOutput("bib_cite"),
+          br(),
+          downloadButton("download_bib", "Download .bib")
+          ),
         br(),
         
         # Version / data snapshot

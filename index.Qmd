@@ -12,7 +12,8 @@ format:
     code-fold: false 
     message: false
 #    css: "assets/custom.css"
-editor: visual
+editor: visual 
+# quarto render README.qmd --to gfm
 ---
 
 ## Resources for all

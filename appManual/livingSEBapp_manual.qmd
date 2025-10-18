@@ -182,21 +182,12 @@ The **Review** tab lets you filter the curated literature by **broad topics** an
 
 If you use this app or dataset, please cite:
 
-Feraco, T. (2025). The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills.
-https://github.com/feracotommaso/living_SEB_review.
+{{< include ../R/apa.txt >}}
 
-**BibTeX**
+A BibTeX entry is:
 
-```         
-  @misc{Feraco2025LivingSEB,
-  author       = {Feraco, Tommaso},
-  title        = {The Living SEB Project: A Living Database for Review and 
-  Meta-Analysis of Social, Emotional, and Behavioral Skills},
-  year         = {2025},
-  howpublished = {GitHub repository},
-  publisher    = {NA},
-  url          = {https://github.com/feracotommaso/living_SEB_review}
-}
+``` bibtex
+{{< include ../R/cite.bib >}}
 ```
 
 # Discussion

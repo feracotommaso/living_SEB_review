@@ -171,7 +171,7 @@ makeReviewTable <- function(topics = NULL, subtopics = NULL, data = review, topi
   # Step 4: Review Table
   revInfo <- c("paper_id","author_et_al","year","title","review_topics","doi")
   revTab <- result[,revInfo]
-  
+  revTab$year <- as.character(revTab$year)
   return(list(filteredData = result,
               revTab = revTab))
 }
