@@ -181,12 +181,13 @@ server <- function(input, output, session) {
   output$forestPlot <- renderPlot({
     outList <- metaAnalysis()$outList
     x = input$forestSelected
-    forest(outList[[x]], slab = paste0(outList[[x]]$data$author_et_al, " ",
-    #                                    outList[[x]]$data$year, " ",
-                                        outList[[x]]$data$matrix_id),
-            header = T,
-            main = x)
-    # forest(outList[[x]])
+    forest(outList[[x]], 
+           slab = outList[[x]]$data$author_et_al,
+           ilab = cbind(outList[[x]]$data$year,
+                        outList[[x]]$data$matrix_id),
+           ilab.lab = c("Year","ID"),
+           header = T,
+           main = paste0(x))
   })
   
   # PAGE d. REPORT ####
@@ -659,7 +660,7 @@ server <- function(input, output, session) {
     }
   )
   
-  # # REVIEW ####
+  # REVIEW ####
   ### Data selection ----
   # Choices for specific topics
   spec_top_list <- reactive({
@@ -742,6 +743,7 @@ server <- function(input, output, session) {
     }
   )
   
+  # CITATION ####
   # Show APA (keeps line breaks)
   output$apa_cite <- renderText({
     apa_text
