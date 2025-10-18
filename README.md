@@ -26,6 +26,7 @@ This repository contains all the open materials of the *living SEB project*:
 ├── preregistration/ # Reproducible preregistration file
 ├── R/               # Additional R functions used in the project
 ├── slides/          # Slides for presentation of the project (Quarto Reveal.js)
+├── tutorialAnalysis/# R code for tutorial analyses
 ├── index.qmd        # Main homepage
 ├── index.html       # Main homepage HTML
 ├── LICENSE          # License information

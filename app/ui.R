@@ -370,7 +370,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
           inputId = "go_to_manual",
           label = "Instruction manual",
           class = "btn btn-dark",
-          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf/', '_blank')"
+          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf', '_blank')"
         ),
         br(),
         actionButton(

@@ -42,6 +42,7 @@ execute:
   warning: false
   message: false
   error: false
+project-dir: paper
 ---
 
 ```{r}
