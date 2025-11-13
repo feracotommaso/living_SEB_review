@@ -1,13 +1,14 @@
 ---
 title: "README"
 editor: visual
+# quarto render README.qmd --to md
 ---
 
 ## 
 
 # A living database for review and meta-analysis of SEB skills studies
 
-**DATA LAST UPDATED** 2025-09-01
+**DATA LAST UPDATED** 2025-11-01
 
 This repository contains all the open materials of the *living SEB project*.
 
@@ -25,7 +26,7 @@ Shiny app for running meta-analytic synthesis: <https://feracoshiny.shinyapps.io
 
 This repository contains all the open materials of the *living SEB project*:
 
-```text
+``` text
 ├── app/             # The R code to run the living SEB app
 ├── appManual/       # Reproducible instruction manual for the living SEB app (Quarto)
 ├── materials/       # Some initial materials for the review

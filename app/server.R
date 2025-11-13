@@ -433,25 +433,13 @@ server <- function(input, output, session) {
     )
     
     RAM1 <- metaSEM::lavaan2RAM(model_aug, obs.variables = varnames)
-    T0   <- metaSEM::create.Tau2(RAM = RAM1, RE.type = "Diag",
+    T0   <- metaSEM::create.Tau2(RAM = RAM1, RE.type = "Zero",
                                  Transform = "expLog", RE.startvalues = 0.05)
     my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
     M0    <- create.vechsR(A0 = RAM1$A, S0 = RAM1$S, F0 = RAM1$F)
     
     osmasem(model.name = "One Stage MASEM (auto_augmented)",
             Mmatrix = M0, Tmatrix = T0, data = my.df, intervals.type = "z")
-    
-    # model <- input$lavmodel
-    # varnames <- rownames(metaD()$cor_matrices[[1]]) # Get the names of the variables
-    # nvar <- nrow(metaD()$cor_matrices[[1]]) # Get their number
-    # RAM1 <- metaSEM::lavaan2RAM(model, obs.variables=varnames) # Generate RAM sintax from lavaan
-    # T0 <- metaSEM::create.Tau2(RAM=RAM1, RE.type="Diag", Transform="expLog", RE.startvalues=0.05)
-    # my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
-    # # Fit the model using one-Stage MASEM with or without test of indirect effect
-    # M0 <- create.vechsR(A0=RAM1$A, S0=RAM1$S, F0 = RAM1$F)
-    # # ind <- mxAlgebra(beta1*beta2, name="IndirectEffect") 
-    # oss <- osmasem(model.name="One Stage MASEM", Mmatrix=M0, Tmatrix=T0, 
-    #                data=my.df, intervals.type = "z")
   })
   ### Results ----
   sumfit <- reactive({
@@ -490,88 +478,9 @@ server <- function(input, output, session) {
       ),
       labels_app = labels_app   
     )
-    # my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
-    # 
-    # ## 1) Build your fixed-effects table as before, but keep a copy with IDs
-    # fixedRaw <- subset(sumfit()$parameters, matrix %in% c("A0","S0"),
-    #                    select = c("matrix","row","col","Estimate","Std.Error","z value","Pr(>|z|)"))
-    # 
-    # # create a parameter ID that matches metaSEM naming
-    # fixedRaw$param_id <- ifelse(fixedRaw$matrix == "A0",
-    #                             paste0(fixedRaw$col, "_",  fixedRaw$row),
-    #                             paste0(fixedRaw$row, "_", fixedRaw$col))
-    # 
-    # ## 2) Get VarCorr and make a named vector of tau variances
-    # tauMat   <- metaSEM::VarCorr(SEM())              # random-effects VCV
-    # vcor <- round(diag(metaSEM::VarCorr(SEM())),3)
-    # tau_diag <- diag(tauMat)
-    # tau_ids  <- my.df$ylabels                   # names of parameters with random effects
-    # tau_var  <- setNames(as.numeric(tau_diag), tau_ids)
-    # tau_sd   <- sqrt(tau_var)
-    # 
-    # ## 3) Map tau back to fixed effects by name; non-random params become NA
-    # match_idx <- match(fixedRaw$param_id, names(tau_var))
-    # fixedRaw$tau_var <- tau_var[match_idx]
-    # fixedRaw$tau_sd  <- tau_sd[match_idx]
-    # 
-    # ## 4) Format the combined "tau (sd)" cell
-    # fmt3 <- function(x) ifelse(is.na(x), NA, sprintf("%.3f", x))
-    # fixedRaw$Tau <- ifelse(is.na(fixedRaw$tau_var), "NaN",
-    #                        paste0(fmt3(fixedRaw$tau_var), " (", fmt3(fixedRaw$tau_sd), ")"))
-    # 
-    # ## 5) Now rebuild your presentation table and merge Tau by keys (row/col/op)
-    # parTab <- subset(sumfit()$parameters, matrix %in% c("A0","S0"),
-    #                  select = c("matrix","row","col","Estimate","Std.Error","z value","Pr(>|z|)"))
-    # parTab$op <- ifelse(parTab$matrix == "A0", "~", "~~")
-    # parTab$outcome   <- parTab$row
-    # parTab$predictor <- parTab$col
-    # 
-    # zcrit <- 1.96
-    # parTab$CI_lower <- parTab$Estimate - zcrit * parTab$`Std.Error`
-    # parTab$CI_upper <- parTab$Estimate + zcrit * parTab$`Std.Error`
-    # parTab$CI95 <- paste0("[",round(parTab$CI_lower, 2),"; ",
-    #                       round(parTab$CI_upper, 2),"]")
-    # is_resid_var <- parTab$matrix == "S0" & parTab$row == parTab$col
-    # parTab$op[is_resid_var] <- "~~ (resid var)"
-    # parTab$predictor[is_resid_var] <- parTab$outcome[is_resid_var]
-    # 
-    # parTab <- parTab[, c("matrix","outcome","op","predictor","Estimate","Std.Error",
-    #                      "z value","Pr(>|z|)","CI95")]
-    # names(parTab) <- c("matrix","outcome","op","predictor","Estimate","SE",
-    #                    "z","p","CI_95")
-    # 
-    # # merge Tau by the unambiguous key (matrix,row,col)
-    # parTab <- merge(parTab,
-    #                 fixedRaw[, c("matrix","row","col","Tau")],
-    #                 by.x = c("matrix","outcome","predictor"),
-    #                 by.y = c("matrix","row","col"),
-    #                 all.x = TRUE,
-    #                 sort  = FALSE)
-    # 
-    # # pretty formatting
-    # parTab$Estimate <- round(parTab$Estimate, 3)
-    # parTab$SE       <- round(parTab$SE, 3)
-    # parTab$z        <- round(parTab$z, 3)
-    # parTab$p        <- ifelse(is.na(parTab$p), NA,
-    #                           ifelse(parTab$p < .001, "<.001", sprintf("%.3f", parTab$p)))
-    # parTab$outcome <- labels_app[parTab$outcome]
-    # parTab$predictor <- labels_app[parTab$predictor]
-    # 
-    # # rename the column at the end (so you can use parTab$Tau internally)
-    # names(parTab)[names(parTab) == "Tau"] <- "tau (sd)"
-    # 
-    # # final ordering for display
-    # op_order <- c("~","~~","~~ (resid var)")
-    # parTab$op <- factor(parTab$op, levels = op_order)
-    # parTab <- parTab[order(parTab$op, parTab$outcome, parTab$predictor), ]
-    # 
-    # names(parTab)[names(parTab) == "predictor"] <- "Predictor"
-    # names(parTab)[names(parTab) == "matrix"] <- "Matrix"
-    # names(parTab)[names(parTab) == "outcome"] <- "Outcome"
-    # data.frame(parTab)
   })
   output$SEMresults <- renderTable({
-    SEMresults_df()
+    SEMresults_df()[,-ncol(SEMresults_df())]
   })
   # Residual variances + R2
   R2_table <- reactive({

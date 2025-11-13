@@ -1,6 +1,4 @@
 ---
-# title: "Cumulative, open, and accessible"
-# subtitle: "Introducing a living systematic review and meta-analysis of social, emotional, and behavioral skills research—the Living SEB Project"
 title: "The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills" 
 shorttitle: "the Living SEB Project"
 author:
@@ -16,11 +14,18 @@ author:
         region: Veneto
         country: Italy
         postal-code: 35129
-author-note:
-  status-changes: 
-    affiliation-change: ~
-    deceased: ~
-  disclosures:
+  - name: Gerardo Pellegrino
+    corresponding: false
+    orcid: 0000-0001-7032-9774
+    email: gerardo.pellegrino@phd.unipd.it
+    affiliations:
+      - name: University of Padova
+        department: Department of General Psychology
+        address: Via Venezia 8
+        city: Padova
+        region: Veneto
+        country: Italy
+        postal-code: 35129
     study-registration: The study was preregistered at https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf
     data-sharing: Data, code, and materials are available at https://github.com/feracotommaso/living_SEB_review
     related-report: ~
@@ -28,7 +33,7 @@ author-note:
     financial-support: The authors received no funding for this study
     gratitude: ~
     authorship-agreements: ~
-abstract: "The social, emotional, and behavioral (SEB) skills framework was recently proposed as an integrative model for soft skills, socio-emotional competences, and 21st-century skills able to clarify their definition and differentiation from personality traits. To keep this new research field open, accessible, and cumulative from its inception, we introduce the Living SEB Project, a living database for review and meta-analysis dedicated to SEB skills. This initiative integrates continuous literature searches, an open database of coded studies and effect sizes, and an interactive web application (the Living SEB App) that enables customized analyses. Following PRISMA guidelines, we identified -at the time of writing- 259 publications, of which 21 met criteria for the living review and 14 for quantitative synthesis, encompassing 21 independent samples. Two tutorial analyses illustrate the project’s database utility by testing a multilevel meta-analysis of SEB–academic achievement associations and a meta-analytic structural equation model testing SEB skills’ incremental validity beyond personality traits. Preliminary findings suggest that SEB domains such as self-management are significantly associated with academic achievement, with self-management also showing unique predictive value beyond Big Five traits. By providing a transparent, dynamic, and openly accessible dataset and an interactive Shiny app, the Living SEB Project offers a sustainable infrastructure to consolidate evidence, accelerate cumulative science, and model living evidence synthesis within the SEB framework and psychology more broadly."
+abstract: "The social, emotional, and behavioral (SEB) skills framework was recently proposed as an integrative model for soft skills/socio-emotional competencies, clarifying their definition and distinction from personality traits. To support open and cumulative research in this area, we introduce the Living SEB Project, a continuously updated database combining ongoing literature searches, an open repository of coded studies and effect sizes, and an interactive application enabling customizable meta-analyses. At the time of writing, we identified 259 publications, with 28 meeting criteria for the living review and 17 (24 samples) for quantitative synthesis. Two tutorial analyses are used to demonstrate the database’s utility: a meta-analysis of SEB–academic achievement links and a meta-analytic structural equation model testing SEB skills’ incremental validity beyond personality traits. The Living SEB Project sets out as a transparent, dynamic and openly accessible tool to accelerate and ease cumulative science and synthesis within the SEB skills framework and beyond."
 keywords: [meta-analysis; systematic review; living review; socio-emotional skills; open science]
 bibliography: bibliography.bib
 format: #quarto render paper/livingSEBpaper.qmd --to all
@@ -46,6 +51,7 @@ project-dir: paper
 ---
 
 ```{r}
+#| labels: setup
 source(here::here("R/utils.R"))
 
 library(metafor)
@@ -57,29 +63,30 @@ library(purrr)
 library(metaSEM)
 
 library(english)
-```
 
-<!-- The introduction should not have a level-1 heading such as Introduction. -->
+library(readxl)
+library(dplyr)
+```
 
 # Introduction
 
-Social, emotional, and behavioral (SEB) skills–sometimes referred to as “soft skills,” “21st-century skills,” or “social-emotional skills”–are increasingly recognized as essential for success, well-being, and social functioning [@heckman2012; @feracoIntegratedModelSchool2023], but only in recent years, new frameworks have sought to overcome the field’s long-standing challenges of fragmented conceptualizations and reliance on personality trait measures [@abrahamsSocialemotionalSkillAssessment2019; @guoRolesSocialEmotional2023; @sotoIntegrativeFrameworkConceptualizing2022]. In particular, Soto and colleagues [-@sotoTakingSkillsSeriously2021] proposed the SEB framework and the Behavioral, Emotional, and Social Skills Inventory [BESSI; @sotoIntegrativeFrameworkConceptualizing2022], defining and assessing SEB skills as functional capacities, distinct from but complementary to personality traits. This progress has created a novel and timely opportunity to accelerate research on SEB skills starting from a valid, integrative, and common framework.
+Social, emotional, and behavioral (SEB) skills–sometimes referred to as “soft skills,” “21st-century skills,” or “social-emotional skills”–are increasingly recognized as essential for success, well-being, and social functioning [@heckman2012; @feracoIntegratedModelSchool2023]. Only in recent years, however, new frameworks have begun to address the field’s long-standing challenges of fragmented conceptualizations and reliance on personality trait measures [@abrahamsSocialemotionalSkillAssessment2019; @guoRolesSocialEmotional2023; @sotoIntegrativeFrameworkConceptualizing2022]. In particular, Soto and colleagues [-@sotoTakingSkillsSeriously2021] proposed the SEB framework and the Behavioral, Emotional, and Social Skills Inventory [BESSI; @sotoIntegrativeFrameworkConceptualizing2022], defining and assessing SEB skills as functional capacities, distinct from but complementary to personality traits. This progress has created a novel and timely opportunity to accelerate research on SEB skills starting from a valid, integrative, and common framework.
 
-Nonetheless, psychology, as many other sciences, still faces many broad methodological challenges including the absence of infrastructures that make knowledge cumulative, dynamic, and accessible. Indeed, as synthesis evidence we usually rely on traditional meta-analyses and systematic reviews that provide rigorous syntheses of evidence but are static by design. Given the accelerating pace of publication, they often become outdated within just a few years [@elliottLivingSystematicReviews2014; @sakalukReconsideringWhatMakes2023; @elliottLivingSystematicReview2017]. As a result, both old and new promising frameworks–such as SEB skills–risk fragmentation or premature stagnation if evidence cannot be continually updated and integrated.
+Nonetheless, psychology, as many other sciences, still faces many broad methodological challenges, including the absence of infrastructures that make knowledge cumulative, dynamic, and accessible. Indeed, we usually rely on traditional meta-analyses and systematic reviews, which provide rigorous summaries of evidence but are narrow in scope and static by design. Given the accelerating pace of publication, they often become outdated within just a few years [@elliottLivingSystematicReviews2014; @sakalukReconsideringWhatMakes2023; @elliottLivingSystematicReview2017]. As a result, both old and new promising frameworks–such as SEB skills–risk fragmentation or premature stagnation if evidence cannot be continually updated and integrated.
 
-To address this challenge, the concept of *living systematic reviews* has been developed to propose that reviews and meta-analyses are continually updated as new studies are published [@elliottLivingSystematicReview2017]. However, their adoption in psychology has been limited, and to our knowledge, no living meta-analysis has yet been devoted to SEB skills. This gap is particularly striking given that SEB research is a young and rapidly growing field, precisely where static reviews are most vulnerable to obsolescence and selective reporting might prove particularly impacting.
+To address this challenge, the concept of *living systematic reviews* has been developed to propose that reviews and meta-analyses are continually updated as new studies are published [@elliottLivingSystematicReview2017]. However, their adoption in psychology has been limited, and to our knowledge, no living meta-analysis has yet been devoted to SEB skills. This gap is particularly striking given that SEB skills research is a young and rapidly growing field, precisely where static reviews are most vulnerable to obsolescence and selective reporting might prove particularly impacting.
 
-The present article introduces the *Living SEB Project*: a living database for review and meta-analysis dedicated to SEB skills. This initiative integrates (a) ongoing systematic literature searches, (b) centralized open databases of coded study information and effect sizes, and (c) a user-friendly web application for customized analyses. Together, these tools are designed to provide researchers, reviewers, editors, and even practitioners with continually updated, openly accessible evidence on SEB skills
+The present article introduces the *Living SEB Project*: a living database for review and meta-analysis dedicated to SEB skills. This initiative integrates (a) ongoing systematic literature searches, (b) centralized open databases of coded study information and effect sizes, and (c) a user-friendly web application for customized analyses. Together, these tools are designed to provide researchers, reviewers, editors, and practitioners with continually updated, openly accessible evidence on SEB skills
 
-To illustrate the utility of the *Living SEB Project* and its tools, we also present two tutorial analyses of the current database: A multilevel meta-analysis of the associations between SEB domains and academic achievement, and a meta-analytic structural equation model testing incremental validity of SEB skills beyond personality traits. These results should be regarded as illustrative demonstrations of the living framework rather than definitive conclusions, given the small number of studies currently available and the rapidly increasing number of publications on the topic. However, an updated version of the results of this paper will be published monthly in line with the living nature of the project.
+To illustrate the utility of the *Living SEB Project* and its tools, we also present two tutorial analyses of the current database: A multilevel meta-analysis of the associations between SEB domains and academic achievement, and a meta-analytic structural equation model testing incremental validity of SEB skills beyond personality traits. These results should be regarded as illustrative demonstrations of the living framework rather than definitive conclusions, given the small number of studies currently available and the rapidly increasing number of publications on the topic. However, an updated version of the results of this paper will be published every time the data are updated, consistent with the living nature of the project.
 
-Our overarching goal is to prevent SEB research from repeating the familiar cycle of selective reporting, fragmentation, and stagnation of many different fields in psychology. By building a transparent and adaptable infrastructure for evidence integration, we hope not only to support progress in this field, but also to offer a model for living evidence synthesis in psychology more broadly.
+Our overarching goal is to prevent SEB skills research from repeating the familiar cycle of selective reporting, fragmentation, and stagnation of many different fields in psychology. We hope that by building a transparent and adaptable infrastructure for integrating evidence, we will not only support progress in this field, but also offer a model for living evidence synthesis in psychology more broadly.
 
 ## Social, Emotional, and Behavioral Skills
 
-The Living SEB Project is grounded in the conceptualization of SEB skills proposed by Soto and colleagues [-@sotoTakingSkillsSeriously2021; -@sotoIntegrativeFrameworkConceptualizing2022]. In this framework, SEB skills are defined as the functional capacities individuals can draw upon to build relationships, pursue goals, think creatively, and regulate their emotions. Importantly, skills differ from personality traits: whereas traits capture enduring patterns of thought, feeling, and behavior, skills reflect what individuals *can do when required*. For example, a person may typically avoid public speaking (a trait tendency) but still be able to deliver an effective presentation when needed (a skill capacity).
+The *Living SEB Project* is grounded in the conceptualization of SEB skills proposed by Soto and colleagues [-@sotoTakingSkillsSeriously2021; -@sotoIntegrativeFrameworkConceptualizing2022]. In this framework, SEB skills are defined as the functional capacities individuals can draw upon to build relationships, pursue goals, think creatively, and regulate their emotions. After reviewing the various theoretical models of skills presented in the literature, Soto and colleagues [-@sotoIntegrativeFrameworkConceptualizing2022] identified 32 skills and organized them into five broad domains derived from the Big Five model of personality traits [@mccrae1989]. Importantly, skills are clearly distinguished from personality traits: whereas traits capture enduring patterns of thoughts, feelings, and behaviors, skills reflect what individuals *can do when required*. For example, a person may typically avoid public speaking (a trait tendency) but still be able to deliver an effective presentation when needed (a skill capacity).
 
-SEB skills are grouped into five broad domains, paralleling the Big Five but from a skills-based perspective:
+The five SEB skills domains, paralleling the Big Five personality traits, comprise:
 
 -   Innovation skills, including the capacities used to process and engage with novel ideas and experiences (linked to the openness personality trait).
 
@@ -91,91 +98,75 @@ SEB skills are grouped into five broad domains, paralleling the Big Five but fro
 
 -   Emotional resilience skills, including the capacities used to regulate emotions and moods (linked to the emotional stability personality trait).
 
-To assess these skills, the Behavioral, Emotional, and Social Skills Inventory (BESSI) was developed [@sotoIntegrativeFrameworkConceptualizing2022] utilizing items that are phrased to actually measure capacities (“How well can you…?”) rather than frequencies (“How often do you…?”) and effectively distinguishing skills from traits. Indeed, SEB skills show both overlap with, and incremental validity beyond, personality traits [@feracoItalianBehavioralEmotional2024; @lechnerBehavioralEmotionalSocial2022; @postigoBehavioralEmotionalSocial2024; @sotoGoingTraitsSocial2024; @sotoWhatWhatCan2023; @yoonExaminingSEBSkills2024; @chenSocialEmotionalBehavioral2024]. Additionally, skills–traits mismatches (e.g., high extraversion but low social engagement skills) predict unique outcomes for adolescents [@ringwaldMoreSkillTrait2025]. For instance, students with higher skills than traits reported better outcomes than students with higher traits than skills (i.e., a person that usually does something but is not very good at it). Evidence also suggests that skills and traits follow similar but distinct developmental trajectories [@napolitanoChangesSocialEmotional2025; @feracoSocialEmotionalBehavioral2023], and laypeople perceive them as meaningfully different constructs [@feracoDifferencesChangeGoals2025].
+To assess these skills, the Behavioral, Emotional, and Social Skills Inventory (BESSI) was developed utilizing items that are phrased to measure capacities (“How well can you…?”) rather than frequencies (“How often do you…?”) and effectively distinguishing skills from traits [@sotoIntegrativeFrameworkConceptualizing2022]. Indeed, SEB skills show both overlap with, and incremental validity beyond, personality traits [@feracoItalianBehavioralEmotional2024; @lechnerBehavioralEmotionalSocial2022; @postigoBehavioralEmotionalSocial2024; @sotoGoingTraitsSocial2024; @sotoWhatWhatCan2023; @yoonExaminingSEBSkills2024; @chenSocialEmotionalBehavioral2024]. Additionally, skills–traits mismatches (e.g., high extraversion but low social engagement skills) predict unique outcomes for adolescents [@ringwaldMoreSkillTrait2025]. For instance, students whose skills exceeded their traits (i.e., individuals who do not typically engage in a behavior but are nonetheless proficient at it) reported better outcomes than those whose traits exceeded their skills (i.e., individuals who often engage in a behavior but are not particularly skilled at it). Evidence also suggests that skills and traits follow similar but distinct developmental trajectories [@napolitanoChangesSocialEmotional2025; @feracoSocialEmotionalBehavioral2023], and laypeople perceive them as meaningfully different constructs [@feracoDifferencesChangeGoals2025].
 
-Despite this progress, results are already becoming complex and sometimes contradictory, making integration difficult. In such a rapidly developing area, reliance on static reviews or individual's literature searches risks selective citation, cherry-picking of results, and conceptual fragmentation. To limit such possibilities, we propose a living and cumulative approach to synthesis of SEB research.
+Despite this progress, studies adopting the SEB skills framework already display considerable heterogeneity, making them difficult to synthesize. For instance, some studies have sought to expand the framework’s nomological network by considering all SEB facets and domains [@sotoGoingTraitsSocial2024; @postigoBehavioralEmotionalSocial2024], whereas others have focused on specific skill facets [@collie2025; @breil2022]. In such a rapidly developing area, relying on static reviews or individual literature searches risks selective citation, cherry-picking of results, and conceptual fragmentation. To mitigate these risks, we propose a living and cumulative approach to synthesizing SEB research.
 
 ## Introducing Living Reviews and Meta-Analyses
 
-Current approaches to theoretical and quantitative synthesis of scientific materials mainly rely on meta-analyses and systematic reviews. However, especially in view of the steeply increasing number of publications, both of them become outdated soon, requiring recurring updates. These are often conducted by different authors and, even if data sharing is becoming more common nowadays, building on previous meta-analysis often requires running a new database search or coding additional information leading new authors to run meta-analysis (even on the same effect) from scratch. This meaning duplicate screening of the materials and loss of resources, time and possibly increasing human error [@elliottLivingSystematicReview2017; @boscoCloudbasedMetaanalysisBridge2015].
+Current approaches to theoretical and quantitative synthesis of scientific materials mainly rely on meta-analyses and systematic reviews. However, especially in view of the steeply increasing number of publications, both of them become outdated soon, requiring recurring updates. These are often conducted by different authors and, even if data sharing is becoming more common nowadays, building on previous meta-analysis often requires running a new database search or coding additional information leading new authors to run meta-analysis (even on the same effect) from scratch. This results in duplicate screening of materials, loss of resources and time, and potentially increased human error [@elliottLivingSystematicReview2017; @boscoCloudbasedMetaanalysisBridge2015].
 
-To overcome these issues, living meta-analysis and databases are now appearing in the literature, especially for medical studies, clinical trials, and interventions [@cuijpersLivingSystematicReviews2022; @elliottLivingSystematicReviews2014; @howardWhyWeNeed2025; @sakalukReconsideringWhatMakes2023; @spadaroCooperationDatabankMachineReadable2022; @boscoCloudbasedMetaanalysisBridge2015]. These approaches maintain a continually updated database of eligible studies, alongside transparent procedures for incorporating new evidence. These approaches might have their largest benefits for rapidly evolving fields where timely integration of knowledge is critical. Nonetheless, these systems usually rely on users to upload new data or remain limited to very narrow topics or effects. With our proposal, we aim to overcome these limitations by (a) covering an entire research framework, similarly to what Howard and colleagues proposed [-@howardWhyWeNeed2025], and (b) making the database update systematic, thus following Preferred Reporting Items for Systematic Reviews and Meta-Analysis guidelines [PRISMA; @moherPreferredReportingItems2015] repeatedly across time.
+To overcome these issues, living meta-analysis and databases are now appearing in the literature, especially for medical studies, clinical trials, and interventions [@cuijpersLivingSystematicReviews2022; @elliottLivingSystematicReviews2014; @howardWhyWeNeed2025; @sakalukReconsideringWhatMakes2023; @spadaroCooperationDatabankMachineReadable2022; @boscoCloudbasedMetaanalysisBridge2015]. These approaches maintain a continually updated database of eligible studies, alongside transparent procedures for incorporating new evidence. They are particularly beneficial for rapidly evolving fields where timely integration of knowledge is critical, as showed by the many living reviews appeared during COVID-19. Nonetheless, these systems usually rely on users to upload new data or remain limited to very narrow topics or effects. With our proposal, we aim to overcome these limitations by (a) covering an entire research framework, similarly to what Howard and colleagues proposed [-@howardWhyWeNeed2025], and (b) making the database update systematic, thus following Preferred Reporting Items for Systematic Reviews and Meta-Analysis guidelines [PRISMA; @moherPreferredReportingItems2015] repeatedly across time.
 
-Providing a similar tool will speed and facilitate researchers' literature search, support a standardized and evidence-based understanding of the literature, and inform future research. Given the recency of the SEB framework, fragmentation risks, and rapid expansion of this research area, SEB skills represent an ideal case for introducing a living review system from the first stages of research in the framework.
+Providing a similar tool would speed up and facilitate researchers' literature search, support a standardized and evidence-based understanding of the literature, and inform future research. Given the recency of the framework, fragmentation risks, and rapid expansion of this new research area, SEB skills represent an ideal case for introducing a living review system from the first stages of research in the framework.
 
 ## Rationale, aims, and hypotheses
 
-The *Living SEB Project* was designed to create a sustainable, transparent, and cumulative infrastructure for synthesizing SEB skills research. Its development rests on three core rationales:
+The *Living SEB Project* is designed to create a sustainable, transparent, and cumulative infrastructure for synthesizing SEB skills research. Its development rests on three core rationales: (i) Preventing fragmentation, (ii) enabling timely integration, (iii), and advancing open science. Indeed, meta-analysis and reviews are rare for new emerging frameworks as, understandably, authors run them when enough publications are available. However, without cumulative tools since its inception, the SEB research risks repeating the cycle seen in other fields where inconsistent findings and selective reporting hinder theoretical progress, until meta-analyses start integrating the literature. Living reviews provide a means to keep pace with ongoing rapid publication process and to ensure that syntheses remain relevant and comprehensive. However, to maximize transparency and accessibility, cumulative evidence must be not only easy to access, but also easily available and usable. Researchers, reviewers, and practitioners need tools that allow them to rapidly interact with data, run analyses, and test claims without advanced technical expertise or tedious processes of data collection. To achieve these goals, we also developed a continuously updated database and the *Living SEB App*, a user-friendly web platform that integrates literature search, data visualization, and statistical analysis. The app embodies the open-science ethos of the project: it ensures that cumulative evidence is accessible to the entire community by lowering technical barriers and providing reproducible outputs.
 
--   **Preventing Fragmentation:** Without cumulative tools, SEB research risks repeating the cycle seen in other fields where inconsistent findings and selective reporting hinder theoretical progress.
+Accordingly, the *Living SEB Project* has three main aims:
 
--   **Enabling Timely Integration:** Living reviews provide a means to keep pace with ongoing rapid publication process and to ensure that syntheses remain relevant and comprehensive.
+-   **Review aim:** To provide a living and organized map of SEB skills literature, freely accessible and filterable by topic, population (e.g., adolescents or adults), or publication years.
 
--   **Advancing Open Science:** To maximize transparency and accessibility, cumulative evidence must be not only findable, but also easily available and usable. Researchers, reviewers, and practitioners need tools that allow them to rapidly interact with data, run analyses, and test claims without advanced technical expertise or tedious processes of data collection.
+-   **Meta-analytic aim:** To offer pre-processed database to continually synthesize associations between SEB skills and all other constructs and variables measured alongside, starting with cross-sectional correlations but expandable to longitudinal and experimental data.
 
-To achieve these goals, we developed not only a continuously updated database but also the *Living SEB App*, a user-friendly web platform that integrates literature search, data visualization, and statistical analysis. The app embodies the open-science ethos of the project: by lowering technical barriers and providing reproducible outputs, it ensures that cumulative evidence is accessible to the entire community.
+-   **Open Science aim:** To provide, together with open materials, the Living SEB App, an open-access, interactive platform that integrates the database and analysis tools, enabling replication, rapid evidence checks, preregistration support, and community contributions.
 
-Accordingly, the Living SEB Project has three main aims:
-
--   **Review Aim:** To provide a living, organized cartography of SEB literature, freely accessible and filterable by topic, population, or publication years.
-
--   **Meta-analytic Aim:** To offer pre-processed database to continually synthesize associations between SEB skills and all other constructs and variables measured alongside, starting with cross-sectional correlations but expandable to longitudinal and experimental data.
-
--   **Open Science Aim:** To provide, together with open materials, the Living SEB App, an open-access, interactive platform that integrates the database and analysis tools, enabling replication, rapid evidence checks, preregistration support, and community contributions.
-
-To demonstrate feasibility of the project and show its potential, we also include a tutorial analysis of the current database. This example tests the associations between SEB domains and academic achievement, which is the variable reported more often, using both multilevel meta-analysis of correlations and meta-analytic structural equation modeling (MASEM). These results should be understood as illustrative demonstrations of the *Living SEB Project* infrastructure rather than definitive conclusions, given the small number of studies currently available and their increasing publications.
+To demonstrate feasibility of the project and show its potential, we also include a tutorial analysis of the current database. This example tests the associations between SEB domains and academic achievement, which is the variable reported more often in recent SEB skills studies. We use both multilevel meta-analysis of correlations and meta-analytic structural equation modeling (MASEM). These results should be understood as illustrative demonstrations of the *Living SEB Project* infrastructure rather than definitive conclusions, given the small number of studies currently available and their increasing publications.
 
 # Methods
 
-## Preregistration and Open Materials
+## Transparency and Openness
 
-All procedures for this project were preregistered and are publicly available on [GitHub](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.html) . The repository (<https://github.com/feracotommaso/living_SEB_review>) also hosts all materials, data, and R code used in this article. Analyses will strictly follow the preregistration unless otherwise noted. The systematic search and review was conducted according to the PRISMA guidelines [@moherPreferredReportingItems2015].
+All procedures for this project were preregistered and are publicly available on [GitHub](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf) . The repository (<https://github.com/feracotommaso/living_SEB_review>) also hosts all materials, data, and R code used in this article. Analyses will strictly follow the preregistration unless otherwise noted. The systematic search and review was conducted according to the PRISMA guidelines [@moherPreferredReportingItems2015].
 
 ## Search Strategy
 
-The comprehensive literature search was conducted and will be conducted on two electronic databases: Web of Science (WOS) and Scopus. To balance comprehensiveness with feasibility, we adopted a citation-chaining strategy: all papers citing one or more seminal theoretical or measurement works on SEB skills were (and will be) retrieved. This strategy ensures that all studies using the SEB framework or BESSI measures are captured while reducing noise from unrelated keyword-based searches.
-
-While efficient, this approach may miss studies that contradict basic research guidelines and measure or cite SEB skills but do not cite neither the seminal works nor the validation/measurement papers. To mitigate this risk, the database is continuously updated, and authors are invited to submit missing studies.
+The comprehensive literature search was conducted and will be conducted on two electronic databases: Web of Science (WOS) and Scopus. To balance comprehensiveness with feasibility, we adopted a citation-chaining strategy [@hirtCitationTrackingSystematic2023]: all papers citing one or more seminal theoretical or measurement works on SEB skills were (and will be) retrieved. This strategy ensures that all studies using the SEB skills framework or BESSI measures are captured while reducing noise from unrelated keyword-based searches. While efficient, this approach may overlook studies that deviate from standard research guidelines and measure or reference SEB skills without citing either the seminal works or the validation and measurement papers. To mitigate this risk, the database is continuously updated, and authors are encouraged to submit missing studies.
 
 The initial reference papers included in the search string cover theoretical basis [@sotoTakingSkillsSeriously2021], original measurement papers [@sotoIntegrativeFrameworkConceptualizing2022], their cultural and language adaptations [@lechnerBehavioralEmotionalSocial2022; @feracoItalianBehavioralEmotional2024; @postigoBehavioralEmotionalSocial2024], and shorter versions of the BESSI [@sewellAssessingSocialEmotional2024a]. For readability, the full search string is available in the preregistration protocol only and will be updated when new measurement or basic theoretical papers are published.
 
 ## Study Eligibility Criteria
 
-Citations are completely excluded if they cited the reference papers but were not focusing on the SEB skill framework AND did not use any BESSI measure. For example, citations referencing to the SEB framework, but focusing on different frameworks, such as the OECD or CASEL, are not considered for inclusion. Similarly, a study focusing on the development of the Big Five should be excluded although it cites the reference papers. However, if it focuses on the development of the Big Five but also collects side data using the BESSI, it will be included in the meta-analysis.
-
-Citations are also excluded if they were published as books or in language that were not comprehensible for the authors.
+Works were excluded if they cited the reference papers but did not focus on the SEB skills framework and did not use any BESSI measure. For example, articles mentioning the SEB skills framework but assessing skills derived from other frameworks, such as those proposed by the OECD [@oecdAcademicLearningFirst2021] or CASEL[@paytonSocialEmotionalLearning2000], were not considered for inclusion. Similarly, studies focusing solely on the development of the Big Five traits were excluded even if they cited the reference papers. However, if a study examined the development of the Big Five traits and also collected ancillary data using the BESSI, it was included in the meta-analysis. Citations are also excluded if they were published as books or in language that were not comprehensible for the authors.
 
 To be included in the quantitative database, studies also had to:
 
 1.  Be written in a language comprehensible to the authors (i.e., English, Italian, and Spanish at the time of writing);
 
-2.  Include original quantitative data using a validated BESSI-based measure;
+2.  Include original quantitative data using a validated or translated BESSI-based measure;
 
 3.  Report correlations or provide correlations after authors' request;
 
-4.  Include original data not already reported in other included studies;
+4.  Include original data not already reported in other included studies.
 
-5.  Sample either the general population or a clinical population with mild/moderate issues;
-
-Contrarily, a study is excluded from the quantitative databse for meta-analysis if:
+Contrarily, a study is excluded from the quantitative database for meta-analysis if:
 
 1.  Data were duplicated across publications;
 
-2.  Measures were not validated or outside the SEB/BESSI framework;
+2.  Measures were not validated or outside the SEB skills and BESSI framework;
 
-3.  The study did not report correlations at baseline or data could not be reduced to correlations;
-
-4.  Participants had severe clinical conditions (e.g., schizophrenia).
+3.  The study did not report correlations at baseline or data could not be reduced to correlations.
 
 ### Coding Procedures
 
 For each included study, the following information was systematically coded:
 
--   *Bibliographic metadata* (DOI, title, authors, journal, year, download date)
+-   *Bibliographic metadata*: DOI, title, authors, journal, year, and download date.
 
 -   *Paper, sample, and matrix IDs*: The unique progressive identifiers of each paper, sample, and correlation matrix.
 
--   *Exclusion reason* both for the review and the meta-analysis.
+-   *Exclusion reason:* both for the review and the meta-analysis.
 
 -   *Review topics*: The main topics covered by the study.
 
@@ -191,7 +182,7 @@ For each included study, the following information was systematically coded:
 
 -   *Sample size*: The sample size of each population on which correlations were estimated.
 
--   *Age category:* An additional category was added to distinguish between samples of children, school age (all participants younger than 19 years old or in high schools), young adults (university students or younger than 30), adults (younger than 55) older adults (55 or older). Adults was used also if the study included participants of all ages or between 19 and 55 years old.
+-   *Age category:* An additional category was added to distinguish between samples of primary school students, secondary school students, young adults (university students or younger than 30), adults (younger than 55) older adults (55 or older). Adults was used also if the study included participants of all ages or between 19 and 55 years old.
 
 -   *Clinical population*: Samples are divided between clinical populations and non-clinical populations. In case a clinical population was included, we specify the diagnosis.
 
@@ -201,7 +192,7 @@ For each included study, the following information was systematically coded:
 
 -   *Trait framework*: In case personality traits are measured, whether they are measured with a BF measure or an HEXACO measure.
 
--   *Effect sizes*: The entire Pearson’s correlations matrices among all study variables are extracted from the papers as measure of effect size.
+-   *Effect sizes*: The entire Pearson’s correlations matrices among all study variables are extracted from the papers as measure of effect size. For papers including repeated measurements on the same sample (e.g., longitudinal studies, intervention studies with pre/post assessment), the correlations matrix is extracted only from the first data collection.
 
 -   *Non-SEB indicators*. All measures, outcomes, and correlates are manually classified within the names of the correlation matrix. A codebook with all measures coded is available on the GitHub page of the project allowing categorizations of variables in specific and broader categories.
 
@@ -211,19 +202,21 @@ To maintain the “living” nature of the review, the search and coding procedu
 
 A continuously updated version of this paper is published online, with results revised each month to reflect the latest data, but without changing the introduction.
 
+To pilot the feasibility of this procedure, we already ran the updated in multiple months with success.
+
 ## The Living SEB App
 
 In parallel with the database, we developed the *Living SEB App*, a Shiny-based web platform that provides direct access to the database and analytic tools. The app enables users to:
 
--   **Search and filter literature** by topic, population, or design;
+-   Search and filter literature by topic, population, or design;
 
--   **Run meta-analyses** of SEB associations with outcomes, using multilevel models;
+-   Run meta-analyses of SEB skills associations with outcomes, using multilevel models;
 
--   **Conduct meta-analytic structural equation modeling (metaSEM)** for incremental validity analyses or for estimating more complex correlation matrices;
+-   Conduct meta-analytic structural equation modeling (MASEM) for incremental validity analyses or for estimating more complex correlation matrices;
 
--   **Download datasets and correlation matrices** for further analyses;
+-   Download datasets and correlation matrices for further analyses;
 
--   **Generate reproducible reports** to support preregistration, peer review, and editorial decision-making.
+-   Generate reproducible reports to support preregistration, peer review, and editorial decision-making.
 
 The app is hosted openly and mirrored on GitHub to ensure sustainability and version control. While designed to lower barriers for non-technical users, the raw datasets and R code remain freely available for advanced or customized analyses.
 
@@ -231,7 +224,7 @@ The *Living SEB App* link can be found on the GitHub web page of the project as 
 
 # Results
 
-Given the adaptive nature of a the *Living SEB project*, we report temporary results and descriptive statistics of the data available at the time of writing. A continuously updated version of the results is available at: [https://feracotommaso.github.io](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)[/living_SEB_review](https://feracotommaso.github.io/living_SEB_review/)[/paper/livingSEBpaper.html](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html).
+Given the adaptive nature of a the *Living SEB project*, we report temporary results and descriptive statistics of the data available at the time of writing. A continuously updated version of the results is available at: [https://feracotommaso.github.io](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)[/living_SEB_review/paper/livingSEBpaper.html](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html).
 
 ## Database Overview
 
@@ -288,7 +281,7 @@ reviewData <- readxl::read_excel(here::here("data/3.meta_data/review_data/review
 nReviewPapers <- nrow(reviewData)
 ```
 
-At the time of writing, the systematic search identified `r totDownload` publications (Scopus = `r totSc`; WOS = `r totWs`). After removing duplicates, screening titles and abstracts, and reviewing full texts, `r nReviewPapers` studies were retained for the living review and `r nMetaPapers` studies met criteria for quantitative synthesis. These include a total of `r nMetaSamples` independent samples (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`).
+At the time of writing, the systematic search identified `r totDownload` publications (Scopus = `r totSc`; WOS = `r totWs`). After removing duplicates, screening titles and abstracts, and reviewing full texts, `r nReviewPapers` studies were retained for the living review and `r nMetaPapers` studies met criteria for quantitative synthesis. These include a total of `r nMetaSamples` independent samples (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`). Main characteristics of all studies included in the review are reported in @tbl-studies-summary.
 
 Across these studies, a total of `r nTotEff` correlation coefficients were coded, representing `r nTotCor` unique pairwise associations. Of these, `r nTotBessiEff` correlations (`r nTotBessiCor` unique associations) involved at least one SEB domain or facet measured with a BESSI instrument. This provides the foundation for both the living database and the illustrative analyses reported below.
 
@@ -376,7 +369,60 @@ rsvg_png(svg_raw,  file = "prisma.png", width = 3000, height = 3000)  # hi-res
 
 ![PRISMA flow chart](prisma.png){#fig-prisma}
 
-## Tutorial Analysis 1: Multilevel Meta-analysis of correlations
+```{r}
+#| eval: false
+##| label: tbl-studies-summary
+#| tbl-cap: Studies included in the review
+
+review_tab <- read_excel("Table_Studies.xlsx")
+
+review_tab <- review_tab %>%
+  select(Authors, Year, `Study design`, Country, n, Group, `Main focus`)
+
+review_tab  |>
+  flextable() |>
+  set_caption(caption = "") |>
+  theme_apa() |>
+  valign(valign = "top") |>
+  padding(part = "all", padding = 1) |>
+  fontsize(size = 10, part = "all") |>
+  autofit()
+```
+
+| Authors | Year | Study design | Country | n | Group | Main focus |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Beatty et al. | [-@beattySensePurposeSocialemotionalbehavioral2025] | Cross-sectional | United States | 412 | Young adults | Associations between sense of purpose and SEB skills in university students |
+| Breil et al. | [-@breil2022] | Cross-sectional | Germany | 137 | Young adults | Associations between self- and observer- reports for three social skills |
+| Chen et al. | [-@chenSocialEmotionalBehavioral2024] | Cross-sectional | China | 2,992 | Adults | SEB skills and their incremental validity for job outcomes beyond personality traits |
+| Collie & Ryan | [-@collie2025] | Cross-sectional | Australia | 373 | Secondary school | Parent-rated SEB skills and their associations with children perceived socio-emotional competence and autonomy support |
+| De Fruyt et al. | [-@defruytChallengesOpportunitiesAssessment2025] | Theoretical |  |  |  | Conceptual and methodological challenges in SEB skills assessment and interventions |
+| Feraco & Meneghetti | [-@feracoSocialEmotionalBehavioral2023] | Cross-sectional | Germany, Italy, Unites States | 4,106 | Secondary school | Age and gender differences in SEB skills among adolescents |
+| Feraco et al. | [-@feracoSocialEmotionalBehavioral2025] | Cross-sectional | Italy | 2,965 | Secondary school | SEB skills in students with learning disabilities |
+| Feraco et al. | [-@feracoItalianBehavioralEmotional2024] | Cross-sectional | Italy | 1,814 | Secondary school & Adults | Validation of the Italian version of the BESSI |
+| Feraco et al. | [-@feracoDifferencesChangeGoals2025] | Experimental | Italy, United States | 264 | young_adult | Change goals and perceived feasibility about changing SEB skills vs traits |
+| Feraco et al. | [-@feracoRoleSocialEmotional2025] | Cross-sectional | Italy | 702 | Secondary school | Associations between SEB skills and pro-environmental attitudes and behaviors |
+| Feraco et al. | [-@feracoSoftSkillsHigh2025] | Cross-sectional | Italy | 5,075 | Secondary school | Associations between SEB skills and self-regulated learning factors |
+| Ichsan et al. | [-@ichsanVirtualRealitySkill2025] | Review |  |  |  | Systematic review on virtual-reality technology for SEB skills development |
+| Lechner & Urban | [-@lechnerInequalitiesAdolescentsSocial2025] | Cross-sectional | Germany | 3,162 | Secondary school | Inequalities in SEB skills by gender, SES, and migration background |
+| Lechner et al. | [-@lechnerBehavioralEmotionalSocial2022] | Cross-sectional | Germany | 1,164 | Adults | Validation of the German version of the BESSI |
+| Napolitano et al. | [-@napolitanoSocialEmotionalBehavioral2021] | Theoretical |  |  |  | Integrative SEB model and its developmental importance in adolescence |
+| Napolitano et al. | [-@napolitanoChangesSocialEmotional2025] | Longitudinal | United States | 942 | Secondary school | Longitudinal changes in SEB skills and outcomes |
+| Pellegrino et al. | [-@pellegrinoReadyWhatsNext2025] | Cross-sectional | Italy | 350 | Secondary school | Associations between SEB skills and career adaptability |
+| Postigo et al. | [-@postigoBehavioralEmotionalSocial2024] | Cross-sectional | Spain | 303 | Adults | Validation of the Spanish version of the BESSI |
+| Ringwald et al. | [-@ringwaldMoreSkillTrait2025] | Cross-sectional | United States | 840 | Secondary school | Traits–skills (mis)matches and implications for youth outcomes |
+| Sewell et al. | [-@sewellAssessingSocialEmotional2024a] | Cross-sectional | Germany, United States | 2,792 | Secondary school, Yound adults, Adults | Development and validation of short BESSI forms |
+| Sewell et al. | [-@sewellSocialEmotionalBehavioral2023] | Longitudinal | United States | 248 | Young adults | SEB skills as predictors of volunteering during COVID-19 |
+| Sharabi et al. | [-@sharabiUndergraduatesAchievementSatisfaction2025] | Cross-sectional | Israel, Italy, Spain | 319 | Young adults | Association between SEB skills and university student outcomes |
+| Soto et al. | [-@sotoWhatWhatCan2023] | Cross-sectional | United States | 975 | Secondary school | SEB skills and personality traits predicting academic success |
+| Soto et al. | [-@sotoGoingTraitsSocial2024] | Cross-sectional | United States | 897 | Secondary school | Associations between SEB skills and multiple adolescents'outcomes |
+| Soto et al. | [-@sotoIntegrativeFrameworkConceptualizing2022] | Cross-sectional | United States | 6,309 | Secondary school, Young adults, Adults | Validation of the original BESSI |
+| Vega-Dienstmaier et al. | [-@vega-dienstmaierValidationSelfapplicableVersion2024] | Cross-sectional | Peru | 625 | Secondary school | Validation of the peruvian version of the Resilience Subscale of the BESSI |
+| Walton et al. | [-@waltonConsiderationsWhenDetermining2024] | Cross-sectional | United States | 474 | Secondary school | Assessment challenges in differentiating skills vs traits |
+| Yoon et al. | [-@yoonExaminingSEBSkills2024] | Cross-sectional | United States | 642 | Secondary school | SEB skills and their incremental validity for academic achievement beyond personality traits |
+
+: : Studies included in the review {#tbl-studies-summary}
+
+## Tutorial Analysis 1: Multilevel Meta-analysis of Correlations
 
 As a demonstration of the project’s multilevel meta-analytic pipeline, we tested the associations between the five SEB skill domains and academic achievement. Following preregistered procedures, a three-level random-effects model was used, with effects nested within samples and studies. In line with Borenstein and colleagues [-@borenstein2021], Fisher’s *z* transformations were applied and then back-transformed to Pearson’s *r* for interpretation. The metafor package was used for the meta-analysis [@viechtbauer2010ConductingMetaanalysesMetafor].
 
@@ -512,9 +558,9 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
 
 A total of `r nrow(dm)` effect sizes from `r length(unique(dm$paper_id))` studies and `r length(unique(dm$matrix_id))` samples were included. For each SEB domain, the median available sample size was `r median(dm$n)` (minimum sample size = `r min(dm$n)`; maximum sample size = `r max(dm$n)`).
 
-Of the five meta-analysed correlations with academic achievement, `r as.character(english(sum(metaRes$r>.10)))` were larger than 0.10 (see @tbl-meta-results and @fig-meta-analysis-plot), with significant effects (p \< `r pcrit`) ranging between `r round(min(metaRes$r[metaRes$p<pcrit]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < pcrit, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < pcrit, Inf, metaRes$r))]`).
+The full set of results is available in @tbl-meta-results and @fig-meta-analysis-plot. Of the five meta-analysed correlations with academic achievement, `r as.character(english(sum(metaRes$r>.10)))` were larger than 0.10, with significant effects (p \< `r pcrit`) ranging between `r round(min(metaRes$r[metaRes$p<pcrit]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < pcrit, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < pcrit, Inf, metaRes$r))]`).
 
-The *Q* test for heterogeneity shows that there is significant heterogeneity across studies in at least `r as.character(english(sum(metaRes$qp<.05)))` of the meta-analyses, with the standard deviation of the effects ranging between `r round(min(sqrt(metaRes$tau2[metaRes$qp<.05])),2)` and `r round(max(sqrt(metaRes$tau2[metaRes$qp<.05])),2)`. The full set of results is available in @tbl-meta-results and @fig-meta-analysis-plot.
+The *Q* test for heterogeneity shows that there is significant heterogeneity across studies, with the standard deviation of the effects ranging between `r round(min(sqrt(metaRes$tau2[metaRes$qp<.05])),2)` and `r round(max(sqrt(metaRes$tau2[metaRes$qp<.05])),2)`.
 
 Though representing the more extensive analysis of the association between SEB domains and academic achievement, these results should be regarded as preliminary and illustrative.
 
@@ -585,10 +631,13 @@ dimnames(SumTable) <- list(paste0(1:nrow(SumTable),".",rownames(SumTable)),
 
 ```
 
-MetaSEM analyses were based on varying number of effect sizes per pairwise correlation (i.e., different correlation matrices), with the minimum available effects per correlation being `r min(ktab)` and the maximum being `r max(ktab)`. As a consequence, also sample sizes and precision differed, with the minimum being `r min(ntab)` and the maximum being `r as.character(max(ntab))`. Correlation matrices were taken from `r length(unique(metaD$basic_info$matrix_id))` samples included in `r length(unique(metaD$basic_info$paper_id))` different studies.
+MASEM analyses were based on varying number of effect sizes per pairwise correlation (i.e., different correlation matrices), with the minimum available effects per correlation being `r min(ktab)` and the maximum being `r max(ktab)`. As a consequence, also sample sizes and precision differed, with the minimum being `r min(ntab)` (i.e., correlations between personality traits and academic achievement) and the maximum being `r as.character(max(ntab))` (i.e., correlations between SEB domains). Correlation matrices were taken from `r length(unique(metaD$basic_info$matrix_id))` samples included in `r length(unique(metaD$basic_info$paper_id))` different studies.
+
+Given the low number of studies available for some variables, we set between-study variance to zero and estimated a common effect across studies. This approach avoids attempting to estimate random‐effects components that would be unstable or poorly identified in sparse conditions.
 
 ```{r}
 #| label: tbl-pooled-cor
+#| include: false
 #| tbl-cap: Pooled correlation matrix
 # apa-note:
 #   - Pooled correlations are based on different sample sizes and effects and their precision may vary
@@ -613,8 +662,8 @@ pooledTab |>
 #| label: fig-corrplot
 #| fig-cap: "Pooled correlation matrix"
 library(corrplot)
-corrPlot <- corrplot(SumTable, method = "ellipse", 
-                    addCoef.col = "black", number.cex = 0.8,
+corrPlot <- corrplot(SumTable, method = "ellipse", type = "lower", 
+                    addCoef.col = "black", number.cex = 0.6,
                     tl.col = 'black', tl.srt = 0)
 ```
 
@@ -637,7 +686,7 @@ highCorText <- paste0(highCorVars,
 CorSebTrait <- abs(diag(as.matrix(sumTableRes[1:5,6:10])))
 ```
 
-The pooled correlation matrix is reported in @tbl-pooled-cor and in @fig-corrplot. As clear from the diagonal cells linking each skill to the corresponding trait, their correlation is substantial (*r* \> `r min(CorSebTrait)`), with the highest correlation reaching `r max(CorSebTrait)`. For what concerns academic achievement, `r highCorText` were the only variables among SEB skills and Big Five traits showing a pooled correlation higher than *r* \> `r cutoffR` with academic achievement.
+The pooled correlation matrix is reported in @fig-corrplot. As clear from the diagonal cells linking each skill to the corresponding trait, their correlation is substantial (*r* \> `r min(CorSebTrait)`), with the highest correlation reaching `r max(CorSebTrait)`. For what concerns academic achievement, `r highCorText` were the only variables among SEB skills and Big Five traits showing a pooled correlation higher than *r* \> `r cutoffR` with academic achievement.
 
 **Regression models**
 
@@ -663,7 +712,7 @@ model_oi <- "
 varnames_oi <- c("academicachievement","openness","innovation")
 RAMoi <- metaSEM::lavaan2RAM(model_oi, obs.variables = varnames_oi)
 T0oi   <- metaSEM::create.Tau2(RAM = RAMoi, 
-                             RE.type = "Diag",
+                             RE.type = "Zero",
                              Transform = "expLog", 
                              RE.startvalues = 0.05)
 my.dfoi <- metaSEM::Cor2DataFrame(metaDoi$cor_matrices, 
@@ -712,7 +761,7 @@ model_cs <- "
 varnames_cs <- c("academicachievement","conscientiousness","selfmanagement")
 RAMcs <- metaSEM::lavaan2RAM(model_cs, obs.variables = varnames_cs)
 T0cs   <- metaSEM::create.Tau2(RAM = RAMcs, 
-                             RE.type = "Diag",
+                             RE.type = "Zero",
                              Transform = "expLog", 
                              RE.startvalues = 0.05)
 my.dfcs <- metaSEM::Cor2DataFrame(metaDcs$cor_matrices, 
@@ -762,7 +811,7 @@ model_ese <- "
 varnames_ese <- c("academicachievement","extraversion","socialengagement")
 RAMese <- metaSEM::lavaan2RAM(model_ese, obs.variables = varnames_ese)
 T0ese   <- metaSEM::create.Tau2(RAM = RAMese, 
-                             RE.type = "Diag",
+                             RE.type = "Zero",
                              Transform = "expLog", 
                              RE.startvalues = 0.05)
 my.dfese <- metaSEM::Cor2DataFrame(metaDese$cor_matrices, 
@@ -811,7 +860,7 @@ model_ac <- "
 varnames_ac <- c("academicachievement","agreeableness","cooperation")
 RAMac <- metaSEM::lavaan2RAM(model_ac, obs.variables = varnames_ac)
 T0ac   <- metaSEM::create.Tau2(RAM = RAMac, 
-                             RE.type = "Diag",
+                             RE.type = "Zero",
                              Transform = "expLog", 
                              RE.startvalues = 0.05)
 my.dfac <- metaSEM::Cor2DataFrame(metaDac$cor_matrices, 
@@ -860,7 +909,7 @@ model_ner <- "
 varnames_ner <- c("academicachievement","neuroticism","emotionalresilience")
 RAMner <- metaSEM::lavaan2RAM(model_ner, obs.variables = varnames_ner)
 T0ner   <- metaSEM::create.Tau2(RAM = RAMner, 
-                             RE.type = "Diag",
+                             RE.type = "Zero",
                              Transform = "expLog", 
                              RE.startvalues = 0.05)
 my.dfner <- metaSEM::Cor2DataFrame(metaDner$cor_matrices, 
@@ -906,7 +955,9 @@ osmasemTab <- rbind(
 # Reorder table
 osmasemTab2 <- subset(osmasemTab, 
                      select = c(Outcome, op, Predictor,
-                                Estimate, SE, CI_95, z, p, `tau (sd)`))
+                                Estimate, SE, CI_95, z, p
+                                #, `tau (sd)`
+                                ))
 osmasemTab2$Estimate <- 
   paste0(osmasemTab2$Estimate,
              ifelse(osmasemTab2$p < .001, "***",
@@ -929,53 +980,36 @@ osmasemTab2  |>
 
 ```{r}
 #| label: osmasem-text-results
+
 osmaskills <- c(
   "Innovation","Self-management","Social engagement",
   "Cooperation","Emotional resilience"
 )
-sigSkills <- osmasemTab$Predictor[osmasemTab$Predictor %in%  osmaskills 
-                                  & osmasemTab$op == "~"
-                                  & osmasemTab$p <0.05]
-NsigSkills <- sum(osmasemTab$p[osmasemTab$Predictor %in%  osmaskills
-                               & osmasemTab$op == "~"]<0.05)
-betaSigSkills <- osmasemTab$Estimate[osmasemTab$Predictor %in%  osmaskills 
-                                  & osmasemTab$op == "~"
-                                  & osmasemTab$p <0.05]
-ciSigSkills <- osmasemTab$CI_95[osmasemTab$Predictor %in%  osmaskills 
-                                  & osmasemTab$op == "~"
-                                  & osmasemTab$p <0.05]
 
-sigTraits <- osmasemTab$Predictor[!osmasemTab$Predictor %in%  osmaskills 
-                                  & osmasemTab$op == "~"
-                                  & osmasemTab$p <0.05]
-NsigTraits <- sum(osmasemTab$p[!osmasemTab$Predictor %in%  osmaskills
-                               & osmasemTab$op == "~"]<0.05)
-betaSigTraits <- osmasemTab$Estimate[!osmasemTab$Predictor %in%  osmaskills 
-                                  & osmasemTab$op == "~"
-                                  & osmasemTab$p <0.05]
-ciSigTraits <- osmasemTab$CI_95[!osmasemTab$Predictor %in%  osmaskills 
-                                  & osmasemTab$op == "~"
-                                  & osmasemTab$p <0.05]
+res <- make_osmasem_summary(
+  tab     = osmasemTab,
+  skills  = osmaskills,
+  op      = "~",
+  p_cut   = 0.01,
+  p_star  = 0.001,
+  eff_cut = 0.10
+)
 
-nonSigMaxBeta <- max(abs(osmasemTab$Estimate[
-  osmasemTab$op == "~"
-  & osmasemTab$p > 0.05]))
+# Compose your narrative (works even if a group is empty)
+skillText <- if (length(res$skillText)) paste(res$skillText, collapse = ", ") else "none"
+traitText <- if (length(res$traitText)) paste(res$traitText, collapse = ", ") else "none"
 
-# Effects text
-skillText <- paste0(sigSkills, 
-                    " (b = ", betaSigSkills, 
-                    "; CI = ", ciSigSkills,
-                    ")")
+# If you like counts in words, wrap with english::english() yourself:
+Nskills_txt <- as.character(english::english(res$N_skills))
+Ntraits_txt <- as.character(english::english(res$N_traits))
 
-traitText <- paste0(sigTraits, 
-                    " (b = ", betaSigTraits, 
-                    "; CI = ", ciSigTraits,
-                    ")")
+nonSigMax_txt <- if (is.na(res$nonSigMaxBeta)) "N/A" else formatC(res$nonSigMaxBeta, digits = 2, format = "f")
+
 ```
 
-From @tbl-osmasem-summary, we can see that `r as.character(english(NsigSkills))` of the SEB skills and `r as.character(english(NsigTraits))` of the personality traits show significant association with academic achievement beyond the corresponding trait/skill. Specifically, `r skillText` and `r traitText` showed significant associations with academic achievement, while all other associations were lower than \|`r nonSigMaxBeta`\| and non-significant. It should be noted, however, that convergence issues emerged for some models and estimated standard errors could not be estimated correctly and appear extremely large, preventing us from interpreting their beta estimates. This is possibly due to the high collinearity between self-reported skills and traits. But it is also important to remind that, for our purposes, we used only the data available from the database search we conducted, but a more refined analysis would require enlarging the research to all studies testing the association between the Big Five and academic achievement to produce better estimates of the covariance between the Big Five themselves and academic achievement and possibly obtain more precise estimates and lower convergence issues.
+From @tbl-osmasem-summary, `r Nskills_txt` of the SEB skills and `r Ntraits_txt` of the personality traits showed significant associations (*p* \< `r res$criteria$p_cut`) larger than \|`r res$criteria$eff_cut`\| with academic achievement beyond the corresponding trait/skill. Specifically, `r skillText` and `r traitText` showed significant and practically meaningful associations with academic achievement, while all other associations were lower than \|`r nonSigMax_txt`\| and non-significant. It should be noted, however, that to estimate a complete OSMASEM model, a more refined analysis would require enlarging the research to all studies testing the association between the Big Five and academic achievement to produce better estimates of the covariance between the Big Five themselves and academic achievement and possibly obtain more precise estimates and lower convergence issues.
 
-In general, these results should be interpreted as illustrative as they demonstrate the functionality of the metaSEM pipeline within the *Living SEB App* rather than offering final conclusions about SEB–trait relationships.
+In general, these results should be interpreted as illustrative demonstration of the functionality of a metaSEM pipeline within the *Living SEB project* rather than offering final conclusions about SEB–trait relationships.
 
 ## Reproducibility via the Living SEB App
 
@@ -983,23 +1017,23 @@ Both tutorial analyses can be reproduced in the Meta-analysis and MetaSEM module
 
 # Discussion
 
-In this article, we introduced the *Living SEB Project* and the associated *Living SEB App*, a shiny app for searching and analysing SEB data and papers. Two tutorial meta-analyses were also conducted to exemplify the use that can be done of the data collected in the *Living SEB Project* and the *Living SEB App* and test meta-analytical associations between SEB skills and academic achievement and their incremental validity beyond personality traits. To do this, we employed the two main meta-analysis functions currently available in the *Living SEB App*, namely three-level meta-analysis of correlation coefficients and MASEM. The results of these analyses show that `r as.character(english(sum(metaRes$p<.05)))` skills were significantly associated with academic achievement, with pooled correlations ranging between `r round(min(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < 0.05, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < 0.05, Inf, metaRes$r))]`). When controlling for personality traits in OSMASEM regression models, `r as.character(english(NsigSkills))` of the SEB skills and `r as.character(english(NsigTraits))` of the personality traits showed significant association with academic achievement beyond the corresponding trait/skill. Specifically, only `r skillText` and `r traitText` showed significant associations with academic achievement. More precise estimates of these associations will be available each month in the living version of this manuscript if new research on the topic is published.
+In this article, we introduced the *Living SEB Project* and the associated *Living SEB App*, a shiny app for searching and analysing SEB skills data and papers. Two tutorial meta-analyses were also conducted to exemplify the use that can be done of the data collected in the *Living SEB Project* and the *Living SEB App* and test meta-analytical associations between SEB skills and academic achievement and their incremental validity beyond personality traits. To do this, we employed the two main meta-analysis functions currently available in the *Living SEB App*, namely three-level meta-analysis of correlation coefficients and MASEM. The results of these analyses showed that `r as.character(english(sum(metaRes$p<.05)))` skills were significantly associated with academic achievement, with pooled correlations ranging between `r round(min(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < 0.05, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < 0.05, Inf, metaRes$r))]`). When controlling for personality traits in OSMASEM regression models, `r Nskills_txt` of the SEB skills and `r Ntraits_txt` of the personality traits showed significant association with academic achievement larger than \|`r res$criteria$eff_cut`\| beyond the corresponding trait/skill: `r skillText` and `r traitText`. More precise estimates of these associations will be available each month in the living version of this manuscript if new research on the topic is published.
 
 As exemplified in these analyses, the *Living SEB Project* provides the necessary tools and data for responding cross-sectional research questions and synthesizing the available evidence using meta-analysis. However, different uses can be made of this data and of the *Living SEB App*.
 
 ## Use and Utility the Open Data and the *Living SEB App*
 
-First of all, the *Living SEB Project* materials and the app can be used to synthesize the literature based on the SEB framework using meta-analytic procedures and speeding up literature search with useful tools to find all the SEB papers covering a specific topic or using/measuring a specific variable. However, considering the limitations detailed below, the results and the reports that can be obtained using the *Living SEB App* should not be considered as publication-ready meta-analysis, which would require additional steps and integration (e.g., risk of bias analysis, tests for publication bias, moderator analysis, different modelling approaches). For this reason, we suggest using the *Living SEB App* and the open data available fro rapid synthesis or to inform hypotheses and Bayesian priors for future studies (e.g., the meta-analytical estimates and confidence intervals obtained might be directly used as quantitative priors). Additionally, the reports downloaded from the app (or the data downloaded together with users' R code) could be directly used to support preregistrations and, for instance, uploaded on the OSF or other preferred platforms as evidence for the justification of the effect sizes used in power analyses. On the other side, reviewers and editors may benefit from this project for their work. Indeed, they can rapidly check whether authors' assertions correspond to up-to-date evidence within the SEB framework, whether the necessary literature has been cited or whether the theoretical introduction and hypotheses are based on the full breadth of evidence or on selected papers. Reports and results obtained from the app could thus be used by reviewers and editors to support their suggestions, without conducting long literature reviews.
+First of all, the *Living SEB Project* materials and the app can be used to synthesize the literature based on the SEB skills framework using meta-analytic procedures and speeding up literature search with useful tools to find all the SEB skills papers covering a specific topic or using/measuring a specific variable. However, considering the limitations detailed below, the results and the reports that can be obtained using the *Living SEB App* should not be considered as publication-ready meta-analysis, which would require additional steps and integration (e.g., risk of bias analysis, tests for publication bias, moderator analysis, different modelling approaches). For this reason, we suggest using the *Living SEB App* and the open data available for rapid synthesis only or to inform hypotheses and Bayesian priors for future studies (e.g., the meta-analytical estimates and confidence intervals obtained might be directly used as quantitative priors). Additionally, the reports downloaded from the app (or the data downloaded together with users' R code) could be directly used to support preregistrations and, for instance, uploaded on the Open Science Framework (OSF) or other preferred platforms as evidence for the justification of the effect sizes used in power analyses. On the other side, reviewers and editors may benefit from this project for their work. Indeed, they can rapidly check whether authors' assertions correspond to up-to-date evidence within the SEB framework, whether the necessary literature has been cited or whether the theoretical introduction and hypotheses are based on the full breadth of evidence or on selected papers. Reports and results obtained from the app could thus be used by reviewers and editors to support their suggestions, without conducting long literature reviews.
 
-Beyond its practical utility, the *Living SEB Project* has broader implications for the theoretical development of SEB research and psychology more generally. By maintaining a continuously updated, transparent synthesis of findings, the project helps guard against selective citations, cherry-picking, and conceptual fragmentation that have historically slowed theoretical progress in emerging areas. For SEB research specifically, where competing frameworks and rapid publication rates can easily obscure cumulative patterns, a living evidence base ensures that theories can be tested against the full breadth of available data rather than isolated studies. More broadly, the *Living SEB Project* illustrates how infrastructures of cumulative evidence can shift psychology toward a more dynamic and self-correcting science. Instead of relying on static reviews that quickly become outdated, researchers can build and refine theoretical models with a continually refreshed evidence base. In this sense, the project does not simply provide a database or app but models a new standard for how psychological theory and evidence can co-evolve.
+Beyond its practical utility, the *Living SEB Project* has broader implications for the theoretical development of SEB skills research and psychology more generally. By maintaining a continuously updated, transparent synthesis of findings, the project helps guard against selective citations, cherry-picking, and conceptual fragmentation that have historically slowed theoretical progress in emerging areas. For SEB research specifically, where competing frameworks and rapid publication rates can easily obscure cumulative patterns, a living evidence base ensures that theories can be tested against the full breadth of available data rather than isolated studies. More broadly, the *Living SEB Project* illustrates how infrastructures of cumulative evidence can shift psychology toward a more dynamic and self-correcting science. Instead of relying on static reviews that quickly become outdated, researchers can build and refine theoretical models with a continually refreshed evidence base. In this sense, the project does not simply provide a database or app but models a new standard for how psychological theory and evidence can co-evolve.
 
 ## Limitations
 
-When designing the *Living SEB Project* and app, we aimed at finding a good balance between providing enough functionality for the users, while keeping the systematic review process feasible and the application user friendly and intuitive to use. As a consequence, there are many situations in which using the *Living SEB App* only is not the appropriate choice, but more refined analyses should be conducted locally by the researcher. In particular, only cross-sectional data are available and to analyze experimental and longitudinal data, the necessary data should be manually coded. Additionally, the specific measures used are not coded in the data and different measures are automatically meta-analysed as indicators of a specific outcome or construct. For instance, school engagement could be measured with different questionnaires. Authors interested in more specific and moderator analyses should code those specific information. Similarly, study topics are manually and qualitatively defined by the authors and may not correspond to everybody’s opinion. We acknowledge that our reliance on citation-chaining of seminal SEB works may result in missed eligible publications, particularly those that employ BESSI measures without directly citing the validation articles. While this approach ensures feasibility and reduces noise, it might eventually compromise full systematic comprehensiveness. In the long term, we plan to supplement this strategy with periodic keyword-based searches and, where possible, semi-automated text-mining or machine-learning methods to identify overlooked studies. Meanwhile, we actively encourage researchers to notify us of missing contributions so that the database can remain as inclusive as possible. To date, we are not aware of any published studies within the SEB framework that are excluded.
+When designing the *Living SEB Project* and app, we aimed at finding a good balance between providing enough functionality for the users, while keeping the systematic review process feasible and the application user friendly and intuitive to use. As a consequence, there are many situations in which using the *Living SEB App* only is not the appropriate choice, but more refined analyses should be conducted locally by the researcher. In particular, only cross-sectional data are available. To analyse experimental and longitudinal data, the necessary data must be manually coded (but all the papers needed should already be included in our database). Additionally, the specific measures used are not coded in the data and different measures are automatically meta-analysed as indicators of a specific outcome or construct. For instance, school engagement could be measured with different questionnaires. Authors interested in moderator analyses should code those specific information. Similarly, study topics are manually and qualitatively defined by the authors and may not correspond to everybody’s opinion. We also acknowledge that our reliance on citation-chaining of seminal SEB works may result in missed eligible publications, particularly those that employ BESSI measures without directly citing the validation articles. While this approach ensures feasibility and reduces noise, it might eventually compromise full systematic comprehensiveness. In the long term, we plan to supplement this strategy with periodic keyword-based searches and, where possible, semi-automated text-mining or machine-learning methods to identify overlooked studies. Meanwhile, we actively encourage researchers to notify us of missing contributions so that the database can remain as inclusive as possible. To date, we are not aware of any published studies within the SEB framework that are excluded.
 
 ## Future Perspectives
 
-Given the current limitations, we suggest a use of the *Living SEB Project* and app that respect the boundaries of the functionality offered. However, future updates of the project may enlarge the aims of the project and its uses. In particular, with increasing number of longitudinal and experimental publications within the SEB framework, we aim to extend the meta-analysis options of the app to incorporate both possibilities. We also plan to include options for the analysis of moderators and for publication bias. Depending on future funding and resources, we also plan to automatize the database search and coding procedures through the use of ad-hoc algorithms and artificial intelligence. Finally, we plan to provide users with the possibility to upload additional data to be directly included in the main database for personal use or openly for the community.
+Given the current limitations, we suggest a use of the *Living SEB Project* and app that respect the boundaries of the functionality offered. However, future updates of the project may enlarge the aims of the project and its uses. In particular, with increasing number of longitudinal and experimental publications within the SEB framework, the meta-analysis options of the app could be extended to incorporate both possibilities. We also plan to include options for the analysis of moderators and for publication bias. Depending on future funding and resources, it could be possible to automatize the database search and coding procedures through the use of ad-hoc algorithms and artificial intelligence. Finally, users may be provided with the possibility to upload additional data in the main database for personal use or openly for the community.
 
 ## Conclusions
 

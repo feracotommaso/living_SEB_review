@@ -1483,3 +1483,44 @@ writexl::write_xlsx(data.frame(cor(d0071a, use = "pairwise.complete")),"data/3.m
 d0071 <- d0071[, colnames(d0071) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0071),"data/3.meta_data/open_data/individual_data/0071a.xlsx")
 
+
+#### --------------------------------------------------- 0080 --------------------------------------------------- ####
+rm(list=ls())
+d0080 <- readxl::read_excel("data/3.meta_data/open_data/d0080.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0080)
+
+# Transform scores
+d0080$sex <- ifelse(d0080$Sex == "1", 0, 
+                    ifelse(d0080$Sex == "0", 1, NA)) # Males to 0, Females to 1
+
+names(d0080)[names(d0080) == "Age"] <- "age"
+
+# Five BESSI skill domains 
+names(d0080)[names(d0080) == "BESSI_SM"] <- "selfmanagement"
+
+names(d0080)[names(d0080) == "BESSI_IN"] <- "innovation"
+
+names(d0080)[names(d0080) == "BESSI_CO"] <- "cooperation"
+
+names(d0080)[names(d0080) == "BESSI_SE"] <- "socialengagement"
+
+names(d0080)[names(d0080) == "BESSI_ER"] <- "emotionalresilience"
+
+# School factors
+names(d0080)[names(d0080) == "SRL_TOT"] <- "srlstrategies"
+
+names(d0080)[names(d0080) == "ASE_TOT"] <- "academicselfefficacy"
+
+names(d0080)[names(d0080) == "Standard_Score"] <- "academicachievement"
+
+names(d0080)[names(d0080) == "AS_TOT"] <- "academicsatisfaction"
+
+# Select and save
+d0080a <- d0080[, colnames(d0080) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0080a, use = "pairwise.complete")),"data/3.meta_data/matrices/0080a.xlsx")
+
+# Individual data with age
+d0080 <- d0080[, colnames(d0080) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0080),"data/3.meta_data/open_data/individual_data/0080a.xlsx")

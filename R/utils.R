@@ -410,3 +410,75 @@ augment_lavaan_model <- function(user_model, varnames,
   paste(unlist(blocks), collapse = "\n")
 }
 
+
+
+
+make_osmasem_summary <- function(tab,
+                                 skills,
+                                 op = "~",
+                                 p_cut = 0.05,
+                                 p_star = 0.001, 
+                                 eff_cut = 0.10, 
+                                 digits_b = 2,
+                                 digits_p = 3) {
+  stopifnot(is.data.frame(tab),
+            all(c("Predictor","op","Estimate","p") %in% names(tab)))
+  # Which rows belong to the paths of interest?
+  rows_op <- tab$op == op & !is.na(tab$Estimate)
+  # Detect CI columns and build a CI string per row
+  has_ci_str   <- "CI_95" %in% names(tab)
+  has_ci_bounds <- all(c("CI_95_lb","CI_95_ub") %in% names(tab))
+  ci_string <- rep(NA_character_, nrow(tab))
+  if (has_ci_str) {
+    ci_string <- tab$CI_95
+  } else if (has_ci_bounds) {
+    ci_string <- paste0("[", round(tab$CI_95_lb, digits_b), ", ",
+                        round(tab$CI_95_ub, digits_b), "]")
+  } else {
+    ci_string <- NA_character_
+  }
+  # Selection rule: p < p_cut OR |b| ≥ eff_cut
+  # selected <- rows_op & (tab$p < p_cut | abs(tab$Estimate) >= eff_cut)
+  selected <- rows_op & tab$p < p_cut & abs(tab$Estimate) >= eff_cut
+  # Groups
+  is_skill <- tab$Predictor %in% skills
+  skills_sel <- selected & is_skill
+  traits_sel <- selected & !is_skill
+  # Non-significant (by the same combined rule)
+  nonsel <- rows_op & !selected
+  # Formatting helpers
+  fmt_b <- function(x) ifelse(is.na(x), NA_character_, formatC(x, digits = digits_b, format = "f"))
+  fmt_p <- function(x) {
+    ifelse(is.na(x), NA_character_,
+           ifelse(x < 10^-digits_p, paste0("< ", formatC(10^-digits_p, digits = digits_p, format = "f")),
+                  sub("^0\\.", ".", formatC(x, digits = digits_p, format = "f"))))
+  }
+  fmt_ci <- function(s) ifelse(is.na(s) | s == "", "NA", s)
+  # Build text line for each selected row
+  make_line <- function(idx) {
+    b  <- fmt_b(tab$Estimate[idx])
+    ci <- fmt_ci(ci_string[idx])
+    p  <- tab$p[idx]
+    p_txt <- ifelse(is.na(p), "",
+                    ifelse(p < p_star, "; p < 0.001", paste0("; p = ", fmt_p(p))))
+    paste0(tab$Predictor[idx], " (b = ", b, "; 95% CI ", ci, p_txt, ")")
+  }
+  skill_lines <- if (any(skills_sel)) vapply(which(skills_sel), make_line, "") else character(0)
+  trait_lines <- if (any(traits_sel)) vapply(which(traits_sel), make_line, "") else character(0)
+  # Counts
+  N_skills <- sum(skills_sel, na.rm = TRUE)
+  N_traits <- sum(traits_sel, na.rm = TRUE)
+  # Max |b| among non-selected
+  nonSigMaxBeta <- if (any(nonsel)) max(abs(tab$Estimate[nonsel]), na.rm = TRUE) else NA_real_
+  # Return structured output
+  list(
+    N_skills = N_skills,
+    N_traits = N_traits,
+    skillText = skill_lines,    
+    traitText = trait_lines,    
+    nonSigMaxBeta = nonSigMaxBeta,
+    selected_rows = which(selected), 
+    criteria = list(p_cut = p_cut, p_star = p_star, 
+                    eff_cut = eff_cut, op = op)
+  )
+}

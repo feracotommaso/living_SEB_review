@@ -47,15 +47,15 @@ project*:
 
 To cite the {Living SEB project} in publications use:
 
-Feraco, T. (2025). *The Living SEB Project: A Living Database for Review
-and Meta-Analysis of Social, Emotional, and Behavioral Skills*.
-https://github.com/feracotommaso/living_SEB_review
+Feraco, T. & Pellegrino G. (2025). *The Living SEB Project: A Living
+Database for Review and Meta-Analysis of Social, Emotional, and
+Behavioral Skills*. https://github.com/feracotommaso/living_SEB_review
 
 A BibTeX entry is:
 
 ``` bibtex
 @Misc{livingSEB,
-  author       = {Tommaso Feraco},
+  author       = {Tommaso Feraco and Gerardo Pellegrino},
   title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year         = {2025},
   howpublished = {GitHub repository},
