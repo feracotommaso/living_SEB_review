@@ -5,7 +5,7 @@
 
 # A living database for review and meta-analysis of SEB skills studies
 
-**DATA LAST UPDATED** 2025-09-01
+**DATA LAST UPDATED** 2025-11-01
 
 This repository contains all the open materials of the *living SEB
 project*.
