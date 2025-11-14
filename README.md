@@ -15,6 +15,9 @@ share them (GPL-3 licence)!
 
 ## Main links
 
+Official preprint of the paper:
+<https://doi.org/10.31234/osf.io/ewvuf_v1>
+
 Author version of the published paper here: NA (*in prep*)
 
 Author version of the living SEB paper here:
@@ -47,18 +50,18 @@ project*:
 
 To cite the {Living SEB project} in publications use:
 
-Feraco, T. & Pellegrino G. (2025). *The Living SEB Project: A Living
+Feraco, T. & Pellegrino G. (2025). The Living SEB Project: A Living
 Database for Review and Meta-Analysis of Social, Emotional, and
-Behavioral Skills*. https://github.com/feracotommaso/living_SEB_review
+Behavioral Skills. PsyArXiv. https://doi.org/10.31234/osf.io/ewvuf_v1
 
 A BibTeX entry is:
 
 ``` bibtex
 @Misc{livingSEB,
   author       = {Tommaso Feraco and Gerardo Pellegrino},
+  doi          = {https://doi.org/10.31234/osf.io/ewvuf_v1}
   title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year         = {2025},
-  howpublished = {GitHub repository},
-  url          = {https://github.com/feracotommaso/living_SEB_review}
+  publisher = {PsyArXiv}
 }
 ```

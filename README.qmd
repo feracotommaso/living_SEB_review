@@ -16,6 +16,8 @@ Navigate, download, and use the materials as you prefer, but always share them (
 
 ## Main links
 
+Official preprint of the paper: <https://doi.org/10.31234/osf.io/ewvuf_v1>
+
 Author version of the published paper here: NA (*in prep*)
 
 Author version of the living SEB paper here: <https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html>
