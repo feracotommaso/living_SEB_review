@@ -485,7 +485,7 @@ stop("As of apaquarto version 3.0.0, the 'include' line below the metadata is no
 #     mutate(
 #       orcid_display = paste0(
 #         author,
-#         " ![Orcid ID Logo: A green circle with white letters ID](_extensions/wjschne/apaquarto/ORCID-iD_icon-vector.svg){width=16px} https://orcid.org/",
+#         " ![Orcid ID Logo: A green circle with white letters ID](paper/_extensions/wjschne/apaquarto/ORCID-iD_icon-vector.svg){width=16px} https://orcid.org/",
 #         orcid
 #       )
 #     ) %>%
