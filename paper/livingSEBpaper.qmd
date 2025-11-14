@@ -55,6 +55,8 @@ execute:
   error: false
 project-dir: paper
 
+embed-resources: true
+
 sidebar:
   tools:
     - id: other-formats
