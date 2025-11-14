@@ -26,6 +26,12 @@ author:
         region: Veneto
         country: Italy
         postal-code: 35129
+
+author-note:
+  status-changes: 
+    affiliation-change: null
+    deceased: null
+  disclosures:
     study-registration: The study was preregistered at https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf
     data-sharing: Data, code, and materials are available at https://github.com/feracotommaso/living_SEB_review
     related-report: ~
@@ -48,6 +54,18 @@ execute:
   message: false
   error: false
 project-dir: paper
+
+sidebar:
+  tools:
+    - id: other-formats
+      title: "Other Formats"
+      links:
+        - text: "PDF (apaquarto)"
+          href: "livingSEBpaper.pdf"
+        - text: "Typst (apaquarto)"
+          href: "livingSEBpaper.typst"
+        - text: "MS Word (apaquarto)"
+          href: "livingSEBpaper.docx"
 ---
 
 ```{r}
