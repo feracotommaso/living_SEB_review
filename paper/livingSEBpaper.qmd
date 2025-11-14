@@ -61,11 +61,11 @@ sidebar:
       title: "Other Formats"
       links:
         - text: "PDF (apaquarto)"
-          href: "livingSEBpaper.pdf"
+          href: "paper/livingSEBpaper.pdf"
         - text: "Typst (apaquarto)"
-          href: "livingSEBpaper.typst"
+          href: "paper/livingSEBpaper.typst"
         - text: "MS Word (apaquarto)"
-          href: "livingSEBpaper.docx"
+          href: "paper/livingSEBpaper.docx"
 ---
 
 ```{r}
