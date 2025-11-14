@@ -10,7 +10,7 @@
 
 # ================================ UTILITIES ============================= ####
 # Purpose: Load helper functions and core packages used across the workflow.
-# - 'R/utils.R' is expected to define helper utilities (e.g., load_xlsx_url,
+# - 'R/utils.R' defines helper utilities (e.g., load_xlsx_url,
 #   getMETAdata). Ensure it is available and paths are correct.
 # - 'metafor' for effect size calculation and multilevel meta-analysis.
 # - 'tidyverse' for data wrangling and plotting via ggplot2.
@@ -35,7 +35,7 @@ library(ggplot2)
 data_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/3.meta_data/meta_data/metadata.xlsx"
 combined_data <- load_xlsx_url(data_url)
 # Open it locally
-combined_data <- readxl::read_excel(here::here("data/3.meta_data/meta_data/25_01_31_metadata.xlsx"))
+combined_data <- readxl::read_excel(here::here("data/3.meta_data/meta_data/metadata.xlsx"))
 
 # -------------------- Matrix codebook / admissible columns -------------- #
 # Open the matrix codebook with the admissible colnames

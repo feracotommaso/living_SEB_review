@@ -59,7 +59,7 @@ A BibTeX entry is:
 ``` bibtex
 @Misc{livingSEB,
   author       = {Tommaso Feraco and Gerardo Pellegrino},
-  doi          = {https://doi.org/10.31234/osf.io/ewvuf_v1}
+  doi          = {https://doi.org/10.31234/osf.io/ewvuf_v1},
   title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year         = {2025},
   publisher = {PsyArXiv}

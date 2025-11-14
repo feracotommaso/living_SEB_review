@@ -62,27 +62,6 @@ getSEMdata <- function(target_vars, combined_data, study_info){
   basic_info <- basic_info[rowSums(is.na(matrices))!=ncol(matrices),]
   matrices <- matrices[rowSums(is.na(matrices))!=ncol(matrices),]
   
-  # # Function to convert a row into a correlation matrix
-  # create_correlation_matrix <- function(row) {
-  #   # Convert row to a named vector
-  #   cor_values <- as.numeric(row)
-  #   names(cor_values) <- colnames(matrices)
-  #   
-  #   # Create an empty matrix
-  #   cor_matrix <- matrix(NA, nrow = length(target_vars), ncol = length(target_vars), dimnames = list(target_vars, target_vars))
-  #   
-  #   # Fill the matrix using the extracted correlations
-  #   for (pair in names(cor_values)) {
-  #     vars <- strsplit(pair, "_")[[1]]  # Extract variable names from column names
-  #     cor_matrix[vars[1], vars[2]] <- cor_values[pair]
-  #     cor_matrix[vars[2], vars[1]] <- cor_values[pair]  # Fill both symmetric positions
-  #   }
-  #   
-  #   diag(cor_matrix) <- 1  # Set diagonal to 1 (self-correlations)
-  #   
-  #   return(cor_matrix)
-  # }
-  
   create_correlation_matrix <- function(row) {
     # Convert row to a named vector
     cor_values <- as.numeric(row)
@@ -150,14 +129,6 @@ getMETAdata <- function(pred_vars, out_vars, combined_data, study_info){
 }
 
 #' Build a formatted parameter table from metaSEM results
-#'
-#' @param sumfit   A metaSEM model summary object with $parameters
-#' @param sem      The fitted random-effects SEM object (for VarCorr)
-#' @param metaD    A list with elements $cor_matrices and $basic_info$n
-#' @param labels_app Optional named character vector mapping raw variable
-#'                   names -> pretty labels (e.g., c(X="Math", Y="Reading")).
-#' @param acov     Passed to metaSEM::Cor2DataFrame() (default "weighted")
-#' @return data.frame
 sem_results_df <- function(sumfit, sem, metaD, labels_app = NULL, acov = "weighted") {
   # checks
   if (!requireNamespace("metaSEM", quietly = TRUE)) {
