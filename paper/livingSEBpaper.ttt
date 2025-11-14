@@ -2,8 +2,7 @@
 \ifnextchar[{\eatarg}{}
 
 
-{\caption{{: Studies included in the
-review}{\label{tbl-studies-summary}}}
+{\caption{{Studies included in the review}{\label{tbl-studies-summary}}}
 \vspace{-20pt}}
 
 \begin{longtable}[]{@{}
