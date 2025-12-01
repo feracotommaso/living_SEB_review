@@ -5,7 +5,7 @@
 
 # A living database for review and meta-analysis of SEB skills studies
 
-**DATA LAST UPDATED** 2025-11-01
+**DATA LAST UPDATED** 2025-12-01
 
 This repository contains all the open materials of the *living SEB
 project*.
@@ -58,10 +58,10 @@ A BibTeX entry is:
 
 ``` bibtex
 @Misc{livingSEB,
-  author       = {Tommaso Feraco and Gerardo Pellegrino},
-  doi          = {https://doi.org/10.31234/osf.io/ewvuf_v1},
-  title        = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
-  year         = {2025},
+  author    = {Tommaso Feraco and Gerardo Pellegrino},
+  doi       = {https://doi.org/10.31234/osf.io/ewvuf_v1},
+  title     = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
+  year      = {2025},
   publisher = {PsyArXiv}
 }
 ```
