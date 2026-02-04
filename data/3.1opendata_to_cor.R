@@ -1524,3 +1524,76 @@ writexl::write_xlsx(data.frame(cor(d0080a, use = "pairwise.complete")),"data/3.m
 # Individual data with age
 d0080 <- d0080[, colnames(d0080) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0080),"data/3.meta_data/open_data/individual_data/0080a.xlsx")
+
+#### --------------------------------------------------- 0095 --------------------------------------------------- ####
+rm(list=ls())
+d0095 <- readxl::read_excel("data/3.meta_data/open_data/d0095.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0095)
+
+# Rename
+names(d0095)[names(d0095) == "age_t1"] <- "age"
+
+d0095$sex <- ifelse(d0095$gender2_t1 == "1", 0, 
+                    ifelse(d0095$gender2_t1 == "0", 1, NA)) 
+
+names(d0095)[names(d0095) == "group_t1.x"] <- "volunteering" 
+# NOTE: volunteering here is dichotomous (0 = comparison, 1 = volunteer)
+# volunteering hours is also available (variable_name: hours)
+
+names(d0095)[names(d0095) == "sl"] <- "servicelearning" 
+
+# Five BESSI skill domains 
+d0095$selfmanagement <- rowMeans(
+  d0095[, c(
+    "bessi_163_t1", "bessi_70_t1", "bessi_169_t1",
+    "bessi_172_t1", "bessi_143_t1", "bessi_178_t1",
+    "bessi_149_t1", "bessi_152_t1", "bessi_155_t1"
+  )],
+  na.rm = TRUE
+)
+
+d0095$socialengagement <- rowMeans(
+  d0095[, c(
+    "bessi_1_t1", "bessi_65_t1", "bessi_109_t1",
+    "bessi_141_t1", "bessi_81_t1", "bessi_113_t1",
+    "bessi_121_t1", "bessi_153_t1", "bessi_103_t1"
+  )],
+  na.rm = TRUE
+)
+
+d0095$cooperation <- rowMeans(
+  d0095[, c(
+    "bessi_2_t1", "bessi_162_t1", "bessi_136_t1",
+    "bessi_72_t1", "bessi_78_t1", "bessi_110_t1",
+    "bessi_23_t1", "bessi_183_t1", "bessi_61_t1"
+  )],
+  na.rm = TRUE
+)
+
+d0095$emotionalresilience <- rowMeans(
+  d0095[, c(
+    "bessi_133_t1", "bessi_165_t1", "bessi_107_t1",
+    "bessi_139_t1", "bessi_52_t1", "bessi_116_t1",
+    "bessi_90_t1", "bessi_186_t1", "bessi_126_t1"
+  )],
+  na.rm = TRUE
+)
+
+d0095$innovation <- rowMeans(
+  d0095[, c(
+    "bessi_4_t1", "bessi_68_t1", "bessi_144_t1",
+    "bessi_176_t1", "bessi_28_t1", "bessi_60_t1",
+    "bessi_32_t1", "bessi_64_t1", "bessi_86_t1"
+  )],
+  na.rm = TRUE
+)
+
+# Select and save
+d0095a <- d0095[, colnames(d0095) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0095a, use = "pairwise.complete")),"data/3.meta_data/matrices/0095a.xlsx")
+
+# Individual data with age
+d0095 <- d0095[, colnames(d0095) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0095),"data/3.meta_data/open_data/individual_data/0095a.xlsx")

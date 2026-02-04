@@ -34,10 +34,17 @@ d <- d[d$decision != "exclude", ]
 nrow2 <- nrow(d)
 writexl::write_xlsx(d, "data/2.full_abstracting/25_12_01_fullabstracting.xlsx")
 nrow1-nrow2 # Excluded
-#### --------------------------------------------------- 25/12/01 --------------------------------------------------- ####
+#### --------------------------------------------------- 26/01/01 --------------------------------------------------- ####
 d <- readxl::read_excel("data/1.abstracting/26_01_06_deduplicated_processed.xlsx")
 nrow1 <- nrow(d)
 d <- d[d$decision != "exclude", ]
 nrow2 <- nrow(d)
 writexl::write_xlsx(d, "data/2.full_abstracting/26_01_06_fullabstracting.xlsx")
+nrow1-nrow2 # Excluded
+#### --------------------------------------------------- 26/02/01 --------------------------------------------------- ####
+d <- readxl::read_excel("data/1.abstracting/26_02_01_deduplicated_processed.xlsx")
+nrow1 <- nrow(d)
+d <- d[d$decision != "exclude", ]
+nrow2 <- nrow(d)
+writexl::write_xlsx(d, "data/2.full_abstracting/26_02_01_fullabstracting.xlsx")
 nrow1-nrow2 # Excluded
