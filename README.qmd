@@ -10,19 +10,19 @@ editor: visual
 
 **DATA LAST UPDATED** 2026-02-03
 
-This repository contains all the open materials of the *living SEB project*.
+This repository contains all the open materials of the *living SEB Skills project*.
 
 Navigate, download, and use the materials as you prefer, but always share them (GPL-3 licence)!
 
 ## Main links
 
+Shiny app for running meta-analytic synthesis: <https://feracoshiny.shinyapps.io/livingSEBapp/>
+
 Official preprint of the paper: <https://doi.org/10.31234/osf.io/ewvuf_v1>
 
 Author version of the published paper here: NA (*in prep*)
 
-Author version of the living SEB paper here: <https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html>
-
-Shiny app for running meta-analytic synthesis: <https://feracoshiny.shinyapps.io/livingSEBapp/>
+Updated results of the Living SEB Skills paper: <https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html>
 
 ## Repository Structure
 

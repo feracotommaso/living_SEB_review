@@ -1,11 +1,23 @@
 ---
-title: "The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills" 
-shorttitle: "the Living SEB Project"
+title: "The Living SEB Skills Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills" 
+shorttitle: "the Living SEB Skills Project"
 author:
   - name: Tommaso Feraco
     corresponding: true
     orcid: 0000-0002-8920-5330
     email: tommaso.feraco@unipd.it
+    affiliations:
+      - name: University of Padova
+        department: Department of General Psychology
+        address: Via Venezia 8
+        city: Padova
+        region: Veneto
+        country: Italy
+        postal-code: 35129
+  - name: Margherita Calderan
+    corresponding: false
+    orcid: 0009-0005-5668-5162
+    email: margherita.calderan@unipd.it
     affiliations:
       - name: University of Padova
         department: Department of General Psychology
@@ -729,7 +741,7 @@ model_oi <- "
   openness ~~ 1*openness
   innovation ~~ 1*innovation
 "
-varnames_oi <- c("academicachievement","openness","innovation")
+varnames_oi <- target_vars_oi
 RAMoi <- metaSEM::lavaan2RAM(model_oi, obs.variables = varnames_oi)
 T0oi   <- metaSEM::create.Tau2(RAM = RAMoi, 
                              RE.type = "Zero",
@@ -778,7 +790,7 @@ model_cs <- "
   conscientiousness ~~ 1*conscientiousness
   selfmanagement ~~ 1*selfmanagement
 "
-varnames_cs <- c("academicachievement","conscientiousness","selfmanagement")
+varnames_cs <- target_vars_cs
 RAMcs <- metaSEM::lavaan2RAM(model_cs, obs.variables = varnames_cs)
 T0cs   <- metaSEM::create.Tau2(RAM = RAMcs, 
                              RE.type = "Zero",
@@ -828,7 +840,7 @@ model_ese <- "
   extraversion ~~ 1*extraversion
   socialengagement ~~ 1*socialengagement
 "
-varnames_ese <- c("academicachievement","extraversion","socialengagement")
+varnames_ese <- target_vars_ese
 RAMese <- metaSEM::lavaan2RAM(model_ese, obs.variables = varnames_ese)
 T0ese   <- metaSEM::create.Tau2(RAM = RAMese, 
                              RE.type = "Zero",
@@ -877,7 +889,7 @@ model_ac <- "
   agreeableness ~~ 1*agreeableness
   cooperation ~~ 1*cooperation
 "
-varnames_ac <- c("academicachievement","agreeableness","cooperation")
+varnames_ac <- target_vars_ac
 RAMac <- metaSEM::lavaan2RAM(model_ac, obs.variables = varnames_ac)
 T0ac   <- metaSEM::create.Tau2(RAM = RAMac, 
                              RE.type = "Zero",
@@ -926,7 +938,7 @@ model_ner <- "
   neuroticism ~~ 1*neuroticism
   emotionalresilience ~~ 1*emotionalresilience
 "
-varnames_ner <- c("academicachievement","neuroticism","emotionalresilience")
+varnames_ner <- target_vars_ner
 RAMner <- metaSEM::lavaan2RAM(model_ner, obs.variables = varnames_ner)
 T0ner   <- metaSEM::create.Tau2(RAM = RAMner, 
                              RE.type = "Zero",
@@ -1031,9 +1043,132 @@ From @tbl-osmasem-summary, `r Nskills_txt` of the SEB skills and `r Ntraits_txt`
 
 In general, these results should be interpreted as illustrative demonstration of the functionality of a metaSEM pipeline within the *Living SEB project* rather than offering final conclusions about SEB–trait relationships.
 
+## Tutorial Analysis 3: Meta-analytic Structural Equation Modeling
+
+To test whether specific SEB skills show incremental predictive validity for academic achievement beyond all other skills we performed an additional one-stage meta-analytic structural equation modelling (OSMASEM) estimating one multiple regression model including all SEB domains as predictors of academic achievement.
+
+```{r}
+#| label: masem2
+#| cache: true
+
+study_info2 <- c("download_date","doi","year","age_class",
+                "paper_id","matrix_id", 
+                "author_et_al","n","title")
+target_vars2 <- sort(c("selfmanagement","cooperation","socialengagement", 
+                      "innovation", "emotionalresilience",
+                      "academicachievement"
+                      ))
+# Get the data in good format
+metaD2<-getSEMdata(target_vars2,metaData,study_info2)
+
+model_2 <- "
+  academicachievement ~ selfmanagement + cooperation + socialengagement + innovation + emotionalresilience
+#  openness ~~ innovation
+  selfmanagement ~~ 1*selfmanagement
+  cooperation ~~ 1*cooperation
+  socialengagement ~~ 1*socialengagement
+  innovation ~~ 1*innovation
+  emotionalresilience ~~ 1*emotionalresilience
+"
+varnames_2 <- target_vars2
+RAM2 <- metaSEM::lavaan2RAM(model_2, obs.variables = varnames_2)
+T02   <- metaSEM::create.Tau2(RAM = RAM2, 
+                             RE.type = "Zero",
+                             Transform = "expLog", 
+                             RE.startvalues = 0.05)
+my.df2 <- metaSEM::Cor2DataFrame(metaD2$cor_matrices, 
+                                metaD2$basic_info$n, 
+                                acov = "weighted")
+M02    <- create.vechsR(A0 = RAM2$A, 
+                       S0 = RAM2$S, 
+                       F0 = RAM2$F)
+    
+fit_2 <- osmasem(model.name = "osmasem 2",
+                  Mmatrix = M02, 
+                  Tmatrix = T02, 
+                  data = my.df2, 
+                  intervals.type = "z")
+
+sumfit_2 <- summary(fit_2, fitIndices = TRUE)
+
+tab_2 <- sem_results_df(
+  sumfit    = sumfit_2,
+  sem       = fit_2,
+  metaD     = list(
+    cor_matrices = metaD2$cor_matrices,  
+    basic_info   = list(n = metaD2$basic_info$n)
+  ),
+  labels_app = labels_app   
+)
+
+```
+
+
+```{r}
+#| label: tbl-osmasem-summary2
+#| tbl-cap: OSMASEM regression coefficients for the multiple regression model including all five skill domains
+#| apa-note: \\~ = regression path; \\~~ correlation; \\* *p* < .05; \\*\\* *p* < .01; \\*\\*\\* *p* < .001; CI = Confidence intervals; se = Standard error
+
+# Reorder table
+osmasemTabS <- subset(tab_2, 
+                     select = c(Outcome, op, Predictor,
+                                Estimate, SE, CI_95, z, p
+                                #, `tau (sd)`
+                                ))
+osmasemTabS2 <- osmasemTabS
+osmasemTabS2$Estimate <- 
+  paste0(osmasemTabS$Estimate,
+             ifelse(osmasemTabS$p < .001, "***",
+                    ifelse(osmasemTabS$p < .01, "**",
+                           ifelse(osmasemTabS$p < .05, "*", ""))))
+osmasemTabS2 <- subset(osmasemTabS2, select = -c(p))
+osmasemTabS2  |>
+  flextable() |>
+  set_caption(caption = "") |>
+  theme_apa() |>
+  valign(valign = "top") |>
+  padding(part = "all", padding = 1) |>
+  fontsize(size = 10, part = "all") |>
+  autofit() |>
+  set_header_labels(op = "",
+                    CI_95 = "CI",
+                    SE = "se")
+
+```
+
+
+```{r}
+#| label: osmasem-text-results2
+
+osmaskills <- c(
+  "Innovation","Self-management","Social engagement",
+  "Cooperation","Emotional resilience"
+)
+
+res2 <- make_osmasem_summary(
+  tab     = osmasemTabS,
+  skills  = osmaskills,
+  op      = "~",
+  p_cut   = 0.01,
+  p_star  = 0.001,
+  eff_cut = 0.10
+)
+
+# Compose your narrative (works even if a group is empty)
+skillText2 <- if (length(res2$skillText)) paste(res2$skillText, collapse = ", ") else "none"
+
+# If you like counts in words, wrap with english::english() yourself:
+Nskills_txt2 <- as.character(english::english(res2$N_skills))
+
+nonSigMax_txt2 <- if (is.na(res2$nonSigMaxBeta)) "N/A" else formatC(res2$nonSigMaxBeta, digits = 2, format = "f")
+
+```
+
+From @tbl-osmasem-summary2, `r Nskills_txt2` of the SEB skills showed significant associations (*p* \< `r res2$criteria$p_cut`) larger than \|`r res2$criteria$eff_cut`\| with academic achievement beyond the other skill domains. Specifically, `r skillText2` showed significant and practically meaningful associations with academic achievement, while all other associations were lower than \|`r nonSigMax_txt2`\| and/or non-significant. 
+
 ## Reproducibility via the Living SEB App
 
-Both tutorial analyses can be reproduced in the Meta-analysis and MetaSEM modules of the *Living SEB App*. Users can select specific subsets of studies, download data and R code, and generate updated reports. This ensures that results presented here remain transparent, reproducible, and adaptable as the evidence base grows.
+All analyses can be reproduced in the Meta-analysis and MetaSEM modules of the *Living SEB Skills App*. Users can select specific subsets of studies, download data and R code, and generate updated reports. This ensures that results presented here remain transparent, reproducible, and adaptable as the evidence base grows.
 
 # Discussion
 

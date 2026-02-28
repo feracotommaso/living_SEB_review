@@ -8,23 +8,23 @@
 **DATA LAST UPDATED** 2026-02-03
 
 This repository contains all the open materials of the *living SEB
-project*.
+Skills project*.
 
 Navigate, download, and use the materials as you prefer, but always
 share them (GPL-3 licence)!
 
 ## Main links
 
+Shiny app for running meta-analytic synthesis:
+<https://feracoshiny.shinyapps.io/livingSEBapp/>
+
 Official preprint of the paper:
 <https://doi.org/10.31234/osf.io/ewvuf_v1>
 
 Author version of the published paper here: NA (*in prep*)
 
-Author version of the living SEB paper here:
+Updated results of the Living SEB Skills paper:
 <https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html>
-
-Shiny app for running meta-analytic synthesis:
-<https://feracoshiny.shinyapps.io/livingSEBapp/>
 
 ## Repository Structure
 
@@ -50,17 +50,17 @@ project*:
 
 To cite the {Living SEB project} in publications use:
 
-Feraco, T. & Pellegrino G. (2025). The Living SEB Project: A Living
-Database for Review and Meta-Analysis of Social, Emotional, and
+Feraco, T., Calderan, M. & Pellegrino G. (2025). The Living SEB Project:
+A Living Database for Review and Meta-Analysis of Social, Emotional, and
 Behavioral Skills. PsyArXiv. https://doi.org/10.31234/osf.io/ewvuf_v1
 
 A BibTeX entry is:
 
 ``` bibtex
 @Misc{livingSEB,
-  author    = {Tommaso Feraco and Gerardo Pellegrino},
+  author    = {Tommaso Feraco and Margherita Calderan and Gerardo Pellegrino},
   doi       = {https://doi.org/10.31234/osf.io/ewvuf_v1},
-  title     = {The Living SEB Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
+  title     = {The Living SEB Skills Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year      = {2025},
   publisher = {PsyArXiv}
 }
