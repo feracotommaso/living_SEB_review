@@ -4,8 +4,6 @@ editor: visual
 # quarto render README.qmd --to md
 ---
 
-## 
-
 # A living database for review and meta-analysis of SEB skills studies
 
 **DATA LAST UPDATED** 2026-02-03
