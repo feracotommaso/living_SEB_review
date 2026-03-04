@@ -1597,3 +1597,112 @@ writexl::write_xlsx(data.frame(cor(d0095a, use = "pairwise.complete")),"data/3.m
 # Individual data with age
 d0095 <- d0095[, colnames(d0095) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0095),"data/3.meta_data/open_data/individual_data/0095a.xlsx")
+
+#### --------------------------------------------------- 0100 --------------------------------------------------- ####
+rm(list=ls())
+d0100 <- readxl::read_excel("data/3.meta_data/open_data/d0100.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0100)
+
+# Rename
+names(d0100)[names(d0100) == "Age"] <- "age"
+
+d0100$sex <- ifelse(d0100$Gender == "1", 0, 
+                    ifelse(d0100$Gender == "2", 1, NA)) # Males to 0, Females to 1
+
+names(d0100)[names(d0100) == "Achievement"] <- "academicachievement"
+
+# Five SEB skills
+d0100$selfmanagement <-rowMeans(d0100[,c("bessi_1",  "bessi_6", "bessi_11", "bessi_16",
+                     "bessi_21", "bessi_26", "bessi_31", "bessi_36",
+                     "bessi_41")], na.rm=TRUE) # Self-management domain
+
+d0100$innovation<-rowMeans(d0100[,c("bessi_5", "bessi_10", "bessi_15", "bessi_20",
+                     "bessi_25", "bessi_30", "bessi_35", "bessi_40",
+                     "bessi_45")], na.rm=TRUE) # Innovation domain
+
+d0100$cooperation<-rowMeans(d0100[,c("bessi_3", "bessi_8", "bessi_13", "bessi_18",
+                     "bessi_23", "bessi_28", "bessi_33", "bessi_38",
+                     "bessi_43")], na.rm=TRUE) # Cooperation domain
+
+d0100$socialengagement <-rowMeans(d0100[,c("bessi_2", "bessi_7", "bessi_12", "bessi_17",
+                     "bessi_22", "bessi_27", "bessi_32", "bessi_37",
+                     "bessi_42")], na.rm=TRUE) # Social engagement domain
+
+d0100$emotionalresilience<-rowMeans(d0100[,c("bessi_4", "bessi_9", "bessi_14", "bessi_19",
+                     "bessi_24", "bessi_29", "bessi_34", "bessi_39",
+                     "bessi_44")], na.rm=TRUE) #Emotional resilience domain
+
+# Student Engagement 
+# The following items were formulated negatively, so they are reversed.
+d0100$rev_eng_1 <- 6 - d0100$eng_1
+d0100$rev_eng_20 <- 6 - d0100$eng_20
+d0100$rev_eng_24 <- 6 - d0100$eng_24
+d0100$rev_eng_25 <- 6 - d0100$eng_25
+
+#Perception of the capability to persist in the University choice
+d0100$Persistence <- rowMeans(d0100[,c("rev_eng_1", "rev_eng_20", "rev_eng_24", 
+                               "rev_eng_25")], na.rm=TRUE) 
+
+# University value and sense of belonging
+d0100$Uni_value <- rowMeans(d0100[,c("eng_2", "eng_13", "eng_14", 
+                             "eng_18", "eng_19", "eng_23")], na.rm=TRUE) 
+#  Value of University course
+d0100$Course_value <- rowMeans(d0100[,c("eng_9", "eng_10", "eng_11", 
+                                "eng_12", "eng_26", "eng_27", 
+                                "eng_29")], na.rm=TRUE) 
+
+# Relationships between University and relational net
+d0100$Relational_net <- rowMeans(d0100[,c("eng_15", "eng_16", "eng_17")], na.rm=TRUE) 
+
+# Engagement with University peers
+d0100$Peers_engagement <- rowMeans(d0100[,c("eng_3", "eng_4", "eng_21", 
+                                    "eng_22", "eng_28")], na.rm=TRUE) 
+
+# Engagement with University Professors
+d0100$Prof_engagement <- rowMeans(d0100[,c("eng_5", "eng_6", "eng_7", 
+                                   "eng_8")], na.rm=TRUE) 
+
+# Engagement total
+d0100$academicengagement <- rowMeans(d0100[,c("Persistence", "Uni_value", "Course_value", 
+                           "Relational_net", "Peers_engagement", "Prof_engagement")], 
+                      na.rm=TRUE) 
+
+# Academic self-efficacy
+d0100$academicselfefficacy <-rowMeans(d0100[,c("eff_1", "eff_2", "eff_3", 
+                           "eff_4", "eff_5")], na.rm=TRUE) 
+
+# Self-regulated learning strategies
+d0100$rev_QAS_2 <- 6 - d0100$QAS_2
+d0100$rev_QAS_5 <- 6 - d0100$QAS_5
+d0100$rev_QAS_8 <- 6 - d0100$QAS_8
+d0100$rev_QAS_9 <- 6 - d0100$QAS_9
+d0100$rev_QAS_10 <- 6 - d0100$QAS_10
+d0100$rev_QAS_12 <- 6 - d0100$QAS_12
+d0100$rev_QAS_17 <- 6 - d0100$QAS_17
+
+d0100$srlstrategies <- rowMeans(subset(d0100, select = c(QAS_1, rev_QAS_2, QAS_3, QAS_4, rev_QAS_5, QAS_6, 
+                                                  QAS_7, rev_QAS_8, rev_QAS_9, rev_QAS_10, QAS_11, 
+                                                  rev_QAS_12, QAS_13, QAS_14, QAS_15, QAS_16, 
+                                                  rev_QAS_17, QAS_18, QAS_19, QAS_20)), na.rm=TRUE)
+
+#Academic satisfaction
+d0100$academicsatisfaction <-rowMeans(d0100[,c("uni_sat_1", "uni_sat_2", "uni_sat_3", 
+                               "uni_sat_4", "uni_sat_5")], na.rm=TRUE) 
+# Life satisfaction
+d0100$satisfactionwithlife <-rowMeans(d0100[,c("life_1", "life_2", "life_3", 
+                           "life_4", "life_5")], na.rm=TRUE) 
+
+# Academic burnout
+d0100$academicburnout <-rowMeans(d0100[,c("burn_1", "burn_2", "burn_3", 
+                          "burn_4", "burn_5", "burn_6",
+                          "burn_7", "burn_8", "burn_9")], na.rm=TRUE) 
+
+# Select and save
+d0100a <- d0100[, colnames(d0100) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0100a, use = "pairwise.complete")),"data/3.meta_data/matrices/0100a.xlsx")
+
+# Individual data with age
+d0100 <- d0100[, colnames(d0100) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0100),"data/3.meta_data/open_data/individual_data/0100a.xlsx")

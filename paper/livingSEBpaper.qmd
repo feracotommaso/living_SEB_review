@@ -439,6 +439,7 @@ review_tab  |>
 | Lechner et al. | [-@lechnerBehavioralEmotionalSocial2022] | Cross-sectional | Germany | 1,164 | Adults | Validation of the German version of the BESSI |
 | Napolitano et al. | [-@napolitanoSocialEmotionalBehavioral2021] | Theoretical |  |  |  | Integrative SEB model and its developmental importance in adolescence |
 | Napolitano et al. | [-@napolitanoChangesSocialEmotional2025] | Longitudinal | United States | 942 | Secondary school | Longitudinal changes in SEB skills and outcomes |
+| Pellegrino et al. | [-@pellegrinoUniversityStudentsSpecific2026] | Cross-sectional | Italy | 752 | Young adults | Associations between SEB skills and university students outcomes |
 | Pellegrino et al. | [-@pellegrinoReadyWhatsNext2025] | Cross-sectional | Italy | 350 | Secondary school | Associations between SEB skills and career adaptability |
 | Postigo et al. | [-@postigoBehavioralEmotionalSocial2024] | Cross-sectional | Spain | 303 | Adults | Validation of the Spanish version of the BESSI |
 | Ringwald et al. | [-@ringwaldMoreSkillTrait2025] | Cross-sectional | United States | 840 | Secondary school | Traits–skills (mis)matches and implications for youth outcomes |
