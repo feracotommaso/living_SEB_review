@@ -71,5 +71,4 @@ Feraco, T., Calderan, M. & Pellegrino, G. (2025). The Living SEB Project: A Livi
 
 The dataset is updated approximately once a month. 
 This project is linked to **Zenodo**, and each dataset update will trigger a new release. If no new articles are available, no release will be published.
-
-**Citation:** To ensure reproducibility, please cite a specific release using its version tag.
+To ensure reproducibility, please cite a specific release using its version tag.
