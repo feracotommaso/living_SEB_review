@@ -19,13 +19,13 @@ There are two main ways to contribute to this project:
 1. **Data contributions** — adding or updating study data in the meta-analysis
 2. **Shiny app contributions** — improving the interactive application
 
-## Contributing Data (Meta-Analysis Updates)
+## Contributing Data 
 
-> ⚠️ **Work in progress.** Guidelines for contributing data to the living meta-analysis are currently being developed. If you have identified a new eligible study or a correction to existing data, please [open an issue](https://github.com/feracotommaso/living_SEB_review/issues/new) or contact the maintainers directly to discuss.
+If you have identified a new eligible study or a correction to existing data, please [open an issue](https://github.com/feracotommaso/living_SEB_review/issues/new) or contact the maintainers directly to discuss.
 
 ## Contributing to the Shiny App
 
-> ⚠️ **Work in progress.** Guidelines for contributing to the Shiny App are currently being developed. If you have a suggestion or a bug fix in mind, please [open an issue](https://github.com/feracotommaso/living_SEB_review/issues/new) to start the conversation.
+⚠️ **Work in progress.** Guidelines for contributing to the Shiny App are currently being developed. If you have a suggestion or a bug fix in mind, please [open an issue](https://github.com/feracotommaso/living_SEB_review/issues/new) to start the conversation.
 
 ## Reporting Issues
 
