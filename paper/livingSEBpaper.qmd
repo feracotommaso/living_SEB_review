@@ -591,7 +591,7 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
 
 A total of `r nrow(dm)` effect sizes from `r length(unique(dm$paper_id))` studies and `r length(unique(dm$matrix_id))` samples were included. For each SEB domain, the median available sample size was `r median(dm$n)` (minimum sample size = `r min(dm$n)`; maximum sample size = `r max(dm$n)`).
 
-The full set of results is available in @tbl-meta-results and @fig-meta-analysis-plot. Of the five meta-analysed correlations with academic achievement, `r as.character(english(sum(metaRes$r>.10)))` were larger than 0.10, with significant effects (p \< `r pcrit`) ranging between `r round(min(metaRes$r[metaRes$p<pcrit]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < pcrit, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(ifelse(metaRes$p < pcrit, Inf, metaRes$r))]`).
+The full set of results is available in @tbl-meta-results and @fig-meta-analysis-plot. Of the five meta-analysed correlations with academic achievement, `r as.character(english(sum(metaRes$r>.10)))` were larger than 0.10, with significant effects (p \< `r pcrit`) ranging between `r round(min(metaRes$r[metaRes$p<pcrit]),2)` (i.e., `r metaRes$skill[which.min(ifelse(metaRes$p < pcrit, metaRes$r, Inf))]`) and `r round(max(metaRes$r[metaRes$p<.05]),2)` (i.e., `r metaRes$skill[which.max(metaRes$r)]`).
 
 The *Q* test for heterogeneity shows that there is significant heterogeneity across studies, with the standard deviation of the effects ranging between `r round(min(sqrt(metaRes$tau2[metaRes$qp<.05])),2)` and `r round(max(sqrt(metaRes$tau2[metaRes$qp<.05])),2)`.
 
