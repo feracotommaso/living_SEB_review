@@ -362,9 +362,9 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
         br(),
         actionButton(
           inputId = "go_to_livingpaper",
-          label = "Living paper",
+          label = "Living results and database overview",
           class = "btn btn-dark",
-          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/paper/livingSEBpaper.html', '_blank')"
+          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html', '_blank')"
         )
       ),
       br(),
