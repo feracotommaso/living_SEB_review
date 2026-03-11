@@ -35,13 +35,13 @@ This repository contains all the open materials of the **Living SEB Skills Proje
 
 ## Licensing
 
-| Component | License |
-|---|---|
-| Source code (Shiny app, R scripts) | [AGPL-3.0](LICENSE-SOFTWARE-CODE) |
-| Curated dataset | [CC-BY 4.0](LICENSE-PROCESSED-DATA) |
-| App outputs | [CC-BY 4.0](LICENSE-SOFTWARE-OUTPUT) |
-| Preregistration, Preprint, documentation | [CC-BY 4.0](LICENSE-DOCUMENTATION) |
-| Raw data from original studies | Not redistributed: rights belong to original authors and publishers |
+| Component             | Directory                                     | License                        |
+| --------------------- | --------------------------------------------- | ------------------------------ |
+| Shiny app & R scripts | app/, tutorialAnalysis/                       | AGPL-3.0                       |
+| Curated dataset       | data/                                         | CC-BY 4.0                      |
+| App outputs           | —                                             | CC-BY 4.0                      |
+| Paper, docs, slides   | paper/, slides/, preregistration/, appManual/ | CC-BY 4.0                      |
+| Raw data              | —                                             | Not redistributed (no license) |
 
 
 ## Contributing
