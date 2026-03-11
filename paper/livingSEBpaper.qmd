@@ -265,13 +265,44 @@ Given the adaptive nature of a the *Living SEB project*, we report temporary res
 #| cache: true
 
 library(RefManageR)
-sc1 <- ReadBib(here::here("data/0.bib_download/25_01_31_scopus.bib"))
-sc2 <- ReadBib(here::here("data/0.bib_download/25_04_30_scopus.bib"))
-ws1 <- ReadBib(here::here("data/0.bib_download/25_01_31_wos.bib"))
-ws2 <- ReadBib(here::here("data/0.bib_download/25_04_30_wos.bib"))
-totSc <- sum(c(length(sc1),length(sc2)))
-totWs <- sum(c(length(ws1),length(ws2)))
+# sc1 <- ReadBib(here::here("data/0.bib_download/25_01_31_scopus.bib"))
+# sc2 <- ReadBib(here::here("data/0.bib_download/25_04_30_scopus.bib"))
+# ws1 <- ReadBib(here::here("data/0.bib_download/25_01_31_wos.bib"))
+# ws2 <- ReadBib(here::here("data/0.bib_download/25_04_30_wos.bib"))
+# totSc <- sum(c(length(sc1),length(sc2)))
+# totWs <- sum(c(length(ws1),length(ws2)))
+# totDownload <- totSc + totWs
+
+bib_dir <- here::here("data/0.bib_download")
+
+# files
+scopus_files <- list.files(
+  bib_dir,
+  pattern = "scopus\\.bib$",
+  full.names = TRUE
+)
+
+wos_files <- list.files(
+  bib_dir,
+  pattern = "wos\\.bib$",
+  full.names = TRUE
+)
+
+# read and store
+scopus_bibs <- setNames(lapply(scopus_files, ReadBib), basename(scopus_files))
+wos_bibs    <- setNames(lapply(wos_files, ReadBib), basename(wos_files))
+
+# number of entries in each file
+scopus_n <- lengths(scopus_bibs)
+wos_n    <- lengths(wos_bibs)
+
+# partial totals
+totSc <- sum(scopus_n)
+totWs <- sum(wos_n)
+
+# grand total
 totDownload <- totSc + totWs
+
 ```
 
 ```{r}
