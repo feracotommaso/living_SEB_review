@@ -86,10 +86,6 @@ This monthly report is part of that broader effort. Its purpose is to provide an
 
 The sections that follow first describe the data currently included in the project and then present selected results obtained from the latest version of the database.
 
-# Methods
-
-All methods, including preregistration, transparency, data gathering procedures, and coding information are reported in the main article.
-
 # The Database
 
 ```{r}
@@ -386,7 +382,7 @@ We Try to answer this question at three different levels:
 
 ## The Association Between SEB Skills and Academic Achievement
 
-To test the bivariate associations between the five SEB skill domains and academic achievement, we use a three-level random-effects model, with effects nested within samples and studies. In line with Borenstein and colleagues [-@borenstein2021], Fisher’s *z* transformations were applied and then back-transformed to Pearson’s *r* for interpretation. The metafor package was used for the meta-analysis [@viechtbauer2010ConductingMetaanalysesMetafor].
+To test the bivariate associations between the five SEB skill domains and academic achievement, we use a three-level random-effects model.
 
 ```{r}
 #| label: meta-analysis-scripts
@@ -528,7 +524,6 @@ Of the five meta-analysed correlations with academic achievement, `r as.characte
 
 Using one-stage meta-analytic structural equation modelling (OSMASEM) procedures [@jak2020MetaanalyticStructuralEquation], five saturated regression models were estimated, each including one SEB domain and its matched Big Five trait as predictors of academic achievement.
 
-The metaSEM [@cheung2024MetaSEMMetaAnalysisUsing] and lavaan [@rosseel2012LavaanPackageStructural] R packages were used for these analysis.
 
 ```{r}
 #| label: masem-initial-scripts
@@ -1095,6 +1090,16 @@ nonSigMax_txt2 <- if (is.na(res2$nonSigMaxBeta)) "N/A" else formatC(res2$nonSigM
 ```
 
 From @tbl-osmasem-summary2, `r Nskills_txt2` of the SEB skills showed significant associations (*p* \< `r res2$criteria$p_cut`) larger than \|`r res2$criteria$eff_cut`\| with academic achievement beyond the other skill domains. Specifically, `r skillText2` showed significant and practically meaningful associations with academic achievement, while all other associations were lower than \|`r nonSigMax_txt2`\| and/or non-significant.
+
+# Methods
+
+All methods, including preregistration, transparency, data gathering procedures, and coding information are reported in the main article.
+
+## Analyses
+
+When referring to three-level random-effects model, we nested effects within samples and studies. In line with Borenstein and colleagues [-@borenstein2021], Fisher’s *z* transformations were applied and then back-transformed to Pearson’s *r* for interpretation. The metafor package was used for these analyses [@viechtbauer2010ConductingMetaanalysesMetafor].
+
+On the other hand, OSMASEM models were used to estimate the structural models of interest in a single step by fitting a structural equation model directly to the meta-analytic covariance structure while simultaneously modeling sampling variance and between-study heterogeneity. This approach allows regression paths to be estimated within an SEM framework using the full pooled covariance matrix. The metaSEM [@cheung2024MetaSEMMetaAnalysisUsing] and lavaan [@rosseel2012LavaanPackageStructural] R packages were used for these analysis.
 
 # Reproducibility via the Living SEB App
 
