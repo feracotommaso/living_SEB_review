@@ -403,9 +403,9 @@ Of the five meta-analysed correlations with biological sex, `r as.character(engl
 
 # SEB Skills and Academic Achievement
 
-Onother interesting question we may tackle using the *Living SEB Skills Project*'s database, is **do SEB skills matter for academic achievement**.
+Onother interesting question we may tackle using the *Living SEB Skills Project*'s database, is **whether SEB skills are important for academic achievement**.
 
-We Try to answer this question at three different levels:
+We try to answer this question at three different levels:
 
 -   Are SEB skills singularly associated with academic achievement?
 -   Do SEB skills predict academic achievement beyond the Big Five?
