@@ -1,5 +1,5 @@
 ---
-title: "The Living SEB Skills Project: A Living Database for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills" 
+title: "The Living SEB Skills Project: A Living Resource for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills" 
 shorttitle: "the Living SEB Skills Project"
 author:
   - name: Tommaso Feraco
