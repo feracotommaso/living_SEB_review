@@ -1,43 +1,43 @@
 ---
 title: "Living Updates from The Living SEB Skills Project" 
 shorttitle: "The Living SEB Skills Project's Results"
-author:
-  - name: Tommaso Feraco
-    corresponding: true
-    orcid: 0000-0002-8920-5330
-    email: tommaso.feraco@unipd.it
-    affiliations:
-      - name: University of Padova
-        department: Department of General Psychology
-        address: Via Venezia 8
-        city: Padova
-        region: Veneto
-        country: Italy
-        postal-code: 35129
-  - name: Margherita Calderan
-    corresponding: false
-    orcid: 0009-0005-5668-5162
-    email: margherita.calderan@unipd.it
-    affiliations:
-      - name: University of Padova
-        department: Department of General Psychology
-        address: Via Venezia 8
-        city: Padova
-        region: Veneto
-        country: Italy
-        postal-code: 35129
-  - name: Gerardo Pellegrino
-    corresponding: false
-    orcid: 0000-0001-7032-9774
-    email: gerardo.pellegrino@phd.unipd.it
-    affiliations:
-      - name: University of Padova
-        department: Department of General Psychology
-        address: Via Venezia 8
-        city: Padova
-        region: Veneto
-        country: Italy
-        postal-code: 35129
+# author:
+#   - name: Tommaso Feraco
+#     corresponding: true
+#     orcid: 0000-0002-8920-5330
+#     email: tommaso.feraco@unipd.it
+#     affiliations:
+#       - name: University of Padova
+#         department: Department of General Psychology
+#         address: Via Venezia 8
+#         city: Padova
+#         region: Veneto
+#         country: Italy
+#         postal-code: 35129
+#   - name: Margherita Calderan
+#     corresponding: false
+#     orcid: 0009-0005-5668-5162
+#     email: margherita.calderan@unipd.it
+#     affiliations:
+#       - name: University of Padova
+#         department: Department of General Psychology
+#         address: Via Venezia 8
+#         city: Padova
+#         region: Veneto
+#         country: Italy
+#         postal-code: 35129
+#   - name: Gerardo Pellegrino
+#     corresponding: false
+#     orcid: 0000-0001-7032-9774
+#     email: gerardo.pellegrino@phd.unipd.it
+#     affiliations:
+#       - name: University of Padova
+#         department: Department of General Psychology
+#         address: Via Venezia 8
+#         city: Padova
+#         region: Veneto
+#         country: Italy
+#         postal-code: 35129
 
 bibliography: bibliography.bib
 format:
