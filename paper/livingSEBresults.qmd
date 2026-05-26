@@ -90,7 +90,7 @@ The sections that follow first describe the data currently included in the proje
 
 ```{r}
 #| label: countStudies
-#| cache: true
+#| cache: false
 
 library(RefManageR)
 # sc1 <- ReadBib(here::here("data/0.bib_download/25_01_31_scopus.bib"))
@@ -558,7 +558,7 @@ Using one-stage meta-analytic structural equation modelling (OSMASEM) procedures
 
 ```{r}
 #| label: masem-initial-scripts
-#| cache: true
+#| cache: false
 
 study_info <- c("download_date","doi","year","age_class",
                 "paper_id","matrix_id", 
@@ -588,7 +588,7 @@ StudyTab <- data.frame(
 
 ```{r}
 #| label: tssem-scripts
-#| cache: true
+#| cache: false
 #| eval: false
 
 cfa1 <- metaSEM::tssem1(metaD$cor_matrices, metaD$basic_info$n)
@@ -1007,7 +1007,7 @@ To test whether any specific SEB skill shows incremental predictive validity for
 
 ```{r}
 #| label: masem2
-#| cache: true
+#| cache: false
 
 study_info2 <- c("download_date","doi","year","age_class",
                 "paper_id","matrix_id", 
