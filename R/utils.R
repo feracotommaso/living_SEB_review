@@ -31,7 +31,7 @@ data_combine <- function(matrix_path, basic_info_data) {
       pair = pmap_chr(list(var1, var2), ~ paste(sort(c(..1, ..2)), collapse = "_"))
     ) %>%
     distinct(pair, .keep_all = TRUE) %>%  # Remove duplicate pairs
-    select(pair, correlation)
+    dplyr::select(pair, correlation)
   
   # Convert long format to wide format
   wide_data <- long_data %>%

@@ -1714,3 +1714,243 @@ writexl::write_xlsx(data.frame(cor(d0100a, use = "pairwise.complete")),"data/3.m
 # Individual data with age
 d0100 <- d0100[, colnames(d0100) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0100),"data/3.meta_data/open_data/individual_data/0100a.xlsx")
+
+#### --------------------------------------------------- 0104 --------------------------------------------------- ####
+rm(list=ls())
+d0104a1 <- readxl::read_excel("data/3.meta_data/open_data/d0104-SEB-SSS-T1-T2.xlsx")
+d0104a2 <- readxl::read_excel("data/3.meta_data/open_data/d0104-SEB-SSS-T2-T3.xlsx")
+d0104b1 <- readxl::read_excel("data/3.meta_data/open_data/d0104-SEB-MENTALHEALTH-T1-T2.xlsx")
+d0104b2 <- readxl::read_excel("data/3.meta_data/open_data/d0104-SEB-MENTALHEALTH-T2-T3.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+library(dplyr)
+merged_df <- d0104a1
+for(df in list(d0104a2, d0104b1, d0104b2)) {
+  new_cols <- setdiff(names(df), names(merged_df))
+  merged_df <- dplyr::bind_cols(
+    merged_df,
+    df %>% select(all_of(new_cols))
+  )
+}
+d0104 <- merged_df %>%
+  select(sort(names(.)))
+
+names(d0104)
+
+# Rename
+d0104$sex <- ifelse(d0104$gender == "1", 0, 
+                    ifelse(d0104$gender == "2", 1, NA)) # Males to 0, Females to 1
+
+# Five SEB skills
+# Scores are already calculated. Just change the column names
+names(d0104)[names(d0104) == "COD1"] <- "cooperation"
+names(d0104)[names(d0104) == "ESD1"] <- "emotionalresilience"
+names(d0104)[names(d0104) == "IND1"] <- "innovation"
+names(d0104)[names(d0104) == "SED1"] <- "socialengagement"
+names(d0104)[names(d0104) == "SMD1"] <- "selfmanagement"
+# Rename time 2
+names(d0104)[names(d0104) == "COD2"] <- "cooperation_t2"
+names(d0104)[names(d0104) == "ESD2"] <- "emotionalresilience_t2"
+names(d0104)[names(d0104) == "IND2"] <- "innovation_t2"
+names(d0104)[names(d0104) == "SED2"] <- "socialengagement_t2"
+names(d0104)[names(d0104) == "SMD2"] <- "selfmanagement_t2"
+# Rename time 3
+names(d0104)[names(d0104) == "COD3"] <- "cooperation_t3"
+names(d0104)[names(d0104) == "ESD3"] <- "emotionalresilience_t3"
+names(d0104)[names(d0104) == "IND3"] <- "innovation_t3"
+names(d0104)[names(d0104) == "SED3"] <- "socialengagement_t3"
+names(d0104)[names(d0104) == "SMD3"] <- "selfmanagement_t3"
+
+# Four well-being outcomes
+names(d0104)[names(d0104) == "SWB1"] <- "subjectivewellbeing"
+names(d0104)[names(d0104) == "SIAS1"] <- "socialanxiety"
+names(d0104)[names(d0104) == "GAD1"] <- "anxiety"
+names(d0104)[names(d0104) == "PHQ1"] <- "mentalhealth"
+# Rename time 2
+names(d0104)[names(d0104) == "SWB2"] <- "subjectivewellbeing_t2"
+names(d0104)[names(d0104) == "SIAS2"] <- "socialanxiety_t2"
+names(d0104)[names(d0104) == "GAD2"] <- "anxiety_t2"
+names(d0104)[names(d0104) == "PHQ2"] <- "mentalhealth_t2"
+# Rename time 3
+names(d0104)[names(d0104) == "SWB3"] <- "subjectivewellbeing_t3"
+names(d0104)[names(d0104) == "SIAS3"] <- "socialanxiety_t3"
+names(d0104)[names(d0104) == "GAD3"] <- "anxiety_t3"
+names(d0104)[names(d0104) == "PHQ3"] <- "mentalhealth_t3"
+
+# Scale to item means
+vars <- c(
+  "cooperation","emotionalresilience","innovation","socialengagement","selfmanagement",
+  "cooperation_t2","emotionalresilience_t2","innovation_t2","socialengagement_t2","selfmanagement_t2",
+  "cooperation_t3","emotionalresilience_t3","innovation_t3","socialengagement_t3","selfmanagement_t3"
+)
+d0104[vars] <- d0104[vars] / 9
+
+# Two more variables exist but are not named in the manuscript and are not interpretable directly for the data
+
+# Select and save
+d0104a <- d0104[, colnames(d0104) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0104a, use = "pairwise.complete")),"data/3.meta_data/matrices/0104a.xlsx")
+
+# Individual data with age
+d0104 <- d0104[, colnames(d0104) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0104),"data/3.meta_data/open_data/individual_data/0104a.xlsx")
+
+#### --------------------------------------------------- 0107 --------------------------------------------------- ####
+rm(list=ls())
+d0107 <- read.csv('data/3.meta_data/open_data/d0107.csv')
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Demographics
+names(d0107)[names(d0107) == "survey.1.player.age"] <- "age"
+names(d0107)[names(d0107) == "survey.1.player.gender"] <- "sex"
+d0107$sex <- ifelse(d0107$sex == "Uomo", 0, 
+                    ifelse(d0107$sex == "Donna", 1, 0.5))
+
+names(d0107)[names(d0107) == "emo_stability"] <- "neuroticism"
+d0107$neuroticism <- -1*(d0107$neuroticism)
+
+names(d0107)[names(d0107) == "Cooperation_Skills"] <- "cooperation"
+
+names(d0107)[names(d0107) == "risk"] <- "risktaking"
+names(d0107)[names(d0107) == "altruism"] <- "altruism"
+names(d0107)[names(d0107) == "positive_reciprocity"] <- "positivereciprocity"
+names(d0107)[names(d0107) == "time_discounting"] <- "timediscounting"
+names(d0107)[names(d0107) == "negative_reciprocity"] <- "negativereciprocity"
+names(d0107)[names(d0107) == "trust"] <- "trust"
+names(d0107)[names(d0107) == "teamwork"] <- "teamwork"
+names(d0107)[names(d0107) == "questionnaire.1.player.seguire_regole"] <- "rulefollowing"
+
+# Select and save
+d0107a <- d0107[, colnames(d0107) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0107a, use = "pairwise.complete")),"data/3.meta_data/matrices/0107a.xlsx")
+
+# Individual data with age
+d0107 <- d0107[, colnames(d0107) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0107),"data/3.meta_data/open_data/individual_data/0107a.xlsx")
+
+#### --------------------------------------------------- 0108 --------------------------------------------------- ####
+rm(list=ls())
+d0108 <- haven::read_sav("data/3.meta_data/open_data/d0108.sav")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Select only time 1
+d0108 <- d0108[d0108$wave == 1, ]
+
+names(d0108)[1:20]
+
+table(d0108$gender3)
+
+d0108$BESSI_Cooperation
+
+# Transform scores
+d0108$sex <- ifelse(d0108$gender3 == -0.5, 0,
+                    ifelse(d0108$gender3 == 0.5, 1, 0.5))
+
+d0108$age <- d0108$birthday_age
+
+#Seb
+names(d0108)[names(d0108) == "BESSI_Self_Management"] <- "selfmanagement"
+names(d0108)[names(d0108) == "BESSI_Social_Engagement"] <- "socialengagement"
+names(d0108)[names(d0108) == "BESSI_Cooperation"] <- "cooperation"
+names(d0108)[names(d0108) == "BESSI_Emotional_Resilience"] <- "emotionalresilience"
+names(d0108)[names(d0108) == "BESSI_Innovation"] <- "innovation"
+
+#Personality
+names(d0108)[names(d0108) == "BFI_Conscientiousness"] <- "conscientiousness"
+names(d0108)[names(d0108) == "BFI_Open_Mindedness"] <- "openness"
+names(d0108)[names(d0108) == "BFI_Agreeableness"] <- "agreeableness"
+names(d0108)[names(d0108) == "BFI_Extraversion"] <- "extraversion"
+names(d0108)[names(d0108) == "BFI_Emotional_Stability"] <- "neuroticism"
+d0108$neuroticism <- (-1)*d0108$neuroticism # Invert to neuroticism
+
+# Mental health
+names(d0108)[names(d0108) == "Life_Satisfaction"] <- "satisfactionwithlife"
+names(d0108)[names(d0108) == "Social_Status"] <- "socialstatus"
+names(d0108)[names(d0108) == "Friendship_Quality"] <- "friendshipquality"
+names(d0108)[names(d0108) == "Civic_Skills"] <- "civicskills"
+names(d0108)[names(d0108) == "Activism"] <- "activism"
+names(d0108)[names(d0108) == "Informal_Helping"] <- "informalhelping"
+names(d0108)[names(d0108) == "Volunteering"] <- "volunteering"
+names(d0108)[names(d0108) == "Academic_Engagement"] <- "academicengagement"
+names(d0108)[names(d0108) == "Exercise"] <- "physicalexercise"
+names(d0108)[names(d0108) == "Physical_Health"] <- "physicalhealth"
+names(d0108)[names(d0108) == "Mental_Health"] <- "mentalhealth"
+names(d0108)[names(d0108) == "Affective_Well_Being"] <- "affectivewellbeing"
+
+# Add wave-2 outcome variables that are missing at wave 1
+
+vars_wave2 <- c(
+  "Academic_Engagement",
+  "Exercise",
+  "Physical_Health",
+  "Mental_Health",
+  "Affective_Well_Being"
+)
+
+names_wave2 <- c(
+  "academicengagement",
+  "physicalexercise",
+  "physicalhealth",
+  "mentalhealth",
+  "affectivewellbeing"
+)
+
+d0108_wave2 <- haven::read_sav("data/3.meta_data/open_data/d0108.sav")
+
+d0108_wave2 <- d0108_wave2[d0108_wave2$wave == 2, c("user", vars_wave2)]
+
+names(d0108_wave2)[names(d0108_wave2) %in% vars_wave2] <- names_wave2
+
+# Remove the empty wave-1 versions before merging wave-2 values
+d0108 <- d0108[, !names(d0108) %in% names_wave2]
+
+d0108 <- merge(d0108, d0108_wave2, by = "user", all.x = TRUE, sort = FALSE)
+
+# Add T2 variables
+# Add latest-wave values as *_t2 variables
+vars_t2 <- c(
+  "BESSI_Self_Management",
+  "BESSI_Social_Engagement",
+  "BESSI_Cooperation",
+  "BESSI_Emotional_Resilience",
+  "BESSI_Innovation",
+  "BFI_Conscientiousness",
+  "BFI_Open_Mindedness",
+  "BFI_Agreeableness",
+  "BFI_Extraversion",
+  "BFI_Emotional_Stability"
+)
+
+names_t2 <- c(
+  "selfmanagement_t2",
+  "socialengagement_t2",
+  "cooperation_t2",
+  "emotionalresilience_t2",
+  "innovation_t2",
+  "conscientiousness_t2",
+  "openness_t2",
+  "agreeableness_t2",
+  "extraversion_t2",
+  "neuroticism_t2"
+)
+
+d0108_all <- haven::read_sav("data/3.meta_data/open_data/d0108.sav")
+
+ord <- order(d0108_all$user, -d0108_all$wave)
+d0108_latest <- d0108_all[ord, ]
+d0108_latest <- d0108_latest[!duplicated(d0108_latest$user), ]
+
+d0108_latest <- d0108_latest[, c("user", vars_t2)]
+names(d0108_latest)[names(d0108_latest) %in% vars_t2] <- names_t2
+
+d0108_latest$neuroticism_t2 <- (-1) * d0108_latest$neuroticism_t2
+
+d0108 <- merge(d0108, d0108_latest, by = "user", all.x = TRUE, sort = FALSE)
+
+# Select and save
+d0108a <- d0108[, colnames(d0108) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0108a, use = "pairwise.complete")),"data/3.meta_data/matrices/0108a.xlsx")
+
+# Individual data with age
+d0108 <- d0108[, colnames(d0108) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0108),"data/3.meta_data/open_data/individual_data/0108a.xlsx")
