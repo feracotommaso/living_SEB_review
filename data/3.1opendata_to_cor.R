@@ -1797,8 +1797,20 @@ writexl::write_xlsx(data.frame(d0104),"data/3.meta_data/open_data/individual_dat
 
 #### --------------------------------------------------- 0107 --------------------------------------------------- ####
 rm(list=ls())
-d0107 <- read.csv('data/3.meta_data/open_data/d0107.csv')
+d0107a <- read.csv('data/3.meta_data/open_data/d0107a.csv')
+d0107b <- read.csv('data/3.meta_data/open_data/d0107b.csv')
 admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Combine datasets
+vars_a_to_keep <- names(d0107a)[!(names(d0107a) %in% names(d0107b))]
+vars_a_to_keep <- c("player.identifier_code", vars_a_to_keep)
+d0107a_reduced <- d0107a[, vars_a_to_keep]
+d0107 <- merge(
+  x = d0107b,
+  y = d0107a_reduced,
+  by = "player.identifier_code",
+  all.x = TRUE
+)
 
 # Demographics
 names(d0107)[names(d0107) == "survey.1.player.age"] <- "age"
@@ -1806,10 +1818,42 @@ names(d0107)[names(d0107) == "survey.1.player.gender"] <- "sex"
 d0107$sex <- ifelse(d0107$sex == "Uomo", 0, 
                     ifelse(d0107$sex == "Donna", 1, 0.5))
 
+# Cooperation and cooperation facets
+names(d0107)[names(d0107) == "Cooperation_Skills"] <- "cooperation"
+d0107$perspectivetakingskill <- ( d0107$questionnaire.1.player.item_2 + 
+                                   d0107$questionnaire.1.player.item_34 + 
+                                   d0107$questionnaire.1.player.item_66 +
+                                   d0107$questionnaire.1.player.item_98 +
+                                   d0107$questionnaire.1.player.item_130 +
+                                   d0107$questionnaire.1.player.item_162 ) / 6
+d0107$capacityfortrust <- ( d0107$questionnaire.1.player.item_8 + 
+                      d0107$questionnaire.1.player.item_40 + 
+                      d0107$questionnaire.1.player.item_72 +
+                      d0107$questionnaire.1.player.item_104 +
+                      d0107$questionnaire.1.player.item_136 +
+                      d0107$questionnaire.1.player.item_168 ) / 6
+d0107$capacityforsocialwarmth <- ( d0107$questionnaire.1.player.item_14 + 
+                                 d0107$questionnaire.1.player.item_46 + 
+                                 d0107$questionnaire.1.player.item_78 +
+                                 d0107$questionnaire.1.player.item_110 +
+                                 d0107$questionnaire.1.player.item_142 +
+                                 d0107$questionnaire.1.player.item_174 ) / 6
+d0107$teamworkskill <- ( d0107$questionnaire.1.player.item_24 + 
+                         d0107$questionnaire.1.player.item_55 + 
+                         d0107$questionnaire.1.player.item_87 +
+                         d0107$questionnaire.1.player.item_119 +
+                         d0107$questionnaire.1.player.item_151 +
+                         d0107$questionnaire.1.player.item_183 ) / 6
+d0107$ethicalcompetence <- 0.5 * (( d0107$questionnaire.1.player.item_29 +
+                                          d0107$questionnaire.1.player.item_61 + 
+                                          d0107$questionnaire.1.player.item_93 +
+                                          d0107$questionnaire.1.player.item_125 +
+                                          d0107$questionnaire.1.player.item_157 +
+                                          d0107$questionnaire.1.player.item_189 ) / 6)
+
+# Other variables
 names(d0107)[names(d0107) == "emo_stability"] <- "neuroticism"
 d0107$neuroticism <- -1*(d0107$neuroticism)
-
-names(d0107)[names(d0107) == "Cooperation_Skills"] <- "cooperation"
 
 names(d0107)[names(d0107) == "risk"] <- "risktaking"
 names(d0107)[names(d0107) == "altruism"] <- "altruism"
