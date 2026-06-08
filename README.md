@@ -1,9 +1,10 @@
 # A Living Database for Review and Meta-Analysis of SEB Skills Studies
 
-[![Latest release](https://img.shields.io/github/v/release/feracotommaso/living_SEB_review)](https://github.com/feracotommaso/living_SEB_review/releases)
-
-
 This repository contains all the open materials of the **Living SEB Skills Project**, a living meta-analysis on Social, Emotional, and Behavioral (SEB) skills updated regularly, alongside an interactive Shiny application for exploring the results.
+
+[![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20398350.svg)](https://doi.org/10.5281/zenodo.20398350)
+
+[![Latest release](https://img.shields.io/github/v/release/feracotommaso/living_SEB_review)](https://github.com/feracotommaso/living_SEB_review/releases)
 
 
 ## Main Links
