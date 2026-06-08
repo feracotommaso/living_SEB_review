@@ -39,6 +39,7 @@ shorttitle: "The Living SEB Skills Project's Results"
 #         country: Italy
 #         postal-code: 35129
 
+
 bibliography: bibliography.bib
 format:
   html: 
@@ -75,6 +76,31 @@ library(english)
 library(readxl)
 library(dplyr)
 ```
+
+## Document and Data info
+
+::: {.callout}
+**Document last update:** `r Sys.Date()`
+
+```{r}
+#| echo: false
+#| results: asis
+
+library(jsonlite)
+
+release <- fromJSON(
+  "https://api.github.com/repos/feracotommaso/living_SEB_review/releases/latest"
+)
+
+cat(
+  paste0(
+    "**Data last updated:** ", as.Date(release$published_at), 
+    "\n\n",
+    "**Latest release:** ", release$tag_name
+  )
+)
+```
+:::
 
 ## Project overview
 
