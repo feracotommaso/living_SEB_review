@@ -20,7 +20,7 @@ editor: visual
 
 Here you can find the basic resources that everyone may want to use or read :
 
--   **Living SEB app -** [link](https://feracotommaso.github.io/living_SEB_review/app/shiny-app.html) ([user manual](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf))
+-   **Living SEB app -** [link v0](https://feracotommaso.github.io/living_SEB_review/app/shiny-app.html) ([user manual](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf))
 
 -   **Official preprint -** [pdf](https://doi.org/10.31234/osf.io/ewvuf_v1)
 
