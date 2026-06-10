@@ -100,6 +100,9 @@ cat(
   )
 )
 ```
+
+**Living SEB app:** available [here](https://feracotommaso.github.io/living_SEB_review/shiny-app.html){target="_blank"}
+
 :::
 
 ## Project overview
@@ -1160,7 +1163,7 @@ On the other hand, OSMASEM models were used to estimate the structural models of
 
 # Reproducibility via the Living SEB App
 
-All analyses can be reproduced in the Meta-analysis and MetaSEM modules of the *Living SEB App*. Users can select specific subsets of studies, download data and R code, and generate updated reports.
+All analyses can be reproduced in the Meta-analysis and MetaSEM modules of the [*Living SEB App*](https://feracotommaso.github.io/living_SEB_review/shiny-app.html){target="_blank"}. Users can select specific subsets of studies, download data and R code, and generate updated reports.
 
 \newpage
 

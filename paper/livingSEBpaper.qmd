@@ -170,7 +170,7 @@ The initial reference papers included in the search string cover theoretical bas
 
 ## Study Eligibility Criteria
 
-Studies are considered for inclusion in the database if their main focus is SEB skills and/or they collect data using BESSI-based measures. Works are excluded if they cite the reference papers but do not focus on the SEB skills framework and do not use any BESSI measures. For example, articles mentioning the SEB skills framework but assessing skills derived from other frameworks, such as the OECD [@oecdAcademicLearningFirst2021] or CASEL[@paytonSocialEmotionalLearning2000], are not considered for inclusion. Similarly, studies focusing solely on other constructs are excluded even if they cite the reference papers. However, if a study examines a different construct but also collects ancillary data using the BESSI, it is included in the meta-analysis. Citations are also excluded if they are published as theses, conference abstracts, or books. Data publications are included if the data are not already included in an indexed study.
+Studies are considered for inclusion in the database if their main focus is SEB skills and/or they collect data using BESSI-based measures. Works are excluded if they cite the reference papers but do not focus on the SEB skills framework and do not use any BESSI measures. For example, articles mentioning the SEB skills framework but assessing skills derived from other frameworks, such as the OECD [@oecdAcademicLearningFirst2021] or CASEL[@paytonSocialEmotionalLearning2000], are not considered for inclusion. Similarly, studies focusing solely on other constructs are excluded even if they cite the reference papers. However, if a study examines a different construct but also collects ancillary data using the BESSI, it is included in the meta-analysis. Publications are also excluded if they are published as theses, conference abstracts, or books. Data publications are included if the data are not already included in an indexed study.
 
 To be included in the quantitative database, studies also have to:
 
@@ -230,7 +230,7 @@ For each included study, the following information was systematically coded:
 
 ## Updating Procedures and Timeline
 
-To maintain the “living” nature of the project, the search and coding procedures are repeated on the first working day of each month to keep updates feasible and avoid large, onerous updates. New studies are added to the database and version-controlled monthly snapshots are archived in GitHub and Zenodo. If no eligible studies are published within a month, no data releases will be published. When new theoretical or measurement works are published, the seed references for the citation-chaining search are expanded accordingly. Additionally, at each new search, the database search will be limited by adding the day the last search was conducted as a starting search limit. To pilot the feasibility of this procedure, we already ran the monthly updates on multiple occasions without encountering time or processing difficulties. We thus retain that the current strategy for monthly updates is feasible with current available resources.
+To maintain the “living” nature of the project, the search and coding procedures are repeated on the first working day of each month to keep updates feasible and avoid large, onerous updates. New studies are added to the database and version-controlled monthly snapshots are archived in GitHub and Zenodo. If no eligible studies are published within a given month, a data release will still be issued, specifying that no new data were availablendefined. When new theoretical or measurement works are published, the seed references for the citation-chaining search are expanded accordingly. Additionally, at each new search, the database search will be limited by adding the day the last search was conducted as a starting search limit. To pilot the feasibility of this procedure, we already ran the monthly updates on multiple occasions without encountering time or processing difficulties. We thus retain that the current strategy for monthly updates is feasible with current available re
 
 We currently expect to provide hand-processed monthly updates of the database until 2030, while working on expanding the collaborative efforts from the community and integrating semi-automized processes for the future.
 
@@ -250,7 +250,7 @@ In parallel with the database, we developed the *Living SEB App*, a Shiny-based 
 
 The app is hosted openly and mirrored on GitHub to ensure sustainability and version control. While designed to lower barriers for non-technical users, the raw datasets and R code remain freely available for advanced or customized analyses.
 
-The *Living SEB App* is available at [https://feracotommaso.github.io/living_SEB_review/shiny-app.html](https://feracotommaso.github.io/living_SEB_review/shiny-app.html).
+The *Living SEB App* is available at <https://feracotommaso.github.io/living_SEB_review/shiny-app.html>.
 
 # Results
 
