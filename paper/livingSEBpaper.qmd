@@ -250,7 +250,7 @@ In parallel with the database, we developed the *Living SEB App*, a Shiny-based 
 
 The app is hosted openly and mirrored on GitHub to ensure sustainability and version control. While designed to lower barriers for non-technical users, the raw datasets and R code remain freely available for advanced or customized analyses.
 
-The *Living SEB App* is available at [https://feracotommaso.github.io/living_SEB_review/shiny-app.html](https://feracotommaso.github.io/living_SEB_review/shiny-app.html).
+The *Living SEB App* is available at [https://feracotommaso.github.io/living_SEB_review/app/shiny-app.html](https://feracotommaso.github.io/living_SEB_review/app/shiny-app.html).
 
 # Results
 

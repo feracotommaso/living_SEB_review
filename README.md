@@ -9,7 +9,7 @@ This repository contains all the open materials of the **Living SEB Skills Proje
 
 ## Main Links
 
-- 🔗 **Shiny app:** [https://feracotommaso.github.io/living_SEB_review/shiny-app.html](https://feracotommaso.github.io/living_SEB_review/shiny-app.html)
+- 🔗 **Shiny app:** [https://feracotommaso.github.io/living_SEB_review/app/shiny-app.html](https://feracotommaso.github.io/living_SEB_review/app/shiny-app.html)
 - 📄 **Preprint:** [https://doi.org/10.31234/osf.io/ewvuf_v1](https://doi.org/10.31234/osf.io/ewvuf_v1)
 - 📝 **Published paper:** *in prep*
 - 📊 **Updated living results:** [feracotommaso.github.io/living_SEB_results](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html)
