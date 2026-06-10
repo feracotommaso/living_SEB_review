@@ -41,7 +41,7 @@ format: #pdf
 
 <!-- The introduction should not have a level-1 heading such as Introduction. -->
 
-The livingSEBapp (<https://feracoshiny.shinyapps.io/livingSEBapp/>) is a free and open-source Shiny app for synthesizing peer-reviewed studies that used the Behavioral, Emotional, and Social Skills Inventory (BESSI). The app is designed as a rapid tool for data synthesis, effect-size visualization, and for building priors/hypotheses. It is **not** a replacement for a full systematic meta-analysis; results should be interpreted as a high-quality *rapid synthesis*. For a full meta-analysis, use the open data here as a starting point, add study-level moderators as needed, enrich the dataset with additional studies if needed, and tailor the analyses on your hypotheses.
+The livingSEBapp (<https://feracotommaso.github.io/living_SEB_review/shiny-app.html>) is a free and open-source Shiny app for synthesizing peer-reviewed studies that used the Behavioral, Emotional, and Social Skills Inventory (BESSI). The app is designed as a rapid tool for data synthesis, effect-size visualization, and for building priors/hypotheses. It is **not** a replacement for a full systematic meta-analysis; results should be interpreted as a high-quality *rapid synthesis*. For a full meta-analysis, use the open data here as a starting point, add study-level moderators as needed, enrich the dataset with additional studies if needed, and tailor the analyses on your hypotheses.
 
 Below, each function of the app is described to guide correct and efficient use.
 
