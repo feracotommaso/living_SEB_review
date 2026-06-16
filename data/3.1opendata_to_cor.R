@@ -391,9 +391,9 @@ names(d0034)[names(d0034) == "IND"] <- "capacityforindependence"
 names(d0034)[names(d0034) == "ADA"] <- "adaptability"
 
 # Rescale to mean item values
-d0034[,which(colnames(d0034)=="goalregulation"):
+d0034[,which(colnames(d0034)=="leadershipskill"):
         which(colnames(d0034)=="adaptability")] <-
-  d0034[,which(colnames(d0034)=="goalregulation"):
+  d0034[,which(colnames(d0034)=="leadershipskill"):
           which(colnames(d0034)=="adaptability")]/6
 d0034$selfmanagement <- d0034$selfmanagement / 54
 d0034$cooperation <- d0034$cooperation / 30
