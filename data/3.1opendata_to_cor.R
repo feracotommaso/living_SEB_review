@@ -1998,3 +1998,53 @@ writexl::write_xlsx(data.frame(cor(d0108a, use = "pairwise.complete")),"data/3.m
 # Individual data with age
 d0108 <- d0108[, colnames(d0108) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0108),"data/3.meta_data/open_data/individual_data/0108a.xlsx")
+
+#### --------------------------------------------------- 0118 --------------------------------------------------- ####
+rm(list=ls())
+d0118 <- readxl::read_excel("data/3.meta_data/open_data/d0118.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Demographics
+names(d0118)[names(d0118) == "age_months"] <- "age"
+d0118$age <- d0118$age/12
+
+d0118$sex <- ifelse(d0118$gender_0F1M == "1", 0, 
+                    ifelse(d0118$gender_0F1M == "0", 1, NA)) # Males to 0, Females to 1
+
+# BESSI
+names(d0118)[names(d0118) == "BESSI_SELFMANAGEMENT_pre"] <- "selfmanagement"
+names(d0118)[names(d0118) == "BESSI_SOCIALENG_pre"] <- "socialengagement"
+names(d0118)[names(d0118) == "BESSI_COOPERATION_pre"] <- "cooperation"
+names(d0118)[names(d0118) == "BESSI_EMORES_pre"] <- "emotionalresilience"
+names(d0118)[names(d0118) == "BESSI_INNOVATION_pre"] <- "innovation"
+
+# Fluid reasoning (CPM)
+names(d0118)[names(d0118) == "CPM_sum_TOT"] <- "intelligencefluid"
+
+# BRIEF-2
+names(d0118)[names(d0118) == "BRIEF_BRI_pre"] <- "brief_behavioralregulation"
+names(d0118)[names(d0118) == "BRIEF_ERI_pre"] <- "brief_emotionregulation"
+names(d0118)[names(d0118) == "BRIEF_CRI_pre"] <- "brief_cognitiveregulation"
+names(d0118)[names(d0118) == "BRIEF_GEC_pre"] <- "brief_generalexecutivefunctioning"
+
+# Executive functions
+d0118$workingmemory <- rowMeans(d0118[, c("TELEFE_lowload_pre", 
+                                          "TELEFE_highload_pre")], 
+                                 na.rm = TRUE )
+
+names(d0118)[names(d0118) == "TELEFE_inhibition_pre"] <- "inhibition"
+names(d0118)[names(d0118) == "TELEFE_cong_pre"] <- "flexibility"
+names(d0118)[names(d0118) == "TELEFE_incong_pre"] <- "interferencecontrol"
+
+# Achievement 
+d0118$academicachievement <- rowMeans(d0118[, c("ita_pre","mat_pre")], na.rm = TRUE )
+
+# Select and save
+d0118a <- d0118[, colnames(d0118) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0118a, use = "pairwise.complete")),
+                    "data/3.meta_data/matrices/0118a.xlsx")
+
+# Individual data with age
+d0118 <- d0118[, colnames(d0118) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0118),
+                    "data/3.meta_data/open_data/individual_data/0118a.xlsx")

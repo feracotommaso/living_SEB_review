@@ -50,3 +50,8 @@ d <- readxl::read_excel("data/2.full_abstracting/26_06_01_full_decisions.xlsx")
 d <- d[!is.na(d$paper_id),]
 d <- d[d$final_decision != "exclude", ]
 writexl::write_xlsx(d, "data/3.meta_data/basic_info/26_06_01_basic_info.xlsx")
+#### --------------------------------------------------- 26/07--------------------------------------------------- ####
+d <- readxl::read_excel("data/2.full_abstracting/26_06_full_decisions.xlsx")
+d <- d[!is.na(d$paper_id),]
+d <- d[d$final_decision != "exclude", ]
+writexl::write_xlsx(d, "data/3.meta_data/basic_info/26_06_basic_info.xlsx")
