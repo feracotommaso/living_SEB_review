@@ -2048,3 +2048,234 @@ writexl::write_xlsx(data.frame(cor(d0118a, use = "pairwise.complete")),
 d0118 <- d0118[, colnames(d0118) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0118),
                     "data/3.meta_data/open_data/individual_data/0118a.xlsx")
+
+#### --------------------------------------------------- 0120a --------------------------------------------------- ####
+rm(list=ls())
+d0120a <- haven::read_sav("data/3.meta_data/open_data/d0120a.sav")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0120a)[names(d0120a) == "Age"] <- "age"
+
+d0120a$sex <- ifelse(d0120a$Gender == "1", 0, 
+                    ifelse(d0120a$Gender == "2", 1, NA)) # Males to 0, Females to 1
+
+# SEB domains
+names(d0120a)[names(d0120a) == "Self_Management_Skills"] <- "selfmanagement"
+names(d0120a)[names(d0120a) == "Cooperation_Skills"] <- "cooperation"
+names(d0120a)[names(d0120a) == "Social_Engagement_Skills"] <- "socialengagement"
+names(d0120a)[names(d0120a) == "Emotional_Resilience_Skills"] <- "emotionalresilience"
+names(d0120a)[names(d0120a) == "Innovation_Skills"] <- "innovation"
+
+# SEB facets 
+names(d0120a)[names(d0120a) == "Time_Management"] <- "timemanagement"
+names(d0120a)[names(d0120a) == "Organizational_Skill"] <- "organizationalskill"
+names(d0120a)[names(d0120a) == "Capacity_for_Consistency"] <- "capacityforconsistency"
+names(d0120a)[names(d0120a) == "Task_Management"] <- "taskmanagement"
+names(d0120a)[names(d0120a) == "Detail_Management"] <- "detailmanagement"
+names(d0120a)[names(d0120a) == "Rule_Following_Skill"] <- "rulefollowingskill"
+names(d0120a)[names(d0120a) == "Responsibility_Management"] <- "responsibilitymanagement"
+names(d0120a)[names(d0120a) == "Goal_Regulation"] <- "goalregulation"
+names(d0120a)[names(d0120a) == "Decision_Making_Skill"] <- "decisionmakingskill"
+names(d0120a)[names(d0120a) == "Leadership_Skill"] <- "leadershipskill"
+names(d0120a)[names(d0120a) == "Persuasive_Skill"] <- "persuasiveskill"
+names(d0120a)[names(d0120a) == "Expressive_Skill"] <- "expressiveskill"
+names(d0120a)[names(d0120a) == "Conversational_Skill"] <- "conversationalskill"
+names(d0120a)[names(d0120a) == "Energy_Regulation"] <- "energyregulation"
+names(d0120a)[names(d0120a) == "Perspective_Taking_Skill"] <- "perspectivetakingskill"
+names(d0120a)[names(d0120a) == "Capacity_for_Trust"] <- "capacityfortrust"
+names(d0120a)[names(d0120a) == "Capacity_for_Social_Warmth"] <- "capacityforsocialwarmth"
+names(d0120a)[names(d0120a) == "Teamwork_Skill"] <- "teamworkskill"
+names(d0120a)[names(d0120a) == "Ethical_Competence"] <- "ethicalcompetence"
+names(d0120a)[names(d0120a) == "Stress_Regulation"] <- "stressregulation"
+names(d0120a)[names(d0120a) == "Capacity_for_Optimism"] <- "capacityforoptimism"
+names(d0120a)[names(d0120a) == "Anger_Management"] <- "angermanagement"
+names(d0120a)[names(d0120a) == "Confidence_Regulation"] <- "confidenceregulation"
+names(d0120a)[names(d0120a) == "Impulse_Regulation"] <- "impulseregulation"
+names(d0120a)[names(d0120a) == "Abstract_Thinking_Skill"] <- "abstractthinkingskill"
+names(d0120a)[names(d0120a) == "Creative_Skill"] <- "creativeskill"
+names(d0120a)[names(d0120a) == "Artistic_Skill"] <- "artisticskill"
+names(d0120a)[names(d0120a) == "Cultural_Competence"] <- "culturalcompetence"
+names(d0120a)[names(d0120a) == "Information_Processing_Skill"] <- "informationprocessingskill"
+names(d0120a)[names(d0120a) == "Self_Reflection_Skill"] <- "selfreflectionskill"
+names(d0120a)[names(d0120a) == "Adaptability"] <- "adaptability"
+names(d0120a)[names(d0120a) == "Independence"] <- "capacityforindependence"
+
+# Select and save
+d0120a <- d0120a[, colnames(d0120a) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0120a, use = "pairwise.complete")),
+                    "data/3.meta_data/matrices/0120a.xlsx")
+
+# Individual data with age
+d0120a <- d0120a[, colnames(d0120a) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0120a),
+                    "data/3.meta_data/open_data/individual_data/0120a.xlsx")
+
+#### --------------------------------------------------- 0120b --------------------------------------------------- ####
+rm(list=ls())
+d0120b <- haven::read_sav("data/3.meta_data/open_data/d0120b.sav")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0120b)[names(d0120b) == "Idade"] <- "age"
+
+d0120b$Gender <- as.numeric(d0120b$Gender)
+d0120b$sex <- ifelse(d0120b$Gender == "1", 0, 
+                     ifelse(d0120b$Gender == "2", 1, NA)) # Males to 0, Females to 1
+
+# SEB domains
+names(d0120b)[names(d0120b) == "SMS"] <- "selfmanagement"
+names(d0120b)[names(d0120b) == "COOP"] <- "cooperation"
+names(d0120b)[names(d0120b) == "SES"] <- "socialengagement"
+names(d0120b)[names(d0120b) == "ERS"] <- "emotionalresilience"
+names(d0120b)[names(d0120b) == "INO"] <- "innovation"
+
+# SEB facets
+names(d0120b)[names(d0120b) == "TM"] <- "timemanagement"
+names(d0120b)[names(d0120b) == "OS"] <- "organizationalskill"
+names(d0120b)[names(d0120b) == "CC"] <- "capacityforconsistency"
+names(d0120b)[names(d0120b) == "TaM"] <- "taskmanagement"
+names(d0120b)[names(d0120b) == "DM"] <- "detailmanagement"
+names(d0120b)[names(d0120b) == "RFS"] <- "rulefollowingskill"
+names(d0120b)[names(d0120b) == "RM"] <- "responsibilitymanagement"
+names(d0120b)[names(d0120b) == "GR"] <- "goalregulation"
+names(d0120b)[names(d0120b) == "DMS"] <- "decisionmakingskill"
+names(d0120b)[names(d0120b) == "LEA"] <- "leadershipskill"
+names(d0120b)[names(d0120b) == "PER"] <- "persuasiveskill"
+names(d0120b)[names(d0120b) == "EXPR"] <- "expressiveskill"
+names(d0120b)[names(d0120b) == "CON"] <- "conversationalskill"
+names(d0120b)[names(d0120b) == "ER"] <- "energyregulation"
+names(d0120b)[names(d0120b) == "PTS"] <- "perspectivetakingskill"
+names(d0120b)[names(d0120b) == "CFT"] <- "capacityfortrust"
+names(d0120b)[names(d0120b) == "CSW"] <- "capacityforsocialwarmth"
+names(d0120b)[names(d0120b) == "TWS"] <- "teamworkskill"
+names(d0120b)[names(d0120b) == "EC"] <- "ethicalcompetence"
+names(d0120b)[names(d0120b) == "SR"] <- "stressregulation"
+names(d0120b)[names(d0120b) == "CFO"] <- "capacityforoptimism"
+names(d0120b)[names(d0120b) == "AM"] <- "angermanagement"
+names(d0120b)[names(d0120b) == "CR"] <- "confidenceregulation"
+names(d0120b)[names(d0120b) == "IR"] <- "impulseregulation"
+names(d0120b)[names(d0120b) == "ATS"] <- "abstractthinkingskill"
+names(d0120b)[names(d0120b) == "CREA"] <- "creativeskill"
+names(d0120b)[names(d0120b) == "ART"] <- "artisticskill"
+names(d0120b)[names(d0120b) == "CUL"] <- "culturalcompetence"
+names(d0120b)[names(d0120b) == "IPS"] <- "informationprocessingskill"
+names(d0120b)[names(d0120b) == "SRS"] <- "selfreflectionskill"
+names(d0120b)[names(d0120b) == "ADA"] <- "adaptability"
+names(d0120b)[names(d0120b) == "CFI"] <- "capacityforindependence"
+
+# BF traits
+names(d0120b)[names(d0120b) == "BFI2_O"] <- "openness"
+names(d0120b)[names(d0120b) == "BFI2_C"] <- "conscientiousness"
+names(d0120b)[names(d0120b) == "BFI2_E"] <- "extraversion"
+names(d0120b)[names(d0120b) == "BFI2_A"] <- "agreeableness"
+names(d0120b)[names(d0120b) == "BFI2_N"] <- "neuroticism"
+
+# BF Facets
+names(d0120b)[names(d0120b) == "BFI2_E_Sociability"] <- "bf_sociability"
+names(d0120b)[names(d0120b) == "BFI2_E_Assertiveness"] <- "bf_assertiveness"
+names(d0120b)[names(d0120b) == "BFI2_E_EnergyLevel"] <- "bf_energy"
+
+names(d0120b)[names(d0120b) == "BFI2_A_Compassion"] <- "bf_compassion"
+names(d0120b)[names(d0120b) == "BFI2_A_Respectfulness"] <- "bf_respectfulness"
+names(d0120b)[names(d0120b) == "BFI2_A_Trust"] <- "bf_trust"
+
+names(d0120b)[names(d0120b) == "BFI2_N_Anxiety"] <- "bf_anxiety"
+names(d0120b)[names(d0120b) == "BFI2_N_Depression"] <- "bf_depression"
+names(d0120b)[names(d0120b) == "BFI2_N_EmotionalVolatility"] <- "bf_emotionalvolatility"
+
+names(d0120b)[names(d0120b) == "BFI2_C_Organization"] <- "bf_organization"
+names(d0120b)[names(d0120b) == "BFI2_C_Productiveness"] <- "bf_productiveness"
+names(d0120b)[names(d0120b) == "BFI2_C_Responsibility"] <- "bf_responsibility"
+
+names(d0120b)[names(d0120b) == "BFI2_O_IntellectualCuriosity"] <- "bf_curiosity"
+names(d0120b)[names(d0120b) == "BFI2_O_AestheticSensitivity"] <- "bf_aesthetic"
+names(d0120b)[names(d0120b) == "BFI2_O_CreativeImagination"] <- "bf_creativity"
+
+# Other variables
+names(d0120b)[names(d0120b) == "SWLS"] <- "satisfactionwithlife"
+names(d0120b)[names(d0120b) == "EAR"] <- "selfesteem"
+
+# Add T2 variables
+# Add latest-wave values as *_t2 variables
+# SEB domains
+names(d0120b)[names(d0120b) == "rSMS"] <- "selfmanagement_t2"
+names(d0120b)[names(d0120b) == "rCOOP"] <- "cooperation_t2"
+names(d0120b)[names(d0120b) == "rSES"] <- "socialengagement_t2"
+names(d0120b)[names(d0120b) == "rERS"] <- "emotionalresilience_t2"
+names(d0120b)[names(d0120b) == "rINO"] <- "innovation_t2"
+
+# SEB facets
+names(d0120b)[names(d0120b) == "rTM"] <- "timemanagement_t2"
+names(d0120b)[names(d0120b) == "rOS"] <- "organizationalskill_t2"
+names(d0120b)[names(d0120b) == "rCC"] <- "capacityforconsistency_t2"
+names(d0120b)[names(d0120b) == "rTaM"] <- "taskmanagement_t2"
+names(d0120b)[names(d0120b) == "rDM"] <- "detailmanagement_t2"
+names(d0120b)[names(d0120b) == "rRFS"] <- "rulefollowingskill_t2"
+names(d0120b)[names(d0120b) == "rRM"] <- "responsibilitymanagement_t2"
+names(d0120b)[names(d0120b) == "rGR"] <- "goalregulation_t2"
+names(d0120b)[names(d0120b) == "rDMS"] <- "decisionmakingskill_t2"
+names(d0120b)[names(d0120b) == "rLEA"] <- "leadershipskill_t2"
+names(d0120b)[names(d0120b) == "rPER"] <- "persuasiveskill_t2"
+names(d0120b)[names(d0120b) == "rEXPR"] <- "expressiveskill_t2"
+names(d0120b)[names(d0120b) == "rCON"] <- "conversationalskill_t2"
+names(d0120b)[names(d0120b) == "rER"] <- "energyregulation_t2"
+names(d0120b)[names(d0120b) == "rPTS"] <- "perspectivetakingskill_t2"
+names(d0120b)[names(d0120b) == "rCFT"] <- "capacityfortrust_t2"
+names(d0120b)[names(d0120b) == "rCSW"] <- "capacityforsocialwarmth_t2"
+names(d0120b)[names(d0120b) == "rTWS"] <- "teamworkskill_t2"
+names(d0120b)[names(d0120b) == "rEC"] <- "ethicalcompetence_t2"
+names(d0120b)[names(d0120b) == "rSR"] <- "stressregulation_t2"
+names(d0120b)[names(d0120b) == "rCFO"] <- "capacityforoptimism_t2"
+names(d0120b)[names(d0120b) == "rAM"] <- "angermanagement_t2"
+names(d0120b)[names(d0120b) == "rCR"] <- "confidenceregulation_t2"
+names(d0120b)[names(d0120b) == "rIR"] <- "impulseregulation_t2"
+names(d0120b)[names(d0120b) == "rATS"] <- "abstractthinkingskill_t2"
+names(d0120b)[names(d0120b) == "rCREA"] <- "creativeskill_t2"
+names(d0120b)[names(d0120b) == "rART"] <- "artisticskill_t2"
+names(d0120b)[names(d0120b) == "rCUL"] <- "culturalcompetence_t2"
+names(d0120b)[names(d0120b) == "rIPS"] <- "informationprocessingskill_t2"
+names(d0120b)[names(d0120b) == "rSRS"] <- "selfreflectionskill_t2"
+names(d0120b)[names(d0120b) == "rADA"] <- "adaptability_t2"
+names(d0120b)[names(d0120b) == "rCFI"] <- "capacityforindependence_t2"
+
+# BF traits
+names(d0120b)[names(d0120b) == "rBFI2_O"] <- "openness_t2"
+names(d0120b)[names(d0120b) == "rBFI2_C"] <- "conscientiousness_t2"
+names(d0120b)[names(d0120b) == "rBFI2_E"] <- "extraversion_t2"
+names(d0120b)[names(d0120b) == "rBFI2_A"] <- "agreeableness_t2"
+names(d0120b)[names(d0120b) == "rBFI2_N"] <- "neuroticism_t2"
+
+# BF Facets
+names(d0120b)[names(d0120b) == "rBFI2_E_Sociability"] <- "bf_sociability_t2"
+names(d0120b)[names(d0120b) == "rBFI2_E_Assertiveness"] <- "bf_assertiveness_t2"
+names(d0120b)[names(d0120b) == "rBFI2_E_EnergyLevel"] <- "bf_energy_t2"
+
+names(d0120b)[names(d0120b) == "rBFI2_A_Compassion"] <- "bf_compassion_t2"
+names(d0120b)[names(d0120b) == "rBFI2_A_Respectfulness"] <- "bf_respectfulness_t2"
+names(d0120b)[names(d0120b) == "rBFI2_A_Trust"] <- "bf_trust_t2"
+
+names(d0120b)[names(d0120b) == "rBFI2_N_Anxiety"] <- "bf_anxiety_t2"
+names(d0120b)[names(d0120b) == "rBFI2_N_Depression"] <- "bf_depression_t2"
+names(d0120b)[names(d0120b) == "rBFI2_N_EmotionalVolatility"] <- "bf_emotionalvolatility_t2"
+
+names(d0120b)[names(d0120b) == "rBFI2_C_Organization"] <- "bf_organization_t2"
+names(d0120b)[names(d0120b) == "rBFI2_C_Productiveness"] <- "bf_productiveness_t2"
+names(d0120b)[names(d0120b) == "rBFI2_C_Responsibility"] <- "bf_responsibility_t2"
+
+names(d0120b)[names(d0120b) == "rBFI2_O_IntellectualCuriosity"] <- "bf_curiosity_t2"
+names(d0120b)[names(d0120b) == "rBFI2_O_AestheticSensitivity"] <- "bf_aesthetic_t2"
+names(d0120b)[names(d0120b) == "rBFI2_O_CreativeImagination"] <- "bf_creativity_t2"
+
+# Other variables
+names(d0120b)[names(d0120b) == "rSWLS"] <- "satisfactionwithlife_t2"
+names(d0120b)[names(d0120b) == "rEAR"] <- "selfesteem_t2"
+
+
+# Select and save
+d0120b <- d0120b[, colnames(d0120b) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0120b, use = "pairwise.complete")),
+                    "data/3.meta_data/matrices/0120b.xlsx")
+
+# Individual data with age
+d0120b <- d0120b[, colnames(d0120b) %in% c(admcol$column_name,"age")]
+writexl::write_xlsx(data.frame(d0120b),
+                    "data/3.meta_data/open_data/individual_data/0120b.xlsx")
