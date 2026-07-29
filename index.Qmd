@@ -22,7 +22,7 @@ Here you can find the basic resources that everyone may want to use or read :
 
 -   **Living SEB app -** [link v0](https://feracotommaso.github.io/living_SEB_review/shiny-app.html) ([user manual](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf))
 
--   **Official preprint -** [pdf](https://doi.org/10.31234/osf.io/ewvuf_v1)
+-   **Official postprint -** [pdf](https://doi.org/10.31234/osf.io/ewvuf_v2)
 
 -   **Published paper -** [link](https://doi.org/10.1177/08902070261467477)
 
