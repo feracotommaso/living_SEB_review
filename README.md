@@ -11,7 +11,7 @@ This repository contains all the open materials of the **Living SEB Skills Proje
 
 - 🔗 **Shiny app:** [https://feracotommaso.github.io/living_SEB_review/shiny-app.html](https://feracotommaso.github.io/living_SEB_review/shiny-app.html)
 - 📄 **Preprint:** [https://doi.org/10.31234/osf.io/ewvuf_v1](https://doi.org/10.31234/osf.io/ewvuf_v1)
-- 📝 **Published paper:** *in prep*
+- 📝 **Published paper:** [https://doi.org/10.1177/08902070261467477](https://doi.org/10.1177/08902070261467477)
 - 📊 **Updated living results:** [feracotommaso.github.io/living_SEB_results](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html)
 
 
@@ -53,16 +53,16 @@ Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for details. If you find this p
 
 ## Citation
 
-Feraco, T., Calderan, M. & Pellegrino, G. (2025). The Living SEB Skills Project: A Living Resource for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. *PsyArXiv*. [https://doi.org/10.31234/osf.io/ewvuf_v1](https://doi.org/10.31234/osf.io/ewvuf_v1)
+Feraco, T., Calderan, M. & Pellegrino, G. (2026). The Living SEB Skills Project: A Living Resource for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. *European Journal of Personality*. [https://doi.org/10.1177/08902070261467477](https://doi.org/10.1177/08902070261467477
 
 ```bibtex
-@Misc{livingSEB,
+@Article{livingSEB,
   author    = {Tommaso Feraco and Margherita Calderan and Gerardo Pellegrino},
   doi       = {https://doi.org/10.31234/osf.io/ewvuf_v1},
   title     = {The Living SEB Skills Project: A Living Resource for Review
                and Meta-Analysis of Social, Emotional, and Behavioral Skills},
-  year      = {2025},
-  publisher = {PsyArXiv}
+  year      = {2026},
+  publisher = {European Journal of Personality}
 }
 ```
 

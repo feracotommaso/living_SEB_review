@@ -24,6 +24,8 @@ Here you can find the basic resources that everyone may want to use or read :
 
 -   **Official preprint -** [pdf](https://doi.org/10.31234/osf.io/ewvuf_v1)
 
+-   **Published paper -** [link](https://doi.org/10.1177/08902070261467477)
+
 -   **Living results** - [html](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html)
 
 -   **Preregistration** - [pdf](https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf)
