@@ -2279,3 +2279,31 @@ writexl::write_xlsx(data.frame(cor(d0120b, use = "pairwise.complete")),
 d0120b <- d0120b[, colnames(d0120b) %in% c(admcol$column_name,"age")]
 writexl::write_xlsx(data.frame(d0120b),
                     "data/3.meta_data/open_data/individual_data/0120b.xlsx")
+
+#### --------------------------------------------------- 0126 --------------------------------------------------- ####
+rm(list=ls())
+d0126 <- readxl::read_excel("data/3.meta_data/open_data/d0126.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+d0126$sex <- ifelse(d0126$DEMO1v2_wp2 == 1,0,
+                    ifelse(d0126$DEMO1v2_wp2 == 2, 1,
+                           d0126$DEMO1v2_wp2))
+d0126$age <- 2024-d0126$DEMO2_wp2 # Birth year
+d0126$adaptability <- rowMeans(subset(d0126, select = DIGS12a_wp2:DIGS12f_wp2), na.rm = T)
+d0126$satisfactionwithlife <- 8 - d0126$SOC15v2 # Satisfaction with life (single item 7 options) (to b einverted?)
+
+d0126$changegoals <- 4 - d0126$DIGS10_wp2
+# preferenceforhumanvsdigital <- not continuous
+d0126$willingnessfordigitalassistance <- 6 - d0126$DIGS8_wp2
+d0126$useofdigitalassistance <- 7 - d0126$DIGS9_wp2
+
+# Select and save
+d0126a <- d0126[, colnames(d0126) %in% admcol$column_name]
+writexl::write_xlsx(data.frame(cor(d0126a, use = "pairwise.complete")),
+                    "data/3.meta_data/matrices/0126a.xlsx")
+
+# Individual data with age
+d0126 <- d0126[, colnames(d0126) %in% c(admcol$column_name,"age")]
+d0126 <- d0126[! is.na(d0126$age), ]
+writexl::write_xlsx(data.frame(d0126),
+                    "data/3.meta_data/open_data/individual_data/0126a.xlsx")
