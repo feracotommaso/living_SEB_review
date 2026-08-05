@@ -411,7 +411,7 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
   geom_errorbar(aes(xmin = rcil, xmax = rciu), width = 0, linewidth = .8) +
   geom_vline(xintercept = c(.00), linetype = "dashed") +
   labs(y = element_blank()) +
-  scale_x_continuous(breaks = seq(-.10,.50,by=.10),
+  scale_x_continuous(breaks = seq(-.50,.50,by=.10),
                        name = expression("Back-transformed " * hat(r))) +
   theme_bw(base_size = 16) +
   #theme(strip.text = element_text(size = 1)) +
@@ -420,9 +420,8 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
            y = length(pred_vars):1+.20,
            label = paste0(round(metaRes$r,3)," ",metaRes$CI), 
            hjust = "center", size = 5) +
-  coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.10,
-                                  min(metaRes$rcil)),
-                           max(metaRes$rciu)))
+  coord_cartesian(xlim = c(min(metaRes$rcil) -.05,
+                           max(metaRes$rciu) + .05))
 
 ```
 
@@ -562,7 +561,7 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
   geom_errorbar(aes(xmin = rcil, xmax = rciu), width = 0, linewidth = .8) +
   geom_vline(xintercept = c(.00), linetype = "dashed") +
   labs(y = element_blank()) +
-  scale_x_continuous(breaks = seq(-.10,.50,by=.10),
+  scale_x_continuous(breaks = seq(-.50,.50,by=.10),
                        name = expression("Back-transformed " * hat(r))) +
   theme_bw(base_size = 16) +
   #theme(strip.text = element_text(size = 1)) +
@@ -571,9 +570,8 @@ ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
            y = length(pred_vars):1+.20,
            label = paste0(round(metaRes$r,3)," ",metaRes$CI), 
            hjust = "center", size = 5) +
-  coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.10,
-                                  min(metaRes$rcil)),
-                           max(metaRes$rciu)))
+  coord_cartesian(xlim = c(min(metaRes$rcil) - .05,
+                           max(metaRes$rciu) + .05))
 
 ```
 
