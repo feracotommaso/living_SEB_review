@@ -2307,3 +2307,181 @@ d0126 <- d0126[, colnames(d0126) %in% c(admcol$column_name,"age")]
 d0126 <- d0126[! is.na(d0126$age), ]
 writexl::write_xlsx(data.frame(d0126),
                     "data/3.meta_data/open_data/individual_data/0126a.xlsx")
+
+#### --------------------------------------------------- 0132 --------------------------------------------------- ####
+rm(list=ls())
+d0132 <- readxl::read_excel("data/3.meta_data/open_data/d0132.xlsx")
+d0132inf <- readxl::read_excel("data/3.meta_data/open_data/d0132_informant.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+# Scoring
+## Age 
+d0132$age <- 2025 - d0132$year
+d0132$sex <- d0132$sex - 1 #0 M; 1 F
+
+d0132$selfmanagement<-rowMeans(d0132[,c("S1",  "S6", "S11", "S16",
+                                "S21", "S26", "S31", "S36",
+                                "S41")], na.rm=TRUE) # Self-management
+d0132$selfmanagement <- (d0132$selfmanagement + 1) / 2 # Rescale to 1-5 instead of 1-9
+d0132$innovation<-rowMeans(d0132[,c("S5", "S10", "S15", "S20",
+                            "S25", "S30", "S35", "S40",
+                            "S45")], na.rm=TRUE) # Innovation
+d0132$innovation <- (d0132$innovation + 1) / 2
+d0132$cooperation<-rowMeans(d0132[,c("S3", "S8", "S13", "S18",
+                             "S23", "S28", "S33", "S38",
+                             "S43")], na.rm=TRUE) # Cooperation 
+d0132$cooperation <- (d0132$cooperation + 1) / 2
+d0132$socialengagement<-rowMeans(d0132[,c("S2", "S7", "S12", "S17",
+                                  "S22", "S27", "S32", "S37",
+                                  "S42")], na.rm=TRUE) # Social Engagement
+d0132$socialengagement <- (d0132$socialengagement + 1) / 2
+d0132$emotionalresilience<-rowMeans(d0132[,c("S4", "S9", "S14", "S19",
+                                     "S24", "S29", "S34", "S39",
+                                     "S44")], na.rm=TRUE) # Emotional resilience
+d0132$emotionalresilience <- (d0132$emotionalresilience + 1) / 2
+
+# BIG FIVE 44
+d0132$BF_18 <- 6 - d0132$BF_18
+d0132$BF_43 <- 6 - d0132$BF_43
+d0132$BF_8 <- 6 - d0132$BF_8
+d0132$BF_23 <- 6 - d0132$BF_23
+d0132$conscientiousness <- rowMeans(subset(d0132, select = c(BF_3, BF_33, BF_28, BF_13, BF_38, BF_18,
+                                        BF_43, BF_8, BF_23))) #Conscientiousness
+
+d0132$BF_41 <- 6 - d0132$BF_41
+d0132$BF_35 <- 6 - d0132$BF_35
+d0132$openness <- rowMeans(subset(d0132, select = c(BF_25, BF_44, BF_15, BF_20, BF_30, BF_5,
+                                        BF_40, BF_41, BF_10, BF_35))) #Openness
+
+d0132$BF_37 <- 6 - d0132$BF_37
+d0132$BF_12 <- 6 - d0132$BF_12
+d0132$BF_2 <- 6 - d0132$BF_2
+d0132$BF_27 <- 6 - d0132$BF_27
+d0132$agreeableness <- rowMeans(subset(d0132, select = c(BF_32, BF_7, BF_37, BF_22, BF_17, BF_12,
+                                        BF_2, BF_42, BF_27))) #Agreeableness 
+
+d0132$BF_21 <- 6 - d0132$BF_21
+d0132$BF_31 <- 6 - d0132$BF_31
+d0132$BF_6 <- 6 - d0132$BF_6
+d0132$extraversion <- rowMeans(subset(d0132, select = c(BF_36, BF_1, BF_21, BF_31, BF_6, BF_16,
+                                        BF_26, BF_11))) #Extraversion
+
+d0132$BF_9 <- 6 - d0132$BF_9 # Reverse the positive to obtain emotional stability
+d0132$BF_24 <- 6 - d0132$BF_24
+d0132$BF_34 <- 6 - d0132$BF_34
+# d0132$BF_39 <- 6 - d0132$BF_39
+# d0132$BF_19 <- 6 - d0132$BF_19
+# d0132$BF_14 <- 6 - d0132$BF_14
+# d0132$BF_4 <- 6 - d0132$BF_4
+# d0132$BF_29 <- 6 - d0132$BF_29
+
+d0132$neuroticism <- rowMeans(subset(d0132, select = c(BF_39, BF_19, BF_9, BF_14, BF_24, BF_34,
+                                        BF_4, BF_29))) #Neuroticism
+
+## Peer status 
+d0132$socialstatus <- rowMeans(d0132[,c("Peer_stat1","Peer_stat1")],na.rm=T)
+
+## Friendship 
+d0132$Friend_qual_2 <- 6 - d0132$Friend_qual_2
+d0132$Friend_qual_6 <- 6 - d0132$Friend_qual_6
+d0132$Friend_qual_8 <- 6 - d0132$Friend_qual_8
+d0132$Friend_qual_9 <- 6 - d0132$Friend_qual_9
+d0132$Friend_qual_10 <- 6 - d0132$Friend_qual_10
+d0132$Friend_qual_11 <- 6 - d0132$Friend_qual_11
+
+d0132$friendshipquality <- rowMeans(subset(d0132,select = c(Friend_qual_1:Friend_qual_12)),na.rm = TRUE)
+
+## Engagement 
+d0132$Eng_3 <- 5-d0132$Eng_3
+d0132$Eng_4 <- 5-d0132$Eng_4
+d0132$Eng_7 <- 5-d0132$Eng_7
+d0132$Eng_8 <- 5-d0132$Eng_8
+d0132$academicengagement <- rowMeans(subset(d0132, select = c(Eng_1:Eng_8)),na.rm = TRUE)
+
+##  Anxiety
+d0132$testanxiety <- rowMeans(d0132[,c("Test_anx_1", "Test_anx_2", 
+                                "Test_anx_3", "Test_anx_4")], na.rm=TRUE)
+
+d0132$testanxietycontrol <- rowMeans(d0132[,c("Tension_reduc_1", "Tension_reduc_3", 
+                               "Tension_reduc_2", "Tension_reduc_4")], na.rm=TRUE)
+
+## General Self-efficacy 
+d0132$selfefficacy <- rowMeans(d0132[, c("selfeff_1", "selfeff_2", "selfeff_3", "selfeff_4",
+                                 "selfeff_5", "selfeff_6", "selfeff_7", "selfeff_8")], 
+                           na.rm = TRUE) 
+
+## Achievement 
+d0132$academicachievement <- rowMeans(d0132[,c("achievement_1", "achievement_2", 
+                               "achievement_3", "achievement_4",
+                               "achievement_5")], na.rm=TRUE)
+
+# Other reports
+d0132inf$selfmanagementother<-rowMeans(d0132inf[,c("BESSI_GEN_1",  "BESSI_GEN_6", "BESSI_GEN_11", "BESSI_GEN_16")],
+                           na.rm=TRUE) #Self Management skill
+
+d0132inf$innovationother<-rowMeans(d0132inf[,c("BESSI_GEN_5", "BESSI_GEN_10", "BESSI_GEN_15", "BESSI_GEN_20")], 
+                           na.rm=TRUE) #Innovation skill
+
+d0132inf$cooperationother<-rowMeans(d0132inf[,c("BESSI_GEN_3", "BESSI_GEN_8", "BESSI_GEN_13", "BESSI_GEN_18")],
+                           na.rm=TRUE) #Cooperation skill
+
+d0132inf$socialengagementother<-rowMeans(d0132inf[,c("BESSI_GEN_2", "BESSI_GEN_7", "BESSI_GEN_12", "BESSI_GEN_17")], 
+                           na.rm=TRUE) #Social Engagement skill
+
+d0132inf$emotionalresilienceother<-rowMeans(d0132inf[,c("BESSI_GEN_4", "BESSI_GEN_9", "BESSI_GEN_14", "BESSI_GEN_19")], 
+                           na.rm=TRUE) #Emotional Resilience skill
+
+d0132 <- merge(d0132, d0132inf, by = "code", all.x = T)
+
+# Select and save
+d0132a <- d0132[, colnames(d0132) %in% c(admcol$column_name, 
+                                         paste(admcol$column_name,"other",sep = ""))]
+writexl::write_xlsx(data.frame(cor(d0132a, use = "pairwise.complete")),
+                    "data/3.meta_data/matrices/0132a.xlsx")
+
+# Individual data with age
+d0132 <- d0132[, colnames(d0132) %in% c(admcol$column_name, 
+                                        paste(admcol$column_name,"other",sep = ""),"age")]
+d0132 <- d0132[! is.na(d0132$age), ]
+writexl::write_xlsx(data.frame(d0132),
+                    "data/3.meta_data/open_data/individual_data/0132a.xlsx")
+
+#### --------------------------------------------------- 0134 --------------------------------------------------- ####
+rm(list=ls())
+d0134 <- readxl::read_excel("data/3.meta_data/open_data/d0134.xlsx")
+admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
+
+names(d0134)[names(d0134) == "age"] <- "age"
+
+d0134$sex <- ifelse(d0134$Gender == "1", 0, 
+                     ifelse(d0134$Gender == "2", 1, NA)) # Males to 0, Females to 1
+
+# T1 SEB domains
+names(d0134)[names(d0134) == "SMD_1"] <- "selfmanagement"
+names(d0134)[names(d0134) == "COD_1"] <- "cooperation"
+names(d0134)[names(d0134) == "SED_1"] <- "socialengagement"
+names(d0134)[names(d0134) == "ERD_1"] <- "emotionalresilience"
+names(d0134)[names(d0134) == "IND_1"] <- "innovation"
+
+# T1 Student engagement 
+names(d0134)[names(d0134) == "AFF_ENG_1"] <- "affectiveengagement"
+names(d0134)[names(d0134) == "BEH_ENG_1"] <- "behavioralengagement"
+names(d0134)[names(d0134) == "COG_ENG_1"] <- "cognitiveengagement"
+names(d0134)[names(d0134) == "AG_ENG_1"] <- "agenticengagement"
+
+# Exclude participants without T1
+d0134 <- d0134[!is.na(d0134$bessi_1_1), ]
+
+# Select and save
+d0134a <- d0134[, colnames(d0134) %in% c(admcol$column_name, 
+                                         paste(admcol$column_name,"other",sep = ""))]
+writexl::write_xlsx(data.frame(cor(d0134a, use = "pairwise.complete")),
+                    "data/3.meta_data/matrices/0134a.xlsx")
+
+# Individual data with age
+d0134 <- d0134[, colnames(d0134) %in% c(admcol$column_name, 
+                                        paste(admcol$column_name,"other",sep = ""),"age")]
+d0134 <- d0134[! is.na(d0134$age), ]
+writexl::write_xlsx(data.frame(d0134),
+                    "data/3.meta_data/open_data/individual_data/0134a.xlsx")
+
