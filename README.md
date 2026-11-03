@@ -58,7 +58,7 @@ Feraco, T., Calderan, M. & Pellegrino, G. (2026). The Living SEB Skills Project:
 ```bibtex
 @Article{livingSEB,
   author    = {Tommaso Feraco and Margherita Calderan and Gerardo Pellegrino},
-  doi       = {https://doi.org/10.31234/osf.io/ewvuf_v1},
+  doi       = {https://doi.org/10.1177/08902070261467477},
   title     = {The Living SEB Skills Project: A Living Resource for Review
                and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year      = {2026},

@@ -1,0 +1,3 @@
+file_index,source_path,database,batch_id,extension,import_path,normalisation,removed_preamble_lines,first_removed_nonempty,expected_entries,source_md5,import_md5,imported_records
+1,data/0.bib_download/updates/2026-10/2026_10_scopus.bib,Scopus,2026-10,bib,data/0.bib_normalized/updates/2026-10/001_2026-10_2026_10_scopus.bib,scopus_preamble_removed,3,Scopus,18,e5f16c8c30e9c81309132ff4d0e8ac2a,c8831c32474e59307d5eff469d204867,18
+2,data/0.bib_download/updates/2026-10/2026_10_wos.bib,Web of Science,2026-10,bib,data/0.bib_download/updates/2026-10/2026_10_wos.bib,none,0,,6,b80bebbb2a60dc83c0544fbfc3c669a0,b80bebbb2a60dc83c0544fbfc3c669a0,6
