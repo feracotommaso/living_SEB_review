@@ -1,4 +1,5 @@
 policy_version: 2.0.0
+workflow_version: 2.2.0
 status: stable
 stage: full_text_eligibility
 canonical_policy: policies/full_text_eligibility_v2.md
@@ -29,6 +30,7 @@ full_text_files:
   main_pdf_pattern: <paper_id>.pdf
   supplement_prefix_pattern: <paper_id>_
   monthly_manifest_pattern: data/2.full_abstracting/<batch_id>_full_text_manifest.xlsx
+  canonical_manifest_pattern: data/2.full_abstracting/<batch_id>_full_text_manifest.csv
   doi_format: https://doi.org/<doi>
 principles:
   sensitivity_first: true
@@ -179,6 +181,8 @@ operational_outputs:
   ai_decision_directory_pattern: data/2.full_abstracting/ai_decisions/<batch_id>/
   ai_decision_file_pattern: <paper_id>.json
   monthly_decision_workbook_pattern: data/2.full_abstracting/<batch_id>_full_text_decisions.xlsx
+  canonical_decisions_pattern: data/2.full_abstracting/<batch_id>_full_text_decisions.csv
+  canonical_adjudication_pattern: data/2.full_abstracting/<batch_id>_full_text_human_review.csv
   decision_workbook_sheets:
   - summary
   - decisions

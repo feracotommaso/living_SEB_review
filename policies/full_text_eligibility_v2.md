@@ -343,4 +343,18 @@ Human adjudication should be **batched by default**. The AI/skill should screen 
 
 Resolved adjudications remain in the `human_review` sheet as an audit trail. A user decision that establishes a generalizable methodological rule should be incorporated into the policy or operational guidance so that equivalent future cases do not repeatedly require human review.
 
-The workbook is the canonical operational screening record. The frozen adjudicated cases in `tests/full_text/` are regression expectations and must not be treated as the monthly database.
+The workbook is the operational human interface. Canonical machine-readable
+snapshots are `<batch_id>_full_text_decisions.csv` and
+`<batch_id>_full_text_human_review.csv` alongside it. Structured JSON inputs retain
+the original assessment and evidence; output rows retain their paths and SHA-256
+checksums. Only the `human_review` inputs should be edited in Excel. Finalization
+validates those edits and synchronizes both CSV snapshots and the workbook.
+Rebuilds retain resolved adjudications and refuse to overwrite unfinalized edits.
+The frozen adjudicated cases in `tests/full_text/` remain regression expectations.
+
+Workflow `2.2.0` enforces the existing policy without changing the October
+adjudications. If uncertainty concerns review eligibility, retain a provisional
+review assessment and the independent quantitative status, and set
+`requires_human_review = true`. Any substantive human-review flag blocks a
+definitive `final_route`; `current_route = human_review_required` identifies
+unresolved review routing when meta status is otherwise resolved or pending.

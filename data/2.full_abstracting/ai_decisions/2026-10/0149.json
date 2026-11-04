@@ -1,0 +1,47 @@
+{
+  "screening_record_id": "seb_eaca27ddf43598f0",
+  "paper_id": "0149",
+  "doi": "https://doi.org/10.53379/cjcd.v25i2.3345",
+  "review_eligible": false,
+  "review_exclusion_reason": "NON_SEB_FRAMEWORK",
+  "review_rationale": "The paper focuses on socioemotional skills but operationalizes them with SENNA 2.0 rather than SEB/BESSI.",
+  "review_evidence": [
+    {
+      "evidence": "[pp. 4-5] Socioemotional skills are measured with the SENNA 2.0 inventory.",
+      "page": null,
+      "locator": "Recorded PDF pages: 4;5"
+    }
+  ],
+  "framework_relation_tags": [],
+  "meta_status": "ineligible",
+  "meta_exclusion_reason": "NO_ELIGIBLE_BESSI_MEASURE",
+  "meta_pending_reason": null,
+  "meta_rationale": "SENNA 2.0 is a different Big-Five-based socioemotional-skill instrument; BESSI is cited but not administered.",
+  "meta_evidence": [
+    {
+      "evidence": "[pp. 4-5] The study uses the 54-item SENNA 2.0; [p. 12] BESSI appears only in the references.",
+      "page": null,
+      "locator": "Recorded PDF pages: 4;5;12"
+    }
+  ],
+  "bessi_measure_classification": "clearly_ineligible",
+  "bessi_target_construct": "not_applicable",
+  "eligible_quantitative_components": [],
+  "quantitative_scope_rationale": "No eligible BESSI measure is used.",
+  "publication_language": "English",
+  "language_ai_assessed": true,
+  "clinical_population_classification": "not_clinical",
+  "requires_human_review": false,
+  "human_review_reasons": [],
+  "decision_confidence": "high",
+  "final_route": "exclude",
+  "current_route": "exclude",
+  "decision_source": "ai",
+  "eligibility_policy_version": "2.0.0",
+  "workflow_version": "2.2.0",
+  "provenance_note": "Imported from existing operational workbook 2026-10_full_text_decisions.xlsx; original decision source/date and recorded evidence retained. PDFs were not re-screened during migration.",
+  "screening_date": "2026-11-03",
+  "human_review_summary": null,
+  "ai_recommendation": null,
+  "decision_options": []
+}

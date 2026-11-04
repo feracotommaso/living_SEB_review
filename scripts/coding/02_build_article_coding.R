@@ -1,0 +1,7 @@
+source("R/full_text_workflow.R")
+source("R/coding_compatibility.R")
+source("R/article_coding.R")
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) != 1L || !grepl("^[0-9]{4}-(0[1-9]|1[0-2])$", args[[1]])) stop("Usage: Rscript scripts/coding/02_build_article_coding.R YYYY-MM", call. = FALSE)
+result <- coding_build_batch(args[[1]])
+cat("Article coding: ", nrow(result$papers), " papers; ", nrow(result$samples), " quantitative samples. No correlation matrices or analytical basic_info files promoted.\n", sep = "")

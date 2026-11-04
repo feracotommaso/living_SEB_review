@@ -32,6 +32,18 @@
 - Preserve every `screening_record_id` exactly and provide one decision per ID.
 - Never invent or omit records to balance the batch.
 
+## Full-text screening
+
+- Use the repository skill `$living-seb-full-text` for monthly full-text screening.
+- Read `config/screening/full_text_eligibility.yml`, its linked policy/prompt and
+  the decision schema; use the existing R workflow for IDs, validation and exports.
+- Preserve existing assessments and resolved adjudications when resuming a batch.
+- Missing/unreadable main PDFs block acquisition; do not invent eligibility rows.
+- Assess review focus and quantitative eligibility independently, including BESSI
+  measurement source versus the construct actually measured.
+- Collect substantive ambiguities into one evidence-based human-review queue.
+- Do not assign sample/matrix IDs or perform detailed extraction at this stage.
+
 ## Validation
 
 - After changing title/abstract screening code, run:

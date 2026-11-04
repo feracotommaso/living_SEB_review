@@ -1,0 +1,11 @@
+source_file,paper_id,matrix_id,old_value,new_value
+data/3.meta_data/basic_info/25_01_31_basic_info.xlsx,0013,0013a,skilltraitdifferences; incrementalvalidity; academicachievement;,skilltraitdifferences; incrementalvalidity; academicachievement
+data/3.meta_data/basic_info/25_01_31_basic_info.xlsx,0023,0023a,nomoligicalnet,nomologicalnet
+data/3.meta_data/basic_info/25_01_31_basic_info.xlsx,0023,0023b,nomoligicalnet,nomologicalnet
+data/3.meta_data/basic_info/25_04_30_basic_info.xlsx,0066,0066,assessment; theorydevelopment,skillassessment; theorydevelopment
+data/3.meta_data/basic_info/26_06_basic_info.xlsx,0120,0120a,skillassessment;selfreport;languageadaptation;otherreport,skillassessment; selfreport; languageadaptation; otherreport
+data/3.meta_data/basic_info/26_06_basic_info.xlsx,0120,0120b,skillassessment;selfreport;languageadaptation,skillassessment; selfreport; languageadaptation
+data/3.meta_data/basic_info/26_07_basic_info.xlsx,0123,0123,skillassessment;selfreport;languageadaptation,skillassessment; selfreport; languageadaptation
+data/3.meta_data/basic_info/26_08_basic_info.xlsx,0132,0132a,skillassessment;selfreport;otherreport;incrementalvalidity;skilltraitdifferences,skillassessment; selfreport; otherreport; incrementalvalidity; skilltraitdifferences
+data/3.meta_data/basic_info/26_08_basic_info.xlsx,0134,0134a,academicachievement;learningfactors;positiveschooloutcomes,academicachievement; learningfactors; positiveschooloutcomes
+data/3.meta_data/basic_info/26_08_basic_info.xlsx,0138,0138a,interventions;skilldevelopment,interventions; skilldevelopment

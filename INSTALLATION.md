@@ -1,50 +1,25 @@
-# Installazione dell'overlay 2026-10.3
+# Local workflow setup
 
-Questo archivio aggiorna il workflow di deduplicazione e aggiunge lo screening
-title/abstract assistito da AI.
+Use this repository's checked-out branch directly. No package overlays or manual
+file copying are required. Preserve existing data and configuration.
 
-## Copia nel repository
+Full-text commands require R packages `readr`, `readxl`, `dplyr`, `digest`,
+`openxlsx`, `jsonlite`, `xml2`, `zip`, and `here`. Tests also require `testthat`, `withr`,
+and `yaml` (title/abstract policy checks). The local full-text schema validator
+needs no optional JSON Schema runtime or network access.
 
-Copia nella root di `living_SEB_review` le seguenti cartelle/file, mantenendo la
-struttura:
+For deduplication dependencies, read
+[`scripts/dedup/README.md`](scripts/dedup/README.md) before running those scripts.
+The title/abstract skill is in `.agents/skills/living-seb-title-abstract/`.
+The full-text skill is in `.agents/skills/living-seb-full-text/`; invoke it as
+`$living-seb-full-text` with the requested batch ID.
 
-```text
-.agents/
-config/
-prompts/
-schemas/
-R/
-scripts/
-tests/
-AGENTS.md
-MONTHLY_WORKFLOW.md
+```bash
+Rscript scripts/screening/99_run_tests.R
+Rscript scripts/screening/03_validate_2026_10_regression.R
 ```
 
-Sovrascrivi i file omonimi del precedente pacchetto di deduplicazione.
-
-Se il repository contiene già un `AGENTS.md`, non sovrascriverlo alla cieca:
-integra le sezioni Living SEB del file fornito.
-
-## Non copiare dati grezzi
-
-L'archivio non contiene export Scopus/WoS né registri reali. I dati esistenti
-sotto `data/` restano in posizione.
-
-## Verifica iniziale
-
-```r
-source("scripts/dedup/00_setup.R")
-source("scripts/screening/00_setup.R")
-source("scripts/screening/99_run_tests.R")
-```
-
-## Skill locale
-
-La skill repository-scoped è già collocata in:
-
-```text
-.agents/skills/living-seb-title-abstract/
-```
-
-Codex la rileva quando viene avviato dalla root del repository. È disponibile
-anche come archivio separato `skill.zip` per installazione/distribuzione.
+See [MONTHLY_WORKFLOW.md](MONTHLY_WORKFLOW.md) for the sequence and
+[full-text guidance](scripts/full_text/README.md) for commands, CSV/XLSX contracts,
+one-time existing-workbook import and Windows locale settings.
+PDFs remain in the ignored `data/2.full_abstracting/pdfs/` directory.

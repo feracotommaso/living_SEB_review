@@ -1,5 +1,9 @@
 # Living SEB full-text workflow helpers
-# Version: 2.1.0
+# Version: 2.2.0
+
+ft_workflow_version <- "2.2.0"
+source(file.path("R", "full_text_schema.R"))
+source(file.path("R", "full_text_outputs.R"))
 
 ft_clean_names <- function(data) {
   nm <- tolower(trimws(names(data)))
@@ -123,7 +127,7 @@ ft_make_record_identity <- function(data) {
 ft_format_paper_id <- function(x, min_width = 4L) {
   raw <- ft_blank_to_empty(x)
   parsed <- suppressWarnings(as.integer(raw))
-  bad <- nzchar(raw) & is.na(parsed)
+  bad <- nzchar(raw) & (!grepl("^[0-9]+$", raw) | is.na(parsed) | parsed < 1L)
   if (any(bad)) {
     stop(
       "paper_id must be numeric before zero-padding. Invalid values: ",
@@ -131,10 +135,9 @@ ft_format_paper_id <- function(x, min_width = 4L) {
       call. = FALSE
     )
   }
-  width <- max(min_width, nchar(as.character(max(parsed, na.rm = TRUE))), na.rm = TRUE)
   out <- rep("", length(parsed))
   keep <- !is.na(parsed)
-  out[keep] <- sprintf(paste0("%0", width, "d"), parsed[keep])
+  out[keep] <- sprintf(paste0("%0", min_width, "d"), parsed[keep])
   out
 }
 
@@ -148,7 +151,7 @@ ft_first_nonblank <- function(x) {
 ft_read_table <- function(path) {
   ext <- tolower(tools::file_ext(path))
   if (ext == "csv") {
-    out <- readr::read_csv(path, show_col_types = FALSE, progress = FALSE)
+    out <- readr::read_csv(path, col_types = readr::cols(.default = "c"), progress = FALSE, na = "")
   } else if (ext %in% c("xlsx", "xls")) {
     out <- readxl::read_excel(path)
   } else {
@@ -247,14 +250,7 @@ ft_prepare_current_records <- function(path, batch_id) {
   if ("screening_record_id" %in% names(data)) {
     existing_id <- ft_blank_to_empty(data$screening_record_id)
     use_existing <- nzchar(existing_id)
-    if (any(use_existing & existing_id != identity$screening_record_id)) {
-      bad <- which(use_existing & existing_id != identity$screening_record_id)
-      stop(
-        "Existing screening_record_id does not match the stable DOI/title identity for rows: ",
-        paste(bad, collapse = ", "),
-        call. = FALSE
-      )
-    }
+    # Upstream IDs remain authoritative even when bibliographic fields improve.
     data$screening_record_id <- ifelse(
       use_existing,
       existing_id,
@@ -288,7 +284,8 @@ ft_list_legacy_decision_files <- function(full_text_dir) {
   )
   base <- basename(files)
   files[
-    grepl("full.*decision|decision.*progress", base, ignore.case = TRUE)
+    grepl("full.*decision|decision.*progress", base, ignore.case = TRUE) &
+      !grepl("^[0-9]{4}-[0-9]{2}_full_text_", base)
   ]
 }
 
@@ -350,12 +347,18 @@ ft_build_legacy_aliases <- function(all) {
 
 ft_write_legacy_alias_report <- function(aliases, full_text_dir) {
   path <- file.path(full_text_dir, "paper_id_aliases.csv")
-  if (nrow(aliases) > 0L) {
-    readr::write_csv(aliases, path, na = "")
-  } else if (file.exists(path)) {
-    unlink(path)
+  if (file.exists(path)) {
+    previous <- ft_read_table(path)
+    shared <- match(previous$alias_paper_id, aliases$alias_paper_id)
+    changed <- !is.na(shared) & previous$canonical_paper_id != aliases$canonical_paper_id[shared]
+    if (any(changed)) stop("Historical alias mapping changed; explicit identity reconciliation required.", call. = FALSE)
+    aliases <- dplyr::bind_rows(previous[is.na(shared), , drop = FALSE], aliases)
   }
-  invisible(path)
+  if (nrow(aliases) > 0L) {
+    aliases <- aliases[order(as.integer(aliases$alias_paper_id)), , drop = FALSE]
+    ft_atomic_write_csv(aliases, path)
+  }
+  aliases
 }
 
 ft_write_legacy_conflict_report <- function(all, full_text_dir) {
@@ -433,7 +436,7 @@ ft_bootstrap_legacy_registry <- function(full_text_dir) {
   # one paper_id in historical manual workflows. Keep the earliest numerical
   # ID as canonical, reserve every later ID as an alias, and never reuse it.
   aliases <- ft_build_legacy_aliases(all)
-  ft_write_legacy_alias_report(aliases, full_text_dir)
+  aliases <- ft_write_legacy_alias_report(aliases, full_text_dir)
 
   canonical_map <- stats::setNames(
     aliases$canonical_paper_id,
@@ -494,7 +497,7 @@ ft_bootstrap_legacy_registry <- function(full_text_dir) {
 
   # Attributes are used during this run so alias IDs remain reserved when new
   # IDs are assigned. The alias CSV provides the persistent audit trail.
-  attr(registry, "reserved_paper_ids") <- sort(unique(all$paper_id))
+  attr(registry, "reserved_paper_ids") <- sort(unique(c(all$paper_id, aliases$alias_paper_id)))
   attr(registry, "paper_id_aliases") <- aliases
   registry
 }
@@ -552,8 +555,8 @@ ft_validate_registry <- function(registry) {
 }
 
 ft_reconcile_legacy_registry <- function(registry, legacy) {
-  reserved_ids <- attr(legacy, "reserved_paper_ids")
-  aliases <- attr(legacy, "paper_id_aliases")
+  reserved_ids <- unique(c(attr(registry, "reserved_paper_ids"), attr(legacy, "reserved_paper_ids")))
+  aliases <- attr(legacy, "paper_id_aliases") %||% attr(registry, "paper_id_aliases")
 
   if (nrow(legacy) == 0L) return(registry)
   if (nrow(registry) == 0L) {
@@ -632,6 +635,7 @@ ft_new_registry_row <- function(data_row, paper_id, batch_id, source_file) {
 }
 
 ft_assign_paper_ids <- function(current, registry, batch_id, source_file) {
+  reserved <- attr(registry, "reserved_paper_ids")
   registry <- if (nrow(registry) == 0L) {
     data.frame(matrix(ncol = length(ft_registry_columns()), nrow = 0L),
                stringsAsFactors = FALSE)
@@ -644,7 +648,7 @@ ft_assign_paper_ids <- function(current, registry, batch_id, source_file) {
   reused <- 0L
   newly_assigned <- 0L
 
-  reserved_ids <- attr(registry, "reserved_paper_ids")
+  reserved_ids <- reserved
   id_pool <- unique(c(registry$paper_id, reserved_ids))
   id_pool <- id_pool[nzchar(ft_blank_to_empty(id_pool))]
   if (length(id_pool) > 0L) {
@@ -692,6 +696,7 @@ ft_assign_paper_ids <- function(current, registry, batch_id, source_file) {
   registry <- registry[order(as.integer(registry$paper_id)), , drop = FALSE]
   rownames(registry) <- NULL
   registry <- ft_validate_registry(registry)
+  attr(registry, "reserved_paper_ids") <- unique(c(reserved_ids, registry$paper_id))
 
   list(
     current = current,
@@ -704,6 +709,7 @@ ft_assign_paper_ids <- function(current, registry, batch_id, source_file) {
 ft_atomic_write_csv <- function(data, path) {
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   tmp <- tempfile(pattern = "living_seb_", tmpdir = dirname(path), fileext = ".csv")
+  on.exit(unlink(tmp), add = TRUE)
   readr::write_csv(data, tmp, na = "")
   ok <- file.copy(tmp, path, overwrite = TRUE)
   unlink(tmp)
@@ -718,6 +724,7 @@ ft_atomic_write_manifest_xlsx <- function(data, path) {
 
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   tmp <- tempfile(pattern = "living_seb_", tmpdir = dirname(path), fileext = ".xlsx")
+  on.exit(unlink(tmp), add = TRUE)
 
   wb <- openxlsx::createWorkbook()
   sheet <- "full_text_manifest"
@@ -753,7 +760,19 @@ ft_atomic_write_manifest_xlsx <- function(data, path) {
     )
   }
 
-  openxlsx::freezePane(wb, sheet, firstRow = TRUE)
+  openxlsx::freezePane(wb, sheet, firstActiveRow = 2, firstActiveCol = 4)
+  openxlsx::addStyle(wb, sheet, openxlsx::createStyle(wrapText = TRUE, valign = "top"),
+                     rows = 1, cols = seq_along(data), gridExpand = TRUE, stack = TRUE)
+  openxlsx::addStyle(wb, sheet, openxlsx::createStyle(fontColour = "#FFFFFF", textDecoration = "bold"),
+                     rows = 1, cols = seq_along(data), gridExpand = TRUE, stack = TRUE)
+  if (nrow(data)) {
+    openxlsx::addStyle(wb, sheet, openxlsx::createStyle(valign = "top"), rows = seq_len(nrow(data)) + 1L,
+                       cols = seq_along(data), gridExpand = TRUE, stack = TRUE)
+    openxlsx::addStyle(wb, sheet, openxlsx::createStyle(numFmt = "@", halign = "left"),
+                       rows = seq_len(nrow(data)) + 1L, cols = match(c("screening_record_id", "paper_id"), names(data)),
+                       gridExpand = TRUE, stack = TRUE)
+  }
+  openxlsx::setRowHeights(wb, sheet, rows = 1, heights = 32)
 
   # Keep operational fields readable when the workbook is opened.
   width_map <- c(
@@ -791,8 +810,9 @@ ft_atomic_write_manifest_xlsx <- function(data, path) {
       gridExpand = TRUE, stack = TRUE
     )
   }
+  ft_fit_wrapped_rows(wb, sheet, data, width_map[names(data)], minimum = 40)
 
-  openxlsx::saveWorkbook(wb, tmp, overwrite = TRUE)
+  ft_save_workbook(wb, tmp)
   ok <- file.copy(tmp, path, overwrite = TRUE)
   unlink(tmp)
   if (!isTRUE(ok)) stop("Could not write file: ", path, call. = FALSE)
@@ -856,7 +876,7 @@ ft_build_manifest <- function(current, batch_id, pdf_dir, source_file) {
 
 
 # -----------------------------------------------------------------------------
-# Full-text decision workbook + adjudication workflow (v2.1.0)
+# Full-text decision workbook + adjudication workflow (v2.2.0)
 # -----------------------------------------------------------------------------
 
 ft_decision_columns <- function() {
@@ -871,7 +891,9 @@ ft_decision_columns <- function() {
     "publication_language", "language_ai_assessed",
     "clinical_population_classification", "current_route", "final_route",
     "requires_human_review", "human_review_reasons", "decision_confidence",
-    "decision_source", "eligibility_policy_version", "screening_date",
+    "decision_source", "eligibility_policy_version", "workflow_version", "screening_date",
+    "decision_file", "decision_sha256", "provenance_note",
+    "issue_summary", "ai_recommendation", "decision_options",
     "workflow_status", "adjudication_status", "adjudication_notes"
   )
 }
@@ -893,7 +915,6 @@ ft_human_review_columns <- function() {
 }
 
 ft_bool <- function(x, allow_blank = FALSE) {
-  if (is.logical(x)) return(x)
   z <- tolower(ft_blank_to_empty(x))
   out <- rep(NA, length(z))
   out[z %in% c("true", "t", "1", "yes", "y")] <- TRUE
@@ -928,6 +949,8 @@ ft_flatten_evidence <- function(items) {
     if (length(pg) == 1L && !is.null(pg) && !is.na(pg) && nzchar(as.character(pg))) {
       prefix <- paste0("[p. ", pg, if (nzchar(loc)) paste0(", ", loc) else "", "] ")
       pages <- c(pages, as.character(pg))
+    } else if (startsWith(loc, "Recorded PDF pages: ")) {
+      pages <- c(pages, strsplit(sub("^Recorded PDF pages: ", "", loc), ";", fixed = TRUE)[[1]])
     } else if (nzchar(loc)) {
       prefix <- paste0("[", loc, "] ")
     }
@@ -970,6 +993,8 @@ ft_flatten_decision_object <- function(obj) {
     current_route = ft_first_nonblank(obj$current_route %||% ""),
     decision_source = ft_first_nonblank(obj$decision_source %||% "ai"),
     eligibility_policy_version = ft_first_nonblank(obj$eligibility_policy_version %||% ""),
+    workflow_version = ft_first_nonblank(obj$workflow_version %||% ft_workflow_version),
+    provenance_note = ft_first_nonblank(obj$provenance_note %||% ""),
     screening_date = ft_first_nonblank(obj$screening_date %||% ""),
     issue_summary = ft_first_nonblank(obj$human_review_summary %||% ""),
     ai_recommendation = ft_first_nonblank(obj$ai_recommendation %||% ""),
@@ -991,11 +1016,11 @@ ft_read_ai_decisions <- function(decision_dir) {
   }
   rows <- lapply(files, function(path) {
     obj <- jsonlite::fromJSON(path, simplifyVector = FALSE)
-    if (!is.list(obj) || is.null(obj$paper_id)) {
-      stop("Each AI decision JSON must contain one decision object with paper_id. File: ", path, call. = FALSE)
-    }
+    tryCatch(ft_validate_decision_object(obj), error = function(e) stop(path, ": ", conditionMessage(e), call. = FALSE))
+    if (basename(path) != paste0(obj$paper_id, ".json")) stop("Decision filename must match paper_id: ", path, call. = FALSE)
     out <- ft_flatten_decision_object(obj)
-    out$.decision_file <- basename(path)
+    out$decision_file <- gsub("\\\\", "/", path)
+    out$decision_sha256 <- digest::digest(file = path, algo = "sha256")
     out
   })
   out <- dplyr::bind_rows(rows)
@@ -1004,7 +1029,7 @@ ft_read_ai_decisions <- function(decision_dir) {
   out
 }
 
-ft_derive_route <- function(review_eligible, meta_status) {
+ft_derive_route <- function(review_eligible, meta_status, requires_human_review = rep(FALSE, length(meta_status))) {
   review_eligible <- ft_bool(review_eligible)
   meta_status <- tolower(ft_blank_to_empty(meta_status))
   final <- rep("", length(meta_status))
@@ -1024,10 +1049,19 @@ ft_derive_route <- function(review_eligible, meta_status) {
       stop("Invalid meta_status: ", meta_status[[i]], call. = FALSE)
     }
   }
+  human <- ft_bool(requires_human_review)
+  final[human] <- ""
+  current[human & meta_status != "uncertain"] <- "human_review_required"
   data.frame(final_route = final, current_route = current, stringsAsFactors = FALSE)
 }
 
 ft_validate_ai_decisions <- function(ai, manifest, policy_version = "2.0.0") {
+  for (x in list(ai, manifest)) {
+    if (anyDuplicated(x$paper_id) || anyDuplicated(x$screening_record_id) ||
+        any(!nzchar(ft_blank_to_empty(x$paper_id))) || any(!nzchar(ft_blank_to_empty(x$screening_record_id)))) {
+      stop("Blank or duplicate paper_id/screening_record_id in decisions or manifest.", call. = FALSE)
+    }
+  }
   if (nrow(ai) != nrow(manifest)) {
     stop("AI decisions must cover every manifest record before the decision workbook is generated. Manifest records: ",
          nrow(manifest), "; AI decisions: ", nrow(ai), call. = FALSE)
@@ -1054,7 +1088,7 @@ ft_validate_ai_decisions <- function(ai, manifest, policy_version = "2.0.0") {
   if (any(!ai$meta_status %in% allowed_meta)) {
     stop("Invalid meta_status in AI decisions.", call. = FALSE)
   }
-  route <- ft_derive_route(ai$review_eligible, ai$meta_status)
+  route <- ft_derive_route(ai$review_eligible, ai$meta_status, ai$requires_human_review)
   supplied_final <- ft_blank_to_empty(ai$final_route)
   supplied_current <- ft_blank_to_empty(ai$current_route)
   if (any(nzchar(supplied_final) & supplied_final != route$final_route)) {
@@ -1066,10 +1100,6 @@ ft_validate_ai_decisions <- function(ai, manifest, policy_version = "2.0.0") {
   ai$final_route <- route$final_route
   ai$current_route <- route$current_route
 
-  resolved <- ai$meta_status %in% c("eligible", "ineligible")
-  if (any(resolved & ai$requires_human_review)) {
-    stop("Resolved AI decisions cannot retain requires_human_review=TRUE.", call. = FALSE)
-  }
   if (any(ai$meta_status == "uncertain" & !ai$requires_human_review)) {
     stop("meta_status='uncertain' requires human review.", call. = FALSE)
   }
@@ -1098,6 +1128,10 @@ ft_validate_ai_decisions <- function(ai, manifest, policy_version = "2.0.0") {
     stop("AI decision policy version does not match expected version ", policy_version, ".", call. = FALSE)
   }
 
+  # Reconstruct the typed JSON representation so workbook edits/adjudications
+  # pass exactly the same scientific and structural contract as JSON inputs.
+  for (i in seq_len(nrow(ai))) ft_validate_decision_object(ft_row_to_object(ai[i, , drop = FALSE]))
+
   ai
 }
 
@@ -1105,8 +1139,8 @@ ft_merge_manifest_decisions <- function(manifest, ai, batch_id) {
   ai <- ft_validate_ai_decisions(ai, manifest)
   idx <- match(manifest$paper_id, ai$paper_id)
   a <- ai[idx, , drop = FALSE]
-  status <- ifelse(a$meta_status == "pending", "PENDING_DATA",
-                   ifelse(a$meta_status == "uncertain", "HUMAN_REVIEW_REQUIRED", "RESOLVED"))
+  status <- ifelse(a$requires_human_review, "HUMAN_REVIEW_REQUIRED",
+                   ifelse(a$meta_status == "pending", "PENDING_DATA", "RESOLVED"))
   out <- data.frame(
     batch_id = batch_id,
     screening_record_id = manifest$screening_record_id,
@@ -1140,6 +1174,13 @@ ft_merge_manifest_decisions <- function(manifest, ai, batch_id) {
     decision_confidence = a$decision_confidence,
     decision_source = a$decision_source,
     eligibility_policy_version = a$eligibility_policy_version,
+    workflow_version = ft_workflow_version,
+    decision_file = a$decision_file,
+    decision_sha256 = a$decision_sha256,
+    provenance_note = a$provenance_note,
+    issue_summary = a$issue_summary,
+    ai_recommendation = a$ai_recommendation,
+    decision_options = a$decision_options,
     screening_date = a$screening_date,
     workflow_status = status,
     adjudication_status = ifelse(a$requires_human_review, "OPEN", "NOT_REQUIRED"),
@@ -1152,8 +1193,7 @@ ft_merge_manifest_decisions <- function(manifest, ai, batch_id) {
 ft_build_human_review_queue <- function(decisions, ai) {
   open <- decisions$requires_human_review %in% TRUE
   if (!any(open)) {
-    out <- data.frame(matrix(ncol = length(ft_human_review_columns()), nrow = 0L), stringsAsFactors = FALSE)
-    names(out) <- ft_human_review_columns()
+    out <- as.data.frame(setNames(replicate(length(ft_human_review_columns()), character(), simplify = FALSE), ft_human_review_columns()))
     return(out)
   }
   aidx <- match(decisions$paper_id[open], ai$paper_id)
@@ -1196,7 +1236,7 @@ ft_build_human_review_queue <- function(decisions, ai) {
   out[, ft_human_review_columns(), drop = FALSE]
 }
 
-ft_decision_codebook <- function() {
+ft_base_decision_codebook <- function() {
   data.frame(
     field = c(
       "workflow_status", "review_eligible", "meta_status", "final_route",
@@ -1235,7 +1275,8 @@ ft_workbook_summary <- function(decisions, batch_id) {
   data.frame(
     metric = c(
       "batch_id", "records", "resolved", "human_review_open", "pending_data",
-      "route_exclude", "route_review", "route_meta", "route_both"
+      "route_exclude", "route_review", "route_meta", "route_both",
+      "eligibility_policy_version", "workflow_version"
     ),
     value = c(
       batch_id,
@@ -1246,7 +1287,9 @@ ft_workbook_summary <- function(decisions, batch_id) {
       sum(decisions$final_route == "exclude"),
       sum(decisions$final_route == "review"),
       sum(decisions$final_route == "meta"),
-      sum(decisions$final_route == "both")
+      sum(decisions$final_route == "both"),
+      paste(unique(decisions$eligibility_policy_version), collapse = ";"),
+      ft_workflow_version
     ),
     stringsAsFactors = FALSE
   )
@@ -1258,6 +1301,7 @@ ft_write_decision_workbook <- function(decisions, human_review, path, batch_id) 
   }
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   tmp <- tempfile(pattern = "living_seb_decisions_", tmpdir = dirname(path), fileext = ".xlsx")
+  on.exit(unlink(tmp), add = TRUE)
   wb <- openxlsx::createWorkbook()
   for (sheet in c("summary", "decisions", "human_review", "codebook")) {
     openxlsx::addWorksheet(wb, sheet, gridLines = FALSE)
@@ -1273,16 +1317,46 @@ ft_write_decision_workbook <- function(decisions, human_review, path, batch_id) 
   openxlsx::writeDataTable(wb, "codebook", ft_decision_codebook(), tableStyle = "TableStyleMedium4", withFilter = TRUE)
 
   for (sheet in c("summary", "decisions", "human_review", "codebook")) openxlsx::freezePane(wb, sheet, firstRow = TRUE)
+  for (sheet in c("summary", "decisions", "human_review", "codebook")) {
+    count <- switch(sheet, summary = 2L, decisions = ncol(decisions), human_review = ncol(human_review), codebook = 3L)
+    openxlsx::addStyle(wb, sheet, openxlsx::createStyle(fontColour = "#FFFFFF", textDecoration = "bold"),
+                       rows = 1, cols = seq_len(count), gridExpand = TRUE, stack = TRUE)
+  }
+  for (sheet in c("decisions", "human_review", "codebook")) {
+    frame <- switch(sheet, decisions = decisions, human_review = human_review, codebook = ft_decision_codebook())
+    openxlsx::addStyle(wb, sheet, openxlsx::createStyle(wrapText = TRUE, valign = "top"), rows = 1,
+                       cols = seq_along(frame), gridExpand = TRUE, stack = TRUE)
+    openxlsx::setRowHeights(wb, sheet, rows = 1, heights = 44)
+  }
   openxlsx::setColWidths(wb, "summary", cols = 1:2, widths = c(28, 20))
   openxlsx::setColWidths(wb, "decisions", cols = seq_along(names(decisions)), widths = "auto")
   openxlsx::setColWidths(wb, "human_review", cols = seq_along(ft_human_review_columns()), widths = "auto")
-  openxlsx::setColWidths(wb, "codebook", cols = 1:2, widths = c(38, 90))
+  openxlsx::setColWidths(wb, "codebook", cols = 1:3, widths = c(38, 75, 70))
 
   # Cap narrative columns so auto-width does not make the workbook unusably wide.
   narrative_decision <- intersect(c("title", "review_rationale", "review_evidence", "meta_rationale", "meta_evidence", "quantitative_scope_rationale", "adjudication_notes"), names(decisions))
   if (length(narrative_decision)) openxlsx::setColWidths(wb, "decisions", cols = match(narrative_decision, names(decisions)), widths = 45)
   narrative_hr <- intersect(c("title", "issue_summary", "ai_recommendation", "decision_options", "review_evidence", "meta_evidence", "adjudication_note"), ft_human_review_columns())
   if (length(narrative_hr)) openxlsx::setColWidths(wb, "human_review", cols = match(narrative_hr, ft_human_review_columns()), widths = 45)
+  # Bound all other widths too: tags, components and provenance can be long.
+  for (sheet in c("decisions", "human_review")) {
+    frame <- if (sheet == "decisions") decisions else human_review
+    compact <- setdiff(names(frame), if (sheet == "decisions") narrative_decision else narrative_hr)
+    openxlsx::setColWidths(wb, sheet, cols = match(compact, names(frame)), widths = 26)
+  }
+  openxlsx::addStyle(wb, "codebook", openxlsx::createStyle(wrapText = TRUE, valign = "top"),
+                     rows = seq_len(nrow(ft_decision_codebook())) + 1L, cols = 1:3, gridExpand = TRUE, stack = TRUE)
+  ft_fit_wrapped_rows(wb, "codebook", ft_decision_codebook(), c(38, 75, 70))
+  for (sheet in c("decisions", "human_review")) {
+    frame <- if (sheet == "decisions") decisions else human_review
+    widths <- rep(26, ncol(frame))
+    widths[names(frame) %in% if (sheet == "decisions") narrative_decision else narrative_hr] <- 45
+    ft_fit_wrapped_rows(wb, sheet, frame, widths, minimum = 48)
+    openxlsx::freezePane(wb, sheet, firstActiveRow = 2, firstActiveCol = 4)
+    if (nrow(frame)) openxlsx::addStyle(wb, sheet, openxlsx::createStyle(numFmt = "@", halign = "left"),
+      rows = seq_len(nrow(frame)) + 1L, cols = match(c("screening_record_id", "paper_id"), names(frame)),
+      gridExpand = TRUE, stack = TRUE)
+  }
 
   wrap <- openxlsx::createStyle(wrapText = TRUE, valign = "top")
   if (nrow(decisions)) openxlsx::addStyle(wb, "decisions", wrap, rows = 2:(nrow(decisions)+1), cols = seq_along(names(decisions)), gridExpand = TRUE, stack = TRUE)
@@ -1299,10 +1373,11 @@ ft_write_decision_workbook <- function(decisions, human_review, path, batch_id) 
     blue <- openxlsx::createStyle(fontColour = "#0000FF")
     orange <- openxlsx::createStyle(fgFill = "#FCE4D6")
     openxlsx::addStyle(wb, "human_review", blue, rows = 2:(nrow(human_review)+1), cols = match(editable, ft_human_review_columns()), gridExpand = TRUE, stack = TRUE)
-    openxlsx::addStyle(wb, "human_review", orange, rows = 2:(nrow(human_review)+1), cols = seq_along(ft_human_review_columns()), gridExpand = TRUE, stack = TRUE)
+    open_rows <- which(toupper(ft_blank_to_empty(human_review$adjudication_status)) == "OPEN") + 1L
+    if (length(open_rows)) openxlsx::addStyle(wb, "human_review", orange, rows = open_rows, cols = seq_along(ft_human_review_columns()), gridExpand = TRUE, stack = TRUE)
 
     openxlsx::dataValidation(wb, "human_review", cols = match("human_review_eligible", ft_human_review_columns()), rows = 2:(nrow(human_review)+1), type = "list", value = '"TRUE,FALSE"')
-    openxlsx::dataValidation(wb, "human_review", cols = match("human_meta_status", ft_human_review_columns()), rows = 2:(nrow(human_review)+1), type = "list", value = '"eligible,ineligible,pending,uncertain"')
+    openxlsx::dataValidation(wb, "human_review", cols = match("human_meta_status", ft_human_review_columns()), rows = 2:(nrow(human_review)+1), type = "list", value = '"eligible,ineligible,pending"')
     openxlsx::dataValidation(wb, "human_review", cols = match("adjudication_status", ft_human_review_columns()), rows = 2:(nrow(human_review)+1), type = "list", value = '"OPEN,RESOLVED"')
   }
 
@@ -1320,7 +1395,7 @@ ft_write_decision_workbook <- function(decisions, human_review, path, batch_id) 
     openxlsx::addStyle(wb, "decisions", link_style, rows = 2:(nrow(decisions)+1), cols = doi_col, gridExpand = TRUE, stack = TRUE)
   }
 
-  openxlsx::saveWorkbook(wb, tmp, overwrite = TRUE)
+  ft_save_workbook(wb, tmp)
   ok <- file.copy(tmp, path, overwrite = TRUE)
   unlink(tmp)
   if (!isTRUE(ok)) stop("Could not write decision workbook: ", path, call. = FALSE)
@@ -1329,12 +1404,16 @@ ft_write_decision_workbook <- function(decisions, human_review, path, batch_id) 
 
 ft_read_decision_workbook <- function(path) {
   if (!file.exists(path)) stop("Decision workbook not found: ", path, call. = FALSE)
-  decisions <- ft_clean_names(as.data.frame(readxl::read_excel(path, sheet = "decisions"), stringsAsFactors = FALSE))
-  human <- ft_clean_names(as.data.frame(readxl::read_excel(path, sheet = "human_review"), stringsAsFactors = FALSE))
+  decisions <- ft_clean_names(as.data.frame(readxl::read_excel(path, sheet = "decisions", col_types = "text"), stringsAsFactors = FALSE))
+  human <- ft_clean_names(as.data.frame(readxl::read_excel(path, sheet = "human_review", col_types = "text"), stringsAsFactors = FALSE))
+  decisions[] <- lapply(decisions, ft_blank_to_empty)
+  human[] <- lapply(human, ft_blank_to_empty)
+  for (key in intersect(c("review_eligible", "requires_human_review", "language_ai_assessed"), names(decisions))) decisions[[key]] <- ft_bool(decisions[[key]])
   list(decisions = decisions, human_review = human)
 }
 
 ft_apply_adjudications <- function(decisions, human_review) {
+  ft_validate_human_queue(human_review, decisions)
   if (nrow(human_review) == 0L) return(list(decisions = decisions, human_review = human_review, applied = 0L))
   human_review$adjudication_status <- toupper(ft_blank_to_empty(human_review$adjudication_status))
   resolved_rows <- which(human_review$adjudication_status == "RESOLVED")
@@ -1344,6 +1423,11 @@ ft_apply_adjudications <- function(decisions, human_review) {
     pid <- ft_format_paper_id(human_review$paper_id[[j]])
     i <- match(pid, decisions$paper_id)
     if (is.na(i)) stop("Adjudication paper_id not found in decisions: ", pid, call. = FALSE)
+    if (!identical(human_review$screening_record_id[[j]], decisions$screening_record_id[[i]])) {
+      stop("Adjudication screening_record_id mismatch for paper ", pid, call. = FALSE)
+    }
+    if (!nzchar(ft_first_nonblank(human_review$adjudication_note[[j]]))) stop("Adjudication note is required for paper ", pid, call. = FALSE)
+    ft_validate_adjudication(human_review[j, , drop = FALSE])
 
     rev <- ft_bool(human_review$human_review_eligible[[j]])[[1]]
     rev_excl <- ft_first_nonblank(human_review$human_review_exclusion_reason[[j]])
@@ -1391,6 +1475,8 @@ ft_apply_adjudications <- function(decisions, human_review) {
     decisions$adjudication_notes[[i]] <- ft_first_nonblank(human_review$adjudication_note[[j]])
     decisions$decision_source[[i]] <- "human_adjudicated"
   }
+
+  ft_validate_ai_decisions(decisions, decisions)
 
   list(decisions = decisions, human_review = human_review, applied = length(resolved_rows))
 }

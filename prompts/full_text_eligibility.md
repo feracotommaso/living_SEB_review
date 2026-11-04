@@ -13,6 +13,10 @@ Read the complete available full text and supplied supplementary material. Asses
 
 Return one JSON object per input record and conform exactly to the JSON schema. Save each record as `data/2.full_abstracting/ai_decisions/<batch_id>/<paper_id>.json` when operating in the repository.
 
+Use eligibility policy `2.0.0` and workflow `2.2.0`. The R builder validates the
+typed object against the local schema before flattening it. Do not omit required
+nulls or arrays. Record actual PDF evidence pages; never invent page numbers.
+
 ## Record identity and PDF convention
 
 `paper_id` is assigned automatically before screening and must be preserved exactly. Do not create, increment, recycle, or modify paper IDs during eligibility assessment.
@@ -79,6 +83,12 @@ For each review and meta decision, provide concise paraphrased evidence plus a l
 ## Human review
 
 Human review is for substantive uncertainty that can change routing. Typical triggers are ambiguous BESSI source measurement, ambiguous target construct, unclear clinical severity/comparability, material language ambiguity, unclear framework adoption, complex sample overlap, or conflicting full-text information.
+
+If review eligibility is materially uncertain, record the provisional review
+assessment and keep the independent quantitative status. Set
+`requires_human_review = true`, `final_route = null`, and
+`current_route = human_review_required` (unless meta is also uncertain, in which
+case use its uncertainty route). Explain the review issue in the evidence packet.
 
 When `requires_human_review = true`, the JSON must also contain a concise **human-review packet**:
 

@@ -1,0 +1,55 @@
+{
+  "screening_record_id": "seb_29a0ad240c41a194",
+  "paper_id": "0145",
+  "doi": "https://doi.org/10.1177/08902070261486523",
+  "review_eligible": true,
+  "review_exclusion_reason": null,
+  "review_rationale": "SEB skills are substantively investigated as predictors of sustainable attitudes and behavior.",
+  "review_evidence": [
+    {
+      "evidence": "[pp. 3-4] The paper develops hypotheses and research questions about SEB skills and sustainability.",
+      "page": null,
+      "locator": "Recorded PDF pages: 3;4"
+    }
+  ],
+  "framework_relation_tags": [
+    "MEASURES_SEB_SKILLS_SUBSTANTIVELY",
+    "TESTS_SEB_FRAMEWORK"
+  ],
+  "meta_status": "eligible",
+  "meta_exclusion_reason": null,
+  "meta_pending_reason": null,
+  "meta_rationale": "Study 2 uses the standard 96-item BESSI and reports associations of SEB domains with sustainability outcomes.",
+  "meta_evidence": [
+    {
+      "evidence": "[p. 12] Study 2 administers the 96-item BESSI; [pp. 13-15] SEB-domain correlations with sustainable attitudes/behavior are analysed.",
+      "page": null,
+      "locator": "Recorded PDF pages: 12;13;15"
+    }
+  ],
+  "bessi_measure_classification": "clearly_eligible",
+  "bessi_target_construct": "seb_skill_level_or_capacity",
+  "eligible_quantitative_components": [
+    "Study 2"
+  ],
+  "quantitative_scope_rationale": "Only Study 2 administers the BESSI-96 and contributes eligible SEB quantitative data; Study 1 does not receive a sample_id.",
+  "publication_language": "English",
+  "language_ai_assessed": true,
+  "clinical_population_classification": "not_clinical",
+  "requires_human_review": false,
+  "human_review_reasons": [],
+  "decision_confidence": "high",
+  "final_route": "both",
+  "current_route": "both",
+  "decision_source": "human_adjudicated",
+  "eligibility_policy_version": "2.0.0",
+  "workflow_version": "2.2.0",
+  "provenance_note": "Imported from existing operational workbook 2026-10_full_text_decisions.xlsx; original decision source/date and recorded evidence retained. PDFs were not re-screened during migration.",
+  "screening_date": "2026-11-03",
+  "human_review_summary": "Which internal study components should proceed to quantitative coding?",
+  "ai_recommendation": "Only Study 2 should proceed because it administers the BESSI-96; do not create a placeholder sample for Study 1.",
+  "decision_options": [
+    "code Study 2 only",
+    "create placeholder for Study 1 and code Study 2"
+  ]
+}

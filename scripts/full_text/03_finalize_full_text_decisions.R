@@ -1,7 +1,7 @@
 # Living SEB: apply consolidated human adjudication to the monthly decision workbook
-# Version: 2.1.0
+# Version: 2.2.0
 
-required_packages <- c("readr", "readxl", "dplyr", "digest", "openxlsx")
+required_packages <- c("readr", "readxl", "dplyr", "digest", "openxlsx", "jsonlite", "xml2", "zip")
 missing_packages <- required_packages[!vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)]
 if (length(missing_packages) > 0L) {
   stop("Install required packages before running this script: ", paste(missing_packages, collapse = ", "), call. = FALSE)
@@ -17,12 +17,19 @@ if (nzchar(batch_arg)) {
 } else if (!exists("batch_id", inherits = FALSE) || !nzchar(batch_id)) {
   stop("No batch_id available. Set config/dedup_config.R or run: Rscript scripts/full_text/03_finalize_full_text_decisions.R YYYY-MM", call. = FALSE)
 }
+if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])$", batch_id)) stop("batch_id must use YYYY-MM format.", call. = FALSE)
 
 full_text_dir <- file.path("data", "2.full_abstracting")
 workbook_path <- file.path(full_text_dir, paste0(batch_id, "_full_text_decisions.xlsx"))
 wb <- ft_read_decision_workbook(workbook_path)
-res <- ft_apply_adjudications(wb$decisions, wb$human_review)
-ft_write_decision_workbook(res$decisions, res$human_review, workbook_path, batch_id)
+paths <- ft_snapshot_paths(workbook_path)
+if (!file.exists(paths$decisions)) stop("Canonical decision CSV missing. Import existing workbook with Step 00 first.", call. = FALSE)
+canonical <- ft_read_canonical_decisions(paths$decisions)
+ft_assert_same_table(canonical, wb$decisions, "paper_id", "The decisions sheet was edited. Edit only human_review; restore decisions from the canonical CSV.")
+if (!file.exists(paths$human_review)) stop("Canonical human-review audit CSV missing.", call. = FALSE)
+ft_validate_queue_edits(ft_read_table(paths$human_review), wb$human_review)
+res <- ft_apply_adjudications(canonical, wb$human_review)
+ft_write_monthly_outputs(res$decisions, res$human_review, workbook_path, batch_id)
 
 cat("Living SEB full-text adjudication applied.\n")
 cat("Workbook: ", workbook_path, "\n", sep = "")

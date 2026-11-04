@@ -1,7 +1,7 @@
 # Living SEB: assign persistent paper IDs before full-text eligibility screening
-# Version: 2.0.0
+# Version: 2.2.0
 
-required_packages <- c("readr", "readxl", "dplyr", "digest", "openxlsx")
+required_packages <- c("readr", "readxl", "dplyr", "digest", "openxlsx", "xml2", "zip")
 missing_packages <- required_packages[!vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)]
 if (length(missing_packages) > 0L) {
   stop(
@@ -32,15 +32,11 @@ if (nzchar(batch_arg)) {
   )
 }
 
-if (!grepl("^[0-9]{4}-[0-9]{2}$", batch_id)) {
+if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])$", batch_id)) {
   stop("batch_id must use YYYY-MM format. Received: ", batch_id, call. = FALSE)
 }
 
-if (exists("abstracting_dir", inherits = FALSE) && dir.exists(abstracting_dir)) {
-  current_abstracting_dir <- abstracting_dir
-} else {
-  current_abstracting_dir <- file.path("data", "1.abstracting", batch_id)
-}
+current_abstracting_dir <- file.path("data", "1.abstracting", batch_id)
 
 full_text_dir <- file.path("data", "2.full_abstracting")
 pdf_dir <- file.path(full_text_dir, "pdfs")
@@ -62,10 +58,17 @@ if (file.exists(registry_path)) {
 }
 
 registry <- ft_reconcile_legacy_registry(registry, legacy)
+# Reserve persisted aliases even when historical source files are unavailable.
+if (file.exists(alias_path)) {
+  aliases <- ft_read_table(alias_path)
+  if (any(aliases$alias_paper_id %in% registry$paper_id)) stop("Alias ID collides with canonical registry.", call. = FALSE)
+  attr(registry, "reserved_paper_ids") <- unique(c(attr(registry, "reserved_paper_ids"), aliases$alias_paper_id))
+}
 assigned <- ft_assign_paper_ids(current, registry, batch_id, source_file)
 manifest <- ft_build_manifest(assigned$current, batch_id, pdf_dir, source_file)
 
 ft_atomic_write_csv(assigned$registry, registry_path)
+ft_atomic_write_csv(manifest, sub("\\.xlsx$", ".csv", manifest_path))
 ft_atomic_write_manifest_xlsx(manifest, manifest_path)
 
 cat("Living SEB full-text paper ID assignment complete.\n")

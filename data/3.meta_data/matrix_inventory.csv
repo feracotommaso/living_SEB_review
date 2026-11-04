@@ -1,0 +1,42 @@
+paper_id,matrix_id,matrix_path,status,reason
+0013,0013a,data/3.meta_data/matrices/0013a.xlsx,included,Matched quantitative basic_info row
+0018,0018a,data/3.meta_data/matrices/0018a.xlsx,included,Matched quantitative basic_info row
+0018,0018b,data/3.meta_data/matrices/0018b.xlsx,included,Matched quantitative basic_info row
+0026,0026a,data/3.meta_data/matrices/0026a.xlsx,included,Matched quantitative basic_info row
+0030,0030a,data/3.meta_data/matrices/0030a.xlsx,included,Matched quantitative basic_info row
+0030,0030b,data/3.meta_data/matrices/0030b.xlsx,included,Matched quantitative basic_info row
+0034,0034a,data/3.meta_data/matrices/0034a.xlsx,included,Matched quantitative basic_info row
+0035,0035a,data/3.meta_data/matrices/0035a.xlsx,included,Matched quantitative basic_info row
+0043,0043a,data/3.meta_data/matrices/0043a.xlsx,included,Matched quantitative basic_info row
+0045,0045a,data/3.meta_data/matrices/0045a.xlsx,included,Matched quantitative basic_info row
+0048,0048a,data/3.meta_data/matrices/0048a.xlsx,included,Matched quantitative basic_info row
+0049,0049a,data/3.meta_data/matrices/0049a.xlsx,included,Matched quantitative basic_info row
+0050,0050a,data/3.meta_data/matrices/0050a.xlsx,included,Matched quantitative basic_info row
+0050,0050b,data/3.meta_data/matrices/0050b.xlsx,included,Matched quantitative basic_info row
+0053,0053c,data/3.meta_data/matrices/0053c.xlsx,included,Matched quantitative basic_info row
+0053,0053d,data/3.meta_data/matrices/0053d.xlsx,included,Matched quantitative basic_info row
+0053,0053e,data/3.meta_data/matrices/0053e.xlsx,included,Matched quantitative basic_info row
+0053,0053f,data/3.meta_data/matrices/0053f.xlsx,included,Matched quantitative basic_info row
+0053,0053g,data/3.meta_data/matrices/0053g.xlsx,included,Matched quantitative basic_info row
+0068,0068a,data/3.meta_data/matrices/0068a.xlsx,included,Matched quantitative basic_info row
+0070,0070a,data/3.meta_data/matrices/0070a.xlsx,included,Matched quantitative basic_info row
+0071,0071a,data/3.meta_data/matrices/0071a.xlsx,included,Matched quantitative basic_info row
+0080,0080a,data/3.meta_data/matrices/0080a.xlsx,included,Matched quantitative basic_info row
+0087,0087a,data/3.meta_data/matrices/0087a.xlsx,included,Matched quantitative basic_info row
+0095,0095a,data/3.meta_data/matrices/0095a.xlsx,included,Matched quantitative basic_info row
+0100,0100a,data/3.meta_data/matrices/0100a.xlsx,included,Matched quantitative basic_info row
+0104,0104a,data/3.meta_data/matrices/0104a.xlsx,excluded_by_recorded_decision,Historical report is review-only with quantitative exclusion dataQuality; retain prepared matrix without analytical inclusion
+0107,0107a,data/3.meta_data/matrices/0107a.xlsx,included,Matched quantitative basic_info row
+0108,0108a,data/3.meta_data/matrices/0108a.xlsx,included,Matched quantitative basic_info row
+0118,0118a,data/3.meta_data/matrices/0118a.xlsx,included,Matched quantitative basic_info row
+0120,0120a,data/3.meta_data/matrices/0120a.xlsx,included,Matched quantitative basic_info row
+0120,0120b,data/3.meta_data/matrices/0120b.xlsx,included,Matched quantitative basic_info row
+0126,0126a,data/3.meta_data/matrices/0126a.xlsx,included,Matched quantitative basic_info row
+0128,0128a,data/3.meta_data/matrices/0128a.xlsx,included,Matched quantitative basic_info row
+0132,0132a,data/3.meta_data/matrices/0132a.xlsx,included,Matched quantitative basic_info row
+0134,0134a,data/3.meta_data/matrices/0134a.xlsx,included,Matched quantitative basic_info row
+0138,0138a,data/3.meta_data/matrices/0138a.xlsx,included,Matched quantitative basic_info row
+0141,0141a,data/3.meta_data/matrices/0141a.xlsx,included,Matched quantitative basic_info row
+0050,0050,,missing_matrix_file,Historical quantitative row has no matching file; no eligibility change inferred
+0053,0053a,,missing_matrix_file,Historical quantitative row has no matching file; no eligibility change inferred
+0053,0053b,,missing_matrix_file,Historical quantitative row has no matching file; no eligibility change inferred

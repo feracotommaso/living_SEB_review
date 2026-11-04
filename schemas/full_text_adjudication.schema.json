@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://living-seb.example/schemas/full_text_adjudication.schema.json",
+  "$id": "https://github.com/feracotommaso/living_SEB_review/schemas/full_text_adjudication.schema.json",
   "title": "Living SEB full-text human adjudication",
   "type": "object",
   "additionalProperties": false,

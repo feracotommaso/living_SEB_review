@@ -1,0 +1,4 @@
+interface:
+  display_name: "Living SEB Full-text Screening"
+  short_description: "Screen monthly SEB full texts with auditable evidence"
+  default_prompt: "Use $living-seb-full-text to screen the current Living SEB full-text batch, validate its JSON decisions, build the monthly workbook, and present unresolved cases together."

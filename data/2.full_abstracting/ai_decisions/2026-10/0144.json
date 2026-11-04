@@ -1,0 +1,53 @@
+{
+  "screening_record_id": "seb_2010b1d9af0d26c2",
+  "paper_id": "0144",
+  "doi": "https://doi.org/10.1016/j.jrp.2026.104777",
+  "review_eligible": true,
+  "review_exclusion_reason": null,
+  "review_rationale": "SEB skills versus personality traits are a substantive focus of the study.",
+  "review_evidence": [
+    {
+      "evidence": "[pp. 2-3] The study directly compares change goals and feasibility beliefs for SEB skills and corresponding Big Five traits.",
+      "page": null,
+      "locator": "Recorded PDF pages: 2;3"
+    }
+  ],
+  "framework_relation_tags": [
+    "APPLIES_SEB_FRAMEWORK",
+    "TESTS_SEB_FRAMEWORK"
+  ],
+  "meta_status": "ineligible",
+  "meta_exclusion_reason": "NO_ELIGIBLE_SEB_SKILL_CONSTRUCT",
+  "meta_pending_reason": null,
+  "meta_rationale": "The quantitative constructs are change goals and feasibility beliefs rather than SEB skill level/capacity.",
+  "meta_evidence": [
+    {
+      "evidence": "[p. 5] The BESSI-45 was systematically modified for skill/trait change goals and feasibility beliefs.",
+      "page": null,
+      "locator": "Recorded PDF pages: 5"
+    }
+  ],
+  "bessi_measure_classification": "human_judgment",
+  "bessi_target_construct": "belief_goal_or_judgment_about_seb_skills",
+  "eligible_quantitative_components": [],
+  "quantitative_scope_rationale": "BESSI-derived items are repurposed to measure beliefs/goals about changing SEB skills, not participants' SEB skill levels/capacities.",
+  "publication_language": "English",
+  "language_ai_assessed": true,
+  "clinical_population_classification": "not_clinical",
+  "requires_human_review": false,
+  "human_review_reasons": [],
+  "decision_confidence": "high",
+  "final_route": "review",
+  "current_route": "review",
+  "decision_source": "human_adjudicated",
+  "eligibility_policy_version": "2.0.0",
+  "workflow_version": "2.2.0",
+  "provenance_note": "Imported from existing operational workbook 2026-10_full_text_decisions.xlsx; original decision source/date and recorded evidence retained. PDFs were not re-screened during migration.",
+  "screening_date": "2026-11-03",
+  "human_review_summary": "Do BESSI-derived items repurposed to assess change goals/feasibility beliefs count as eligible SEB quantitative measurement?",
+  "ai_recommendation": "Ineligible for meta-analysis because the measured construct is beliefs/goals about SEB skills rather than SEB skill level/capacity.",
+  "decision_options": [
+    "eligible as modified BESSI",
+    "ineligible because target construct is not SEB skill level/capacity"
+  ]
+}

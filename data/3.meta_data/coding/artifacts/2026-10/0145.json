@@ -1,0 +1,273 @@
+{
+  "coding_version": "1.0.0",
+  "screening_record_id": "seb_29a0ad240c41a194",
+  "paper_id": "0145",
+  "coding_date": "2026-11-04",
+  "article": {
+    "download_date": null,
+    "doi": "https://doi.org/10.1177/08902070261486523",
+    "title": "Cognitive Abilities, Personality, and Sustainable Attitudes and Behavior",
+    "abstract": "Climate change demands urgent action, yet individual engagement in sustainable behaviors remains inconsistent. We conducted two studies (N1 = 280, N2 = 973) examining how political orientation, personality traits, reasoning ability, social-emotional-behavioral skills, and complex problem solving relate to sustainable attitudes and behaviors in U.S. adults. Using structural equation modeling, we found that openness to experience was the strongest predictor, alongside liberal political orientation and self-perceived social engagement and innovation skills. Unexpectedly, both cognitive personality traits showed negative associations with sustainability outcomes, challenging the notion that cognitive abilities universally facilitate adaptive behavior. For sustainable behavior, these associations were small to moderate (-.25 <= r <= -.15) and most pronounced for food-related and engagement-related behaviors. Specification curve analyses confirmed that less established constructs (social, emotional, and behavioral skill self-concepts and complex problem solving) contributed meaningful variance beyond established personality predictors and that these associations were robust across analytical specifications. Overall, psychological characteristics together explained up to 44\\\\% of variance in sustainable attitudes and 29\\\\% of variance in sustainable behavior. These findings advance our understanding of the psychological underpinnings of environmental engagement and highlight the need for future research to clarify the mechanisms underlying the negative cognitive ability-sustainability association.",
+    "journal": "EUROPEAN JOURNAL OF PERSONALITY",
+    "authors": "Lubczyk, Till and Bleidorn, Wiebke and Hopwood, Christopher J. and Kretzschmar, Andre",
+    "author_et_al": "Lubczyk et al.",
+    "year": 2026,
+    "review_topics": [
+      "proenvironment",
+      "incrementalvalidity"
+    ],
+    "email": [
+      "t.lubczyk@psychologie.uzh.ch"
+    ],
+    "open_data": [
+      "https://osf.io/an64w/"
+    ],
+    "coder": "ai",
+    "notes": "Only Study 2 proceeds to quantitative coding. Study 1 receives no quantitative sample or matrix ID.",
+    "additional": null
+  },
+  "samples": [
+    {
+      "component_label": "Study 2",
+      "sample_label": "Analytic sample",
+      "occasion_label": "Single assessment conducted over two sessions",
+      "study_design": "cross",
+      "country": [
+        "United States"
+      ],
+      "gender": 51.3,
+      "age": 26.05,
+      "n": 973,
+      "age_class": "adult",
+      "clinical": "not_clinical",
+      "clinical_spec": null,
+      "seb_measure": [
+        "bessi96"
+      ],
+      "seb_measure_type": "long",
+      "trait_frame": [
+        "hexaco"
+      ],
+      "notes": "Analytic N=973 after exclusions; only participants completing both sessions entered analysis (PDF pp.10-11). The final age range was 18-49 despite intended recruitment at 18-32, so the broad mixed-adult convention is used. Gender: 51.3% female and 45.7% male; remaining participants reported another category or preferred not to state. The two sessions measured different constructs, not repeated SEB waves. BESSI-96 form type follows the existing legacy classification. Data/reported Pearson matrices remain to be retrieved/extracted; no effect sizes coded.",
+      "occasion_role": "first_eligible"
+    }
+  ],
+  "evidence": [
+    {
+      "unit": "paper",
+      "field": "doi",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 1,
+      "evidence": "Bibliographic record checked against PDF title page.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "title",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 1,
+      "evidence": "Bibliographic record checked against PDF title page.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "journal",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 1,
+      "evidence": "Bibliographic record checked against PDF title page.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "authors",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 1,
+      "evidence": "Bibliographic record checked against PDF title page.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "year",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 1,
+      "evidence": "Bibliographic record checked against PDF title page.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "abstract",
+      "status": "derived",
+      "source": "data/1.abstracting/2026-10/title_abstract/2026-10_title_abstract_included.csv",
+      "page": null,
+      "evidence": "Original abstract retained from the upstream included record.",
+      "source_sha256": "14d828e1371707fca67a37d36f4fd0928eb120220d27292d6b52a3d34824da1b"
+    },
+    {
+      "unit": "paper",
+      "field": "author_et_al",
+      "status": "derived",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 1,
+      "evidence": "Citation label derived from the verified ordered author list.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "review_topics",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 10,
+      "evidence": "Sustainability outcomes and the additional explanatory contribution of BESSI beyond established predictors are explicit aims.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "coder",
+      "status": "derived",
+      "source": "config/coding/legacy_31_fields.csv",
+      "page": null,
+      "evidence": "AI descriptive extraction; model identifier not exposed by this execution environment.",
+      "source_sha256": "af34eb84ea5d7d01f409bc0fe0729ae4ee4dd117565aec0aab3437d0e2a90026"
+    },
+    {
+      "unit": "paper",
+      "field": "notes",
+      "status": "derived",
+      "source": "data/2.full_abstracting/2026-10_full_text_decisions.csv",
+      "page": null,
+      "evidence": "Scope follows the adjudicated full-text decision; review-only sample fields are intentionally not extracted.",
+      "source_sha256": "1c5c16e1b9ab0c6f9d19277238cfb848b787429f784d8bfb648443fbc71e9d4d"
+    },
+    {
+      "unit": "paper",
+      "field": "download_date",
+      "status": "not_verified",
+      "source": "data/1.abstracting/2026-10/title_abstract/2026-10_title_abstract_included.csv",
+      "page": null,
+      "evidence": "The retained bibliographic CSV does not establish an actual download date; no batch date is substituted.",
+      "source_sha256": "14d828e1371707fca67a37d36f4fd0928eb120220d27292d6b52a3d34824da1b"
+    },
+    {
+      "unit": "paper",
+      "field": "email",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 1,
+      "evidence": "Corresponding-author address on the publication title page.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "open_data",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 10,
+      "evidence": "Study 2 states that preregistration, data, code and supplements are available at the linked OSF project; remote access was not verified.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "study_design",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 11,
+      "evidence": "One assessment battery split across two days; participants completed both parts, with distinct constructs assessed on each day.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "country",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 10,
+      "evidence": "Study 2 recruited young adults from the USA using Prolific.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "gender",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 11,
+      "evidence": "The final analytic sample comprised 51.3% females; other gender categories and nonresponse are also reported.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "age",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 11,
+      "evidence": "The final sample mean age was 26.05 years (SD 4.16), range 18-49.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "n",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 10,
+      "evidence": "After applying the stated exclusion criteria, 973 participants remained for analysis.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "age_class",
+      "status": "derived",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 11,
+      "evidence": "The observed 18-49 range crosses adult age bands; adult follows the agreed broad mixed-adult convention.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "clinical",
+      "status": "derived",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 10,
+      "evidence": "General-population online panel, with no clinical-population recruitment described; matches the full-text classification.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "seb_measure",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 12,
+      "evidence": "The 96-item BESSI measured five domains and 32 facets.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "seb_measure_type",
+      "status": "derived",
+      "source": "config/coding/measure_forms.csv",
+      "page": null,
+      "evidence": "The prior legacy coding consistently classifies bessi96 as long; this is a compatibility convention.",
+      "source_sha256": "f3778ec37b9a30a65fce8cd393611f33d54e54c55d92f24ce35c97c363074fdb"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "trait_frame",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 11,
+      "evidence": "Study 2 used the 100-item HEXACO-PI-R rather than Study 1's Big Five instrument.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "notes",
+      "status": "derived",
+      "source": "data/2.full_abstracting/pdfs/0145.pdf",
+      "page": 11,
+      "evidence": "Analytic sample, gender composition, age range and two-session procedure are described in Study 2 methods.",
+      "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    }
+  ]
+}

@@ -31,6 +31,7 @@
     "current_route",
     "decision_source",
     "eligibility_policy_version",
+    "workflow_version",
     "screening_date",
     "human_review_summary",
     "ai_recommendation",
@@ -236,7 +237,8 @@
         "review_meta_pending",
         "meta_pending",
         "review_meta_uncertain",
-        "meta_uncertain"
+        "meta_uncertain",
+        "human_review_required"
       ]
     },
     "decision_source": {
@@ -249,6 +251,13 @@
     },
     "eligibility_policy_version": {
       "const": "2.0.0"
+    },
+    "workflow_version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "provenance_note": {
+      "type": "string"
     },
     "screening_date": {
       "type": "string",
@@ -458,6 +467,9 @@
           },
           "meta_status": {
             "const": "eligible"
+          },
+          "requires_human_review": {
+            "const": false
           }
         }
       },
@@ -480,6 +492,9 @@
           },
           "meta_status": {
             "const": "eligible"
+          },
+          "requires_human_review": {
+            "const": false
           }
         }
       },
@@ -502,6 +517,9 @@
           },
           "meta_status": {
             "const": "ineligible"
+          },
+          "requires_human_review": {
+            "const": false
           }
         }
       },
@@ -524,6 +542,9 @@
           },
           "meta_status": {
             "const": "ineligible"
+          },
+          "requires_human_review": {
+            "const": false
           }
         }
       },
@@ -546,6 +567,9 @@
           },
           "meta_status": {
             "const": "pending"
+          },
+          "requires_human_review": {
+            "const": false
           }
         }
       },
@@ -565,6 +589,9 @@
           },
           "meta_status": {
             "const": "pending"
+          },
+          "requires_human_review": {
+            "const": false
           }
         }
       },
@@ -686,6 +713,9 @@
       },
       "then": {
         "properties": {
+          "human_review_reasons": {
+            "minItems": 1
+          },
           "human_review_summary": {
             "type": "string",
             "minLength": 1
@@ -696,6 +726,81 @@
           },
           "decision_options": {
             "minItems": 2
+          },
+          "final_route": {
+            "const": null
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "requires_human_review": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_review_reasons": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "meta_status": {
+            "const": "eligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "bessi_target_construct": {
+            "const": "seb_skill_level_or_capacity"
+          },
+          "bessi_measure_classification": {
+            "enum": [
+              "clearly_eligible",
+              "human_judgment"
+            ]
+          },
+          "clinical_population_classification": {
+            "enum": [
+              "not_clinical",
+              "clearly_non_severe_or_in_scope",
+              "not_applicable",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "meta_status": {
+            "enum": [
+              "eligible",
+              "pending"
+            ]
+          },
+          "bessi_measure_classification": {
+            "const": "human_judgment"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "decision_source": {
+            "enum": [
+              "human_adjudicated",
+              "rule_based",
+              "legacy_migrated"
+            ]
           }
         }
       }

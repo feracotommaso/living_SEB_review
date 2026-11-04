@@ -1,5 +1,39 @@
 # Changelog
 
+## Descriptive coding 1.0.0 — 2026-11-04
+
+- Applied the user-confirmed `assessment -> skillassessment` correction for 0066,
+  retaining `theorydevelopment` and recording the original coding in the audit.
+
+- Added the versioned 31-field CSV dictionary, derived Excel dictionary and agreed
+  coding rules for review-only scope, analytic N, broad ages and selected occasions.
+- Added a validated descriptive-coding builder and October pilot: three papers,
+  only Study 2 of 0145 as quantitative sample a (analytic N=973), with page evidence.
+- Corrected the exact nomoligicalnet spelling alias in the active codebook and
+  compatibility exports while preserving original historical coding files.
+- Reconciled 0104a as an inactive matrix under the recorded review/dataQuality
+  decision; removed its 18 entirely missing effect columns without changing any
+  populated correlation, analytic N or quantitative sample.
+- Added CSV companions, explicit matrix/topic audit queues and scientific numeric
+  regression fixtures. No new correlation matrices or coding data were promoted.
+
+## Full-text workflow 2.2.0 — 2026-11-04
+
+- Added the repository-scoped `living-seb-full-text` skill to orchestrate PDF
+  assessment, validated JSON output, monthly workbook generation and batched
+  adjudication using the existing versioned workflow.
+
+- Consolidated policy 2.0.0 on the current feature branch with typed JSON Schema
+  validation, exact coverage checks, evidence and checksum provenance.
+- Added canonical decision/audit CSVs and rebuild-safe operational XLSX outputs.
+- Recovered October artifacts from its existing workbook, preserving six decisions
+  and three adjudications with explicit migration provenance.
+- Hardened IDs, alias reservations, batch selection and legacy discovery.
+- Added guarded resolved-routing export without assigning samples/matrices or
+  changing historical analytical workbooks.
+- Added full-text tests and English local-workflow documentation. Removed stale
+  package checksums and the un-applied ignore snippet; .gitignore is authoritative.
+
 ## 2026-10.3
 
 - Added a versioned title/abstract screening policy, prompt, JSON schema, R helpers, scripts, tests, and Codex/ChatGPT skill.

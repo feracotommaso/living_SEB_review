@@ -17,6 +17,10 @@ This repository contains all the open materials of the **Living SEB Skills Proje
 
 ## Repository Structure
 
+For the reproducible monthly pipeline, see [Monthly workflow](MONTHLY_WORKFLOW.md)
+and [Full-text eligibility](scripts/full_text/README.md). Setup instructions are in
+[INSTALLATION.md](INSTALLATION.md).
+
 ```text
 ├── app/                      # R code for the living SEB Shiny app
 ├── appManual/                # Instruction manual for the app (Quarto)
