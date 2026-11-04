@@ -1,0 +1,15 @@
+screening_record_id,ai_decision,ai_exclusion_reason,ai_confidence,automatic_action,expected_ai_decision,expected_ai_exclusion_reason,expected_ai_confidence,expected_automatic_action,matches_expected
+seb_11f0acf20bfbc80c,exclude,OUT_OF_SCOPE,high,EXCLUDE,exclude,OUT_OF_SCOPE,high,EXCLUDE,TRUE
+seb_ccff684e189b293a,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,TRUE
+seb_0a926cccac558523,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,TRUE
+seb_84b3388b3b595aad,include,NA,high,KEEP,include,NA,high,KEEP,TRUE
+seb_dcf9b2db28e05f01,exclude,BOOK,high,EXCLUDE,exclude,BOOK,high,EXCLUDE,TRUE
+seb_6c06c00aa5456b3e,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,TRUE
+seb_57466cfaed4221e3,include,NA,high,KEEP,include,NA,high,KEEP,TRUE
+seb_3b68825cf071cb29,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,TRUE
+seb_bc99786c781e2b5d,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,TRUE
+seb_2010b1d9af0d26c2,include,NA,high,KEEP,include,NA,high,KEEP,TRUE
+seb_6e6c5180c8c27f17,include,NA,high,KEEP,include,NA,high,KEEP,TRUE
+seb_387b6b0a88c79282,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE,TRUE
+seb_29a0ad240c41a194,include,NA,high,KEEP,include,NA,high,KEEP,TRUE
+seb_eaca27ddf43598f0,include,NA,high,KEEP,include,NA,high,KEEP,TRUE

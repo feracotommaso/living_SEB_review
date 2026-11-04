@@ -1,0 +1,2 @@
+workflow_version,policy_version,prompt_version,batch_id,input_records,keep_records,keep_uncertain_records,excluded_records,included_for_next_stage,human_review_required,generated_at_utc
+2026-10.3,1.0.0,1.0.0,2026-10,14,6,0,8,6,FALSE,2026-11-03T10:45:00Z

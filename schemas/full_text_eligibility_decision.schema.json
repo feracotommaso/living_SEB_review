@@ -1,0 +1,704 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/feracotommaso/living_SEB_review/schemas/full_text_eligibility_decision.schema.json",
+  "title": "Living SEB full-text eligibility decision v2.0.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "screening_record_id",
+    "paper_id",
+    "review_eligible",
+    "review_exclusion_reason",
+    "review_rationale",
+    "review_evidence",
+    "framework_relation_tags",
+    "meta_status",
+    "meta_exclusion_reason",
+    "meta_pending_reason",
+    "meta_rationale",
+    "meta_evidence",
+    "bessi_measure_classification",
+    "bessi_target_construct",
+    "eligible_quantitative_components",
+    "quantitative_scope_rationale",
+    "publication_language",
+    "language_ai_assessed",
+    "clinical_population_classification",
+    "requires_human_review",
+    "human_review_reasons",
+    "decision_confidence",
+    "final_route",
+    "current_route",
+    "decision_source",
+    "eligibility_policy_version",
+    "screening_date",
+    "human_review_summary",
+    "ai_recommendation",
+    "decision_options"
+  ],
+  "properties": {
+    "screening_record_id": {
+      "type": "string",
+      "pattern": "^seb_[a-f0-9]{16}$"
+    },
+    "paper_id": {
+      "type": "string",
+      "pattern": "^[0-9]{4,}$"
+    },
+    "doi": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "review_eligible": {
+      "type": "boolean"
+    },
+    "review_exclusion_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "NOT_SEB_FOCUS",
+        "SEB_MENTION_ONLY",
+        "NON_SEB_FRAMEWORK",
+        "INELIGIBLE_PUBLICATION_TYPE",
+        "OTHER_REVIEW_EXCLUSION"
+      ]
+    },
+    "review_rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_evidence": {
+      "$ref": "#/$defs/evidenceArray"
+    },
+    "framework_relation_tags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "APPLIES_SEB_FRAMEWORK",
+          "TESTS_SEB_FRAMEWORK",
+          "MEASURES_SEB_SKILLS_SUBSTANTIVELY",
+          "VALIDATES_OR_ADAPTS_BESSI",
+          "EXTENDS_OR_MODIFIES_SEB_FRAMEWORK",
+          "COMPARES_SEB_WITH_OTHER_FRAMEWORKS",
+          "CRITIQUES_SEB_FRAMEWORK",
+          "SYNTHESIZES_SEB_EVIDENCE",
+          "OTHER_SUBSTANTIVE_SEB_RELATION"
+        ]
+      }
+    },
+    "meta_status": {
+      "enum": [
+        "eligible",
+        "ineligible",
+        "pending",
+        "uncertain"
+      ]
+    },
+    "meta_exclusion_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "NO_ORIGINAL_QUANTITATIVE_DATA",
+        "NO_ELIGIBLE_BESSI_MEASURE",
+        "NO_ELIGIBLE_SEB_SKILL_CONSTRUCT",
+        "FULLY_DUPLICATED_DATA",
+        "NO_ELIGIBLE_BASELINE_DATA",
+        "DATA_NOT_REDUCIBLE_TO_CORRELATIONS",
+        "DATA_UNAVAILABLE_AFTER_RETRIEVAL_ATTEMPT",
+        "SEVERE_CLINICAL_POPULATION",
+        "OTHER_META_EXCLUSION"
+      ]
+    },
+    "meta_pending_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "AUTHOR_CONTACT_NEEDED",
+        "SUPPLEMENT_NEEDED",
+        "OPEN_DATA_TO_RETRIEVE",
+        "RAW_DATA_ACCESS_TO_VERIFY",
+        "SAMPLE_OVERLAP_TO_RESOLVE",
+        "OTHER_PENDING"
+      ]
+    },
+    "meta_rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "meta_evidence": {
+      "$ref": "#/$defs/evidenceArray"
+    },
+    "bessi_measure_classification": {
+      "enum": [
+        "clearly_eligible",
+        "clearly_ineligible",
+        "human_judgment",
+        "not_applicable",
+        "unknown"
+      ]
+    },
+    "bessi_target_construct": {
+      "enum": [
+        "seb_skill_level_or_capacity",
+        "belief_goal_or_judgment_about_seb_skills",
+        "other_non_skill_construct",
+        "mixed_or_ambiguous",
+        "not_applicable",
+        "unknown"
+      ]
+    },
+    "eligible_quantitative_components": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "quantitative_scope_rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publication_language": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language_ai_assessed": {
+      "type": "boolean"
+    },
+    "clinical_population_classification": {
+      "enum": [
+        "not_clinical",
+        "clearly_non_severe_or_in_scope",
+        "clearly_severe_out_of_scope",
+        "human_judgment",
+        "not_applicable",
+        "unknown"
+      ]
+    },
+    "requires_human_review": {
+      "type": "boolean"
+    },
+    "human_review_reasons": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "AMBIGUOUS_BESSI_MEASURE",
+          "AMBIGUOUS_SEB_TARGET_CONSTRUCT",
+          "CLINICAL_SEVERITY_UNCLEAR",
+          "LANGUAGE_INTERPRETATION_REQUIRED",
+          "FRAMEWORK_ADOPTION_UNCLEAR",
+          "SAMPLE_OVERLAP_COMPLEX",
+          "CONFLICTING_FULLTEXT_INFORMATION",
+          "OTHER_SUBSTANTIVE_UNCERTAINTY"
+        ]
+      }
+    },
+    "decision_confidence": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ]
+    },
+    "final_route": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "exclude",
+        "review",
+        "meta",
+        "both"
+      ]
+    },
+    "current_route": {
+      "enum": [
+        "exclude",
+        "review",
+        "meta",
+        "both",
+        "review_meta_pending",
+        "meta_pending",
+        "review_meta_uncertain",
+        "meta_uncertain"
+      ]
+    },
+    "decision_source": {
+      "enum": [
+        "ai",
+        "human_adjudicated",
+        "rule_based",
+        "legacy_migrated"
+      ]
+    },
+    "eligibility_policy_version": {
+      "const": "2.0.0"
+    },
+    "screening_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "human_review_summary": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "ai_recommendation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decision_options": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "evidenceItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence",
+        "page"
+      ],
+      "properties": {
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "page": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "locator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "evidenceArray": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/evidenceItem"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "review_exclusion_reason": {
+            "const": null
+          },
+          "framework_relation_tags": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "review_exclusion_reason": {
+            "type": "string"
+          },
+          "framework_relation_tags": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "meta_status": {
+            "const": "eligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta_exclusion_reason": {
+            "const": null
+          },
+          "meta_pending_reason": {
+            "const": null
+          },
+          "eligible_quantitative_components": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "meta_status": {
+            "const": "ineligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta_exclusion_reason": {
+            "type": "string"
+          },
+          "meta_pending_reason": {
+            "const": null
+          },
+          "eligible_quantitative_components": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "meta_status": {
+            "const": "pending"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta_exclusion_reason": {
+            "const": null
+          },
+          "meta_pending_reason": {
+            "type": "string"
+          },
+          "final_route": {
+            "const": null
+          },
+          "eligible_quantitative_components": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "meta_status": {
+            "const": "uncertain"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta_exclusion_reason": {
+            "const": null
+          },
+          "meta_pending_reason": {
+            "const": null
+          },
+          "final_route": {
+            "const": null
+          },
+          "requires_human_review": {
+            "const": true
+          },
+          "human_review_reasons": {
+            "minItems": 1
+          },
+          "eligible_quantitative_components": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": true
+          },
+          "meta_status": {
+            "const": "eligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "final_route": {
+            "const": "both"
+          },
+          "current_route": {
+            "const": "both"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": false
+          },
+          "meta_status": {
+            "const": "eligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "final_route": {
+            "const": "meta"
+          },
+          "current_route": {
+            "const": "meta"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": true
+          },
+          "meta_status": {
+            "const": "ineligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "final_route": {
+            "const": "review"
+          },
+          "current_route": {
+            "const": "review"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": false
+          },
+          "meta_status": {
+            "const": "ineligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "final_route": {
+            "const": "exclude"
+          },
+          "current_route": {
+            "const": "exclude"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": true
+          },
+          "meta_status": {
+            "const": "pending"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "current_route": {
+            "const": "review_meta_pending"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": false
+          },
+          "meta_status": {
+            "const": "pending"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "current_route": {
+            "const": "meta_pending"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": true
+          },
+          "meta_status": {
+            "const": "uncertain"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "current_route": {
+            "const": "review_meta_uncertain"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "review_eligible": {
+            "const": false
+          },
+          "meta_status": {
+            "const": "uncertain"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "current_route": {
+            "const": "meta_uncertain"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bessi_target_construct": {
+            "const": "belief_goal_or_judgment_about_seb_skills"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta_status": {
+            "const": "ineligible"
+          },
+          "meta_exclusion_reason": {
+            "const": "NO_ELIGIBLE_SEB_SKILL_CONSTRUCT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "bessi_target_construct": {
+            "const": "other_non_skill_construct"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "meta_status": {
+            "const": "ineligible"
+          },
+          "meta_exclusion_reason": {
+            "const": "NO_ELIGIBLE_SEB_SKILL_CONSTRUCT"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "final_route": {
+            "enum": [
+              "exclude",
+              "review",
+              "meta",
+              "both"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "requires_human_review": {
+            "const": false
+          },
+          "human_review_reasons": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "requires_human_review": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_review_summary": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ai_recommendation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "decision_options": {
+            "minItems": 2
+          }
+        }
+      }
+    }
+  ]
+}

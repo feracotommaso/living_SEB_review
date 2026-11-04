@@ -172,4 +172,10 @@ readr::write_csv(
 
 print(summary_data)
 message("Current update finalized, but the registry has not been promoted.")
-message("Compare the new-record file with Rayyan before running 06_promote_registry.R.")
+if (isTRUE(require_rayyan_comparison)) {
+  message("Rayyan comparison is required by config before promotion.")
+  message("Run 05_compare_rayyan.R, then 06_promote_registry.R.")
+} else {
+  message("Rayyan comparison is optional for this batch.")
+  message("Inspect the outputs, then run 06_promote_registry.R.")
+}

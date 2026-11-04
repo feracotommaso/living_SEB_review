@@ -1,0 +1,2 @@
+workflow_version,batch_id,r_records,rayyan_records,exact_matches,only_in_R_before_fuzzy_review,only_in_Rayyan_before_fuzzy_review,fuzzy_title_candidates
+2026-10.2,2026-10,14,14,14,0,0,0

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/feracotommaso/living_SEB_review/schemas/title_abstract_decision.schema.json",
+  "title": "Living SEB title/abstract AI decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "screening_record_id",
+    "ai_decision",
+    "ai_exclusion_reason",
+    "ai_confidence",
+    "ai_rationale",
+    "ai_evidence",
+    "policy_version",
+    "prompt_version",
+    "model",
+    "screened_at_utc"
+  ],
+  "properties": {
+    "screening_record_id": {"type": "string", "minLength": 1},
+    "ai_decision": {
+      "type": "string",
+      "enum": ["include", "exclude", "uncertain"]
+    },
+    "ai_exclusion_reason": {
+      "type": ["string", "null"],
+      "enum": [
+        "",
+        null,
+        "BOOK",
+        "OUT_OF_SCOPE",
+        "NON_SEB_FRAMEWORK",
+        "NOT_JOURNAL_PEER_REVIEWED"
+      ]
+    },
+    "ai_confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"]
+    },
+    "ai_rationale": {"type": "string", "minLength": 1},
+    "ai_evidence": {"type": "string"},
+    "policy_version": {"const": "1.0.0"},
+    "prompt_version": {"const": "1.0.0"},
+    "model": {"type": "string", "minLength": 1},
+    "screened_at_utc": {"type": "string", "minLength": 1}
+  }
+}

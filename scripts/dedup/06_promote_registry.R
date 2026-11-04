@@ -1,5 +1,5 @@
 # Promote the reviewed proposed registry to the live registry alias.
-# Run only after reviewing the Rayyan comparison.
+# Rayyan comparison is optional unless require_rayyan_comparison is TRUE.
 
 if (!interactive()) {
   stop("Run this promotion script interactively in RStudio.", call. = FALSE)
@@ -28,11 +28,64 @@ if (!file.exists(proposed_master_file)) {
   )
 }
 
-comparison_summary <- file.path(batch_dir, "comparison_summary.csv")
-if (!file.exists(comparison_summary)) {
+comparison_summary_file <- file.path(batch_dir, "comparison_summary.csv")
+comparison_status <- "not_run"
+
+if (file.exists(comparison_summary_file)) {
+  comparison <- readr::read_csv(
+    comparison_summary_file,
+    show_col_types = FALSE
+  )
+
+  required_comparison_columns <- c(
+    "r_records",
+    "rayyan_records",
+    "exact_matches",
+    "only_in_R_before_fuzzy_review",
+    "only_in_Rayyan_before_fuzzy_review",
+    "fuzzy_title_candidates"
+  )
+  missing_comparison_columns <- setdiff(
+    required_comparison_columns,
+    names(comparison)
+  )
+
+  if (length(missing_comparison_columns) > 0L || nrow(comparison) != 1L) {
+    stop(
+      "Invalid Rayyan comparison summary. Missing/invalid fields: ",
+      paste(missing_comparison_columns, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  exact_agreement <- with(
+    comparison,
+    r_records == rayyan_records &&
+      exact_matches == r_records &&
+      only_in_R_before_fuzzy_review == 0L &&
+      only_in_Rayyan_before_fuzzy_review == 0L &&
+      fuzzy_title_candidates == 0L
+  )
+
+  if (!isTRUE(exact_agreement[[1L]])) {
+    stop(
+      "Rayyan comparison contains unresolved discrepancies. ",
+      "Resolve them before registry promotion.",
+      call. = FALSE
+    )
+  }
+
+  comparison_status <- "exact_agreement"
+} else if (isTRUE(require_rayyan_comparison)) {
   stop(
-    "Rayyan comparison summary not found. Run 05_compare_rayyan.R first.",
+    "Rayyan comparison is required by config, but comparison_summary.csv is missing. ",
+    "Run 05_compare_rayyan.R first.",
     call. = FALSE
+  )
+} else {
+  message(
+    "No Rayyan comparison found. Promotion is permitted because ",
+    "require_rayyan_comparison is FALSE."
   )
 }
 
@@ -94,6 +147,7 @@ summary_data <- tibble::tibble(
   workflow_version = workflow_version,
   promoted_batch = batch_id,
   promoted_records = nrow(proposed),
+  rayyan_comparison_status = comparison_status,
   versioned_registry_file = versioned_master_file,
   live_registry_file = registry_file,
   promoted_at = format(Sys.time(), tz = "UTC", usetz = TRUE)

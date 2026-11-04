@@ -1,0 +1,77 @@
+version: "1.0.0"
+prompt_version: "1.0.0"
+stage: "title_abstract"
+
+principle:
+  objective: "High-sensitivity screening"
+  exclude_only_when_clear: true
+  uncertain_means_retain: true
+  rationale: >
+    It is preferable to retain an extra record for the next stage than to
+    exclude a potentially eligible publication at title/abstract screening.
+
+retain:
+  empirical_articles: true
+  reviews: true
+  meta_analyses: true
+  editorials: true
+  uncertain_records: true
+
+exclusion_reasons:
+  BOOK:
+    description: "Clearly a book or book chapter."
+    examples:
+      - "book"
+      - "book chapter"
+
+  OUT_OF_SCOPE:
+    description: >
+      Clearly unrelated to social, emotional, or behavioral skills and to the
+      substantive topic of the Living SEB review.
+
+  NON_SEB_FRAMEWORK:
+    description: >
+      The record concerns a superficially related construct but clearly adopts
+      a conceptual framework outside the SEB framework relevant to this review.
+    caution: >
+      Absence of the labels SEB, social-emotional skills, or behavioral skills
+      is never sufficient for exclusion. Exclude only when the alternative
+      framework is explicit and clearly non-SEB.
+
+  NOT_JOURNAL_PEER_REVIEWED:
+    description: >
+      Clearly not a publication in a peer-reviewed journal.
+    examples:
+      - "thesis"
+      - "dissertation"
+      - "conference proceeding"
+      - "conference abstract"
+      - "technical report"
+      - "working paper"
+      - "unpublished preprint"
+    caution: >
+      Reviews, meta-analyses, and editorials published in peer-reviewed journals
+      are retained.
+
+allowed_values:
+  ai_decision:
+    - "include"
+    - "exclude"
+    - "uncertain"
+  ai_confidence:
+    - "high"
+    - "medium"
+    - "low"
+
+operational_policy:
+  include: "KEEP"
+  uncertain: "KEEP_UNCERTAIN"
+  exclude_high_with_valid_reason_and_evidence: "EXCLUDE"
+  exclude_otherwise: "KEEP_UNCERTAIN"
+  human_screening_required_for_uncertain: false
+
+validation:
+  rationale_required: true
+  evidence_required_for_exclusion: true
+  one_decision_per_record: true
+  exact_record_id_coverage: true

@@ -1,7 +1,7 @@
 # Living SEB bibliographic deduplication workflow configuration.
 # The batch identifier refers to the publication month represented by the update.
 
-workflow_version <- "2026-10.2"
+workflow_version <- "2026-10.3"
 expected_citesource_version <- "0.2.1"
 
 batch_id <- "2026-10"
@@ -56,3 +56,7 @@ rayyan_dir <- file.path(
   batch_dir,
   "rayyan"
 )
+
+# Rayyan was used to validate the pilot batch. Set TRUE only when a comparison
+# is required before registry promotion for a future batch.
+require_rayyan_comparison <- FALSE
