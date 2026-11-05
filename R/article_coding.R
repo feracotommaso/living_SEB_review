@@ -25,6 +25,10 @@ coding_validate_artifact <- function(obj, eligibility, topics) {
   if (eligibility$final_route[[i]] == "review" && length(obj$samples)) stop("Review-only papers must not receive sample coding.", call. = FALSE)
   if (eligibility$final_route[[i]] %in% c("meta", "both") && !length(obj$samples)) stop("Quantitative paper lacks sample coding.", call. = FALSE)
   if (any(!unlist(obj$article$review_topics) %in% topics$Topic)) stop("Unknown review topic in new coding.", call. = FALSE)
+  date <- obj$article$download_date
+  if (!is.null(date) && (!is.character(date) || length(date) != 1L ||
+      !grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", date) || is.na(as.Date(date, format = "%Y-%m-%d"))))
+    stop("Invalid bibliographic download date.", call. = FALSE)
   if (!is.null(obj$article$year) && (!is.numeric(obj$article$year) || obj$article$year != floor(obj$article$year))) stop("year must be an integer.", call. = FALSE)
   if (!is.character(obj$article$title) || length(obj$article$title) != 1L || !nzchar(obj$article$title) ||
       !is.character(obj$article$coder) || !nzchar(obj$article$coder)) stop("Title and coder are required.", call. = FALSE)
@@ -135,11 +139,15 @@ coding_build_batch <- function(batch_id, base = "data/3.meta_data/coding") {
       exports[[length(exports) + 1L]] <- out
     }
   }
-  p <- dplyr::bind_rows(papers); s <- dplyr::bind_rows(samples); e <- dplyr::bind_rows(evidence)
+  empty_table <- function(fields) as.data.frame(setNames(rep(list(character()), length(fields)), fields))
+  p <- if (length(papers)) dplyr::bind_rows(papers) else empty_table(c("paper_id", "screening_record_id", coding_article_fields(),
+    "review_eligible", "meta_status", "meta_exclusion_reason", "framework_relation_tags", "final_route", "coding_version", "coding_date", "artifact_path", "artifact_sha256"))
+  s <- if (length(samples)) dplyr::bind_rows(samples) else empty_table(c("paper_id", "sample_id", "matrix_id", "component_label", "sample_label", "occasion_label", coding_sample_fields(), "occasion_role"))
+  e <- if (length(evidence)) dplyr::bind_rows(evidence) else empty_table(c("paper_id", "unit", "field", "status", "source", "page", "evidence", "source_sha256"))
   p <- p[, c("paper_id", "screening_record_id", setdiff(names(p), c("paper_id", "screening_record_id"))), drop = FALSE]
   if (nrow(s)) s <- s[, c("paper_id", "sample_id", "matrix_id", setdiff(names(s), c("paper_id", "sample_id", "matrix_id"))), drop = FALSE]
   e <- e[, c("paper_id", setdiff(names(e), "paper_id")), drop = FALSE]
-  legacy_export <- dplyr::bind_rows(exports)
+  legacy_export <- if (length(exports)) dplyr::bind_rows(exports) else empty_table(coding_dictionary()$field)
   destination <- file.path(base, batch_id)
   dir.create(destination, recursive = TRUE, showWarnings = FALSE)
   for (name in c("papers", "samples", "evidence", "legacy_export")) {

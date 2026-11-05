@@ -2314,6 +2314,27 @@ d0132 <- readxl::read_excel("data/3.meta_data/open_data/d0132.xlsx")
 d0132inf <- readxl::read_excel("data/3.meta_data/open_data/d0132_informant.xlsx")
 admcol <- readxl::read_excel("data/matrix_codebook.xlsx")
 
+# Published careless-response exclusions (opencode0132.qmd, exclusion block).
+# Score these checks on the authors' item orientation, before harmonising scores.
+# psychsyn uses available pairs without randomly imputing missing responses;
+# this gives the same 20 exclusions as the supplied author-code settings.
+careless_items0132 <- d0132
+for (item in paste0("BF_", c(18, 43, 8, 23, 41, 35, 37, 12, 2, 27,
+                            21, 31, 6, 39, 19, 14, 4, 29))) {
+  careless_items0132[[item]] <- 6 - careless_items0132[[item]]
+}
+careless0132 <- data.frame(
+  checkbf1 = d0132$check1 != 4, checkbf2 = d0132$check_2 != 2,
+  checkss1 = d0132$Bogus1_1 != 7, checkss2 = d0132$Bogus2_1 != 3,
+  checkss3 = d0132$Bogus3_1 != 3, checkss4 = d0132$Bogus4_1 != 9,
+  long1 = careless::longstring(subset(careless_items0132, select = T1:S45)) > 8,
+  long2 = careless::longstring(subset(careless_items0132, select = BF_1:BF_44)) > 8,
+  syn1 = careless::psychsyn(subset(careless_items0132, select = T1:BF_44),
+                           resample_na = FALSE) < .10)
+stopifnot(!anyNA(careless0132), !anyNA(d0132$code), !anyDuplicated(d0132$code))
+d0132 <- d0132[rowSums(careless0132) < 2, ]
+stopifnot(nrow(d0132) == 598L)
+
 # Scoring
 ## Age 
 d0132$age <- 2025 - d0132$year
@@ -2366,7 +2387,7 @@ d0132$BF_6 <- 6 - d0132$BF_6
 d0132$extraversion <- rowMeans(subset(d0132, select = c(BF_36, BF_1, BF_21, BF_31, BF_6, BF_16,
                                         BF_26, BF_11))) #Extraversion
 
-d0132$BF_9 <- 6 - d0132$BF_9 # Reverse the positive to obtain emotional stability
+d0132$BF_9 <- 6 - d0132$BF_9 # Reverse positive items to obtain neuroticism
 d0132$BF_24 <- 6 - d0132$BF_24
 d0132$BF_34 <- 6 - d0132$BF_34
 # d0132$BF_39 <- 6 - d0132$BF_39
@@ -2378,8 +2399,8 @@ d0132$BF_34 <- 6 - d0132$BF_34
 d0132$neuroticism <- rowMeans(subset(d0132, select = c(BF_39, BF_19, BF_9, BF_14, BF_24, BF_34,
                                         BF_4, BF_29))) #Neuroticism
 
-## Peer status 
-d0132$socialstatus <- rowMeans(d0132[,c("Peer_stat1","Peer_stat1")],na.rm=T)
+## Peer status: both items; the author code accidentally repeats Peer_stat1.
+d0132$socialstatus <- rowMeans(d0132[,c("Peer_stat1","Peer_stat2")],na.rm=TRUE)
 
 ## Friendship 
 d0132$Friend_qual_2 <- 6 - d0132$Friend_qual_2
@@ -2398,9 +2419,9 @@ d0132$Eng_7 <- 5-d0132$Eng_7
 d0132$Eng_8 <- 5-d0132$Eng_8
 d0132$academicengagement <- rowMeans(subset(d0132, select = c(Eng_1:Eng_8)),na.rm = TRUE)
 
-##  Anxiety
+## Anxiety: all five items, with no additional reversal (confirmed 2026-11-05).
 d0132$testanxiety <- rowMeans(d0132[,c("Test_anx_1", "Test_anx_2", 
-                                "Test_anx_3", "Test_anx_4")], na.rm=TRUE)
+                                "Test_anx_3", "Test_anx_4", "Test_anx_5")], na.rm=TRUE)
 
 d0132$testanxietycontrol <- rowMeans(d0132[,c("Tension_reduc_1", "Tension_reduc_3", 
                                "Tension_reduc_2", "Tension_reduc_4")], na.rm=TRUE)
@@ -2431,18 +2452,38 @@ d0132inf$socialengagementother<-rowMeans(d0132inf[,c("BESSI_GEN_2", "BESSI_GEN_7
 d0132inf$emotionalresilienceother<-rowMeans(d0132inf[,c("BESSI_GEN_4", "BESSI_GEN_9", "BESSI_GEN_14", "BESSI_GEN_19")], 
                            na.rm=TRUE) #Emotional Resilience skill
 
-d0132 <- merge(d0132, d0132inf, by = "code", all.x = T)
+# One row per student: average scored parent reports, not individual items
+# across parents. Also average coded parentEducation levels, as agreed 2026-11-05.
+parent_columns0132 <- c("selfmanagementother", "innovationother", "cooperationother",
+                       "socialengagementother", "emotionalresilienceother", "parentEducation")
+stopifnot(!anyNA(d0132inf$code))
+d0132inf <- d0132inf[d0132inf$code %in% d0132$code, ]
+stopifnot(nrow(d0132inf) == 321L)
+d0132inf <- aggregate(as.data.frame(d0132inf[, parent_columns0132]),
+                     by = list(code = d0132inf$code),
+                     FUN = function(x) if (all(is.na(x))) NA_real_ else mean(x, na.rm = TRUE))
+stopifnot(nrow(d0132inf) == 315L, !anyDuplicated(d0132inf$code))
+d0132 <- merge(d0132, d0132inf, by = "code", all.x = TRUE)
+stopifnot(nrow(d0132) == 598L, !anyDuplicated(d0132$code))
+# Metadata notes: analytic N=598; parent-report correlations use N=315.
+# Six students have two parent reports, averaged above. The current metaSEM
+# interface uses one N per matrix; notes do not change its statistical weights.
 
 # Select and save
 d0132a <- d0132[, colnames(d0132) %in% c(admcol$column_name, 
                                          paste(admcol$column_name,"other",sep = ""))]
-writexl::write_xlsx(data.frame(cor(d0132a, use = "pairwise.complete")),
+d0132a <- d0132a[, colnames(d0132a) != "age"]
+cor0132a <- cor(d0132a, use = "pairwise.complete.obs")
+readr::write_csv(data.frame(variable = colnames(cor0132a), cor0132a, check.names = FALSE),
+                 "data/3.meta_data/matrices/0132a.csv", na = "")
+writexl::write_xlsx(data.frame(cor0132a),
                     "data/3.meta_data/matrices/0132a.xlsx")
 
 # Individual data with age
 d0132 <- d0132[, colnames(d0132) %in% c(admcol$column_name, 
                                         paste(admcol$column_name,"other",sep = ""),"age")]
-d0132 <- d0132[! is.na(d0132$age), ]
+# Missing age alone must not remove a student from the coded individual data.
+readr::write_csv(d0132, "data/3.meta_data/open_data/individual_data/0132a.csv", na = "")
 writexl::write_xlsx(data.frame(d0132),
                     "data/3.meta_data/open_data/individual_data/0132a.xlsx")
 

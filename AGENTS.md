@@ -44,6 +44,39 @@
 - Collect substantive ambiguities into one evidence-based human-review queue.
 - Do not assign sample/matrix IDs or perform detailed extraction at this stage.
 
+## Quantitative extraction
+
+- Follow `policies/extraction_conventions.md` and its common article R template.
+- Keep explicit scientific steps in one preparation script per article; use shared
+  helpers only for repeated technical operations. Preserve historical scripts.
+- Include appropriately coded sex/gender in matrices when available; retain age
+  in individual data and descriptive metadata, not in correlation matrices.
+- Questionnaire totals are item means with documented missingness and weights;
+  keep SEB/BESSI questionnaire scores on 1-5 and explicitly convert dual rating.
+- Reuse or extend variable and review-topic codebooks with evidence. Topics should
+  group articles and preserve useful/substantive differences; register additions
+  before export. Keep historical harmonisation a separate, versioned operation.
+- Use registered attached suffixes (`other`, `iat`) for measurement variants; see
+  `config/coding/variable_suffixes.csv`. Do not invent script-specific exceptions.
+- Seek original individual-level data even when a published matrix is sufficient.
+- Preserve downloaded originals under `data/3.meta_data/open_data/`; use
+  `raw/<paper_id>/` for new acquisitions. Save derived coded individual datasets
+  under `data/3.meta_data/open_data/individual_data/<matrix_id>.csv` with an
+  optional XLSX companion. Keep the entire directory Git-ignored.
+- Version reproducible R scoring/extraction and non-individual source provenance,
+  including URLs, retrieval dates, checksums, exclusions and missing-data rules.
+- Published matrices are a comparison reference or a documented fallback after
+  checking individual-data availability/usability. Access failures do not change
+  eligibility. Do not invent scoring rules or silently replace downloaded versions.
+- Use `scripts/coding/04_integrate_batch.R` for validated monthly integration;
+  do not copy an unmatched matrix into the active folder manually. Preserve
+  historical scientific values and keep review/quantitative readiness separate.
+- Long article keys may be in an explicitly sourced `scripts/extraction/keys/`
+  companion; keep scientific operations visible in the main article script.
+- Use sample-specific extraction audit directories for new papers with multiple
+  samples. Confirm bibliographic export dates through `05_set_download_date.R`;
+  do not infer them from publication month or PDF/individual-data retrieval.
+
 ## Validation
 
 - After changing title/abstract screening code, run:

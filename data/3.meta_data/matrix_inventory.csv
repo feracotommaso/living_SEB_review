@@ -37,6 +37,7 @@ paper_id,matrix_id,matrix_path,status,reason
 0134,0134a,data/3.meta_data/matrices/0134a.xlsx,included,Matched quantitative basic_info row
 0138,0138a,data/3.meta_data/matrices/0138a.xlsx,included,Matched quantitative basic_info row
 0141,0141a,data/3.meta_data/matrices/0141a.xlsx,included,Matched quantitative basic_info row
+0145,0145a,data/3.meta_data/matrices/0145a.xlsx,included,Matched quantitative basic_info row
 0050,0050,,missing_matrix_file,Historical quantitative row has no matching file; no eligibility change inferred
 0053,0053a,,missing_matrix_file,Historical quantitative row has no matching file; no eligibility change inferred
 0053,0053b,,missing_matrix_file,Historical quantitative row has no matching file; no eligibility change inferred

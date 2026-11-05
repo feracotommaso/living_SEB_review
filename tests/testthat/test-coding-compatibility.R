@@ -45,6 +45,10 @@ test_that("confirmed 0066 correction retains theory and joins the measurement ta
 test_that("0104a is an explicit inactive artifact rather than a quantitative ID", {
   basic <- coding_read_basic_info()
   paths <- list.files("data/3.meta_data/matrices", pattern = "\\.xlsx$", full.names = TRUE)
+  # This test concerns historical eligibility; new monthly matrices have their
+  # own integration regression and must not be matched to historical basic_info.
+  known <- c(basic$matrix_id, coding_read_csv("config/coding/matrix_exclusions.csv")$matrix_id)
+  paths <- paths[tools::file_path_sans_ext(basename(paths)) %in% known]
   inventory <- coding_matrix_inventory(basic, paths)
   row <- inventory[inventory$matrix_id == "0104a", ]
   expect_identical(row$status, "excluded_by_recorded_decision")

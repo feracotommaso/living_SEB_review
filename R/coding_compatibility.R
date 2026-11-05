@@ -49,7 +49,7 @@ coding_read_basic_info <- function(directory = "data/3.meta_data/basic_info") {
     paper_id = data$paper_id[changed], matrix_id = data$matrix_id[changed],
     old_value = old_topics[changed], new_value = data$review_topics[changed])
   rownames(data) <- NULL
-  data
+  coding_apply_historical_revisions(data)
 }
 
 coding_matrix_inventory <- function(basic, paths,
@@ -168,4 +168,68 @@ coding_numeric_contract <- function(data) {
       n_effects = length(values), effects_sha256 = digest::digest(payload, algo = "sha256", serialize = FALSE))
   })
   do.call(rbind, rows)
+}
+
+# Keep the original preservation fixture frozen. Scientific corrections are
+# explicit before/after transitions, never blanket exceptions for a matrix ID.
+coding_read_historical_revisions <- function(path = "config/coding/historical_revisions.csv") {
+  fields <- c("revision_id", "revision_date", "paper_id", "matrix_id",
+    "previous_n", "previous_n_effects", "previous_effects_sha256",
+    "n", "n_effects", "effects_sha256", "reason", "notes")
+  if (!file.exists(path)) return(as.data.frame(setNames(rep(list(character()), length(fields)), fields)))
+  x <- coding_read_csv(path)
+  if (!identical(names(x), fields) || anyNA(x) || any(!nzchar(as.matrix(x))) ||
+      anyDuplicated(x$revision_id)) stop("Invalid historical revision ledger.", call. = FALSE)
+  for (field in c("previous_n", "n", "previous_n_effects", "n_effects"))
+    if (any(!grepl("^[0-9]+$", x[[field]]))) stop("Invalid historical revision counts.", call. = FALSE)
+  for (field in c("previous_effects_sha256", "effects_sha256"))
+    if (any(!grepl("^[0-9a-f]{64}$", x[[field]]))) stop("Invalid historical revision signature.", call. = FALSE)
+  x
+}
+
+coding_historical_contract <- function(
+    path = "tests/fixtures/coding/pre_maintenance_numeric_contract.csv",
+    revisions = coding_read_historical_revisions()) {
+  expected <- coding_read_csv(path)
+  expected$n_effects <- as.integer(expected$n_effects)
+  if (anyDuplicated(expected$matrix_id)) stop("Duplicate historical contract IDs.")
+  for (i in seq_len(nrow(revisions))) {
+    revision <- revisions[i, ]
+    j <- match(revision$matrix_id, expected$matrix_id)
+    if (is.na(j) || expected$paper_id[[j]] != revision$paper_id ||
+        expected$n[[j]] != revision$previous_n ||
+        expected$n_effects[[j]] != as.integer(revision$previous_n_effects) ||
+        expected$effects_sha256[[j]] != revision$previous_effects_sha256)
+      stop("Historical revision does not match its previous contract: ", revision$revision_id, call. = FALSE)
+    expected$n[[j]] <- revision$n
+    expected$n_effects[[j]] <- as.integer(revision$n_effects)
+    expected$effects_sha256[[j]] <- revision$effects_sha256
+  }
+  expected
+}
+
+coding_apply_historical_revisions <- function(data, revisions = coding_read_historical_revisions()) {
+  for (i in seq_len(nrow(revisions))) {
+    revision <- revisions[i, ]
+    j <- match(revision$matrix_id, data$matrix_id)
+    if (is.na(j) || data$paper_id[[j]] != revision$paper_id ||
+        is.na(data$n[[j]]) || as.character(data$n[[j]]) != revision$previous_n)
+      stop("Historical revision conflicts with basic_info: ", revision$revision_id, call. = FALSE)
+    data$n[[j]] <- as.numeric(revision$n)
+    notes <- c(data$notes[[j]], revision$notes)
+    data$notes[[j]] <- paste(unique(notes[!is.na(notes) & nzchar(notes)]), collapse = " ")
+  }
+  data
+}
+
+coding_validate_historical <- function(data, expected = coding_historical_contract()) {
+  if (anyDuplicated(data$matrix_id)) stop("Duplicate analytical matrix IDs.", call. = FALSE)
+  index <- match(expected$matrix_id, data$matrix_id)
+  if (anyNA(index)) stop("Missing historical matrices: ", paste(expected$matrix_id[is.na(index)], collapse = ", "), call. = FALSE)
+  actual <- coding_numeric_contract(data[index, , drop = FALSE])
+  changed <- !vapply(seq_len(nrow(expected)), function(i)
+    isTRUE(all.equal(expected[i, , drop = FALSE], actual[i, , drop = FALSE], check.attributes = FALSE)), logical(1))
+  if (any(changed)) stop("Historical correlations or sample Ns changed; explicit reconciliation required: ",
+    paste(expected$matrix_id[changed], collapse = ", "), call. = FALSE)
+  invisible(actual)
 }

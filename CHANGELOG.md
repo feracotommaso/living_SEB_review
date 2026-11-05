@@ -1,5 +1,99 @@
 # Changelog
 
+## Stable checkout checksums — 2026-11-05
+
+- Pin the recorded line endings of hashed coding, extraction and revision inputs
+  in `.gitattributes`, so Git checkout does not invalidate scientific manifests
+  through platform-dependent text conversion. Raw bibliographic exports are
+  outside these rules; working-tree data and numerical values are unchanged.
+
+## Historical 0132 extraction correction — 2026-11-05
+
+- Corrected the existing 0132 block in `data/3.1opendata_to_cor.R`: apply the
+  documented careless-response exclusions (598 students), average both social
+  status items and all five test-anxiety items without an additional reversal.
+- Average parent scale scores and coded education levels per student before
+  linkage (321 reports, 315 students), avoiding duplicated self-report rows.
+  Document the single-N metaSEM limitation; keep age out of the matrix and do
+  not exclude individual records solely for missing age.
+- Validated the corrected block in memory with exports disabled; the user then
+  regenerated the historical matrix and individual XLSX with that block.
+- Reconciled the analytical builder through an exact before/after revision
+  ledger, preserving the original numeric fixture and guards on all other
+  samples and on subsequent changes to 0132a. Added regression coverage for
+  unauthorised matrix/N changes and invalid revision transitions.
+- Verified the user's regenerated files against the corrected script, added
+  canonical CSV companions and a 276-pair before/after audit with actual Ns and
+  source/output checksums. Rebuilt metadata/review outputs with the N caveat
+  sourced from the revision ledger; original downloaded and basic_info files stay
+  unchanged. All other 36 historical numerical contracts remain unchanged.
+
+## Bibliographic date and reuse checks
+
+- Recorded the user-confirmed 2026-11-02 export date in all October coding sources,
+  with per-batch provenance/history and a reusable date-setting command.
+- Added valid empty-table contracts for review-only/no-retention batches and
+  isolated audit/manifest directories for multiple samples in a new paper.
+- Added regression fixtures for future-month coding shapes, date history and
+  repeated date application; operational future bibliographic records are untouched.
+
+## Script simplification and October integration
+
+- Reduced the main 0145 script from 316 to 236 lines, separating named long keys
+  and common technical checks while retaining explicit scientific operations.
+  Correlation and pair-level CSVs are byte-identical to the preceding extraction.
+- Fixed a temporary-file basename collision that had copied the matrix CSV into
+  the individual-data destination; the actual individual export now has 973 rows
+  and 62 columns, with full saved-value checks and a regression for this failure.
+- Added guarded batch integration with fresh coding validation, extraction hashes,
+  duplicate/conflict guards, common-folder matrix copies and separate readiness.
+- Integrated October: 38 quantitative samples and 50 review papers, retaining every
+  historical populated correlation and analytic N and the 31-field interface.
+- Shared exact full-variable pair readers between paper/app, supporting names
+  containing underscores and distinct attached measurement suffixes.
+
+## 0145 quantitative extraction — 2026-11-04
+
+- Added the first operational article script in the agreed eight-section style,
+  producing 973 local individual records and a staged 61-variable correlation
+  matrix with sex/gender; age remains in individual data only.
+- Implemented the user-confirmed persuasion/perspective distinction, explicit item
+  means, response-code handling, normalised BESSI domain weights and source checks.
+- Added 15 defined variable-codebook entries with provenance; existing topics and
+  historical codebook values are preserved. Added readable formatting for new rows.
+- Recorded pair N=790-973, 23 missing HEXACO blocks, author-selected cohort limits
+  and an unrepaired small negative eigenvalue, with input/output checksums.
+- Updated source JSON notes and rebuilt descriptive coding, preserving its prior
+  version. No matrix or coding was promoted into historical analytical outputs.
+
+## Codebook maintenance — 2026-11-04
+
+- Added CSV-led, staged additive maintenance for variable and review-topic
+  codebooks, including definitions, source provenance, change ledger, conflict
+  detection and idempotent reruns. Existing codebook values remain unchanged.
+- Added the canonical variable CSV and exact base/suffix resolution for attached
+  `other`/`iat` variants, including base names that contain underscores.
+- Changed the compatibility maintenance command to verify CSV/XLSX consistency
+  instead of overwriting canonical CSV from a manually edited workbook.
+
+## Agreed next-stage extraction rules — 2026-11-04
+
+- Added shared article-extraction conventions, a guarded eight-section R template
+  and attached measurement-suffix registry (`other`, `iat`). Scientific scripts
+  retain explicit scoring; age stays outside matrices and within individual data.
+- Clarified evolving review topics: reuse common categories and add new ones for
+  meaningful distinctions, preserving evidence and separating historical recoding.
+  Suffix-aware readers and canonical codebook-maintenance commands remain pending.
+- Prioritise original individual data over published matrices, preserve immutable
+  local downloads and coded individual datasets in the Git-ignored `open_data/`
+  directory, and version reproducible R scoring and source/checksum provenance.
+- Record the agreed October-first integration sequence, separate review and
+  quantitative readiness, and preserve historical eligibility until reassessment.
+  The integration/export stage remains to be implemented.
+- Acquired eight public Study 2 sources for 0145 with pinned OSF SHA-256 checks;
+  added a repeatable acquisition script and non-individual source manifest. Raw
+  data stay Git-ignored. Scoring and correlation extraction remain pending.
+
 ## Descriptive coding 1.0.0 — 2026-11-04
 
 - Applied the user-confirmed `assessment -> skillassessment` correction for 0066,

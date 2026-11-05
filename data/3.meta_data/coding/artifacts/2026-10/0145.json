@@ -4,7 +4,7 @@
   "paper_id": "0145",
   "coding_date": "2026-11-04",
   "article": {
-    "download_date": null,
+    "download_date": "2026-11-02",
     "doi": "https://doi.org/10.1177/08902070261486523",
     "title": "Cognitive Abilities, Personality, and Sustainable Attitudes and Behavior",
     "abstract": "Climate change demands urgent action, yet individual engagement in sustainable behaviors remains inconsistent. We conducted two studies (N1 = 280, N2 = 973) examining how political orientation, personality traits, reasoning ability, social-emotional-behavioral skills, and complex problem solving relate to sustainable attitudes and behaviors in U.S. adults. Using structural equation modeling, we found that openness to experience was the strongest predictor, alongside liberal political orientation and self-perceived social engagement and innovation skills. Unexpectedly, both cognitive personality traits showed negative associations with sustainability outcomes, challenging the notion that cognitive abilities universally facilitate adaptive behavior. For sustainable behavior, these associations were small to moderate (-.25 <= r <= -.15) and most pronounced for food-related and engagement-related behaviors. Specification curve analyses confirmed that less established constructs (social, emotional, and behavioral skill self-concepts and complex problem solving) contributed meaningful variance beyond established personality predictors and that these associations were robust across analytical specifications. Overall, psychological characteristics together explained up to 44\\\\% of variance in sustainable attitudes and 29\\\\% of variance in sustainable behavior. These findings advance our understanding of the psychological underpinnings of environmental engagement and highlight the need for future research to clarify the mechanisms underlying the negative cognitive ability-sustainability association.",
@@ -48,7 +48,7 @@
       "trait_frame": [
         "hexaco"
       ],
-      "notes": "Analytic N=973 after exclusions; only participants completing both sessions entered analysis (PDF pp.10-11). The final age range was 18-49 despite intended recruitment at 18-32, so the broad mixed-adult convention is used. Gender: 51.3% female and 45.7% male; remaining participants reported another category or preferred not to state. The two sessions measured different constructs, not repeated SEB waves. BESSI-96 form type follows the existing legacy classification. Data/reported Pearson matrices remain to be retrieved/extracted; no effect sizes coded.",
+      "notes": "Reference analytic N=973 in the author-selected Study 2 dataset (PDF pp.10-11; public original-item data verified against the source manifest). Private-comment exclusions cannot be independently reconstructed. 23 released records have the entire HEXACO block missing. Pearson correlations use available pairs; pair N ranges 790-973. Reference N remains 973; no participants are removed for missing age or the binary sex/gender contrast. Male=0 and female=1; other categories/nonresponse are missing only for that contrast. Age range 18-49 is coded adult under the mixed-adult convention. The two sessions measured different constructs rather than repeated SEB waves. BESSI-96 form type retains the historical long classification. Distinct persuasion/perspective scoring was confirmed by the user on 2026-11-04; domain weights are normalised to retain the 1-5 metric. Observed task components and questionnaire means are retained separately from latent factors. The pairwise matrix has a small negative minimum eigenvalue (-4.1337e-05); observed correlations were not repaired. Extraction audits are under extraction/0145; current analytical integration status is recorded separately in integration/batches.csv and integration/matrices.csv.",
       "occasion_role": "first_eligible"
     }
   ],
@@ -145,15 +145,6 @@
     },
     {
       "unit": "paper",
-      "field": "download_date",
-      "status": "not_verified",
-      "source": "data/1.abstracting/2026-10/title_abstract/2026-10_title_abstract_included.csv",
-      "page": null,
-      "evidence": "The retained bibliographic CSV does not establish an actual download date; no batch date is substituted.",
-      "source_sha256": "14d828e1371707fca67a37d36f4fd0928eb120220d27292d6b52a3d34824da1b"
-    },
-    {
-      "unit": "paper",
       "field": "email",
       "status": "extracted",
       "source": "data/2.full_abstracting/pdfs/0145.pdf",
@@ -167,7 +158,7 @@
       "status": "extracted",
       "source": "data/2.full_abstracting/pdfs/0145.pdf",
       "page": 10,
-      "evidence": "Study 2 states that preregistration, data, code and supplements are available at the linked OSF project; remote access was not verified.",
+      "evidence": "The paper identifies OSF an64w as its source for Study 2 data/code; actual retrieval and checksums are recorded separately in the source manifest.",
       "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
     },
     {
@@ -268,6 +259,42 @@
       "page": 11,
       "evidence": "Analytic sample, gender composition, age range and two-session procedure are described in Study 2 methods.",
       "source_sha256": "25d5220a1a6d086f35c57708dad5aad85427945664c0f07ceb11d96f625f8084"
+    },
+    {
+      "unit": "paper",
+      "field": "download_date",
+      "status": "extracted",
+      "source": "data/3.meta_data/coding/provenance/2026-10_download_date.csv",
+      "source_sha256": "368253e1cafe1f15698a7a1bfcba690b0672a5f7616765acabdd8903d975c70e",
+      "page": null,
+      "evidence": "Bibliographic export date 2026-11-02 confirmed by the user for this batch; separate from publication month, coding date, PDF acquisition and individual-data retrieval."
+    },
+    {
+      "unit": "paper",
+      "field": "open_data",
+      "status": "derived",
+      "source": "data/3.meta_data/extraction/0145/source_manifest.csv",
+      "page": null,
+      "evidence": "Eight Study 2 sources acquired and verified against pinned OSF SHA-256 values; individual records remain local.",
+      "source_sha256": "b454526415755be82b0c801261c0bf52413f3d862330b2630b695e9082e5d3f2"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "notes",
+      "status": "derived",
+      "source": "data/3.meta_data/extraction/0145/checks.csv",
+      "page": null,
+      "evidence": "Extraction checks establish the reference N, missing HEXACO blocks, available-pair N range and unrepaired minimum eigenvalue.",
+      "source_sha256": "289ce3636a6fd81fc752fac0f9dedd72f3b722313ac51077df4382c9070ec15f"
+    },
+    {
+      "unit": "Study 2|Analytic sample",
+      "field": "notes",
+      "status": "derived",
+      "source": "data/3.meta_data/extraction/0145/scientific_decisions.csv",
+      "page": null,
+      "evidence": "Records the user-confirmed facet correction, normalised domain weighting and author-selected cohort provenance.",
+      "source_sha256": "8fbf50877c34f06e0ab19abff281acf4d0baad2596ccb2986bf2f7317c4380fc"
     }
   ]
 }

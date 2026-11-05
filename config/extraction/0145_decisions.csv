@@ -1,0 +1,6 @@
+paper_id,matrix_id,issue,decision,source
+0145,0145a,persuasion_perspective_collision,Distinct correct facet item sets; Social Engagement uses persuasion. User confirmed 2026-11-04.,Supplement_S2.2.qmd
+0145,0145a,domain_metric,"Normalise core/cross-loading weights 1:0.5 by their available sum, preserving the agreed BESSI 1-5 metric.",Supplement_S2.2.qmd
+0145,0145a,author_cohort,Use the released author-selected 973-person item dataset; private-comment exclusions are not independently reconstructed.,Supplement_S2.1.qmd and source_manifest.csv
+0145,0145a,variable_n,Keep reference N=973; retain missing blocks and pair-specific Ns; do not exclude participants for missing age or binary gender contrast.,data_study2_analysis.rds and pair_correlations.csv
+0145,0145a,observed_components,"Observed scale means and task components are exported; no new composite replaces latent political, CPS or sustainable-attitude factors.",Supplement_S2.2.qmd

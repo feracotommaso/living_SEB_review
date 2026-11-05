@@ -1,0 +1,12 @@
+revision_id,path,sha256
+2026-11-05-0132a,data/3.meta_data/open_data/d0132.xlsx,6496de74c330c967b0553962250b9743a7af794c793002473175f14f71017c97
+2026-11-05-0132a,data/3.meta_data/open_data/d0132_informant.xlsx,a2ada964c463f4e8386f5667f13e697607d60ca363887ca06242a46a8db33004
+2026-11-05-0132a,data/3.meta_data/open_data/opencode0132.qmd,a71ab916d6d4d6e9105da0c251e691c5b41bbf16f5b155bb85fe2d8908b44c6f
+2026-11-05-0132a,data/3.1opendata_to_cor.R,8a6c8722b0c606c05b1b6c5cbbd2b2100f9416947b1ec69a8f76a1d8560ddb29
+2026-11-05-0132a,tests/fixtures/coding/pre_maintenance_numeric_contract.csv,e208b6d0cf53dfeca9f575316365be76468e7a347d1d960720712d509cce7b34
+2026-11-05-0132a,config/coding/historical_revisions.csv,55c76b4c5966508d8eb4042f8f1454ee810c415b0739bc10f26b7f2e739f0f4a
+2026-11-05-0132a,data/3.meta_data/matrices/0132a.xlsx,9f42d390829d451733694c96056538bf71e5dfe787cc8d5b8b6d058de545537c
+2026-11-05-0132a,data/3.meta_data/open_data/individual_data/0132a.xlsx,aaac897c3893611bd0a0798e61d3888e7a421f7217065e609ddaee5c97c05453
+2026-11-05-0132a,data/3.meta_data/matrices/0132a.csv,6ede92af1a5bfbb16b593a26c18ffc1015ae049b033a11de43b328a34ca9c768
+2026-11-05-0132a,data/3.meta_data/open_data/individual_data/0132a.csv,88d50b6f030e4db842cbe9c29dfd0700fe2651418783de9d58af0037a9f03bae
+2026-11-05-0132a,data/3.meta_data/extraction/0132/0132a/historical_revision.csv,f5058d0d00c9c4a258ac819de0b845568c475591d4eac531fcc000c6dcb09e13

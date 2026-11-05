@@ -56,13 +56,15 @@ test_that("sample IDs survive rebuilds and incomplete artifacts cannot overwrite
   expect_identical(tools::md5sum(csv), before)
 })
 
-test_that("maintenance preserves all scientific values and sample Ns", {
-  before <- readr::read_csv("tests/fixtures/coding/pre_maintenance_numeric_contract.csv", show_col_types = FALSE,
-    col_types = readr::cols(paper_id = "c", matrix_id = "c", n = "c", n_effects = "i", effects_sha256 = "c"))
-  after <- coding_numeric_contract(as.data.frame(readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx")))
+test_that("maintenance preserves scientific values except registered exact revisions", {
+  before <- coding_historical_contract()
+  metadata <- as.data.frame(readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx"))
+  historical <- metadata[match(before$matrix_id, metadata$matrix_id), , drop = FALSE]
+  after <- coding_numeric_contract(historical)
   expect_equal(as.data.frame(before), after, ignore_attr = TRUE)
-  metadata <- readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx")
-  expect_equal(nrow(metadata), 37L)
+  expect_silent(coding_validate_historical(metadata))
+  expect_equal(nrow(historical), 37L)
+  expect_equal(sum(metadata$matrix_id == "0145a"), 1L)
   expect_false(any(grepl("nomoligicalnet", metadata$review_topics, fixed = TRUE)))
   codebook <- coding_read_csv("data/topics_codebook.csv")
   expect_true("nomologicalnet" %in% codebook$Topic)
