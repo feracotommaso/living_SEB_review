@@ -12,6 +12,11 @@ Living SEB review.
 - Il registro viene aggiornato solo con `06_promote_registry.R`.
 - CSV è il formato canonico; XLSX è usato per eventuali revisioni umane.
 
+Per segnalazioni degli autori, citation chasing, ricerche manuali o altre fonti
+esterne, seguire [la regola comune](../../policies/external_intake.md). Questi
+ingressi hanno un manifest con provenienza e checksum e un lotto separato
+`YYYY-MM-external-NN`; non vanno rinominati come export della ricerca Scopus/WoS.
+
 ## Prima configurazione o ricostruzione completa
 
 Usare questi passaggi una sola volta, oppure dopo un reset completo intenzionale:

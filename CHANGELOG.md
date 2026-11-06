@@ -1,5 +1,35 @@
 # Changelog
 
+## External discovery intake — 2026-11-05
+
+- Added one provenance/naming rule for author/expert suggestions, backward/forward
+  citations, manual searches and other external sources. Keep original BibTeX/RIS
+  bytes, receipt/download dates and discovery details in a checksum-pinned manifest.
+- Isolate external acquisition batches with `YYYY-MM-external-NN` and an explicit
+  process-local selector, retaining the ordinary monthly configuration. Recognise
+  these batch IDs through full-text/coding/integration entry points.
+- Parse external BibTeX with its abstract and publication type intact. Keep
+  discovery source in CiteSource provenance, and test later database duplicates
+  without double-counting papers or losing either source.
+- First real case: author-referred Napolitano et al. (DOI
+  `10.1177/27000710261487580`), one new record, no duplicate candidates. Promoted
+  the 387-record bibliography only through the guarded script; title/abstract
+  retained and persistent paper ID 0150 assigned. The publisher's automatic PDF
+  download returned HTTP 403; the user subsequently provided the published PDF,
+  original SAV and author R code. Data/code download dates remain unknown;
+  paper/bibliographic date is confirmed as 2026-11-05.
+- Read the complete full text and resolved sample overlap by linking 596
+  H-prefixed IDs to 0053d, with age/gender agreement for all links (590 full item
+  matches, six one-item differences). Exclude these from the new contribution,
+  retaining historical data unchanged. All 32 facet and five weighted-domain
+  scores reproduce the released scores; source Table 1 agrees within rounding.
+- Integrated 0150a: N=30,719, 38 matrix variables, actual pair N=29,244-30,719;
+  retain Other-gender participants and source categories in individual data, age
+  outside matrices, and the unrepaired minimum eigenvalue (-2.914e-7) in notes.
+  Outputs now contain 39 quantitative samples and 51 review papers, with external
+  origin distinguished from monthly coding. Reused existing age/gender/development
+  topics and variable names; no new construct codes or historical recoding.
+
 ## Stable checkout checksums — 2026-11-05
 
 - Pin the recorded line endings of hashed coding, extraction and revision inputs

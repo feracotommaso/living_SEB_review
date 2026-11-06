@@ -1,0 +1,22 @@
+{
+  "workflow_version": "2026-11.1",
+  "policy_version": "1.0.0",
+  "prompt_version": "1.0.0",
+  "batch_id": "2026-11-external-01",
+  "input_records": 1,
+  "included_for_next_stage": 1,
+  "excluded_records": 0,
+  "keep_uncertain_records": 0,
+  "human_review_required": false,
+  "files": {
+    "decisions_csv": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_decisions.csv",
+    "decisions_xlsx": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_screening.xlsx",
+    "included_csv": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_included.csv",
+    "included_xlsx": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_included.xlsx",
+    "excluded_csv": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_excluded.csv",
+    "excluded_xlsx": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_excluded.xlsx",
+    "summary_csv": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_summary.csv",
+    "manifest_json": "C:/Users/tfera/OneDrive - Università degli Studi di Padova/BESSI/living_SEB_review/data/1.abstracting/2026-11-external-01/title_abstract/2026-11-external-01_title_abstract_manifest.json"
+  },
+  "generated_at_utc": "2026-11-05 13:39:08 UTC"
+}

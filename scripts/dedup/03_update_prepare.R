@@ -30,7 +30,7 @@ manifest_file <- file.path(
 )
 
 if (!file.exists(manifest_file)) {
-  manifest <- make_file_manifest(files)
+  manifest <- if (nzchar(external_batch)) external_manifest(batch_id) else make_file_manifest(files)
   manifest$batch_id <- batch_id
   readr::write_csv(manifest, manifest_file)
   message("Created manifest: ", manifest_file)
@@ -46,6 +46,12 @@ validate_file_manifest(
   expected_batch = batch_id
 )
 validate_manifest_file_set(manifest, files)
+if (nzchar(external_batch)) {
+  provenance <- external_manifest(batch_id) # Recheck immutable originals on every run.
+  if (!identical(as.character(manifest$path), as.character(provenance$path)) ||
+      !identical(as.character(manifest$database), as.character(provenance$database)))
+    stop("External provenance changed; reconcile the batch manifest explicitly.")
+}
 
 import_manifest <- prepare_import_manifest(
   manifest,

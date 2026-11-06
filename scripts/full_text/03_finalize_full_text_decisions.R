@@ -17,7 +17,7 @@ if (nzchar(batch_arg)) {
 } else if (!exists("batch_id", inherits = FALSE) || !nzchar(batch_id)) {
   stop("No batch_id available. Set config/dedup_config.R or run: Rscript scripts/full_text/03_finalize_full_text_decisions.R YYYY-MM", call. = FALSE)
 }
-if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])$", batch_id)) stop("batch_id must use YYYY-MM format.", call. = FALSE)
+if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])(-external-[0-9]{2})?$", batch_id)) stop("batch_id must use YYYY-MM or YYYY-MM-external-NN.", call. = FALSE)
 
 full_text_dir <- file.path("data", "2.full_abstracting")
 workbook_path <- file.path(full_text_dir, paste0(batch_id, "_full_text_decisions.xlsx"))

@@ -67,7 +67,7 @@ integration_verify_extraction <- function(paper_id, matrix_id, expected_n) {
 
 integration_register_batch <- function(batch_id, directory = "data/3.meta_data/integration",
     matrix_dir = "data/3.meta_data/matrices", base = "data/3.meta_data/coding") {
-  if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])$", batch_id)) stop("Invalid batch ID.")
+  if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])(-external-[0-9]{2})?$", batch_id)) stop("Invalid batch ID.")
   fresh <- integration_validate_batch(batch_id, base)
   batches_path <- file.path(directory, "batches.csv")
   matrices_path <- file.path(directory, "matrices.csv")
@@ -160,7 +160,8 @@ integration_current <- function(directory = "data/3.meta_data/integration") {
     eligible <- new$final_decision %in% c("review", "both")
     review <- rbind(review, new[eligible & !duplicated(new$paper_id), , drop = FALSE])
     provenance <- rbind(provenance, data.frame(paper_id = new$paper_id, matrix_id = new$matrix_id,
-      origin = "monthly_coding", batch_id = entry$batch_id, eligibility_status = "full_text_v2_resolved"))
+      origin = if (grepl("-external-", entry$batch_id, fixed = TRUE)) "external_coding" else "monthly_coding",
+      batch_id = entry$batch_id, eligibility_status = "full_text_v2_resolved"))
   }
   for (i in seq_len(nrow(matrices))) for (prefix in c("csv", "xlsx", "manifest"))
     if (integration_hash(matrices[[paste0(prefix, "_path")]][[i]]) != matrices[[paste0(prefix, "_sha256")]][[i]])

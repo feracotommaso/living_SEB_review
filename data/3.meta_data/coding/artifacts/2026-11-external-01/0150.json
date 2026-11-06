@@ -1,0 +1,296 @@
+{
+  "coding_version": "1.0.0",
+  "coding_date": "2026-11-05",
+  "paper_id": "0150",
+  "screening_record_id": "seb_d694f460184d4b18",
+  "article": {
+    "download_date": "2026-11-05",
+    "doi": "https://doi.org/10.1177/27000710261487580",
+    "title": "How Perceived Social, Emotional, and Behavioral Skills Differ Across the Life Span",
+    "abstract": "We investigated age-related differences in perceived social, emotional, and behavioral (SEB) skills and gender variations using a large cross-sectional sample (N = 31,315, ages 10–70). Using generalized additive models (GAMs), we identified four key findings. First, modest, temporary negative age gradients emerged during early adolescence, consistent with the “disruption principle”. Second, despite this disruption, mean levels across all five domains—Self-Management, Social Engagement, Cooperation, Emotional Resilience, and Innovation—were positively associated with age, showing steep age gradients consistent with maturation during middle adolescence and early adulthood. Third, facet-level analyses uncovered significant heterogeneity in age-related patterns otherwise obscured at the domain level. Fourth, gender differences emerged: men and women varied in age-related patterns for Cooperation and Innovation, while non-binary participants—despite lower baseline levels—exhibited significantly steeper positive age gradients than male and female counterparts across several domains. Collectively, these results highlight both parallels and distinctions between SEB skill development and established personality trait principles. This comprehensive map informs future longitudinal research and the design of developmentally appropriate interventions across the lifespan.",
+    "journal": "Personality Science",
+    "authors": [
+      "Christopher M. Napolitano",
+      "Christopher J. Soto",
+      "Madison N. Sewell",
+      "Hee Jun Yoon",
+      "Brent W. Roberts"
+    ],
+    "author_et_al": "Napolitano et al.",
+    "year": 2026,
+    "review_topics": [
+      "age",
+      "gender",
+      "skilldevelopment"
+    ],
+    "email": [
+      "cmn@illinois.edu"
+    ],
+    "open_data": [
+      "https://osf.io/7asgp/"
+    ],
+    "coder": "ai",
+    "notes": "External discovery through author suggestion. Bibliographic/PDF download date is user-confirmed 2026-11-05. User supplied original data/code locally; their original download dates are unknown. Local receipt is 2026-11-05. Automatic OSF file listing returned HTTP 401; public remote versions were not independently verified. Fresh Codex PDF assessment and reproducible source-score/overlap verification are recorded separately.",
+    "additional": null
+  },
+  "samples": [
+    {
+      "component_label": "Main study",
+      "sample_label": "Non-overlapping participants",
+      "occasion_label": "Single cross-sectional assessment",
+      "occasion_role": "first_eligible",
+      "study_design": "cross",
+      "country": [
+        "mixed"
+      ],
+      "gender": 72.6260620462906,
+      "age": 22.8848269800449,
+      "n": 30719,
+      "age_class": "adult",
+      "clinical": "not_clinical",
+      "clinical_spec": null,
+      "seb_measure": [
+        "bessi192"
+      ],
+      "seb_measure_type": "long",
+      "trait_frame": [],
+      "notes": "Publication cohort N=31315; analytic N=30719 after excluding 596 H-prefixed IDs already represented in 0053d (590 identical 192-item profiles; six one-item differences; all ages/genders agree). Historical 0053d stays unchanged. 1475 participants retain source category Other; binary sex contrast is Male=0 Female=1 and missing for Other. Source Gender3 is retained as gender_original in individual data (1 Female; 2 Male; 3 Other). Pair N ranges 29244-30719; the current metaSEM interface uses one reference N per matrix. Age range 10-70 spans adolescence and adulthood; adult follows the agreed mixed-age convention. Use zero-order correlations; do not restrict to the GAM ethnicity-complete subset or treat age-range analyses as independent samples. No age correlations enter matrices. Recomputed BESSI facets match all released scores exactly; domains differ by at most 1.77635683940025e-15. On the original publication cohort, all ten zero-order domain correlations match Table 1 within two-decimal rounding. The available-pair matrix minimum eigenvalue is -2.9138470499438e-07; observed correlations are preserved without repair. Country is mixed based on the original reported country entries."
+    }
+  ],
+  "evidence": [
+    {
+      "unit": "paper",
+      "field": "doi",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Published title page and correspondence details verified against the bibliographic record."
+    },
+    {
+      "unit": "paper",
+      "field": "title",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Published title page and correspondence details verified against the bibliographic record."
+    },
+    {
+      "unit": "paper",
+      "field": "journal",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Published title page and correspondence details verified against the bibliographic record."
+    },
+    {
+      "unit": "paper",
+      "field": "authors",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Published title page and correspondence details verified against the bibliographic record."
+    },
+    {
+      "unit": "paper",
+      "field": "author_et_al",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Published title page and correspondence details verified against the bibliographic record."
+    },
+    {
+      "unit": "paper",
+      "field": "year",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Published title page and correspondence details verified against the bibliographic record."
+    },
+    {
+      "unit": "paper",
+      "field": "email",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Published title page and correspondence details verified against the bibliographic record."
+    },
+    {
+      "unit": "paper",
+      "field": "abstract",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 1,
+      "evidence": "Retained the original abstract from the user-supplied bibliographic export and verified its identity against the published abstract."
+    },
+    {
+      "unit": "paper",
+      "field": "download_date",
+      "status": "extracted",
+      "source": "data/3.meta_data/coding/provenance/2026-11-external-01_download_date.csv",
+      "source_sha256": "da09b57bc4c1370e1949506127f82808d407294a72198e35b7fc780925c1f637",
+      "page": null,
+      "evidence": "Bibliographic export date 2026-11-05 confirmed by the user for this batch; separate from publication month, coding date, PDF acquisition and individual-data retrieval."
+    },
+    {
+      "unit": "paper",
+      "field": "review_topics",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 4,
+      "evidence": "RQ1/RQ2 address age-related skill differences across development; RQ3 addresses gender. Reused age, gender and skilldevelopment; no new topic synonym required."
+    },
+    {
+      "unit": "paper",
+      "field": "open_data",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 16,
+      "evidence": "Data availability and supplemental material refer to OSF 7asgp. Local files were supplied by the user; remote API access failed with HTTP 401."
+    },
+    {
+      "unit": "paper",
+      "field": "coder",
+      "status": "derived",
+      "source": "scripts/extraction/articles/0150.R",
+      "source_sha256": "bb38e168666fc1b5a63b85caa3a4ffe7a925589b313d33c0fca727268e7e286e",
+      "page": null,
+      "evidence": "AI coding by Codex with explicit reproducible R verification; no human verification is inferred."
+    },
+    {
+      "unit": "paper",
+      "field": "notes",
+      "status": "derived",
+      "source": "data/3.meta_data/extraction/0150/source_manifest.csv",
+      "source_sha256": "a31783fc3c1afc5311e1e7b021faf76c6d2bd46bbea4bcc1758005b8eccd97a4",
+      "page": null,
+      "evidence": "Receipt, confirmed paper date, unknown raw download dates, provided-file provenance and checksums are recorded separately."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "study_design",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 5,
+      "evidence": "One cross-sectional volunteer PersonalityLab study; standard self-reported 192-item BESSI skill-capacity responses on 1-5. No personality-trait instrument or clinical recruitment is described."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "clinical",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 5,
+      "evidence": "One cross-sectional volunteer PersonalityLab study; standard self-reported 192-item BESSI skill-capacity responses on 1-5. No personality-trait instrument or clinical recruitment is described."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "seb_measure",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 5,
+      "evidence": "One cross-sectional volunteer PersonalityLab study; standard self-reported 192-item BESSI skill-capacity responses on 1-5. No personality-trait instrument or clinical recruitment is described."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "seb_measure_type",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 5,
+      "evidence": "One cross-sectional volunteer PersonalityLab study; standard self-reported 192-item BESSI skill-capacity responses on 1-5. No personality-trait instrument or clinical recruitment is described."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "trait_frame",
+      "status": "extracted",
+      "source": "data/2.full_abstracting/pdfs/0150.pdf",
+      "source_sha256": "c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25",
+      "page": 5,
+      "evidence": "One cross-sectional volunteer PersonalityLab study; standard self-reported 192-item BESSI skill-capacity responses on 1-5. No personality-trait instrument or clinical recruitment is described."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "country",
+      "status": "derived",
+      "source": "data/3.meta_data/open_data/raw/0150/0 Working data file - Copycmn2.sav",
+      "source_sha256": "035ed00123daa9dfc50958186d76da01eea4d17be30e775b713fb5989b49a9dc",
+      "page": null,
+      "evidence": "Derived from the retained 30719 records after the exact H-prefixed historical-ID exclusion implemented in scripts/extraction/articles/0150.R. Country entries represent multiple countries; female percentage uses all retained participants."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "gender",
+      "status": "derived",
+      "source": "data/3.meta_data/open_data/raw/0150/0 Working data file - Copycmn2.sav",
+      "source_sha256": "035ed00123daa9dfc50958186d76da01eea4d17be30e775b713fb5989b49a9dc",
+      "page": null,
+      "evidence": "Derived from the retained 30719 records after the exact H-prefixed historical-ID exclusion implemented in scripts/extraction/articles/0150.R. Country entries represent multiple countries; female percentage uses all retained participants."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "age",
+      "status": "derived",
+      "source": "data/3.meta_data/open_data/raw/0150/0 Working data file - Copycmn2.sav",
+      "source_sha256": "035ed00123daa9dfc50958186d76da01eea4d17be30e775b713fb5989b49a9dc",
+      "page": null,
+      "evidence": "Derived from the retained 30719 records after the exact H-prefixed historical-ID exclusion implemented in scripts/extraction/articles/0150.R. Country entries represent multiple countries; female percentage uses all retained participants."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "n",
+      "status": "derived",
+      "source": "data/3.meta_data/open_data/raw/0150/0 Working data file - Copycmn2.sav",
+      "source_sha256": "035ed00123daa9dfc50958186d76da01eea4d17be30e775b713fb5989b49a9dc",
+      "page": null,
+      "evidence": "Derived from the retained 30719 records after the exact H-prefixed historical-ID exclusion implemented in scripts/extraction/articles/0150.R. Country entries represent multiple countries; female percentage uses all retained participants."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "n",
+      "status": "derived",
+      "source": "data/3.meta_data/open_data/d0053d.xlsx",
+      "source_sha256": "1b27b3f70825312187eeee3bfe9f6280da041ad173fa033bfc98fe7a9c8c6c95",
+      "page": null,
+      "evidence": "596 old Internet sample D Case IDs link to H-prefixed new IDs; exclude those rows from the new contribution."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "age_class",
+      "status": "derived",
+      "source": "data/3.meta_data/open_data/raw/0150/0 Working data file - Copycmn2.sav",
+      "source_sha256": "035ed00123daa9dfc50958186d76da01eea4d17be30e775b713fb5989b49a9dc",
+      "page": null,
+      "evidence": "Retained ages span 10-70; adult is the agreed broad mixed-age code, with the adolescent/adult mixture described in notes."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "notes",
+      "status": "derived",
+      "source": "scripts/extraction/articles/0150.R",
+      "source_sha256": "bb38e168666fc1b5a63b85caa3a4ffe7a925589b313d33c0fca727268e7e286e",
+      "page": null,
+      "evidence": "Publication cohort N=31315; analytic N=30719 after excluding 596 H-prefixed IDs already represented in 0053d (590 identical 192-item profiles; six one-item differences; all ages/genders agree). Historical 0053d stays unchanged. 1475 participants retain source category Other; binary sex contrast is Male=0 Female=1 and missing for Other. Source Gender3 is retained as gender_original in individual data (1 Female; 2 Male; 3 Other). Pair N ranges 29244-30719; the current metaSEM interface uses one reference N per matrix. Age range 10-70 spans adolescence and adulthood; adult follows the agreed mixed-age convention. Use zero-order correlations; do not restrict to the GAM ethnicity-complete subset or treat age-range analyses as independent samples. No age correlations enter matrices."
+    },
+    {
+      "unit": "Main study|Non-overlapping participants",
+      "field": "notes",
+      "status": "derived",
+      "source": "data/3.meta_data/extraction/0150/0150a/checks.csv",
+      "source_sha256": "dc608595efeff90c7049613521e51e1a8597845f31faccf58a1b2c71eb81e3fb",
+      "page": null,
+      "evidence": "Verified source-score reproduction, historical overlap exclusion, actual pair Ns and unrepaired minimum eigenvalue are recorded in the extraction checks."
+    }
+  ]
+}

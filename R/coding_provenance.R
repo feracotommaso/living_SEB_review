@@ -1,6 +1,6 @@
 # Confirm a batch's bibliographic export date at the coding source, with history.
 coding_set_download_date <- function(batch_id, download_date, base = "data/3.meta_data/coding") {
-  if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])$", batch_id) ||
+  if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])(-external-[0-9]{2})?$", batch_id) ||
       length(download_date) != 1L || !grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", download_date) ||
       is.na(as.Date(download_date, format = "%Y-%m-%d"))) stop("Supply a valid batch and YYYY-MM-DD export date.")
   directory <- file.path(base, "artifacts", batch_id)

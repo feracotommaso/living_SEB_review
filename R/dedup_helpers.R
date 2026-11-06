@@ -175,7 +175,9 @@ validate_file_manifest <- function(
     stop("Manifest contains an empty path.", call. = FALSE)
   }
 
-  allowed_databases <- c("Scopus", "Web of Science")
+  external_types <- if (any(startsWith(manifest$database[!is.na(manifest$database)], "External:")))
+    readr::read_csv(file.path(root, "config", "external_source_types.csv"), show_col_types = FALSE)$code else character()
+  allowed_databases <- c("Scopus", "Web of Science", paste0("External:", external_types))
   invalid_database <- is.na(manifest$database) |
     !manifest$database %in% allowed_databases
 
@@ -184,7 +186,7 @@ validate_file_manifest <- function(
     stop(
       "Complete or correct the database column in rows: ",
       paste(bad_rows, collapse = ", "),
-      ". Allowed values are 'Scopus' and 'Web of Science'.",
+      ". Use Scopus, Web of Science or a registered External:<source_type>.",
       call. = FALSE
     )
   }
@@ -478,15 +480,20 @@ read_one_citation_file <- function(
   database,
   batch_id
 ) {
-  tryCatch(
-    CiteSource::read_citations(
+  tryCatch({
+    if (startsWith(database, "External:") && tolower(tools::file_ext(source_path)) == "bib") {
+      source(file.path("R", "external_intake.R"))
+      data <- external_read_bibtex(source_path, database, batch_id)
+    } else data <- CiteSource::read_citations(
       files = import_path,
       cite_sources = database,
       cite_strings = batch_id,
       cite_labels = "search",
       verbose = FALSE,
       only_key_fields = TRUE
-    ),
+    )
+    data
+    },
     error = function(e) {
       stop(
         "Import failed for source file:\n",

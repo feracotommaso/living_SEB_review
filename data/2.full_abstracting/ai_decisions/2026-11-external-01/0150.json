@@ -1,0 +1,72 @@
+{
+  "screening_record_id": "seb_d694f460184d4b18",
+  "paper_id": "0150",
+  "doi": "https://doi.org/10.1177/27000710261487580",
+  "review_eligible": true,
+  "review_exclusion_reason": null,
+  "review_rationale": "SEB skills are the central constructs in an empirical cross-sectional investigation of age and gender differences across the life span.",
+  "review_evidence": [
+    {
+      "evidence": "The paper explicitly adopts the BESST/SEB framework and distinguishes skill capacities from typical personality traits.",
+      "page": 2,
+      "locator": "PDF p.2, Briefly Introducing SEB Skills"
+    },
+    {
+      "evidence": "The research questions concern age gradients in SEB domains/facets and gender differences in those gradients.",
+      "page": 4,
+      "locator": "PDF p.4, Overview of the Present Research, RQ1-RQ3"
+    }
+  ],
+  "framework_relation_tags": [
+    "APPLIES_SEB_FRAMEWORK",
+    "MEASURES_SEB_SKILLS_SUBSTANTIVELY"
+  ],
+  "meta_status": "eligible",
+  "meta_exclusion_reason": null,
+  "meta_pending_reason": null,
+  "meta_rationale": "The main study measures skill capacity with the standard 192-item BESSI and supplies usable zero-order correlations and original item data. The declared overlap with Soto et al. (2022) is resolved for extraction by excluding the 596 linked Internet sample D records already represented by 0053d; historical data remain unchanged. The remaining 30,719 records provide a nonduplicated quantitative contribution.",
+  "meta_evidence": [
+    {
+      "evidence": "Participants rate their capacity to enact behaviors on the standard 192-item BESSI, using a 1-5 response scale; partial reuse of Soto et al. (2022), Study 3, is explicitly disclosed.",
+      "page": 5,
+      "locator": "PDF p.5, Participants and Procedure; Measures"
+    },
+    {
+      "evidence": "Table 1 reports zero-order domain correlations for all 31,315 participants separately from covariate-adjusted correlations.",
+      "page": 6,
+      "locator": "PDF p.6, Table 1 and note"
+    },
+    {
+      "evidence": "Data and analysis code are identified at OSF 7asgp. User-supplied local originals were inspected without executing author code.",
+      "page": 16,
+      "locator": "PDF p.16, Data Availability Statement"
+    },
+    {
+      "evidence": "Cross-file verification links 596 old 0053d Case IDs to unique H-prefixed IDs in the new dataset, all agreeing on age and gender; 590 agree on all 192 items and six on 191 items. Exclusion is by linked record ID, not by approximate response matching.",
+      "page": null,
+      "locator": "Local source comparison: 0 Working data file - Copycmn2.sav and d0053d.xlsx; source checksums in extraction/0150/source_manifest.csv"
+    }
+  ],
+  "bessi_measure_classification": "clearly_eligible",
+  "bessi_target_construct": "seb_skill_level_or_capacity",
+  "eligible_quantitative_components": [
+    "Main study"
+  ],
+  "quantitative_scope_rationale": "One cross-sectional study. Extract only the participants not linked to the historical Internet sample D (0053d); do not treat age-range analyses as independent samples or enter age correlations. Sample/matrix IDs are assigned only after this resolved eligibility assessment.",
+  "publication_language": "English",
+  "language_ai_assessed": true,
+  "clinical_population_classification": "not_clinical",
+  "requires_human_review": false,
+  "human_review_reasons": [],
+  "decision_confidence": "high",
+  "decision_source": "ai",
+  "eligibility_policy_version": "2.0.0",
+  "workflow_version": "2.2.0",
+  "screening_date": "2026-11-05",
+  "human_review_summary": null,
+  "ai_recommendation": null,
+  "decision_options": [],
+  "provenance_note": "Codex fresh assessment of all 19 pages of the published PDF, SHA256 c2662c5a291c0fc3f94603baf7bd954a192cf55abb6271d3666745ce702e6e25; comparison with 0053.pdf Methods (PDF p.10, printed p.201) and local historical raw data. Local data and code supplied by user, retrieval dates unknown; receipt 2026-11-05. No author-contact messages sent. Source scoring reproduced in memory for all 32 facets and five weighted domains.",
+  "final_route": "both",
+  "current_route": "both"
+}

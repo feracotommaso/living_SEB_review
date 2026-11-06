@@ -48,8 +48,11 @@ test_that("review integration advances independently of a pending quantitative m
 test_that("operational outputs contain October once and preserve the 31-field interface", {
   metadata <- readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx")
   review <- readxl::read_excel("data/3.meta_data/review_data/review_data.xlsx")
-  expect_equal(nrow(metadata), 38L)
-  expect_equal(nrow(review), 50L)
+  current <- integration_current()
+  paths <- list.files("data/3.meta_data/matrices", pattern = "\\.xlsx$", full.names = TRUE)
+  inventory <- coding_matrix_inventory(current$basic, paths)
+  expect_equal(nrow(metadata), sum(inventory$status == "included"))
+  expect_equal(nrow(review), nrow(current$review))
   expect_equal(sum(metadata$matrix_id == "0145a"), 1L)
   expect_equal(metadata$n[metadata$matrix_id == "0145a"], 973)
   expect_identical(as.character(as.Date(metadata$download_date[metadata$matrix_id == "0145a"])), "2026-11-02")

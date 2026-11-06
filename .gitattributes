@@ -1,6 +1,10 @@
 # Workflow manifests hash exact working-tree bytes. Keep recorded line endings
 # stable on Windows and Unix; leave raw bibliographic exports outside these rules.
 /data/3.meta_data/**/*.csv text eol=lf
+/config/external/*.csv text eol=lf
+/config/external_source_types.csv text eol=lf
+# Bibliographic originals must retain their downloaded bytes.
+/data/0.bib_download/external/** -text
 /data/3.meta_data/coding/artifacts/**/*.json text eol=crlf
 /config/coding/*.csv text eol=lf
 /config/extraction/*.csv text eol=lf
@@ -12,3 +16,5 @@
 /data/3.1opendata_to_cor.R text eol=crlf
 /scripts/extraction/articles/0145.R text eol=crlf
 /scripts/extraction/keys/0145.R text eol=crlf
+/scripts/extraction/articles/0150.R text eol=lf
+/scripts/extraction/keys/0150.R text eol=lf

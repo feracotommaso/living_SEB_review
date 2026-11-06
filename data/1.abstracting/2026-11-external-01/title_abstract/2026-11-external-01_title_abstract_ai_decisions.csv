@@ -1,0 +1,2 @@
+screening_record_id,ai_decision,ai_exclusion_reason,ai_confidence,ai_rationale,ai_evidence,policy_version,prompt_version,model,screened_at_utc
+seb_d694f460184d4b18,include,,high,"Empirical journal article directly studying perceived social, emotional, and behavioral skills across the life span.","The abstract describes five SEB skill domains and facet-level analyses in a cross-sectional sample of 31,315 participants aged 10-70.",1.0.0,1.0.0,Codex,2026-11-05T13:39:05Z

@@ -1,0 +1,39 @@
+column_name,base_name,suffix,Topic,broad,label,source
+selfmanagement,selfmanagement,,SKILLS,BESSI,Self-management,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+socialengagement,socialengagement,,SKILLS,BESSI,Social engagement,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+cooperation,cooperation,,SKILLS,BESSI,Cooperation,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+emotionalresilience,emotionalresilience,,SKILLS,BESSI,Emotional resilience,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+innovation,innovation,,SKILLS,BESSI,Innovation,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+timemanagement,timemanagement,,SKILLS,BESSI_facet,Time management,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+organizationalskill,organizationalskill,,SKILLS,BESSI_facet,SM - Organizational,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+capacityforconsistency,capacityforconsistency,,SKILLS,BESSI_facet,SM - Consistency,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+taskmanagement,taskmanagement,,SKILLS,BESSI_facet,SM - Task management,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+detailmanagement,detailmanagement,,SKILLS,BESSI_facet,SM - Detail management,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+rulefollowingskill,rulefollowingskill,,SKILLS,BESSI_facet,SM - Rule following,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+responsibilitymanagement,responsibilitymanagement,,SKILLS,BESSI_facet,SM - Responsibility,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+goalregulation,goalregulation,,SKILLS,BESSI_facet,SM - Goal regulation,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+decisionmakingskill,decisionmakingskill,,SKILLS,BESSI_facet,SM - Decision making,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+leadershipskill,leadershipskill,,SKILLS,BESSI_facet,SE - Leadership,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+persuasiveskill,persuasiveskill,,SKILLS,BESSI_facet,SE - Persuasion,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+expressiveskill,expressiveskill,,SKILLS,BESSI_facet,SE - Expressive,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+conversationalskill,conversationalskill,,SKILLS,BESSI_facet,SE - Conversation,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+energyregulation,energyregulation,,SKILLS,BESSI_facet,SE - Energy,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+perspectivetakingskill,perspectivetakingskill,,SKILLS,BESSI_facet,CO - Perspective-taking,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+capacityfortrust,capacityfortrust,,SKILLS,BESSI_facet,CO - Trust,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+capacityforsocialwarmth,capacityforsocialwarmth,,SKILLS,BESSI_facet,CO - Social warmth,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+teamworkskill,teamworkskill,,SKILLS,BESSI_facet,CO - Teamwork,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+ethicalcompetence,ethicalcompetence,,SKILLS,BESSI_facet,CO - Ethics,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+stressregulation,stressregulation,,SKILLS,BESSI_facet,ER - Stress,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+capacityforoptimism,capacityforoptimism,,SKILLS,BESSI_facet,ER - Optimism,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+angermanagement,angermanagement,,SKILLS,BESSI_facet,ER - Anger,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+confidenceregulation,confidenceregulation,,SKILLS,BESSI_facet,ER - Confidence,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+impulseregulation,impulseregulation,,SKILLS,BESSI_facet,ER - Impulse,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+abstractthinkingskill,abstractthinkingskill,,SKILLS,BESSI_facet,IN - Abstraction,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+creativeskill,creativeskill,,SKILLS,BESSI_facet,IN - Creativity,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+artisticskill,artisticskill,,SKILLS,BESSI_facet,IN - Arts,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+culturalcompetence,culturalcompetence,,SKILLS,BESSI_facet,IN - Cultural,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+informationprocessingskill,informationprocessingskill,,SKILLS,BESSI_facet,IN - Information processing,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+selfreflectionskill,selfreflectionskill,,SKILLS,BESSI_facet,SEB - Self-reflection,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+adaptability,adaptability,,SKILLS,BESSI_facet,SEB - Adaptability,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+capacityforindependence,capacityforindependence,,SKILLS,BESSI_facet,SEB - Independence,Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R
+sex,sex,,DEMOGRAPHICS,SEX,Sex (F),Standard BESSI-192; original SAV; PDF p.5; explicit keys/0150.R

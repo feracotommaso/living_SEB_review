@@ -1,5 +1,35 @@
 # Quantitative extraction
 
+## 0150 / external-discovery pilot
+
+The user supplied the original SAV and analysis R file under `open_data/raw/0150/`.
+Original data/code download dates are unknown; local receipt is 2026-11-05. The
+paper/bibliographic download date is separately user-confirmed as 2026-11-05.
+The paper-level source manifest pins file checksums and preserves that distinction;
+the author script is inspected as a reference, never executed.
+
+```bash
+Rscript scripts/extraction/articles/0150.R --check-only
+Rscript scripts/extraction/articles/0150.R
+Rscript scripts/coding/02_build_article_coding.R 2026-11-external-01
+Rscript scripts/coding/04_integrate_batch.R 2026-11-external-01
+```
+
+The eight-section script uses the standard BESSI-192 keys, reproducing the released
+32 facet and five weighted-domain scores. Before scoring the new contribution it
+links 596 H-prefixed Case IDs to historical sample 0053d: ages/genders all agree,
+590 profiles agree on all 192 items, and six differ on one item. Exclusion uses IDs,
+not fuzzy profiles; the old matrix and raw data stay unchanged. Four old sample D
+IDs are absent from the new release. The analytical addition is N=30,719.
+
+The common-folder matrix 0150a has 38 variables (37 BESSI scores plus binary sex);
+pair Ns are 29,244-30,719. All 1,475 source Other-gender records remain in BESSI
+correlations and coded individual data. Their binary contrast is missing, while
+`gender_original` retains the original Gender3 categories (1 Female, 2 Male,
+3 Other). Age is retained only in individual data. Pairwise minimum eigenvalue
+is -2.914e-7; observed correlations are not repaired. Sample audits use
+`extraction/0150/0150a/`; original source provenance stays at paper level.
+
 ## Common convention for every article
 
 Follow [the shared extraction conventions](../../policies/extraction_conventions.md).

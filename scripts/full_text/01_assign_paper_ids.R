@@ -32,8 +32,8 @@ if (nzchar(batch_arg)) {
   )
 }
 
-if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])$", batch_id)) {
-  stop("batch_id must use YYYY-MM format. Received: ", batch_id, call. = FALSE)
+if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])(-external-[0-9]{2})?$", batch_id)) {
+  stop("batch_id must use YYYY-MM or YYYY-MM-external-NN. Received: ", batch_id, call. = FALSE)
 }
 
 current_abstracting_dir <- file.path("data", "1.abstracting", batch_id)
