@@ -1,7 +1,10 @@
 # Deduplicazione bibliografica mensile
 
-Questo README è la procedura operativa da seguire a ogni aggiornamento della
-Living SEB review.
+La procedura corrente è nella [guida unica](../../MONTHLY_WORKFLOW.md).
+Da `workflow.R` usa `prepara_lotto()`, `conferma_duplicati()` e `promuovi_registro()`.
+Le coppie si revisionano nel foglio duplicati dell’Excel unico; le scelte sono salvate
+in `human_duplicates.csv`. Le istruzioni sotto documentano anche gli script di compatibilità;
+gli Excel separati e le copie intermedie dei registri non vengono generati nel percorso compatto.
 
 ## Principio
 

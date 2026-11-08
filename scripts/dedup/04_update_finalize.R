@@ -102,7 +102,7 @@ full_new_file <- file.path(
   paste0(batch_id, "_new_records_full.csv")
 )
 
-CiteSource::export_csv(
+if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv"))) CiteSource::export_csv(
   new_records,
   filename = full_new_file,
   fields = "full",
@@ -129,7 +129,7 @@ screening_xlsx_file <- file.path(
 )
 
 screening_for_excel <- read_table_auto(screening_file)
-write_human_workbook(
+if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv"))) write_human_workbook(
   screening_for_excel,
   screening_xlsx_file,
   sheet = "new_records"

@@ -65,3 +65,8 @@ if (result$summary$keep_uncertain_records[[1L]] > 0L) {
     " uncertain/non-high-confidence record(s) were retained automatically."
   )
 }
+
+if (file.exists("data/3.meta_data/coding/records.csv")) {
+  source("workflow.R")
+  wf_export_screening(batch_id)
+}

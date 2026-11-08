@@ -68,14 +68,17 @@
 - Published matrices are a comparison reference or a documented fallback after
   checking individual-data availability/usability. Access failures do not change
   eligibility. Do not invent scoring rules or silently replace downloaded versions.
-- Use `scripts/coding/04_integrate_batch.R` for validated monthly integration;
-  do not copy an unmatched matrix into the active folder manually. Preserve
-  historical scientific values and keep review/quantitative readiness separate.
+- Use `workflow.R` for the current human workflow and final integration.
+  Canonical coding is in `data/3.meta_data/coding/records.csv`; import edits from
+  the general workbook. Preserve historical scientific values until an explicit
+  source correction and readable before/after comparison have been reviewed.
 - Long article keys may be in an explicitly sourced `scripts/extraction/keys/`
   companion; keep scientific operations visible in the main article script.
-- Use sample-specific extraction audit directories for new papers with multiple
-  samples. Confirm bibliographic export dates through `05_set_download_date.R`;
-  do not infer them from publication month or PDF/individual-data retrieval.
+- Save new matrices directly in the common matrix directory, pair Ns by matrix
+  in `data/3.meta_data/pair_n/`, and aggregate checks in `extraction/summary.csv`.
+  Confirm bibliographic dates in the general coding workbook; do not infer them
+  from publication month or PDF/individual-data retrieval. Keep original source
+  provenance in `coding/sources.csv` and coding evidence in `coding/evidence.csv`.
 
 ## Validation
 

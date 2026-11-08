@@ -139,75 +139,26 @@ Retain previous values/evidence and version any substantive recoding or merging.
 
 ## Outputs and completion
 
-Preserve raw downloads under `open_data/raw/<paper_id>/`. Save coded individual
-data under `open_data/individual_data/<matrix_id>.csv` (optional XLSX companion).
-The whole `open_data/` directory stays Git-ignored.
+Use `source("workflow.R")` and `estrai_articolo(paper_id)` for current extraction.
+Original provenance is consolidated in `data/3.meta_data/coding/sources.csv`.
+The helper checks original bytes; changing a comment or a codebook label does not
+require rebuilding a chain of derived-file signatures.
 
-Stage each sample under `data/3.meta_data/extraction/<paper_id>/<matrix_id>/`,
-including its own checks, pair Ns, summaries and extraction manifest. The labelled
-CSV and square XLSX are in that sample's `matrices/` subfolder. Acquisition/source
-manifests are shared at paper level. This prevents samples from overwriting each
-other's audits. The single-sample October pilot retains its existing paper-level
-audit layout for compatibility; integration recognises both layouts.
-The later analytical
-integration step will promote these with their validated coding rows to
-`data/3.meta_data/matrices/`; do not create an unmatched active matrix prematurely.
-In the CSV include an explicit row-label column; in the legacy XLSX keep the
-existing square-column layout so the current builder can reconstruct row names
-from column names. Version pair Ns, source
-checksums, mappings and aggregate checks under `data/3.meta_data/extraction/`.
-Do not include participant identifiers or observations in those versioned audits.
+Export coded individuals under the Git-ignored `open_data/individual_data/`,
+matrices directly into `data/3.meta_data/matrices/`, pair-specific Ns into
+`data/3.meta_data/pair_n/`, and aggregate checks into `extraction/summary.csv`.
+CSV matrices include row labels; XLSX matrices preserve the square-column layout
+consumed by historical analysis. Keep participant identifiers out of these exports.
 
-A matrix is ready only after source, eligibility/ID, scoring, naming, sample N,
-symmetry, range and missingness checks. Diagnose non-positive-semidefinite results
-possible with pairwise missingness; do not silently repair observed correlations.
-Prepare the article outputs first. `scripts/coding/04_integrate_batch.R <batch>`
-then validates coding against a fresh temporary rebuild, checks extraction
-input/output hashes, copies ready matrices into the common matrix directory,
-registers the batch and rebuilds final CSV/XLSX outputs. Review coding can advance
-while a sample awaits extraction; availability never changes eligibility.
+Run `anteprima_risultati()` to compare all current results with the saved datasets.
+`aggiorna_risultati()` writes the final CSV/XLSX pairs together. Corrections to
+existing correlations or Ns require a stated scientific reason after the readable
+comparison; no hand-maintained numeric hash ledger is needed in this route.
+Missing matrices remain pending, and non-positive-semidefinite matrices are
+reported without silently repairing correlations.
 
-## October quantitative pilot
-
-`scripts/extraction/articles/0145.R` implements the common structure for Study 2.
-It uses the released author-selected original-item dataset (N=973), checks BESSI
-and HEXACO correspondence to the public session data, and preserves missing
-blocks. Selection based on private comments is not independently reproducible.
-The user confirmed distinct persuasion/perspective scoring on 2026-11-04; the
-source object's name collision is documented in `scientific_decisions.csv`.
-Core/cross-loading weights retain their 1:0.5 ratio and are normalised by available
-weight to keep BESSI means within 1-5. The source's 80% response threshold remains
-explicit. Response code -9 is missing, not a score.
-
-The staged output has 61 variables: 32 BESSI facets, five BESSI domains, six HEXACO
-domains, observed cognitive/political/environmental measures and sex/gender.
-Age is the 62nd column in the local individual export. The released data contain
-23 wholly missing HEXACO blocks; pair N ranges 790-973. The small negative minimum
-eigenvalue (approximately -4.13e-5) is recorded without repairing correlations.
-Observed components remain separate from the article's latent factor composites.
-Fifteen evidenced variable-codebook additions are registered; the existing two
-review topics remain adequate. Input/output SHA-256 values are retained in the
-extraction manifest. October is now integrated: the 0145a matrix is in the common
-matrix directory, three new review papers are included, and the final datasets
-contain 38 quantitative samples and 50 review papers. Historical values and
-eligibility remain unchanged. Integration registries and per-row provenance keep
-monthly coding distinct from historical data that have not been reassessed.
-
-## Bibliographic dates and monthly readiness
-
-Record the actual export/download date separately from the publication-month
-batch. `scripts/coding/05_set_download_date.R <batch> <YYYY-MM-DD>` records a
-human-confirmed date in a stable per-batch provenance CSV, updates article JSON
-sources/evidence and preserves prior source versions. Rebuild coding and rerun
-guarded integration afterwards. Do not substitute the PDF or dataset retrieval
-date, the current date or the end of the publication month. Dates that remain
-unknown stay explicitly missing; conflicting existing dates require reconciliation.
-
-The monthly R stages accept explicit batch IDs. New-month regression fixtures
-cover review-only retention, no retained articles, independent review readiness,
-multiple sample exports, source/date history and repeatable integration. These
-fixtures are isolated tests, not invented operational bibliographic records.
-Actual future papers still require source acquisition, structured scientific
-coding and article-specific R scoring using the common convention; unavailable
-data and scientific ambiguities remain explicit. The November operational batch
-has not been run before real inputs are supplied.
+The original 0145 and 0150 source comparisons and agreed scientific decisions
+remain in their article scripts and `config/extraction/*_decisions.csv`.
+Bibliographic download dates are edited in the general coding workbook. They remain
+separate from PDF and individual-data acquisition dates; unknown dates stay missing.
+Historical scripts are retained. The sole operating guide is `MONTHLY_WORKFLOW.md`.

@@ -1,0 +1,3 @@
+paper_id,matrix_id,n,variables,minimum_pair_n,maximum_pair_n,minimum_eigenvalue,hexaco_missing_block,raw_day1_links,raw_day2_links,raw_tailor_links,missing_response_codes_replaced,publication_n,excluded_historical_overlap,overlap_all_items_equal,overlap_one_item_different,old_d_not_in_new_release,maximum_facet_score_difference,maximum_domain_score_difference,maximum_published_table_rounding_difference,gender_other_n,mean_age,sd_age,female_percentage,minimum_age,maximum_age
+0145,0145a,973,61,790,973,-4.13373516090932e-05,23,950,973,973,9,,,,,,,,,,,,,,
+0150,0150a,30719,38,29244,30719,-2.9138470499438e-07,,,,,,31315,596,590,6,4,0,1.77635683940025e-15,0.00473230766317212,1475,22.8848269800449,9.24149617617036,72.6260620462906,10,70

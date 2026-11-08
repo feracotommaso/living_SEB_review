@@ -4,7 +4,7 @@
 
 # 1. Article and sources ----------------------------------------------------
 paper_id <- NA_character_             # Permanent registered paper ID
-batch_id <- NA_character_             # Monthly publication batch, YYYY-MM
+batch_id <- NA_character_             # YYYY-MM or YYYY-MM-external-NN
 matrix_id <- NA_character_            # Assigned eligible sample/matrix ID
 component_label <- NA_character_      # Publication label, e.g. Study 2
 occasion_label <- NA_character_       # First eligible contemporaneous occasion
@@ -24,12 +24,13 @@ raw_dir <- file.path("data/3.meta_data/open_data/raw", paper_id)
 individual_path <- file.path("data/3.meta_data/open_data/individual_data",
                              paste0(matrix_id, ".csv"))
 matrix_dir <- "data/3.meta_data/matrices"
-audit_dir <- file.path("data/3.meta_data/extraction", paper_id, matrix_id)
-# Sample-specific audits prevent one sample from overwriting another sample's
-# checks, pair Ns or extraction manifest. Acquisition manifests remain per paper.
+source("workflow.R")
+source("R/extraction_helpers.R")
+args <- extraction_arguments(commandArgs(trailingOnly = TRUE))
+extraction_validate_scope(batch_id, paper_id, matrix_id, component_label)
 
 # 2. Import verified originals ---------------------------------------------
-# TODO: Verify source_manifest.csv checksums before reading local files.
+sources <- extraction_originals(paper_id) # Checks coding/sources.csv and originals.
 # raw_session1 <- readRDS(file.path(raw_dir, "<original_filename>"))
 # raw_session2 <- readRDS(file.path(raw_dir, "<original_filename>"))
 # Keep downloaded author code as a reference; inspect before adapting it.
@@ -79,10 +80,13 @@ audit_dir <- file.path("data/3.meta_data/extraction", paper_id, matrix_id)
 # Preserve the same analytic participants in individual data and the matrix.
 # individual_variables <- unique(c(matrix_variables, "age"))
 # Retain only available, explicitly documented columns; no age-based row filter.
-# readr::write_csv(data_scored[, individual_variables, drop = FALSE], individual_path)
-# Save cor_matrix as CSV with explicit row labels and square legacy XLSX.
-# Save pair_n and aggregate/provenance checks in audit_dir, without observations
-# or participant IDs. Individual files remain local under Git-ignored open_data/.
+# checks <- as.data.frame(extraction_check_matrix(data_matrix, cor_matrix, pair_n))
+# if (!"--check-only" %in% args) wf_compact_extraction(paper_id, matrix_id,
+#   data_scored[, individual_variables, drop = FALSE], cor_matrix, pair_n, checks)
+# This writes the common matrix CSV/XLSX, pair_n/<matrix_id>.csv and the cumulative
+# extraction/summary.csv. Source provenance belongs in coding/sources.csv and
+# scientific evidence in coding/evidence.csv; no extra per-article audit folders.
+# Individual files remain local under Git-ignored open_data/, without personal IDs.
 # Matrix creation does not itself promote coding into metadata/review_data.
 
 stop("Template incomplete: implement and verify article-specific steps before export.")

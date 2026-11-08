@@ -31,7 +31,7 @@ Do not silently change policy or output columns.
    document/publication type, journal, and bibliographic metadata.
 4. Apply the conservative scientific rules below.
 5. Write one decision row per input ID to the exact output path requested by the
-   project task file. Use the exact column order in `references/output_schema.md`.
+   workflow output path. Use the exact column order in `references/output_schema.md`.
 6. Run the bundled validator:
 
    ```bash
@@ -44,8 +44,10 @@ Do not silently change policy or output columns.
 7. If validation passes and R is available in the repository, run:
 
    ```bash
-   Rscript scripts/screening/02_finalize_title_abstract.R
+   Rscript -e 'source("workflow.R"); raccogli_abstract("YYYY-MM")'
    ```
+
+   Replace YYYY-MM with the actual monthly or external batch. The finalizer updates the single batch screening workbook. Read `MONTHLY_WORKFLOW.md` for human edits; use `human_*` columns and `importa_screening(batch)` so original AI proposals remain recorded. Do not generate separate input/included/excluded workbooks.
 
 8. Report the counts of `include`, `exclude`, and `uncertain`, plus the path of
    the included file for the next stage. Do not require human scientific review

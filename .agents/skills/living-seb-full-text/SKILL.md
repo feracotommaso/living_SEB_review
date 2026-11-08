@@ -22,6 +22,10 @@ Use [the operational guide](../../../scripts/full_text/README.md) for commands,
 resume safeguards, adjudication field definitions and Windows locale recovery.
 Keep policy and schema centralized; do not create skill-local copies.
 
+## Current human interface
+
+Use `workflow.R` and `MONTHLY_WORKFLOW.md`. All R command examples require the actual batch in place of YYYY-MM, including external batches. Human input is in `decisioni_full_text`; the canonical audit CSV retains its `human_review` name. Reopen a resolved case only within the requested reassessment scope, using `rivedi_full_text(batch, paper_id, reason)`. Do not recreate separate manifest/decision workbooks or legacy routing exports.
+
 ## Select and inspect the batch
 
 1. Work on the checked-out branch and inspect existing changes; retain user work.
@@ -36,7 +40,7 @@ Keep policy and schema centralized; do not create skill-local copies.
    follow the guide's explicit Step 00 migration; never recover decisions from
    regression fixtures or claim that migration re-read PDFs.
 4. Assign/reuse IDs and refresh the manifest with:
-   `Rscript scripts/full_text/01_assign_paper_ids.R YYYY-MM`.
+   `Rscript -e 'source("workflow.R"); prepara_full_text("YYYY-MM")'`.
    Read the resulting `data/2.full_abstracting/<batch>_full_text_manifest.csv`
    as text so identifiers retain leading zeroes. Preserve both identifiers exactly.
 5. Main PDFs are `data/2.full_abstracting/pdfs/<paper_id>.pdf`. Inspect relevant
@@ -108,12 +112,12 @@ Validate typed objects with `ft_validate_decision_object()` before persistence
 when practical. Once all manifest records have artifacts, run:
 
 ```bash
-Rscript scripts/full_text/02_build_full_text_decisions.R YYYY-MM
+Rscript -e 'source("workflow.R"); raccogli_full_text("YYYY-MM")'
 ```
 
 This validates exact coverage, filenames, structure and scientific consistency,
 replays saved adjudications, and generates canonical decision/audit CSVs plus the
-four-sheet XLSX interface. Fix technical validation errors without changing
+single batch screening workbook in `data/1.abstracting/<batch>/<batch>_screening.xlsx`. Fix technical validation errors without changing
 scientific judgments merely to satisfy a validator. The builder's success is not
 proof that the AI read the papers.
 
@@ -126,13 +130,13 @@ tasks separate from substantive judgment. Ask for decisions together; do not
 require full-PDF reading when the evidence packet is sufficient.
 
 When the user actually adjudicates, map their decisions to the matching
-`human_review` rows and edit only the guide's permitted adjudication inputs.
+`decisioni_full_text` rows in the batch screening workbook and edit only the guide's permitted adjudication inputs.
 Retain original AI/evidence fields and all resolved rows. Record the user's
 rationale and actual date; do not invent their identity or adjudication.
 Then run:
 
 ```bash
-Rscript scripts/full_text/03_finalize_full_text_decisions.R YYYY-MM
+Rscript -e 'source("workflow.R"); importa_screening("YYYY-MM")'
 ```
 
 If an adjudication establishes an approved general rule, incorporate it into the

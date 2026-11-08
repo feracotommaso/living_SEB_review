@@ -1,3 +1,13 @@
+## 2026-11-08 — Human workflow consolidation
+
+- One screening workbook per batch and one cumulative coding workbook, with explicit imports, stable IDs and protection for unsaved edits.
+- Added `workflow.R` for preparation, correction, extraction, before/after review and final updates. Scientific scoring remains visible in per-article scripts.
+- Consolidated coding, evidence and source provenance; new extraction exports matrices to the common folder, pair Ns by matrix and one aggregate summary.
+- Retired redundant monthly coding artifacts, staging matrices and separate screening workbooks; retained originals and historical scientific scripts.
+- Compared all final values with checkpoint 0e1daaa and reproduced the 0150 individual and matrix CSVs exactly.
+- Validation: full R suite passed, October screening 14/14, 39 quantitative samples and 51 review articles unchanged; workbook round trips and rendered previews checked. Original BibTeX and historical scientific scripts remain unchanged.
+- Skill metadata checked with R's YAML parser. The optional Python `quick_validate.py` could not run because PyYAML is absent in the bundled runtime.
+
 # Changelog
 
 ## External discovery intake — 2026-11-05

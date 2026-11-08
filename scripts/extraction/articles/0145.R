@@ -1,7 +1,7 @@
 # 1. Article and sources ----------------------------------------------------
 # Lubczyk et al. (2026), doi:10.1177/08902070261486523. Study 2 only.
 # Source: OSF an64w, Supplement_S2.1.qmd (selection), Supplement_S2.2.qmd (scoring),
-# and 01_Options.R (80% response threshold). See source_manifest.csv checksums.
+# and 01_Options.R (80% response threshold). Original checksums: coding/sources.csv.
 # Run from repository root. --check-only scores/checks without writing outputs.
 paper_id <- "0145"
 matrix_id <- "0145a"
@@ -16,7 +16,7 @@ arguments <- extraction_arguments(commandArgs(trailingOnly = TRUE))
 # 2. Import verified originals ---------------------------------------------
 raw_dir <- "data/3.meta_data/open_data/raw/0145"
 audit_dir <- "data/3.meta_data/extraction/0145"
-source_manifest <- extraction_verify_sources(file.path(audit_dir, "source_manifest.csv"), paper_id)
+source_manifest <- extraction_originals(paper_id)
 raw_day1 <- readRDS(file.path(raw_dir, "thin_data_day1_sosci.rds"))
 raw_day2 <- readRDS(file.path(raw_dir, "thin_data_day2_sosci.rds"))
 raw_tailor <- readRDS(file.path(raw_dir, "thin_data_day2_tailor.rds"))

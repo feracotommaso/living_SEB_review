@@ -65,6 +65,7 @@ if (file.exists(decisions_file)) {
 }
 
 readr::write_csv(prepared, input_csv)
+if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv"))) {
 screening_write_input_workbook(prepared, input_xlsx)
 screening_write_jsonl(prepared, input_jsonl)
 
@@ -111,3 +112,7 @@ print(summary_data)
 message("AI input prepared.")
 message("Next: run the $living-seb-title-abstract skill using: ", task_file)
 message("Then run scripts/screening/02_finalize_title_abstract.R.")
+
+} else {
+  message("Input screening: ", input_csv, "\nOutput IA atteso: ", decisions_file)
+}

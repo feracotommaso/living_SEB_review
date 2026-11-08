@@ -196,7 +196,8 @@ ft_write_monthly_outputs <- function(decisions, human_review, path, batch_id) {
   decisions <- ft_validate_ai_decisions(decisions, decisions)
   ft_validate_human_queue(human_review, decisions)
   decisions$workflow_version <- ft_workflow_version
-  ft_write_decision_workbook(decisions, human_review, path, batch_id)
+  if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv")))
+    ft_write_decision_workbook(decisions, human_review, path, batch_id)
   paths <- ft_snapshot_paths(path)
   ft_atomic_write_csv(decisions, paths$decisions)
   ft_atomic_write_csv(human_review, paths$human_review)

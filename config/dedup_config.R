@@ -11,7 +11,12 @@ search_run_date <- "2026-11-02"
 # An explicit process-local selector isolates external intake from monthly runs.
 # In RStudio: Sys.setenv(LIVING_SEB_BATCH_ID = "YYYY-MM-external-01").
 # Clear with Sys.unsetenv("LIVING_SEB_BATCH_ID") before the next database update.
-external_batch <- Sys.getenv("LIVING_SEB_BATCH_ID", "")
+selected_batch <- Sys.getenv("LIVING_SEB_BATCH_ID", "")
+if (nzchar(selected_batch)) {
+  if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])(-external-[0-9]{2})?$", selected_batch)) stop("Invalid selected batch.")
+  batch_id <- selected_batch
+}
+external_batch <- if (grepl("-external-", selected_batch, fixed = TRUE)) selected_batch else ""
 if (nzchar(external_batch)) {
   source(here::here("R", "external_intake.R"))
   intake <- external_manifest(external_batch)

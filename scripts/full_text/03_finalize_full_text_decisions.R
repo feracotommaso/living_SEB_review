@@ -20,6 +20,11 @@ if (nzchar(batch_arg)) {
 if (!grepl("^[0-9]{4}-(0[1-9]|1[0-2])(-external-[0-9]{2})?$", batch_id)) stop("batch_id must use YYYY-MM or YYYY-MM-external-NN.", call. = FALSE)
 
 full_text_dir <- file.path("data", "2.full_abstracting")
+common_workbook <- file.path("data/1.abstracting", batch_id, paste0(batch_id, "_screening.xlsx"))
+if (file.exists(common_workbook)) {
+  source("workflow.R")
+  importa_screening(batch_id)
+} else {
 workbook_path <- file.path(full_text_dir, paste0(batch_id, "_full_text_decisions.xlsx"))
 wb <- ft_read_decision_workbook(workbook_path)
 paths <- ft_snapshot_paths(workbook_path)
@@ -42,4 +47,5 @@ if (any(res$decisions$workflow_status == "HUMAN_REVIEW_REQUIRED")) {
   cat("\nSome substantive decisions remain open. Discuss the remaining cases as a batch, update human_review, then rerun this script.\n")
 } else {
   cat("\nNo substantive human-review cases remain open.\n")
+}
 }

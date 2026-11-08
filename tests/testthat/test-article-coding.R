@@ -5,8 +5,36 @@ source("R/article_coding.R")
 
 eligibility <- ft_read_canonical_decisions("data/2.full_abstracting/2026-10_full_text_decisions.csv")
 topics <- coding_read_csv("data/topics_codebook.csv")
-artifact_paths <- sort(list.files("data/3.meta_data/coding/artifacts/2026-10", pattern = "\\.json$", full.names = TRUE))
-artifacts <- lapply(artifact_paths, function(path) jsonlite::fromJSON(path, simplifyVector = FALSE))
+# Schema fixtures are isolated from operational provenance and frozen file hashes.
+fixture_source <- tempfile(fileext = ".txt")
+writeLines("Synthetic evidence for schema tests only; not an operational assessment.", fixture_source)
+records <- coding_read_csv("data/3.meta_data/coding/records.csv")
+artifacts <- lapply(c("0144", "0145", "0148"), function(pid) {
+  r <- records[records$paper_id == pid, ][1, ]
+  article <- lapply(r[, coding_article_fields(), drop = FALSE], function(v) if (is.na(v)) NULL else v)
+  for (field in c("review_topics", "email", "open_data")) if (!is.null(article[[field]])) article[[field]] <- as.list(trimws(strsplit(article[[field]], ";", fixed = TRUE)[[1]]))
+  article$year <- as.numeric(article$year)
+  obj <- list(coding_version = "1.0.0", screening_record_id = r$screening_record_id, paper_id = pid,
+    coding_date = "2026-11-06", article = article, samples = list(), evidence = list())
+  if (pid == "0145") {
+    sample <- lapply(r[, c("component_label", "sample_label", "occasion_label", "occasion_role", coding_sample_fields()), drop = FALSE], function(v) if (is.na(v)) NULL else v)
+    for (field in c("country", "seb_measure", "trait_frame")) if (!is.null(sample[[field]])) sample[[field]] <- as.list(trimws(strsplit(sample[[field]], ";", fixed = TRUE)[[1]]))
+    for (field in c("n", "age", "gender")) if (!is.null(sample[[field]])) sample[[field]] <- as.numeric(sample[[field]])
+    obj$samples <- list(sample)
+  }
+  units <- c(list(paper = article), if (length(obj$samples)) setNames(obj$samples, paste(r$component_label, r$sample_label, sep = "|")))
+  for (unit in names(units)) for (field in names(units[[unit]])) if (!is.null(units[[unit]][[field]])) {
+    obj$evidence[[length(obj$evidence)+1L]] <- list(unit = unit, field = field, status = "extracted", source = fixture_source,
+      source_sha256 = digest::digest(file = fixture_source, algo = "sha256"), page = NULL, evidence = "Synthetic schema fixture")
+  }
+  obj
+})
+artifact_dir <- tempfile(); dir.create(artifact_dir)
+artifact_paths <- vapply(artifacts, function(obj) {
+  path <- file.path(artifact_dir, paste0(obj$paper_id, ".json"))
+  jsonlite::write_json(obj, path, auto_unbox = TRUE, pretty = TRUE, null = "null")
+  path
+}, character(1))
 
 test_that("pilot extracts only the eligible component and analytic sample", {
   for (obj in artifacts) expect_silent(coding_validate_artifact(obj, eligibility, topics))

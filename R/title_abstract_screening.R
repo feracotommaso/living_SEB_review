@@ -663,6 +663,7 @@ screening_finalize_outputs <- function(
 
   readr::write_csv(combined, paths$decisions_csv)
   readr::write_csv(included, paths$included_csv)
+  if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv"))) {
   readr::write_csv(excluded, paths$excluded_csv)
   readr::write_csv(summary, paths$summary_csv)
 
@@ -704,6 +705,8 @@ screening_finalize_outputs <- function(
     auto_unbox = TRUE,
     null = "null"
   )
+
+  }
 
   list(
     summary = summary,

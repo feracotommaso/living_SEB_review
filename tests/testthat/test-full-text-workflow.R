@@ -1,8 +1,12 @@
 withr::local_dir(here::here())
 source(file.path("R", "full_text_workflow.R"))
+withr::local_options(living_seb.compact = FALSE)
 
-pilot_path <- file.path("data", "2.full_abstracting", "2026-10_full_text_decisions.xlsx")
-pilot <- ft_read_decision_workbook(pilot_path)
+pilot <- list(decisions = ft_read_canonical_decisions("data/2.full_abstracting/2026-10_full_text_decisions.csv"),
+  human_review = ft_read_table("data/2.full_abstracting/2026-10_full_text_human_review.csv"))
+pilot$human_review[] <- lapply(pilot$human_review, ft_blank_to_empty)
+pilot_path <- tempfile(fileext = "_full_text_decisions.xlsx")
+ft_write_decision_workbook(pilot$decisions, pilot$human_review, pilot_path, "2026-10")
 pilot$decisions$workflow_version <- ft_workflow_version
 for (key in c("issue_summary", "ai_recommendation", "decision_options", "provenance_note")) {
   if (!key %in% names(pilot$decisions)) pilot$decisions[[key]] <- ""

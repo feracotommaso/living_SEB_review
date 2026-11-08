@@ -801,6 +801,11 @@ load_reviewed_candidates <- function(
   excel_file,
   legacy_csv_file = NULL
 ) {
+  human_csv <- file.path(dirname(excel_file), "human_duplicates.csv")
+  if (file.exists(human_csv)) {
+    review_data <- as.data.frame(readr::read_csv(human_csv, col_types = readr::cols(.default = "c"), na = "", progress = FALSE))
+    return(apply_excel_review_decisions(expected_pairs, review_data))
+  }
   if (file.exists(excel_file)) {
     review_data <- read_review_workbook(excel_file)
     return(apply_excel_review_decisions(expected_pairs, review_data))

@@ -38,12 +38,14 @@ test_that("external pilot is integrated once with dates and overlap notes preser
   expect_silent(coding_validate_historical(as.data.frame(metadata)))
   provenance <- integration_current()$provenance
   expect_identical(provenance$origin[provenance$matrix_id == "0150a"], "external_coding")
-  manifest <- codebook_csv("data/3.meta_data/extraction/0150/source_manifest.csv")
+  manifest <- subset(codebook_csv("data/3.meta_data/coding/sources.csv"), paper_id == "0150")
   raw <- manifest$role %in% c("individual_data", "author_code")
   expect_true(all(is.na(manifest$download_date[raw])))
   expect_true(all(manifest$download_date_status[raw] == "unknown"))
   expect_true(all(manifest$received_date[raw] == "2026-11-05"))
-  pair <- codebook_csv("data/3.meta_data/extraction/0150/0150a/pair_correlations.csv")
+  pair <- codebook_csv("data/3.meta_data/pair_n/0150a.csv")
+  m <- as.matrix(readxl::read_excel("data/3.meta_data/matrices/0150a.xlsx"))
+  pair$r <- m[cbind(match(pair$var1, colnames(m)), match(pair$var2, colnames(m)))]
   keys <- vapply(seq_len(nrow(pair)), function(i) paste(sort(c(pair$var1[i], pair$var2[i])), collapse = "_"), character(1))
   expect_equal(as.numeric(row[, keys]), as.numeric(pair$r), tolerance = 1e-13)
 })

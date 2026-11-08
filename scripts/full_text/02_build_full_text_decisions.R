@@ -44,3 +44,8 @@ if (any(decisions$requires_human_review)) {
   cat("\nReview all human-review cases together; do not adjudicate them one at a time unless needed.\n")
   cat("Open sheet: human_review\n")
 }
+
+if (file.exists("data/3.meta_data/coding/records.csv")) {
+  source("workflow.R")
+  wf_export_screening(batch_id)
+}

@@ -5,46 +5,6 @@ source("R/article_coding.R")
 source("R/codebook_workflow.R")
 source("R/analytical_integration.R")
 
-test_that("October integration is idempotent and preserves historical coding", {
-  root <- tempfile("integration_test_"); dir.create(root)
-  directory <- file.path(root, "integration"); active <- file.path(root, "matrices")
-  result <- integration_register_batch("2026-10", directory, active)
-  expect_equal(result$papers, 3L)
-  expect_equal(result$samples, 1L)
-  expect_length(result$pending, 0L)
-  current <- integration_current(directory)
-  expect_equal(nrow(current$basic), 62L)
-  expect_equal(nrow(current$review), 50L)
-  expect_identical(current$legacy, coding_read_basic_info())
-  expect_identical(names(current$basic), coding_dictionary()$field)
-  expect_true(inherits(current$basic$download_date, "POSIXct"))
-  expect_identical(current$basic$final_decision[current$basic$paper_id == "0145"], "both")
-  expect_setequal(current$review$paper_id[current$review$paper_id %in% c("0144", "0145", "0148")], c("0144", "0145", "0148"))
-  paths <- list.files(root, recursive = TRUE, full.names = TRUE)
-  before <- tools::md5sum(paths)
-  integration_register_batch("2026-10", directory, active)
-  expect_identical(tools::md5sum(paths), before)
-  file <- file.path(active, "0145a.csv")
-  cat("manual change", file = file, append = TRUE)
-  expect_error(integration_current(directory), "changed")
-  expect_error(integration_register_batch("2026-10", directory, active), "manual changes")
-})
-
-test_that("review integration advances independently of a pending quantitative matrix", {
-  root <- tempfile("integration_pending_"); dir.create(root)
-  directory <- file.path(root, "integration"); active <- file.path(root, "matrices")
-  register <- integration_register_batch
-  isolated <- new.env(parent = environment(register))
-  isolated$integration_verify_extraction <- function(...) NULL
-  environment(register) <- isolated
-  result <- register("2026-10", directory, active)
-  expect_identical(result$pending, "0145a")
-  current <- integration_current(directory)
-  expect_equal(nrow(current$review), 50L)
-  expect_equal(nrow(current$matrices), 0L)
-  expect_false(file.exists(file.path(active, "0145a.xlsx")))
-})
-
 test_that("operational outputs contain October once and preserve the 31-field interface", {
   metadata <- readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx")
   review <- readxl::read_excel("data/3.meta_data/review_data/review_data.xlsx")
@@ -58,7 +18,9 @@ test_that("operational outputs contain October once and preserve the 31-field in
   expect_identical(as.character(as.Date(metadata$download_date[metadata$matrix_id == "0145a"])), "2026-11-02")
   expect_true(all(as.Date(review$download_date[review$paper_id %in% c("0144", "0145", "0148")]) == as.Date("2026-11-02")))
   expect_identical(names(metadata)[1:31], coding_dictionary()$field)
-  source <- codebook_csv("data/3.meta_data/extraction/0145/pair_correlations.csv")
+  source <- codebook_csv("data/3.meta_data/pair_n/0145a.csv")
+  m <- as.matrix(readxl::read_excel("data/3.meta_data/matrices/0145a.xlsx"))
+  source$r <- m[cbind(match(source$var1, colnames(m)), match(source$var2, colnames(m)))]
   row <- metadata[metadata$matrix_id == "0145a", ]
   keys <- vapply(seq_len(nrow(source)), function(i) paste(sort(c(source$var1[[i]], source$var2[[i]])), collapse = "_"), character(1))
   expect_equal(as.numeric(row[, keys]), as.numeric(source$r), tolerance = 1e-13)

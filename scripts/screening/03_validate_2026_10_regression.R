@@ -29,10 +29,6 @@ actual <- readr::read_csv(actual_file, show_col_types = FALSE)
 expected <- readr::read_csv(expected_file, show_col_types = FALSE)
 check <- screening_compare_golden(actual, expected)
 
-readr::write_csv(
-  check,
-  file.path(dirname(actual_file), "2026-10_title_abstract_regression_check.csv")
-)
 
 if (!all(check$matches_expected)) {
   print(check[!check$matches_expected, , drop = FALSE])

@@ -85,7 +85,7 @@ saveRDS(
   file.path(batch_dir, "update_dedup_result.rds")
 )
 
-CiteSource::export_csv(
+if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv"))) CiteSource::export_csv(
   update_result$unique,
   filename = file.path(
     batch_dir,
@@ -110,7 +110,7 @@ if (nrow(update_result$manual_dedup) > 0L) {
     update_result$manual_dedup,
     candidate_file
   )
-  write_review_workbook(
+  if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv"))) write_review_workbook(
     update_result$manual_dedup,
     review_workbook,
     title = paste0(
@@ -150,7 +150,7 @@ readr::write_csv(
   file.path(batch_dir, "update_prepare_summary.csv")
 )
 
-write_session_snapshot(
+if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv"))) write_session_snapshot(
   file.path(batch_dir, "update_session_info.txt")
 )
 

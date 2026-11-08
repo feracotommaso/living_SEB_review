@@ -1,5 +1,11 @@
 # Segnalazioni esterne a Scopus e Web of Science
 
+Current operating commands are in `MONTHLY_WORKFLOW.md` and `workflow.R`.
+Naming and provenance rules below remain in force. Screening uses one workbook
+per batch; descriptive coding uses the cumulative coding workbook. Older pilot
+output paths below describe the checkpoint preceding consolidation.
+
+
 ## Regola unica
 
 Ogni riferimento individuato fuori dalla ricerca periodica entra come fonte

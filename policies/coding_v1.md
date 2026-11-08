@@ -1,5 +1,13 @@
 # Descriptive coding dictionary v1.0.0
 
+> Operational update, 2026-11-06: use `workflow.R` and `MONTHLY_WORKFLOW.md`.
+> Scientific coding rules below remain in force. Monthly JSON/CSV coding exports,
+> technical integration manifests and manual numeric-signature reconciliation
+> have been replaced by cumulative coding tables, an editable general workbook
+> and readable comparisons of final values. Paths and steps describing that older
+> implementation are historical documentation, not the current operating procedure.
+
+
 The canonical dictionary is `config/coding/legacy_31_fields.csv`. Its 31 rows
 preserve the exact historical analytical column order. The derived human interface
 is `data/coding_dictionary.xlsx`. `rule_status` distinguishes agreed methodological

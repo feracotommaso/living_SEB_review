@@ -1,6 +1,8 @@
 # Acquire the public Study 2 source files; do not execute downloaded author code.
 # Run from the repository root. Individual records remain under Git-ignored open_data/.
 suppressPackageStartupMessages({ library(readr); library(digest) })
+source("workflow.R")
+wf_require_saved_coding()
 
 sources <- data.frame(
   paper_id = "0145", component_label = "Study 2", project_url = "https://osf.io/an64w/",
@@ -21,42 +23,41 @@ sources <- data.frame(
   stringsAsFactors = FALSE)
 
 raw_dir <- "data/3.meta_data/open_data/raw/0145"
-manifest_path <- "data/3.meta_data/extraction/0145/source_manifest.csv"
+provenance_path <- "data/3.meta_data/coding/sources.csv"
+originals <- wf_read(provenance_path)
 dir.create(raw_dir, recursive = TRUE, showWarnings = FALSE)
-dir.create(dirname(manifest_path), recursive = TRUE, showWarnings = FALSE)
-old <- if (file.exists(manifest_path)) read_csv(manifest_path,
-  col_types = cols(.default = col_character()), show_col_types = FALSE) else NULL
 if (anyNA(sources$expected_sha256)) stop("Every source must have a pinned OSF checksum.")
 
-sources$local_path <- file.path(raw_dir, sources$filename)
-sources$sha256 <- NA_character_
-sources$retrieved_at_utc <- NA_character_
 for (i in seq_len(nrow(sources))) {
-  target <- sources$local_path[[i]]
+  target <- file.path(raw_dir, sources$filename[i])
+  previous <- which(originals$paper_id == "0145" & originals$path == target)
+  if (length(previous) > 1L) stop("Ambiguous original-source provenance: ", target)
   if (!file.exists(target)) {
     temporary <- tempfile("download_", tmpdir = raw_dir)
     tryCatch({
-      utils::download.file(sources$download_url[[i]], temporary, mode = "wb", method = "libcurl")
-      if (!identical(digest(temporary, algo = "sha256", file = TRUE), sources$expected_sha256[[i]]))
-        stop("Downloaded source checksum mismatch: ", sources$filename[[i]])
+      utils::download.file(sources$download_url[i], temporary, mode = "wb", method = "libcurl")
+      if (!identical(digest(temporary, algo = "sha256", file = TRUE), sources$expected_sha256[i]))
+        stop("Downloaded source checksum mismatch: ", sources$filename[i])
       if (!file.rename(temporary, target)) stop("Could not preserve source: ", target)
     }, finally = if (file.exists(temporary)) unlink(temporary))
-    retrieved <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
-  } else {
-    previous <- if (!is.null(old)) match(sources$filename[[i]], old$filename) else NA_integer_
-    if (is.na(previous) || is.na(old$retrieved_at_utc[[previous]]))
-      stop("Existing source has no recorded retrieval provenance: ", target)
-    retrieved <- old$retrieved_at_utc[[previous]]
+    # If restoring a recorded original, keep its original dates and provenance.
+    if (!length(previous)) {
+      retrieved <- format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC")
+      entry <- data.frame(paper_id = "0145", role = "downloaded_original", path = target,
+        sha256 = sources$expected_sha256[i], source_reference = sources$download_url[i],
+        received_date = substr(retrieved, 1, 10), download_date = substr(retrieved, 1, 10),
+        download_date_status = "recorded_at_retrieval",
+        provenance_note = paste("Project", sources$project_url[i], "component Study 2 retrieved UTC", retrieved))
+      originals <- rbind(originals, entry[, names(originals)])
+      wf_commit(setNames(list(originals), provenance_path))
+      wf_export_coding(force = TRUE)
+      previous <- nrow(originals)
+    }
+  } else if (!length(previous)) {
+    stop("Existing source has no recorded provenance; register it in coding.xlsx: ", target)
   }
   actual <- digest(target, algo = "sha256", file = TRUE)
-  if (!identical(actual, sources$expected_sha256[[i]]))
-    stop("Existing source differs from the pinned version: ", target)
-  sources$sha256[[i]] <- actual
-  sources$retrieved_at_utc[[i]] <- retrieved
-  # Preserve progress if a later network request fails; no individual values here.
-  entry <- sources[i, ]
-  old <- if (is.null(old)) entry else rbind(old[old$filename != entry$filename, ], entry)
-  old <- old[order(match(old$filename, sources$filename)), ]
-  write_csv(old, manifest_path, na = "")
+  if (!identical(actual, sources$expected_sha256[i]) || actual != originals$sha256[previous])
+    stop("Source differs from the pinned version or recorded provenance: ", target)
 }
 cat("Verified", nrow(sources), "Study 2 sources. Individual data remain local.\n")

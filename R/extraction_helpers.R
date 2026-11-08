@@ -6,12 +6,22 @@ extraction_arguments <- function(args) {
 
 extraction_validate_scope <- function(batch_id, paper_id, matrix_id, component_label) {
   eligibility <- codebook_csv(file.path("data/2.full_abstracting", paste0(batch_id, "_full_text_decisions.csv")))
-  registry <- codebook_csv("data/3.meta_data/coding/sample_id_registry.csv")
+  registry <- codebook_csv(if (file.exists("data/3.meta_data/coding/records.csv"))
+    "data/3.meta_data/coding/records.csv" else "data/3.meta_data/coding/sample_id_registry.csv")
   hit <- which(eligibility$paper_id == paper_id)
   assigned <- registry$paper_id == paper_id & registry$matrix_id == matrix_id & registry$component_label == component_label
   if (length(hit) != 1L || !eligibility$final_route[hit] %in% c("both", "meta") || !any(assigned) ||
       !component_label %in% trimws(strsplit(eligibility$eligible_quantitative_components[hit], ";", fixed = TRUE)[[1]]))
     stop("Extraction identity/component differs from resolved eligibility or sample registry.", call. = FALSE)
+}
+
+extraction_originals <- function(paper_id) {
+  x <- codebook_csv("data/3.meta_data/coding/sources.csv")
+  x <- x[x$paper_id == paper_id & !x$role %in% c("legacy_derived_evidence", "coding_evidence"), , drop = FALSE]
+  if (!nrow(x)) stop("Registra le fonti originali nel foglio fonti: ", paper_id)
+  for (i in seq_len(nrow(x))) if (!file.exists(x$path[i]) ||
+      digest::digest(file = x$path[i], algo = "sha256") != x$sha256[i]) stop("Source absent or changed: ", x$path[i])
+  x
 }
 
 extraction_check_item_links <- function(analysis, raw, key, items = character()) {
@@ -74,6 +84,11 @@ extraction_check_matrix <- function(data_matrix, cor_matrix, pair_n) {
 extraction_export <- function(paper_id, matrix_id, individual_data, cor_matrix,
     pair_n, variable_map, checks, decisions,
     audit_dir = file.path("data/3.meta_data/extraction", paper_id, matrix_id)) {
+  if (file.exists("data/3.meta_data/coding/records.csv")) {
+    source("R/workflow_io.R")
+    source("R/workflow_results.R")
+    return(wf_compact_extraction(paper_id, matrix_id, individual_data, cor_matrix, pair_n, checks))
+  }
   # Matrices are staged here until the separate analytical integration step.
   matrix_dir <- file.path(audit_dir, "matrices")
   paths <- c(file.path("data/3.meta_data/open_data/individual_data", paste0(matrix_id, ".csv")),

@@ -2,7 +2,7 @@
 # Napolitano et al. (2026), doi:10.1177/27000710261487580, Main study.
 # PDF pp.5-6: BESSI-192 and zero-order correlations; p.5 discloses sample reuse.
 # The H-prefixed IDs resolve reuse of Internet sample D, historical matrix 0053d.
-# See paper-level source_manifest.csv for immutable originals and unknown dates.
+# See coding/sources.csv for immutable originals and unknown dates.
 source("R/codebook_workflow.R")
 source("R/extraction_helpers.R")
 source("scripts/extraction/keys/0150.R")
@@ -16,12 +16,7 @@ audit_dir <- file.path("data/3.meta_data/extraction", paper_id, matrix_id)
 extraction_validate_scope(batch_id, paper_id, matrix_id, component_label)
 
 # 2. Import verified originals ---------------------------------------------
-manifest <- codebook_csv("data/3.meta_data/extraction/0150/source_manifest.csv")
-for (i in seq_len(nrow(manifest))) {
-  if (!file.exists(manifest$path[i]) ||
-      digest::digest(manifest$path[i], algo = "sha256", file = TRUE) != manifest$sha256[i])
-    stop("Source absent or changed: ", manifest$path[i])
-}
+manifest <- extraction_originals(paper_id)
 raw_items <- as.data.frame(haven::read_sav(
   "data/3.meta_data/open_data/raw/0150/0 Working data file - Copycmn2.sav"))
 raw_old_d <- as.data.frame(readxl::read_excel("data/3.meta_data/open_data/d0053d.xlsx"))

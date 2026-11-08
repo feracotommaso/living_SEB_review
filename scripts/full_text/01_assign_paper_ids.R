@@ -69,7 +69,8 @@ manifest <- ft_build_manifest(assigned$current, batch_id, pdf_dir, source_file)
 
 ft_atomic_write_csv(assigned$registry, registry_path)
 ft_atomic_write_csv(manifest, sub("\\.xlsx$", ".csv", manifest_path))
-ft_atomic_write_manifest_xlsx(manifest, manifest_path)
+if (!getOption("living_seb.compact", file.exists("data/3.meta_data/coding/records.csv")))
+  ft_atomic_write_manifest_xlsx(manifest, manifest_path)
 
 cat("Living SEB full-text paper ID assignment complete.\n")
 cat("Batch: ", batch_id, "\n", sep = "")
