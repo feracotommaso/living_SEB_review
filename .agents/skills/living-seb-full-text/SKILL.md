@@ -144,12 +144,11 @@ versioned policy/guidance with schema/version alignment. Treat a new case-specif
 fact as evidence, not automatically as a universal methodological rule. Never
 silently change frozen adjudicated expectations.
 
-For a complete eligibility handoff, run Step 04 only when every row is resolved
-and no human review remains:
+For a complete eligibility handoff, every row must be resolved and no human
+review remain. The canonical full-text CSV is already the input for the separate
+coding stage (`prepara_codifica(lotto)`); no legacy routing export is needed.
 
-`Rscript scripts/full_text/04_export_legacy_routing.R YYYY-MM`
-
-Pending/uncertain records legitimately prevent that final export. Full-text
+Pending/uncertain records legitimately prevent that handoff. Full-text
 screening does not modify historical coding, `basic_info`, `metadata.xlsx`,
 `review_data.xlsx`, the paper or app, and does not send author-contact messages.
 

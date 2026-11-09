@@ -10,7 +10,7 @@
 
 The canonical dictionary is `config/coding/legacy_31_fields.csv`. Its 31 rows
 preserve the exact historical analytical column order. The derived human interface
-is `data/coding_dictionary.xlsx`. `rule_status` distinguishes agreed methodological
+is the `dizionario` sheet in `data/3.meta_data/coding/coding.xlsx`. `rule_status` distinguishes agreed methodological
 rules, implementation conventions and unresolved legacy mappings/definitions.
 The shared article-script style, evolving codebook rules and registered measure
 suffixes are specified in `policies/extraction_conventions.md`.

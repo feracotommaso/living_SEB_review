@@ -28,6 +28,8 @@ test_that("human coding edits are imported by ID and unsaved changes are preserv
     startCol = match("review_topics", names(papers)), colNames = FALSE)
   openxlsx::writeData(wb, "articoli", "Synthetic correction test", startRow = row,
     startCol = match("change_note", names(papers)), colNames = FALSE)
+  openxlsx::writeData(wb, "articoli", as.Date("2026-11-09"), startRow = row,
+    startCol = match("download_date", names(papers)), colNames = FALSE)
   openxlsx::saveWorkbook(wb, wf_coding_path, overwrite = TRUE)
   expect_true(wf_book_has_edits(wf_coding_path))
   expect_error(wf_export_coding(), "modifiche")
@@ -36,6 +38,7 @@ test_that("human coding edits are imported by ID and unsaved changes are preserv
   result <- wf_import_coding()
   after <- wf_read(wf_records_path)
   expect_identical(after$review_topics[after$paper_id == "0066"], "skillassessment; nomologicalnet")
+  expect_identical(after$download_date[after$paper_id == "0066"], "2026-11-09")
   expect_equal(before[before$paper_id != "0066", ], after[after$paper_id != "0066", ])
   expect_false(wf_book_has_edits(wf_coding_path))
   expect_equal(nrow(wf_import_coding(save = FALSE)$changes), 0L)

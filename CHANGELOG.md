@@ -1,3 +1,11 @@
+## 2026-11-09 — Remove superseded AI workflow files
+
+- Audited additions against pre-automation commit `0244692`; no pre-existing manual file or scientific output changed.
+- Removed the completed migration script, obsolete monthly JSON date helper and legacy routing exporter. Download-date editing is covered by the cumulative workbook test.
+- Removed the old full-text consolidation report, duplicate pilot summaries and separate dictionary XLSX; the current guide, original comparison CSV, test fixtures and cumulative dictionary sheet remain.
+- Removed seven empty workflow directories. Preserved raw inputs, private data/PDFs, bibliographic registries, provenance, manual adjudications and the locally rendered guide HTML.
+- Removed files remain recoverable from commit `d6dee47`.
+
 ## 2026-11-08 — Human workflow consolidation
 
 - One screening workbook per batch and one cumulative coding workbook, with explicit imports, stable IDs and protection for unsaved edits.
