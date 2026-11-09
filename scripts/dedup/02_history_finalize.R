@@ -66,7 +66,7 @@ versioned_master_file <- file.path(
 
 if (file.exists(versioned_master_file) || file.exists(registry_file)) {
   stop(
-    "A historical registry already exists. Run 00_reset_generated_outputs.R ",
+    "A historical registry already exists. Run 00_reset_full_rebuild.R ",
     "before rebuilding from scratch.",
     call. = FALSE
   )

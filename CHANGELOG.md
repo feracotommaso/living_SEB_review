@@ -1,3 +1,9 @@
+## 2026-11-09 — Second cleanup audit
+
+- Rechecked tracked additions, local automation folders, empty directories and references. Removed the obsolete combined reset script; the history-finalization message now names the explicit full-rebuild reset.
+- No reset was executed. Retained all scientific data, bibliography, registries, test expectations, compatibility helpers and local RStudio session folders; no pre-automation manual file changed.
+- The empty local `author_suggestions` directory was also removed; `external` remains the sole current intake directory for external discoveries.
+
 ## 2026-11-09 — Remove superseded AI workflow files
 
 - Audited additions against pre-automation commit `0244692`; no pre-existing manual file or scientific output changed.
