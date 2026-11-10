@@ -1,3 +1,10 @@
+## 2026-11-09 — Refresh the living results report
+
+- Rendered `paper/livingSEBresults.qmd` with the current local datasets (51 review papers; 31 quantitative papers, 39 samples), preserving the statistical model specifications and input data.
+- Replaced remote-release metadata and flat-folder counts with local data provenance, import manifests and canonical screening CSVs alongside preserved manual exports. Counted October once and included external intake.
+- Recorded 614 imported records, 387 registered unique records, 367 documented abstract screenings and 150 full texts. The historical 20-record screening discrepancy is explicitly unresolved, not an invented exclusion.
+- Checked finite meta-analytic estimates and all six OSMASEM optimizer codes (all zero). Corrected threshold wording in the narrative and refreshed the figures. Report-input tests passed; browser file preview was unavailable, so figure images and HTML content were inspected directly.
+
 ## 2026-11-09 — Second cleanup audit
 
 - Rechecked tracked additions, local automation folders, empty directories and references. Removed the obsolete combined reset script; the history-finalization message now names the explicit full-rebuild reset.

@@ -195,4 +195,12 @@ system2(file.path(R.home("bin"), "Rscript.exe"), "scripts/screening/03_validate_
 
 Il secondo comando confronta i 14 esiti del pilot di ottobre con quelli validati; non è una regressione statistica. Prima di commit/push controlla le differenze e conserva localmente gli originali privati, che Git non include.
 
-I documenti Quarto leggono gli XLSX locali e richiedono un nuovo rendering. L'app, anche avviata localmente, legge gli XLSX e i codebook da GitHub `main`: un push sulla branch di lavoro non aggiorna l'app. Bibliografia, rendering del paper e pubblicazione dell'app restano passaggi espliciti separati dall'aggiornamento dei dati.
+Per aggiornare il report dei risultati dopo i dataset, dalla radice della repository:
+
+```sh
+quarto render paper/livingSEBresults.qmd --to html --execute
+```
+
+Apri `paper/livingSEBresults.html` e controlla provenienza dei dati, conteggi, diagramma e risultati. Il report legge gli XLSX locali; `R/report_inputs.R` combina gli export storici e i CSV canonici senza ricontare ottobre. Le analisi vengono rieseguite e i modelli OSMASEM devono superare i controlli numerici. Il divario storico tra registro e screening documentato (20 record al 9 novembre 2026) resta esplicito, senza attribuirgli esclusioni non dimostrate. L'aggiornamento del report non modifica i dataset.
+
+L'app, anche avviata localmente, legge gli XLSX e i codebook da GitHub `main`: un push sulla branch di lavoro non aggiorna l'app. Bibliografia, rendering del paper e pubblicazione dell'app restano passaggi espliciti separati dall'aggiornamento dei dati.

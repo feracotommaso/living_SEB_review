@@ -61,6 +61,8 @@ embed-resources: true
 ```{r}
 #| labels: setup
 source(here::here("R/utils.R"))
+source(here::here("R/report_inputs.R"))
+options(scipen = 999) # Keep participant counts readable in inline text.
 
 library(metafor)
 library(ggplot2)
@@ -85,19 +87,18 @@ library(dplyr)
 #| echo: false
 #| results: asis
 
-library(jsonlite)
+# Local scientific inputs, independent of the latest published GitHub release.
+data_paths <- c("data/3.meta_data/meta_data/metadata.xlsx",
+                "data/3.meta_data/review_data/review_data.xlsx")
+data_commit <- system2("git", c("-C", shQuote(here::here()), "log", "-1", "--format=%h", "--", data_paths), stdout = TRUE)
+data_date <- system2("git", c("-C", shQuote(here::here()), "log", "-1", "--format=%cs", "--", data_paths), stdout = TRUE)
+stopifnot(length(data_commit) == 1L, length(data_date) == 1L)
+local_data_changes <- system2("git", c("-C", shQuote(here::here()), "status", "--porcelain", "--", data_paths), stdout = TRUE)
+cat("**Data source:** local repository files\n\n",
+    "**Data snapshot commit:** ", data_commit, "\n\n",
+    "**Data snapshot date:** ", data_date, sep = "")
+if (length(local_data_changes)) cat("\n\n**Local data changes:** these files contain changes after the recorded commit.")
 
-release <- fromJSON(
-  "https://api.github.com/repos/feracotommaso/living_SEB_review/releases/latest"
-)
-
-cat(
-  paste0(
-    "**Data last updated:** ", as.Date(release$published_at), 
-    "\n\n",
-    "**Latest release:** ", release$tag_name
-  )
-)
 ```
 
 **Living SEB app:** available [here](https://feracotommaso.github.io/living_SEB_review/shiny-app.html){target="_blank"}
@@ -120,44 +121,11 @@ The sections that follow first describe the data currently included in the proje
 #| label: countStudies
 #| cache: false
 
-library(RefManageR)
-# sc1 <- ReadBib(here::here("data/0.bib_download/25_01_31_scopus.bib"))
-# sc2 <- ReadBib(here::here("data/0.bib_download/25_04_30_scopus.bib"))
-# ws1 <- ReadBib(here::here("data/0.bib_download/25_01_31_wos.bib"))
-# ws2 <- ReadBib(here::here("data/0.bib_download/25_04_30_wos.bib"))
-# totSc <- sum(c(length(sc1),length(sc2)))
-# totWs <- sum(c(length(ws1),length(ws2)))
-# totDownload <- totSc + totWs
-
-bib_dir <- here::here("data/0.bib_download")
-
-# files
-scopus_files <- list.files(
-  bib_dir,
-  pattern = "scopus\\.bib$",
-  full.names = TRUE
-)
-
-wos_files <- list.files(
-  bib_dir,
-  pattern = "wos\\.bib$",
-  full.names = TRUE
-)
-
-# read and store
-scopus_bibs <- setNames(lapply(scopus_files, ReadBib), basename(scopus_files))
-wos_bibs    <- setNames(lapply(wos_files, ReadBib), basename(wos_files))
-
-# number of entries in each file
-scopus_n <- lengths(scopus_bibs)
-wos_n    <- lengths(wos_bibs)
-
-# partial totals
-totSc <- sum(scopus_n)
-totWs <- sum(wos_n)
-
-# grand total
-totDownload <- totSc + totWs
+report_counts <- report_input_counts()
+totSc <- report_counts$scopus
+totWs <- report_counts$wos
+totExternal <- report_counts$external
+totDownload <- report_counts$identified
 
 ```
 
@@ -200,7 +168,7 @@ reviewData <- readxl::read_excel(here::here("data/3.meta_data/review_data/review
 nReviewPapers <- nrow(reviewData)
 ```
 
-At the time of writing, the systematic search identified `r totDownload` publications (Scopus = `r totSc`; WOS = `r totWs`). After removing duplicates, screening titles and abstracts, and reviewing full texts, `r nReviewPapers` studies were retained for the living review and `r nMetaPapers` studies met criteria for quantitative synthesis. These include a total of `r nMetaSamples` independent samples (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`).
+At the time of writing, the recorded searches and external discoveries identified `r totDownload` records (Scopus = `r totSc`; WOS = `r totWs`; external sources = `r totExternal`). The current analytical datasets contain `r nReviewPapers` papers for the living review and `r nMetaPapers` papers for quantitative synthesis. These include a total of `r nMetaSamples` independent samples (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`).
 
 Across these studies, a total of `r nTotEff` correlation coefficients were coded, representing `r nTotCor` unique pairwise associations. Of these, `r nTotBessiEff` correlations (`r nTotBessiCor` unique associations) involved at least one SEB domain or facet measured with a BESSI instrument.
 
@@ -222,22 +190,12 @@ library(rsvg)
 # ------------------------------ Inputs / counts
 records_identified <- totDownload
 
-# Abstract screening
-screened_files <- list.files(here("data/1.abstracting"), pattern = "\\.xlsx$", full.names = TRUE)
-records_screened <- screened_files |>
-  lapply(read_excel) |>
-  lapply(nrow) |>
-  unlist() |>
-  sum()
-
-# Full-text screening
-full_screen_files <- list.files(here("data/2.full_abstracting"),
-                                pattern = "fullabstracting.*\\.xlsx$", full.names = TRUE)
-records_fullabstracting <- full_screen_files |>
-  lapply(read_excel) |>
-  lapply(nrow) |>
-  unlist() |>
-  sum()
+# Historical manual exports plus canonical batches, without duplicate copies.
+records_screened <- report_counts$screened
+records_fullabstracting <- report_counts$assessed
+records_registry <- report_counts$registry
+records_duplicates <- report_counts$duplicates
+records_gap <- report_counts$screening_gap
 
 # Included
 # NOTE: make sure 'metaData' exists; otherwise replace with the right object.
@@ -258,15 +216,21 @@ digraph prisma {{
   node [shape = box, style = filled, fillcolor = white, fontname = 'Times New Roman', fontsize = 10]
 
   A [label = 'Records identified (n = <<records_identified>>)']
-  B [label = 'Records screened (n = <<records_screened>>)']
+  A0 [label = 'Duplicates removed (n = <<records_duplicates>>)']
+  A1 [label = 'Unique registered records (n = <<records_registry>>)']
+  A2 [label = 'Historical screening not reconciled (n = <<records_gap>>)']
+  B [label = 'Documented records screened (n = <<records_screened>>)']
   C [label = 'Records excluded (n = <<abstract_exclude>>)']
   D [label = 'Full-text assessed (n = <<records_fullabstracting>>)']
-  E [label = 'Excluded (n = <<fulltext_exclude>>)']
+  E [label = 'Not in current included datasets (n = <<fulltext_exclude>>)']
   F [label = 'Included (n = <<included_total>>)']
   G [label = 'Studies included for meta-analysis (n = <<included_meta>>)']
   H [label = 'Studies included for review (n = <<included_review>>)']
 
-  A -> B -> C
+  A -> A0
+  A -> A1
+  A1 -> A2
+  A1 -> B -> C
   B -> D -> E
   D -> F -> G
   F -> H
@@ -280,7 +244,7 @@ g <- DiagrammeR::grViz(prisma_code)
 
 svg_raw <- charToRaw(DiagrammeRsvg::export_svg(g))
 rsvg_pdf(svg_raw,  file = "prisma.pdf")
-rsvg_png(svg_raw,  file = "prisma.png", width = 3000, height = 3000)  # hi-res
+rsvg_png(svg_raw,  file = "prisma.png", width = 3000)  # hi-res, preserve aspect ratio
 
 ```
 
@@ -349,6 +313,7 @@ for (i in 1:length(pred_vars)) {
 }
 names(outList) <- pred_vars
 metaRes <- data.frame(metaRes)
+stopifnot(all(is.finite(as.matrix(metaRes[, c("b", "se", "r", "rcil", "rciu")]))))
 metaRes$skill = pred_vars     
 
 pcrit <- 0.01
@@ -499,6 +464,7 @@ for (i in 1:length(pred_vars)) {
 }
 names(outList) <- pred_vars
 metaRes <- data.frame(metaRes)
+stopifnot(all(is.finite(as.matrix(metaRes[, c("b", "se", "r", "rcil", "rciu")]))))
 metaRes$skill = pred_vars     
 
 pcrit <- 0.01
@@ -1025,7 +991,7 @@ nonSigMax_txt <- if (is.na(res$nonSigMaxBeta)) "N/A" else formatC(res$nonSigMaxB
 
 ```
 
-From @tbl-osmasem-summary, `r Nskills_txt` of the SEB skills and `r Ntraits_txt` of the personality traits showed significant associations (*p* \< `r res$criteria$p_cut`) with academic achievement larger than \|`r res$criteria$eff_cut`\| beyond the corresponding trait/skill. Specifically, `r skillText` and `r traitText` showed significant and practically meaningful associations with academic achievement, while all other associations were lower than \|`r nonSigMax_txt`\| and non-significant. It should be noted, however, that to estimate a complete OSMASEM model, a more refined analysis would require enlarging the research to all studies testing the association between the Big Five and academic achievement to produce better estimates of the covariance between the Big Five themselves and academic achievement and possibly obtain more precise estimates and lower convergence issues.
+From @tbl-osmasem-summary, `r Nskills_txt` of the SEB skills and `r Ntraits_txt` of the personality traits showed significant associations (*p* \< `r res$criteria$p_cut`) with academic achievement larger than \|`r res$criteria$eff_cut`\| beyond the corresponding trait/skill. Specifically, `r skillText` and `r traitText` showed significant and practically meaningful associations with academic achievement, while the other associations did not meet both the statistical and practical thresholds. It should be noted, however, that to estimate a complete OSMASEM model, a more refined analysis would require enlarging the research to all studies testing the association between the Big Five and academic achievement to produce better estimates of the covariance between the Big Five themselves and academic achievement and possibly obtain more precise estimates and lower convergence issues.
 
 ## The Golden Skill for Academic Achievement
 
@@ -1146,7 +1112,17 @@ nonSigMax_txt2 <- if (is.na(res2$nonSigMaxBeta)) "N/A" else formatC(res2$nonSigM
 
 ```
 
-From @tbl-osmasem-summary2, `r Nskills_txt2` of the SEB skills showed significant associations (*p* \< `r res2$criteria$p_cut`) larger than \|`r res2$criteria$eff_cut`\| with academic achievement beyond the other skill domains. Specifically, `r skillText2` showed significant and practically meaningful associations with academic achievement, while all other associations were lower than \|`r nonSigMax_txt2`\| and/or non-significant.
+From @tbl-osmasem-summary2, `r Nskills_txt2` of the SEB skills showed significant associations (*p* \< `r res2$criteria$p_cut`) larger than \|`r res2$criteria$eff_cut`\| with academic achievement beyond the other skill domains. Specifically, `r skillText2` showed significant and practically meaningful associations with academic achievement, while the other associations did not meet both the statistical and practical thresholds.
+
+```{r}
+#| label: numerical-checks
+#| include: false
+fits <- list(OI = fit_oi, CS = fit_cs, ESE = fit_ese, AC = fit_ac, NER = fit_ner, all_skills = fit_2)
+status_codes <- vapply(fits, function(f) as.integer(f$mx.fit@output$status$code), integer(1))
+cat("OSMASEM optimizer status: ", paste(names(status_codes), status_codes, collapse = "; "), "\n", file = stderr())
+stopifnot(all(status_codes == 0L))
+for (f in fits) stopifnot(all(is.finite(f$mx.fit@output$estimate)), all(is.finite(f$mx.fit@output$standardErrors)))
+```
 
 # Methods
 
@@ -1156,7 +1132,7 @@ All methods, including preregistration, transparency, data gathering procedures,
 
 When referring to three-level random-effects model, we nested effects within samples and studies. In line with Borenstein and colleagues [-@borenstein2021], Fisher’s *z* transformations were applied and then back-transformed to Pearson’s *r* for interpretation. The metafor package was used for these analyses [@viechtbauer2010ConductingMetaanalysesMetafor].
 
-On the other hand, OSMASEM models were used to estimate the structural models of interest in a single step by fitting a structural equation model directly to the meta-analytic covariance structure while simultaneously modeling sampling variance and between-study heterogeneity. This approach allows regression paths to be estimated within an SEM framework using the full pooled covariance matrix. The metaSEM [@cheung2024MetaSEMMetaAnalysisUsing] and lavaan [@rosseel2012LavaanPackageStructural] R packages were used for these analysis.
+On the other hand, OSMASEM models were used to estimate the structural models of interest in a single step by fitting a structural equation model directly to the meta-analytic covariance structure while simultaneously modeling sampling variance and between-study heterogeneity. This approach allows regression paths to be estimated within an SEM framework using the full pooled covariance matrix. The metaSEM [@cheung2024MetaSEMMetaAnalysisUsing] and lavaan [@rosseel2012LavaanPackageStructural] R packages were used for these analyses. In the models reported here, between-study variances were fixed to zero, as specified above.
 
 # Reproducibility via the Living SEB App
 
