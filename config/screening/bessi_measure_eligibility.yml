@@ -1,0 +1,72 @@
+version: 1.1.0
+purpose: Operational hierarchy for BESSI/SEB source-measure and target-construct eligibility
+  during full-text screening.
+principles:
+- Source-measure provenance and target construct are assessed separately.
+- Partial or modified BESSI use requires human judgment only when source-measure validity
+  is material to routing.
+- A clearly non-skill target construct is quantitatively ineligible even when items
+  are BESSI-derived.
+source_measure_classification:
+  clearly_eligible:
+    automatic_action: eligible_on_measurement_source_dimension
+    examples:
+    - recognized_validated_BESSI_form_used_as_intended
+    - validated_translation_or_adaptation_used_as_validated
+    notes:
+    - Other quantitative eligibility criteria must still be satisfied.
+  clearly_ineligible:
+    automatic_action: ineligible_on_measurement_source_dimension
+    examples:
+    - measure_explicitly_outside_BESSI_SEB_framework
+    - generic_social_emotional_measure_without_BESSI_derived_measurement
+    - personality_traits_only_without_BESSI_SEB_skill_measure
+    notes:
+    - Do not use this category merely because the BESSI form is unfamiliar.
+  human_judgment:
+    automatic_action: human_review_if_material
+    human_review_reason: AMBIGUOUS_BESSI_MEASURE
+    examples:
+    - one_or_two_selected_BESSI_facets_or_subscales
+    - subset_of_items_from_one_or_more_BESSI_scales
+    - modified_item_wording
+    - ad_hoc_short_form
+    - altered_scoring_or_aggregation
+    - adaptation_with_unclear_validation_status
+    - unclear_correspondence_to_a_recognized_BESSI_measure
+    notes:
+    - These cases may be eligible; they must not be automatically excluded on source-measure
+      grounds alone.
+    - If another independent criterion already determines ineligibility, source-measure
+      ambiguity does not require human adjudication.
+target_construct_classification:
+  seb_skill_level_or_capacity:
+    meta_dimension: eligible
+    description: The measure directly represents the participant level/capacity of
+      SEB skills.
+  belief_goal_or_judgment_about_seb_skills:
+    meta_dimension: ineligible
+    meta_exclusion_reason: NO_ELIGIBLE_SEB_SKILL_CONSTRUCT
+    examples:
+    - change_goals
+    - feasibility_or_changeability_beliefs
+    - desirability_or_preference
+    - perceived_importance
+    - intentions_to_change
+    - attitudes_toward_SEB_skills
+    - intervention_preferences
+  other_non_skill_construct:
+    meta_dimension: ineligible
+    meta_exclusion_reason: NO_ELIGIBLE_SEB_SKILL_CONSTRUCT
+  mixed_or_ambiguous:
+    meta_dimension: human_judgment_if_material
+    human_review_reason: AMBIGUOUS_SEB_TARGET_CONSTRUCT
+  not_applicable:
+    meta_dimension: not_applicable
+rules:
+  partial_BESSI_use: human_judgment_if_material
+  unfamiliar_BESSI_version: verify_before_classification
+  missing_validation_information: human_judgment_if_material
+  non_BESSI_framework_only: clearly_ineligible_source_measure
+  BESSI_items_reworded_to_measure_change_goals_or_beliefs: ineligible_target_construct
+  clear_non_skill_target_overrides_source_measure_ambiguity: true

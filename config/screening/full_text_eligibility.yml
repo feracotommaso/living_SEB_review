@@ -1,0 +1,215 @@
+policy_version: 2.0.0
+workflow_version: 2.2.0
+status: stable
+stage: full_text_eligibility
+canonical_policy: policies/full_text_eligibility_v2.md
+bessi_measure_policy: config/screening/bessi_measure_eligibility.yml
+output_schema: schemas/full_text_eligibility_decision.schema.json
+prompt: prompts/full_text_eligibility.md
+identifiers:
+  screening_record_id:
+    stable: true
+    preserve_upstream_when_present: true
+    fallback_identity: doi_or_title_year_author_sha256
+  paper_id:
+    assigned_before_full_text_screening: true
+    automatic: true
+    persistent: true
+    never_reuse: true
+    numeric_zero_padded_min_width: 4
+    registry: data/2.full_abstracting/paper_id_registry.csv
+    bootstrap_from_legacy_full_text_files: true
+  sample_id:
+    assigned_only_to_eligible_quantitative_components: true
+    assigned_after_full_text_eligibility: true
+  matrix_id:
+    assigned_only_to_eligible_quantitative_components: true
+    assigned_after_full_text_eligibility: true
+full_text_files:
+  pdf_directory: data/2.full_abstracting/pdfs
+  main_pdf_pattern: <paper_id>.pdf
+  supplement_prefix_pattern: <paper_id>_
+  monthly_manifest_pattern: data/2.full_abstracting/<batch_id>_full_text_manifest.xlsx
+  canonical_manifest_pattern: data/2.full_abstracting/<batch_id>_full_text_manifest.csv
+  doi_format: https://doi.org/<doi>
+principles:
+  sensitivity_first: true
+  review_and_meta_independent: true
+  final_route_is_derived: true
+  distinguish_scientific_eligibility_from_data_availability: true
+  assess_measure_source_and_target_construct_separately: true
+  meta_eligibility_can_be_component_specific: true
+  uncertain_is_not_excluded: true
+  pending_is_not_excluded: true
+  minimize_human_review: true
+review:
+  eligible_when_substantive_SEB_focus: true
+  framework_relation_tags:
+  - APPLIES_SEB_FRAMEWORK
+  - TESTS_SEB_FRAMEWORK
+  - MEASURES_SEB_SKILLS_SUBSTANTIVELY
+  - VALIDATES_OR_ADAPTS_BESSI
+  - EXTENDS_OR_MODIFIES_SEB_FRAMEWORK
+  - COMPARES_SEB_WITH_OTHER_FRAMEWORKS
+  - CRITIQUES_SEB_FRAMEWORK
+  - SYNTHESIZES_SEB_EVIDENCE
+  - OTHER_SUBSTANTIVE_SEB_RELATION
+  exclusion_reasons:
+  - NOT_SEB_FOCUS
+  - SEB_MENTION_ONLY
+  - NON_SEB_FRAMEWORK
+  - INELIGIBLE_PUBLICATION_TYPE
+  - OTHER_REVIEW_EXCLUSION
+meta:
+  statuses:
+  - eligible
+  - ineligible
+  - pending
+  - uncertain
+  requirements:
+    original_quantitative_data: true
+    eligible_BESSI_SEB_measurement_source: true
+    eligible_SEB_skill_level_or_capacity_target: true
+    usable_or_retrievable_quantitative_information: true
+    nonduplicated_contribution: true
+  component_scope:
+    publication_eligible_if_at_least_one_component_eligible: true
+    record_eligible_component_labels_before_sample_ids: true
+    do_not_create_sample_ids_for_ineligible_components: true
+  exclusion_reasons:
+  - NO_ORIGINAL_QUANTITATIVE_DATA
+  - NO_ELIGIBLE_BESSI_MEASURE
+  - NO_ELIGIBLE_SEB_SKILL_CONSTRUCT
+  - FULLY_DUPLICATED_DATA
+  - NO_ELIGIBLE_BASELINE_DATA
+  - DATA_NOT_REDUCIBLE_TO_CORRELATIONS
+  - DATA_UNAVAILABLE_AFTER_RETRIEVAL_ATTEMPT
+  - SEVERE_CLINICAL_POPULATION
+  - OTHER_META_EXCLUSION
+  pending_reasons:
+  - AUTHOR_CONTACT_NEEDED
+  - SUPPLEMENT_NEEDED
+  - OPEN_DATA_TO_RETRIEVE
+  - RAW_DATA_ACCESS_TO_VERIFY
+  - SAMPLE_OVERLAP_TO_RESOLVE
+  - OTHER_PENDING
+measurement:
+  source_hierarchy:
+  - clearly_eligible
+  - clearly_ineligible
+  - human_judgment
+  - not_applicable
+  - unknown
+  target_construct_hierarchy:
+  - seb_skill_level_or_capacity
+  - belief_goal_or_judgment_about_seb_skills
+  - other_non_skill_construct
+  - mixed_or_ambiguous
+  - not_applicable
+  - unknown
+  clear_non_skill_target_is_ineligible: true
+  clear_non_skill_target_exclusion_reason: NO_ELIGIBLE_SEB_SKILL_CONSTRUCT
+  source_ambiguity_requires_human_review_only_if_material: true
+language:
+  substantive_exclusion_criterion: false
+  ai_only_screening_allowed_when_reliable: true
+  if_material_interpretation_uncertain:
+    requires_human_review: true
+    reason: LANGUAGE_INTERPRETATION_REQUIRED
+clinical_population:
+  clinical_status_alone_excludes: false
+  specific_learning_disorders_alone_exclude: false
+  severe_population_can_exclude: true
+  do_not_infer_severity_from_diagnostic_label_alone: true
+  if_severity_or_comparability_unclear:
+    meta_status: uncertain
+    requires_human_review: true
+    reason: CLINICAL_SEVERITY_UNCLEAR
+data_availability:
+  missing_correlations_immediate_exclusion: false
+  otherwise_potentially_eligible_status: pending
+  exclusion_only_after_reasonable_retrieval_failure: true
+human_review_reasons:
+- AMBIGUOUS_BESSI_MEASURE
+- AMBIGUOUS_SEB_TARGET_CONSTRUCT
+- CLINICAL_SEVERITY_UNCLEAR
+- LANGUAGE_INTERPRETATION_REQUIRED
+- FRAMEWORK_ADOPTION_UNCLEAR
+- SAMPLE_OVERLAP_COMPLEX
+- CONFLICTING_FULLTEXT_INFORMATION
+- OTHER_SUBSTANTIVE_UNCERTAINTY
+routing:
+  resolved:
+  - when:
+      review_eligible: true
+      meta_status: eligible
+    final_route: both
+  - when:
+      review_eligible: false
+      meta_status: eligible
+    final_route: meta
+  - when:
+      review_eligible: true
+      meta_status: ineligible
+    final_route: review
+  - when:
+      review_eligible: false
+      meta_status: ineligible
+    final_route: exclude
+  unresolved:
+  - when:
+      review_eligible: true
+      meta_status: pending
+    final_route: null
+    current_route: review_meta_pending
+  - when:
+      review_eligible: false
+      meta_status: pending
+    final_route: null
+    current_route: meta_pending
+  - when:
+      review_eligible: true
+      meta_status: uncertain
+    final_route: null
+    current_route: review_meta_uncertain
+  - when:
+      review_eligible: false
+      meta_status: uncertain
+    final_route: null
+    current_route: meta_uncertain
+operational_outputs:
+  ai_decision_directory_pattern: data/2.full_abstracting/ai_decisions/<batch_id>/
+  ai_decision_file_pattern: <paper_id>.json
+  monthly_decision_workbook_pattern: data/2.full_abstracting/<batch_id>_full_text_decisions.xlsx
+  canonical_decisions_pattern: data/2.full_abstracting/<batch_id>_full_text_decisions.csv
+  canonical_adjudication_pattern: data/2.full_abstracting/<batch_id>_full_text_human_review.csv
+  decision_workbook_sheets:
+  - summary
+  - decisions
+  - human_review
+  - codebook
+  require_complete_ai_coverage_before_workbook: true
+  human_review_queue_is_batched: true
+  preserve_resolved_adjudications_in_workbook: true
+adjudication:
+  discuss_all_open_cases_together_by_default: true
+  user_need_not_read_full_pdf_when_evidence_packet_is_sufficient: true
+  ai_must_provide:
+  - issue_summary
+  - ai_recommendation
+  - decision_options
+  - evidence_and_page
+  generalizable_adjudications_should_update_policy_or_guidance: true
+  finalization_script: scripts/full_text/03_finalize_full_text_decisions.R
+
+legacy_compatibility:
+  final_decision_source: derived_final_route
+  allowed_resolved_values:
+  - exclude
+  - review
+  - meta
+  - both
+  export_pending_or_uncertain_as_final: false
+pilot_2026_10:
+  status: completed_and_adjudicated
+  regression_fixture: tests/full_text/2026-10_expected_full_text_decisions.csv

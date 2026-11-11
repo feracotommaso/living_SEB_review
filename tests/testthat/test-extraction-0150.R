@@ -1,0 +1,51 @@
+withr::local_dir(here::here())
+source("R/coding_compatibility.R")
+source("R/codebook_workflow.R")
+source("R/analytical_integration.R")
+
+test_that("0150 resolves historical ID prefixes and reproduces released BESSI scores", {
+  skip_if_not(file.exists("data/3.meta_data/open_data/raw/0150/0 Working data file - Copycmn2.sav"),
+    "0150 individual data are user-supplied and Git-ignored.")
+  e <- new.env(parent = globalenv()); e$commandArgs <- function(...) "--check-only"
+  paths <- list.files("data/3.meta_data/extraction/0150", recursive = TRUE, full.names = TRUE)
+  before <- tools::md5sum(paths)
+  invisible(capture.output(sys.source("scripts/extraction/articles/0150.R", envir = e)))
+  expect_identical(tools::md5sum(paths), before)
+  expect_equal(sum(!e$keep), 596L)
+  expect_false(any(e$data_analytic$Case %in% e$old_d_ids))
+  expect_equal(nrow(e$individual_data), 30719L)
+  expect_equal(ncol(e$data_matrix), 38L)
+  expect_equal(e$checks$maximum_facet_score_difference, 0)
+  expect_lt(e$checks$maximum_domain_score_difference, 1e-12)
+  expect_lte(e$checks$maximum_published_table_rounding_difference, .005)
+  expect_equal(sum(is.na(e$data_matrix$sex)), 1475L)
+  expect_equal(sum(e$individual_data$gender_original == 3), 1475L)
+  expect_true("age" %in% names(e$individual_data))
+  expect_false(any(c("age", "gender_original", "Case") %in% names(e$data_matrix)))
+  expect_false("Case" %in% names(e$individual_data))
+  expect_equal(range(e$pair_n[upper.tri(e$pair_n)]), c(29244, 30719))
+})
+
+test_that("external pilot is integrated once with dates and overlap notes preserved", {
+  metadata <- readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx")
+  row <- metadata[metadata$matrix_id == "0150a", ]
+  expect_equal(nrow(row), 1L)
+  expect_equal(row$n, 30719)
+  expect_identical(as.character(as.Date(row$download_date)), "2026-11-05")
+  expect_match(row$notes, "596")
+  expect_match(row$notes, "29244")
+  expect_match(row$notes, "unknown")
+  expect_silent(coding_validate_historical(as.data.frame(metadata)))
+  provenance <- integration_current()$provenance
+  expect_identical(provenance$origin[provenance$matrix_id == "0150a"], "external_coding")
+  manifest <- subset(codebook_csv("data/3.meta_data/coding/sources.csv"), paper_id == "0150")
+  raw <- manifest$role %in% c("individual_data", "author_code")
+  expect_true(all(is.na(manifest$download_date[raw])))
+  expect_true(all(manifest$download_date_status[raw] == "unknown"))
+  expect_true(all(manifest$received_date[raw] == "2026-11-05"))
+  pair <- codebook_csv("data/3.meta_data/pair_n/0150a.csv")
+  m <- as.matrix(readxl::read_excel("data/3.meta_data/matrices/0150a.xlsx"))
+  pair$r <- m[cbind(match(pair$var1, colnames(m)), match(pair$var2, colnames(m)))]
+  keys <- vapply(seq_len(nrow(pair)), function(i) paste(sort(c(pair$var1[i], pair$var2[i])), collapse = "_"), character(1))
+  expect_equal(as.numeric(row[, keys]), as.numeric(pair$r), tolerance = 1e-13)
+})

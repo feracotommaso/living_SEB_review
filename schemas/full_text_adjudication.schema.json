@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/feracotommaso/living_SEB_review/schemas/full_text_adjudication.schema.json",
+  "title": "Living SEB full-text human adjudication",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "paper_id",
+    "screening_record_id",
+    "human_review_eligible",
+    "human_meta_status",
+    "adjudication_note",
+    "adjudication_status"
+  ],
+  "properties": {
+    "paper_id": {
+      "type": "string",
+      "pattern": "^[0-9]{4,}$"
+    },
+    "screening_record_id": {
+      "type": "string",
+      "pattern": "^seb_[a-f0-9]{16}$"
+    },
+    "human_review_eligible": {
+      "type": "boolean"
+    },
+    "human_meta_status": {
+      "enum": [
+        "eligible",
+        "ineligible",
+        "pending"
+      ]
+    },
+    "human_meta_exclusion_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "human_meta_pending_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "human_bessi_measure_classification": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "human_bessi_target_construct": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "human_eligible_quantitative_components": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "human_framework_relation_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "adjudication_note": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adjudicated_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "adjudication_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date"
+    },
+    "adjudication_status": {
+      "const": "RESOLVED"
+    },
+    "human_review_exclusion_reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "human_clinical_population_classification": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "human_meta_status": {
+            "const": "ineligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_meta_exclusion_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "human_meta_status": {
+            "const": "pending"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_meta_pending_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "human_meta_status": {
+            "const": "eligible"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_eligible_quantitative_components": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "human_review_eligible": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_framework_relation_tags": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "human_review_eligible": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "human_review_exclusion_reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

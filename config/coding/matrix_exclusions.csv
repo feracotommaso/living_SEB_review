@@ -1,0 +1,2 @@
+matrix_id,paper_id,legacy_meta_exclusion,source_file,reason
+0104a,0104,dataQuality,data/2.full_abstracting/26_05_01_full_decisions.xlsx,Historical report is review-only with quantitative exclusion dataQuality; retain prepared matrix without analytical inclusion

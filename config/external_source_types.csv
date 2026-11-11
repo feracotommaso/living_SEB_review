@@ -1,0 +1,7 @@
+code,label,description
+author_suggestion,Segnalazione degli autori,Article suggested by one or more authors.
+expert_suggestion,Segnalazione di terzi,Article suggested by a colleague or other person.
+backward_citation,Ricerca nelle bibliografie,Article identified in another work's reference list; record the referring DOI or title.
+forward_citation,Ricerca delle citazioni,Article identified among works citing a known paper; record the seed DOI or title and service used.
+manual_search,Ricerca manuale,Article identified through a website search engine journal alert or other manual search; describe the service and search.
+other,Altra fonte esterna,Any other discovery route; a specific source description is mandatory.

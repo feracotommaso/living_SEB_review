@@ -1,0 +1,7 @@
+screening_record_id,paper_id,ai_review_eligible,ai_meta_status,ai_current_route,human_review_eligible,human_meta_status,human_final_route,agreement,adjudication_notes,policy_change_required
+seb_2010b1d9af0d26c2,0144,true,uncertain,review_meta_uncertain,true,ineligible,review,partial,"Human adjudication: BESSI-derived items measure change goals/feasibility beliefs, not SEB skill level/capacity.",yes
+seb_29a0ad240c41a194,0145,true,eligible,both,true,eligible,both,yes_with_scope_refinement,Only Study 2 is quantitatively eligible; Study 1 is not coded as a quantitative sample.,yes
+seb_57466cfaed4221e3,0146,false,ineligible,exclude,false,ineligible,exclude,yes,Non-BESSI framework/intervention targets.,no
+seb_6e6c5180c8c27f17,0147,false,ineligible,exclude,false,ineligible,exclude,yes,"OECD-SSES framework and measures, not BESSI.",no
+seb_84b3388b3b595aad,0148,true,ineligible,review,true,ineligible,review,yes_with_framework_note,Retain for review; explicitly preserve that the paper extends/modifies and compares frameworks.,yes
+seb_eaca27ddf43598f0,0149,false,ineligible,exclude,false,ineligible,exclude,yes,"SENNA 2.0, not BESSI.",no

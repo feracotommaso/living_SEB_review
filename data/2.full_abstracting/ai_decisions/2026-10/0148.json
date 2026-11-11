@@ -1,0 +1,53 @@
+{
+  "screening_record_id": "seb_84b3388b3b595aad",
+  "paper_id": "0148",
+  "doi": "https://doi.org/10.1108/HESWBL-03-2026-0201",
+  "review_eligible": true,
+  "review_exclusion_reason": null,
+  "review_rationale": "The paper substantively integrates BESSI with other competency frameworks to construct the new 4S framework.",
+  "review_evidence": [
+    {
+      "evidence": "[p. 1] BESSI is one of the frameworks synthesized; [p. 4] BESSI is explicitly compared and mapped onto the 4S framework.",
+      "page": null,
+      "locator": "Recorded PDF pages: 1;4"
+    }
+  ],
+  "framework_relation_tags": [
+    "EXTENDS_OR_MODIFIES_SEB_FRAMEWORK",
+    "COMPARES_SEB_WITH_OTHER_FRAMEWORKS"
+  ],
+  "meta_status": "ineligible",
+  "meta_exclusion_reason": "NO_ORIGINAL_QUANTITATIVE_DATA",
+  "meta_pending_reason": null,
+  "meta_rationale": "No original eligible quantitative SEB sample is reported.",
+  "meta_evidence": [
+    {
+      "evidence": "[p. 1] The paper is identified as a conceptual paper; its empirical component is bibliometric synthesis of publications.",
+      "page": null,
+      "locator": "Recorded PDF pages: 1"
+    }
+  ],
+  "bessi_measure_classification": "not_applicable",
+  "bessi_target_construct": "not_applicable",
+  "eligible_quantitative_components": [],
+  "quantitative_scope_rationale": "The paper is conceptual/bibliometric and does not provide original participant-level BESSI quantitative data.",
+  "publication_language": "English",
+  "language_ai_assessed": true,
+  "clinical_population_classification": "not_clinical",
+  "requires_human_review": false,
+  "human_review_reasons": [],
+  "decision_confidence": "high",
+  "final_route": "review",
+  "current_route": "review",
+  "decision_source": "human_adjudicated",
+  "eligibility_policy_version": "2.0.0",
+  "workflow_version": "2.2.0",
+  "provenance_note": "Imported from existing operational workbook 2026-10_full_text_decisions.xlsx; original decision source/date and recorded evidence retained. PDFs were not re-screened during migration.",
+  "screening_date": "2026-11-03",
+  "human_review_summary": "How should the paper's relationship to SEB/BESSI be preserved for later review topic coding?",
+  "ai_recommendation": "Retain for review and explicitly tag as extending/modifying and comparing SEB/BESSI with other frameworks.",
+  "decision_options": [
+    "generic review inclusion only",
+    "preserve framework extension/modification relation"
+  ]
+}

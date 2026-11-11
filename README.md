@@ -17,6 +17,10 @@ This repository contains all the open materials of the **Living SEB Skills Proje
 
 ## Repository Structure
 
+For the reproducible monthly pipeline, see [Monthly workflow](MONTHLY_WORKFLOW.md)
+and [Full-text eligibility](scripts/full_text/README.md). Setup instructions are in
+[INSTALLATION.md](INSTALLATION.md).
+
 ```text
 ├── app/                      # R code for the living SEB Shiny app
 ├── appManual/                # Instruction manual for the app (Quarto)
@@ -58,7 +62,7 @@ Feraco, T., Calderan, M. & Pellegrino, G. (2026). The Living SEB Skills Project:
 ```bibtex
 @Article{livingSEB,
   author    = {Tommaso Feraco and Margherita Calderan and Gerardo Pellegrino},
-  doi       = {https://doi.org/10.31234/osf.io/ewvuf_v1},
+  doi       = {https://doi.org/10.1177/08902070261467477},
   title     = {The Living SEB Skills Project: A Living Resource for Review
                and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year      = {2026},

@@ -1,0 +1,32 @@
+{
+  "policy_version": "1.0.0",
+  "prompt_version": "1.0.0",
+  "allowed_decisions": [
+    "include",
+    "exclude",
+    "uncertain"
+  ],
+  "allowed_confidence": [
+    "high",
+    "medium",
+    "low"
+  ],
+  "allowed_exclusion_reasons": [
+    "BOOK",
+    "OUT_OF_SCOPE",
+    "NON_SEB_FRAMEWORK",
+    "NOT_JOURNAL_PEER_REVIEWED"
+  ],
+  "required_columns": [
+    "screening_record_id",
+    "ai_decision",
+    "ai_exclusion_reason",
+    "ai_confidence",
+    "ai_rationale",
+    "ai_evidence",
+    "policy_version",
+    "prompt_version",
+    "model",
+    "screened_at_utc"
+  ]
+}

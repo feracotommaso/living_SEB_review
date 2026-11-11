@@ -1,0 +1,5 @@
+interface:
+  display_name: "Living SEB Title/Abstract Screening"
+  short_description: "Conservative AI screening for monthly Living SEB records"
+  brand_color: "#1F4E78"
+  default_prompt: "Screen the current Living SEB title/abstract batch, save the structured decisions CSV, validate all record IDs, and finalize the included file."

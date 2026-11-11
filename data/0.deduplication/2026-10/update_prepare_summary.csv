@@ -1,0 +1,2 @@
+workflow_version,batch_id,source_files,normalised_scopus_files,removed_scopus_preamble_lines,raw_records_downloaded,historical_unique_records,combined_unique_after_automatic_dedup,automatic_duplicate_pairs,manual_candidate_pairs
+2026-10.2,2026-10,2,1,3,24,372,386,11,0

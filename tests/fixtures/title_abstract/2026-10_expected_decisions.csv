@@ -1,0 +1,15 @@
+screening_record_id,doi,title,expected_ai_decision,expected_ai_exclusion_reason,expected_ai_confidence,expected_automatic_action
+seb_11f0acf20bfbc80c,10.3724/SP.J.1249.2026.04468,Influencing factors of urban drone delivery choice behavior in the context of the low-altitude economy; [低空经济下城市无人机配送选择行为影响因素研究],exclude,OUT_OF_SCOPE,high,EXCLUDE
+seb_ccff684e189b293a,10.1016/j.actpsy.2026.107961,Validation and application of the Chinese version of the abbreviated math anxiety scale,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE
+seb_0a926cccac558523,10.1111/peps.70047,Leaving on a High or Low Note? An Achievement Goal Perspective on Executive Retirement,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE
+seb_84b3388b3b595aad,10.1108/HESWBL-03-2026-0201,From fragmentation to framework: defining core human competencies for higher education and the workplace,include,,high,KEEP
+seb_dcf9b2db28e05f01,10.1002/9781394399680,Positive Cyberpsychology: Human Flourishing in a Digital Era,exclude,BOOK,high,EXCLUDE
+seb_6c06c00aa5456b3e,10.1037/emo0001733,Putting assumptions to the test: A meta-analytic review of gender differences in emotional intelligence and specific emotion abilities.,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE
+seb_57466cfaed4221e3,10.1186/s13034-026-01133-1,"Japi 2.0, a gaming platform to stimulate cognitive and socio-emotional skills in early childhood: results of a pilot randomized controlled trial",include,,high,KEEP
+seb_3b68825cf071cb29,10.1037/apl0001323,Unemployment in later life: The effects of a job search skills training intervention and development orientations on job search and reemployment of older job seekers.,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE
+seb_bc99786c781e2b5d,10.1037/apl0001420,A meta-analytic examination of the criterion-related validity and cognitive loading associated with traditional and new situational judgment test paradigms.,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE
+seb_2010b1d9af0d26c2,10.1016/j.jrp.2026.104777,"Comparing change goals and feasibility beliefs about changing social, emotional, and behavioral skills vs. personality traits among adolescents, parents, and teachers",include,,high,KEEP
+seb_6e6c5180c8c27f17,10.1007/s11218-026-10270-6,Students and schools have distinct configurations of socio-emotional skills: a multilevel latent profile analysis,include,,high,KEEP
+seb_387b6b0a88c79282,10.1037/pha0000856,Acculturative stress and internalizing problems among Latinos who drink hazardously: The roles of distress tolerance and emotion dysregulation.,exclude,NON_SEB_FRAMEWORK,high,EXCLUDE
+seb_29a0ad240c41a194,10.1177/08902070261486523,"Cognitive Abilities, Personality, and Sustainable Attitudes and Behavior",include,,high,KEEP
+seb_eaca27ddf43598f0,10.53379/cjcd.v25i2.3345,What Drives Career Engagement? The Predictive Role of Socioemotional Skills and Career Adaptability,include,,high,KEEP

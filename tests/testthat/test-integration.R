@@ -1,0 +1,28 @@
+withr::local_dir(here::here())
+source("R/full_text_workflow.R")
+source("R/coding_compatibility.R")
+source("R/article_coding.R")
+source("R/codebook_workflow.R")
+source("R/analytical_integration.R")
+
+test_that("operational outputs contain October once and preserve the 31-field interface", {
+  metadata <- readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx")
+  review <- readxl::read_excel("data/3.meta_data/review_data/review_data.xlsx")
+  current <- integration_current()
+  paths <- list.files("data/3.meta_data/matrices", pattern = "\\.xlsx$", full.names = TRUE)
+  inventory <- coding_matrix_inventory(current$basic, paths)
+  expect_equal(nrow(metadata), sum(inventory$status == "included"))
+  expect_equal(nrow(review), nrow(current$review))
+  expect_equal(sum(metadata$matrix_id == "0145a"), 1L)
+  expect_equal(metadata$n[metadata$matrix_id == "0145a"], 973)
+  expect_identical(as.character(as.Date(metadata$download_date[metadata$matrix_id == "0145a"])), "2026-11-02")
+  expect_true(all(as.Date(review$download_date[review$paper_id %in% c("0144", "0145", "0148")]) == as.Date("2026-11-02")))
+  expect_identical(names(metadata)[1:31], coding_dictionary()$field)
+  source <- codebook_csv("data/3.meta_data/pair_n/0145a.csv")
+  m <- as.matrix(readxl::read_excel("data/3.meta_data/matrices/0145a.xlsx"))
+  source$r <- m[cbind(match(source$var1, colnames(m)), match(source$var2, colnames(m)))]
+  row <- metadata[metadata$matrix_id == "0145a", ]
+  keys <- vapply(seq_len(nrow(source)), function(i) paste(sort(c(source$var1[[i]], source$var2[[i]])), collapse = "_"), character(1))
+  expect_equal(as.numeric(row[, keys]), as.numeric(source$r), tolerance = 1e-13)
+  expect_true(file.exists("data/3.meta_data/matrices/0145a.xlsx"))
+})

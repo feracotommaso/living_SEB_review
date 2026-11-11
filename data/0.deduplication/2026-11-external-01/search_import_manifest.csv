@@ -1,0 +1,2 @@
+file_index,source_path,database,batch_id,extension,import_path,normalisation,removed_preamble_lines,first_removed_nonempty,expected_entries,source_md5,import_md5,imported_records
+1,data/0.bib_download/external/2026-11-external-01/2026-11-05_author_suggestion_01.bib,External:author_suggestion,2026-11-external-01,bib,data/0.bib_download/external/2026-11-external-01/2026-11-05_author_suggestion_01.bib,none,0,,1,f9367fde8ca869771ea27424dce47ac0,f9367fde8ca869771ea27424dce47ac0,1
