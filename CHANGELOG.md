@@ -1,3 +1,19 @@
+## 2026-11-11 — Share analysis helpers between app and local workflows
+
+- Consolidated the ten analysis, review and bibliography helpers in `app/R/utils.R`, including the former correlation-pair module. `R/utils.R` is now a compatibility loader; app startup uses the same Excel download helper.
+- Retained existing function behavior and used explicit `dplyr::select()` in review filtering as well as matrix preparation. Removed duplicate implementations and obsolete commented model-building functions.
+- Added standalone-app loading and masked-function checks, alongside the existing correlation-pair tests.
+- Validation: full R suite and October regression (14/14) passed. A standalone app bundle loaded the public data and passed server checks for data selection, review and five meta-analysis models. The deployment file list includes the shared helpers. The living results report reran with all six OSMASEM status codes zero and all four analytical tables unchanged.
+
+## 2026-11-11 — Organize materials and reconstruct update history
+
+- Moved the search strategy to `paper/materials/search_code.docx` and replaced the manual search history with `data/search_results_history.csv` and its derived Excel interface. The original workbook remains in Git history.
+- Reconstructed acquisition-batch counts from the existing import manifests, live registry and documented screening, using the current included datasets. Every distinct publication belongs to its first recorded acquisition batch. Counts describe its current status, not when screening occurred.
+- Integrated history generation into `aggiorna_risultati()` and the same guarded save as analytical outputs. Historical publisher DOI resolver URLs are recognized without changing source coding.
+- Archived the nine local analysis trial files under Git-ignored `archive_local/analysis_trials/`, verifying their hashes. Removed the unused empty matrix, three unreferenced default TIFF plots, generated LaTeX float files, and the standalone Quarto example and its sample image.
+- Retained utility implementations, historical extraction scripts, Quarto extension copies and published document paths for the separate decisions discussed with the user.
+- Validation: full R suite and October regression (14/14) passed, including a simulated future batch; exported Excel data and totals match the CSV reconstruction. Automatic workbook preview was unavailable because the bundled rendering runtime crashed during import.
+
 ## 2026-11-11 — Reconcile bibliographic counts before merging
 
 - Included the historical May `.xlsm` screening export and counted distinct publications across manual exports and canonical batches. All 370 historical publications have documented screening; the previously reported 20-record gap was a counting error.

@@ -17,7 +17,10 @@ wf_commit <- function(tables, xlsx = list()) {
   on.exit(unlink(scratch, recursive = TRUE), add = TRUE)
   files <- file.path(scratch, paste0(seq_along(paths), "_", basename(paths)))
   for (i in seq_along(tables)) readr::write_csv(tables[[i]], files[[i]], na = "")
-  for (i in seq_along(xlsx)) writexl::write_xlsx(xlsx[[i]], files[[length(tables) + i]])
+  for (i in seq_along(xlsx)) {
+    if (inherits(xlsx[[i]], 'Workbook')) openxlsx::saveWorkbook(xlsx[[i]], files[[length(tables) + i]])
+    else writexl::write_xlsx(xlsx[[i]], files[[length(tables) + i]])
+  }
   codebook_commit_files(files, paths, unname(before))
   invisible(paths)
 }

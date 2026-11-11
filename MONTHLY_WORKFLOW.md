@@ -169,6 +169,26 @@ aggiorna_risultati(motivo = "Corretto lo scoring secondo la fonte verificata")
 
 I nuovi N derivati dai dati individuali vengono letti dai controlli dell'estrazione. R salva insieme CSV e XLSX dei risultati. Un file bloccato da Excel impedisce il salvataggio: chiudilo e ripeti. Non serve compilare manifest o firme tecniche.
 
+Lo stesso comando ricostruisce `data/search_results_history.csv` e il relativo Excel
+con una riga per lotto di acquisizione, comprese le segnalazioni esterne. I record
+importati provengono dai manifest; ogni articolo distinto è attribuito al primo
+lotto registrato nelle sue provenienze. I conteggi di screening e inclusione sono
+lo stato attuale degli articoli di quel lotto, non la data in cui furono valutati.
+`not_in_current_datasets` indica full text assenti dai dataset inclusi attuali.
+Le colonne `included` e `meta` contano articoli, non campioni. I totali coincidono
+con il report; non modificare manualmente questo riepilogo derivato. Per rigenerare
+il report usa il comando Quarto indicato nella sezione finale.
+
+La strategia di ricerca è conservata in `paper/materials/search_code.docx`.
+Le vecchie prove locali sono in `archive_local/analysis_trials/`, esclusa da Git.
+Gli script storici dentro `data/` restano disponibili fino alla ricodifica degli studi.
+
+Le funzioni condivise per analisi locali, paper e app si modificano solo in
+`app/R/utils.R`. Il file `R/utils.R` carica quella stessa implementazione per
+compatibilità con gli script esistenti. Sono incluse anche `getMETAdata()` e
+`getSEMdata()`, prima contenute in `correlation_pairs.R`. Pubblicando la cartella
+`app/`, il codice necessario viene incluso senza dipendere da cartelle esterne.
+
 ## Correggere uno studio precedente
 
 | Problema | Intervento | Passaggio successivo |

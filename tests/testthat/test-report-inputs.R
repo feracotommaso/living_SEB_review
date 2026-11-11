@@ -55,3 +55,43 @@ test_that('a shared title cannot override conflicting DOI evidence', {
   x$doi <- ''
   expect_error(report_registry_ids(x, rbind(registry, registry), normalise_doi), 'uniquely')
 })
+
+test_that('acquisition history reconciles article counts and records external intake', {
+  x <- report_search_history()
+  totals <- colSums(x[-1])
+  expect_equal(unname(totals[c('identified', 'duplicates_removed', 'screened', 'full_text_assessed', 'included', 'meta')]),
+    c(614, 229, 385, 149, 51, 31))
+  expect_equal(x$external[x$batch_id == '2026-11-external-01'], 1)
+  expect_true(all(x$identified == x$duplicates_removed + x$screened))
+  expect_true(all(x$screened == x$abstract_excluded + x$full_text_assessed))
+  expect_true(all(x$full_text_assessed == x$not_in_current_datasets + x$included))
+})
+
+test_that('a future completed batch extends the history without editing its code', {
+  root <- copy_report_fixture()
+  read <- function(p) as.data.frame(readr::read_csv(p, col_types = readr::cols(.default = 'c')))
+  save <- function(x, p) { dest <- file.path(root,p); dir.create(dirname(dest),recursive=TRUE,showWarnings=FALSE); readr::write_csv(x,dest,na='') }
+  p <- 'data/0.registry/records_master_full.csv'
+  registry <- read(file.path(root,p)); extra <- registry[1, ]
+  extra$duplicate_id <- extra$record_ids <- extra$record_id <- 'synthetic_new'
+  extra$doi <- '10.9999/synthetic-history-test'; extra$title <- 'Synthetic future abstract'
+  extra$cite_string <- '2026-11'
+  save(rbind(registry,extra),p)
+  save(rbind(registry,extra),'data/0.registry/records_master_full_through_2026-11.csv')
+  p <- 'data/1.abstracting/2026-10/title_abstract/2026-10_title_abstract_decisions.csv'
+  ta <- read(file.path(root,p)); row <- ta[ta$final_screening_decision == 'exclude', ][1, ]
+  row$title <- extra$title; row$doi <- extra$doi
+  row$screening_record_id <- 'synthetic_new'; row$screening_batch <- '2026-11'
+  save(row,'data/1.abstracting/2026-11/title_abstract/2026-11_title_abstract_decisions.csv')
+  imp <- read('data/0.deduplication/2026-10/search_import_manifest.csv')[1, ]
+  imp$source_path <- 'synthetic/new.bib'; imp$batch_id <- '2026-11'
+  imp$database <- 'Scopus'; imp$imported_records <- '1'
+  save(imp,'data/0.deduplication/2026-11/search_import_manifest.csv')
+  results <- list(metadata = read('data/3.meta_data/meta_data/metadata.csv'), review = read('data/3.meta_data/review_data/review_data.csv'))
+  x <- report_search_history(root, results)
+  new <- x[x$batch_id == '2026-11', ]
+  expect_equal(new$identified, 1)
+  expect_equal(new$abstract_excluded, 1)
+  expect_equal(sum(x$screened), 386)
+  expect_equal(sum(x$included), 51)
+})

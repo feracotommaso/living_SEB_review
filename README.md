@@ -24,10 +24,13 @@ and [Full-text eligibility](scripts/full_text/README.md). Setup instructions are
 ```text
 ├── app/                      # R code for the living SEB Shiny app
 ├── appManual/                # Instruction manual for the app (Quarto)
-├── data/                     # Curated dataset of included studies
-├── materials/                # Initial materials for the review
+├── data/                     # Bibliography, screening, coding and analytical data
+│   └── search_results_history.* # Reconstructed counts by acquisition batch
 ├── paper/                    # Reproducible living manuscript (APA-style)
+│   └── materials/            # Search strategy and manuscript materials
 ├── preregistration/          # Preregistration file
+├── R/                        # Workflow and analysis helper functions
+├── scripts/                  # Screening, coding and article extraction scripts
 ├── slides/                   # Presentation slides (Quarto Reveal.js)
 ├── tutorialAnalysis/         # R code for tutorial analyses
 ├── CONTRIBUTING.md           # Contribution guidelines

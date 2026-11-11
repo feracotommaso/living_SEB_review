@@ -1,5 +1,5 @@
 withr::local_dir(here::here())
-source("app/R/correlation_pairs.R")
+source("app/R/utils.R")
 
 test_that("pair readers preserve complete names and do not absorb measurement variants", {
   d <- data.frame(matrix_id = "test", n = 100,
