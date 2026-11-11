@@ -195,7 +195,6 @@ records_screened <- report_counts$screened
 records_fullabstracting <- report_counts$assessed
 records_registry <- report_counts$registry
 records_duplicates <- report_counts$duplicates
-records_gap <- report_counts$screening_gap
 
 # Included
 # NOTE: make sure 'metaData' exists; otherwise replace with the right object.
@@ -218,7 +217,6 @@ digraph prisma {{
   A [label = 'Records identified (n = <<records_identified>>)']
   A0 [label = 'Duplicates removed (n = <<records_duplicates>>)']
   A1 [label = 'Unique registered records (n = <<records_registry>>)']
-  A2 [label = 'Historical screening not reconciled (n = <<records_gap>>)']
   B [label = 'Documented records screened (n = <<records_screened>>)']
   C [label = 'Records excluded (n = <<abstract_exclude>>)']
   D [label = 'Full-text assessed (n = <<records_fullabstracting>>)']
@@ -229,7 +227,6 @@ digraph prisma {{
 
   A -> A0
   A -> A1
-  A1 -> A2
   A1 -> B -> C
   B -> D -> E
   D -> F -> G

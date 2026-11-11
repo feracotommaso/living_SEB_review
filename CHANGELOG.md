@@ -1,3 +1,11 @@
+## 2026-11-11 — Reconcile bibliographic counts before merging
+
+- Included the historical May `.xlsm` screening export and counted distinct publications across manual exports and canonical batches. All 370 historical publications have documented screening; the previously reported 20-record gap was a counting error.
+- Reconciled two user-approved registry duplicate pairs through guarded promotion on November 10, retaining source IDs and provenance. Historical snapshots and original exports remain unchanged; the live registry now contains 385 publications.
+- Corrected report counts: 614 imported records, 229 duplicates, 385 screened publications and 149 full texts (one repeated historical full-text row removed from the count). The 51 review papers, 31 quantitative papers and 39 samples are unchanged.
+- Preserved the user's current report prose; removed only the obsolete discrepancy node from its diagram.
+- Validation: complete R test suite and October regression (14/14) passed; Quarto HTML regenerated with all six OSMASEM optimizer status codes equal to zero.
+
 ## 2026-11-09 — Refresh the living results report
 
 - Rendered `paper/livingSEBresults.qmd` with the current local datasets (51 review papers; 31 quantitative papers, 39 samples), preserving the statistical model specifications and input data.

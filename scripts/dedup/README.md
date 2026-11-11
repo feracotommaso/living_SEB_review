@@ -130,6 +130,24 @@ Il registro attivo viene aggiornato e viene creata una copia versionata:
 data/0.registry/records_master_full_through_<batch_id>.csv
 ```
 
+## Correzioni di duplicati già nel registro
+
+Non ricostruire lo storico per correggere un duplicato confermato. Le coppie
+revisionate sono in `data/0.deduplication/bootstrap/registry_corrections.csv`, con
+ID da conservare/rimuovere, DOI, motivazione e checksum del registro di partenza.
+Il 10 novembre 2026 sono state riconciliate due coppie autorizzate dall'utente:
+`36 + 154` (COACH_ING) e `451 + 513` (Teacher feedback), da 387 a 385 record.
+La promozione è stata eseguita con:
+
+```sh
+Rscript scripts/dedup/06_promote_registry.R --reconcile 2026-11-10 "RECONCILE 2026-11-10"
+```
+
+Il comando controlla le revisioni esistenti e gli eventuali confronti Rayyan,
+conserva le provenienze e aggiorna solo l'alias attivo, creando uno snapshot
+datato. Non modifica gli snapshot mensili precedenti. Una seconda esecuzione
+sullo stesso registro viene bloccata dal checksum: non va ripetuta ogni mese.
+
 ## Reset
 
 Per eliminare solo gli output del batch corrente, preservando lo storico:

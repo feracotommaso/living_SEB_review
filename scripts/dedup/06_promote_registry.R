@@ -1,6 +1,27 @@
 # Promote the reviewed proposed registry to the live registry alias.
 # Rayyan comparison is optional unless require_rayyan_comparison is TRUE.
 
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) && identical(args[1L], "--reconcile")) {
+  if (length(args) != 3L) stop("Use --reconcile YYYY-MM-DD 'RECONCILE YYYY-MM-DD'.")
+  source(here::here("R", "dedup_helpers.R"))
+  # Reconciliation cannot bypass unresolved pairs or an existing failed comparison.
+  pair_files <- list.files(here::here("data/0.deduplication"), pattern = "_candidate_pairs\\.csv$", recursive = TRUE, full.names = TRUE)
+  for (p in pair_files) {
+    pairs <- readr::read_csv(p, show_col_types = FALSE)
+    if (nrow(pairs)) load_reviewed_candidates(pairs,
+      sub("\\.csv$", "_review.xlsx", p), sub("\\.csv$", "_reviewed.csv", p))
+  }
+  comparisons <- list.files(here::here("data/0.deduplication"), pattern = "^comparison_summary\\.csv$", recursive = TRUE, full.names = TRUE)
+  for (p in comparisons) {
+    x <- readr::read_csv(p, show_col_types = FALSE)
+    if (nrow(x) != 1L || !isTRUE(with(x, r_records == rayyan_records && exact_matches == r_records &&
+        only_in_R_before_fuzzy_review == 0 && only_in_Rayyan_before_fuzzy_review == 0 && fuzzy_title_candidates == 0)))
+      stop("Unresolved Rayyan comparison: ", p)
+  }
+  reconcile_registry(here::here("data/0.registry/records_master_full.csv"),
+    here::here("data/0.deduplication/bootstrap/registry_corrections.csv"), args[2L], args[3L])
+} else {
 if (!interactive()) {
   stop("Run this promotion script interactively in RStudio.", call. = FALSE)
 }
@@ -160,3 +181,4 @@ readr::write_csv(
 
 print(summary_data)
 message("Registry promoted successfully.")
+}

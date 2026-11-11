@@ -1,0 +1,3 @@
+correction_id,keep_id,remove_id,doi,result,reason,registry_md5
+2026-11-10,36,154,10.1007/978-3-032-18885-4_32,match,Same COACH_ING chapter; BibTeX backslash escaping before underscore prevented matching. Reviewed with user and correction authorized 2026-11-10.,f9d0f8d0567ea5efa7acfc806f70898d
+2026-11-10,451,513,10.1016/j.cedpsych.2025.102365,match,Same Teacher feedback article; WoS repeats the identical DOI in one field. Reviewed with user and correction authorized 2026-11-10.,f9d0f8d0567ea5efa7acfc806f70898d

@@ -1064,8 +1064,53 @@ normalise_doi <- function(x) {
   x <- sub("^https?://(dx\\.)?doi\\.org/", "", x)
   x <- sub("^doi[[:space:]]*:[[:space:]]*", "", x)
   x <- gsub("[[:space:]]+", "", x)
+  # BibTeX escaping and a repeated identical DOI do not identify new papers.
+  x <- gsub("\\\\+_", "_", x)
+  x <- vapply(strsplit(x, ";", fixed = TRUE), function(parts)
+    paste(unique(parts), collapse = ";"), character(1))
   x <- sub("[[:punct:]]+$", "", x)
   x
+}
+
+# Explicitly reviewed corrections to an existing registry. Called only by 06.
+# Historical snapshots and original bibliographic exports remain immutable.
+reconcile_registry <- function(registry_file, corrections_file, correction_id, confirmation) {
+  if (!identical(confirmation, paste("RECONCILE", correction_id))) stop("Reconciliation not confirmed.")
+  read <- function(p) as.data.frame(readr::read_csv(p, col_types = readr::cols(.default = "c"), na = ""))
+  edits <- read(corrections_file)
+  edits <- edits[edits$correction_id == correction_id, , drop = FALSE]
+  if (!nrow(edits) || anyNA(edits) || any(edits$result != "match") || any(!nzchar(edits$reason)))
+    stop("Unresolved registry corrections.")
+  if (any(edits$registry_md5 != md5_file(registry_file))) stop("Registry changed since correction review.")
+  old <- read(registry_file); result <- old
+  ids <- c(edits$keep_id, edits$remove_id)
+  if (anyDuplicated(ids) || !all(ids %in% old$duplicate_id)) stop("Invalid correction IDs.")
+  for (i in seq_len(nrow(edits))) {
+    keep <- match(edits$keep_id[i], result$duplicate_id)
+    drop <- match(edits$remove_id[i], result$duplicate_id)
+    doi <- normalise_doi(result$doi[c(keep, drop)])
+    if (!all(doi == edits$doi[i]) || !nzchar(edits$doi[i])) stop("Correction DOI evidence differs.")
+    # Keep the chosen spelling; fill missing fields from the second source.
+    for (field in names(result)) if (is.na(result[[field]][keep]) || !nzchar(result[[field]][keep]))
+      result[[field]][keep] <- result[[field]][drop]
+    # These aligned fields retain both source occurrences and their IDs.
+    for (field in c("record_ids", "cite_source", "cite_label", "cite_string"))
+      result[[field]][keep] <- paste(result[[field]][c(keep, drop)], collapse = ", ")
+    result$doi[keep] <- edits$doi[i]
+    result <- result[-drop, , drop = FALSE]
+  }
+  validate_deduplicated_registry(result)
+  unaffected <- !old$duplicate_id %in% ids
+  if (!isTRUE(all.equal(old[unaffected, ], result[match(old$duplicate_id[unaffected], result$duplicate_id), ],
+      check.attributes = FALSE))) stop("Unrelated registry records changed.")
+  snapshot <- file.path(dirname(registry_file), paste0("records_master_full_reconciled_", correction_id, ".csv"))
+  if (file.exists(snapshot)) stop("Reconciled snapshot already exists.")
+  # Check the serialized proposal before replacing the live alias.
+  readr::write_csv(result, snapshot, na = "")
+  validate_deduplicated_registry(read(snapshot))
+  if (!file.copy(snapshot, registry_file, overwrite = TRUE)) stop("Could not promote reconciled registry.")
+  message("Registry reconciled: ", nrow(old), " -> ", nrow(result), " records. Snapshot: ", snapshot)
+  invisible(result)
 }
 
 normalise_title <- function(x) {
