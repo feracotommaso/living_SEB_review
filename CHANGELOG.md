@@ -1,3 +1,9 @@
+## 2026-11-12 — Resolve Word icon and Typst font warnings
+
+- Selected the installed Times New Roman font explicitly for the paper's Typst format.
+- Bundled a PNG rasterization of the original ORCID SVG and added a Word-only choice in the local APAquarto frontmatter filter. HTML and Typst continue to use SVG, while Word no longer needs an external SVG converter. The local extension adaptation and its regeneration command are documented in INSTALLATION.md.
+- Validation: Word, Typst and HTML compiled in the isolated layout fixture without the SVG-conversion or unknown-font warnings. The Word archive contains the original PNG and three ORCID drawings; the Typst PDF embeds Times New Roman. The paper body and scientific outputs are unchanged.
+
 ## 2026-11-12 — Format the app manual and retain one APAquarto extension
 
 - Replaced APAquarto manual output with a self-contained HTML guide with left navigation and a standard six-page A4 PDF. Preserved the existing PDF URL, manual prose and citation includes. Improved heading/list hierarchy, mobile wrapping and long code lines; removed an empty References section.
