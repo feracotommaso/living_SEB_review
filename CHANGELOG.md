@@ -1,3 +1,9 @@
+## 2026-11-12 — Format the app manual and retain one APAquarto extension
+
+- Replaced APAquarto manual output with a self-contained HTML guide with left navigation and a standard six-page A4 PDF. Preserved the existing PDF URL, manual prose and citation includes. Improved heading/list hierarchy, mobile wrapping and long code lines; removed an empty References section.
+- Added HTML manual links to the site source and README. Only the scientific paper now declares APAquarto; retained its 49 extension files unchanged and removed the unused root and manual copies.
+- Validation: manual HTML checked at desktop/mobile widths with no horizontal overflow; PDF pages visually checked. The paper's four output formats compiled in an isolated layout-only fixture with analytical chunks omitted; warnings for omitted cross-references, Word SVG conversion and Typst's Times font remain environment/test limitations. Published paper files and scientific data were not regenerated.
+
 ## 2026-11-11 — Share analysis helpers between app and local workflows
 
 - Consolidated the ten analysis, review and bibliography helpers in `app/R/utils.R`, including the former correlation-pair module. `R/utils.R` is now a compatibility loader; app startup uses the same Excel download helper.

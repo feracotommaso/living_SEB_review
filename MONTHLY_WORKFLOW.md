@@ -189,6 +189,21 @@ compatibilità con gli script esistenti. Sono incluse anche `getMETAdata()` e
 `getSEMdata()`, prima contenute in `correlation_pairs.R`. Pubblicando la cartella
 `app/`, il codice necessario viene incluso senza dipendere da cartelle esterne.
 
+## Manuale dell'app e formati dei documenti
+
+Solo `paper/livingSEBpaper.qmd` usa APAquarto, conservato in `paper/_extensions/`.
+Il report dei risultati usa HTML standard. Il manuale usa HTML con indice laterale
+e PDF standard; il percorso del PDF esistente è conservato. Per rigenerare entrambi:
+
+```sh
+quarto render appManual/livingSEBapp_manual.qmd --to all
+```
+
+Il contenuto è in `appManual/livingSEBapp_manual.qmd`; lo stile HTML è in
+`appManual/manual.css`. Le pagine e il codice nel PDF vanno controllati dopo modifiche
+alla struttura. La verifica dell'estensione del paper può essere svolta su una copia
+temporanea senza eseguire le analisi; non usare questi output di prova come paper finale.
+
 ## Correggere uno studio precedente
 
 | Problema | Intervento | Passaggio successivo |

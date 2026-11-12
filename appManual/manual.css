@@ -1,0 +1,71 @@
+/* Reading layout for the app manual. Scientific papers use their own format. */
+:root {
+  --manual-ink: #213447;
+  --manual-accent: #216a78;
+}
+
+body {
+  color: var(--manual-ink);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+main.content {
+  max-width: 860px;
+}
+
+#title-block-header {
+  border-bottom: 2px solid var(--manual-accent);
+  padding-bottom: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+#title-block-header .title {
+  font-weight: 650;
+  letter-spacing: -0.025em;
+}
+
+#title-block-header .subtitle {
+  color: #526c7d;
+  font-size: 1.3rem;
+}
+
+h1:not(.title) {
+  margin-top: 2.8rem;
+  font-size: 1.8rem;
+}
+
+h2 {
+  margin-top: 1.8rem;
+  font-size: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.45rem;
+}
+
+li > ul {
+  margin-top: 0.55rem;
+}
+
+#TOC {
+  font-size: 0.9rem;
+}
+
+.btn {
+  margin: 0 0.6rem 1rem 0;
+}
+
+pre {
+  border-left: 3px solid var(--manual-accent);
+}
+
+code {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 767px) {
+  h1:not(.title) {
+    font-size: 1.5rem;
+  }
+}

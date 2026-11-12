@@ -1,81 +1,80 @@
 ---
-title: "The living-SEB-app, a Shiny app for meta-synthesis and review of the SEB literature"
-subtitle: "USER MANUAL"
-shorttitle: "living SEB app - User manual"
+title: "Living SEB App"
+subtitle: "User manual"
 author:
   - name: Tommaso Feraco
-    corresponding: true
-    orcid: 0000-0002-8920-5330
-    email: tommaso.feraco@unipd.it
-    affiliations:
-      - name: University of Padova
-        department: Department of General Psychology
-        address: Via Venezia 8
-        city: Padova
-        region: Veneto
-        country: Italy
-        postal-code: 35129
-author-note:
-  status-changes: 
-    affiliation-change: ~
-    deceased: ~
-  disclosures:
-    study-registration: ~
-    data-sharing: ~
-    related-report: ~
-    conflict-of-interest: ~
-    financial-support: ~
-    gratitude: ~
-    authorship-agreements: ~
-# abstract: "Abstract abstract abstract"
-# keywords: [validity; specific factors; spuroius correlations; proliferation]
+    affiliation: University of Padova
+lang: en
 bibliography: bibliography.bib
-toc: true
-format: #pdf
-  apaquarto-pdf:
-    documentmode: man
-  apaquarto-docx: default
-  apaquarto-html: default
-  apaquarto-typst: default
+format:
+  html:
+    theme: cosmo
+    css: manual.css
+    toc: true
+    toc-title: "In this manual"
+    toc-location: left
+    toc-depth: 2
+    embed-resources: true
+    code-overflow: wrap
+    html-math-method: mathml
+    smooth-scroll: true
+  pdf:
+    documentclass: scrartcl
+    pdf-engine: lualatex
+    papersize: a4
+    fontsize: 11pt
+    geometry:
+      - margin=24mm
+    colorlinks: true
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\},breaklines,breakanywhere}
+    toc: true
+    toc-title: "Contents"
+    toc-depth: 1
 ---
 
-<!-- The introduction should not have a level-1 heading such as Introduction. -->
+::: {.content-visible when-format="html"}
+[Open the app](https://feracotommaso.github.io/living_SEB_review/shiny-app.html){.btn .btn-primary}
+[Download PDF](livingSEBapp_manual.pdf){.btn .btn-outline-secondary}
+:::
 
 The livingSEBapp (<https://feracotommaso.github.io/living_SEB_review/shiny-app.html>) is a free and open-source Shiny app for synthesizing peer-reviewed studies that used the Behavioral, Emotional, and Social Skills Inventory (BESSI). The app is designed as a rapid tool for data synthesis, effect-size visualization, and for building priors/hypotheses. It is **not** a replacement for a full systematic meta-analysis; results should be interpreted as a high-quality *rapid synthesis*. For a full meta-analysis, use the open data here as a starting point, add study-level moderators as needed, enrich the dataset with additional studies if needed, and tailor the analyses on your hypotheses.
 
 Below, each function of the app is described to guide correct and efficient use.
 
-## Getting started
+# Getting started
 
 -   **Home tab.** Read the overview and use the quick-start buttons to jump to **Meta-analysis**, **MetaSEM**, or **Review** pages.
 -   **Navigation.** You can switch tabs anytime; your selections persist within each section until you change them or click “Clean selection” (Review tab).
 -   **Data sources.** All analyses run on the *combined* dataset curated from BESSI studies and related correlates. The data should hopefully cover the full list of cross-sectional associations between SEB skills (as measured with the BESSI) and all other measures included in each study). Code and data are linked on the app’s GitHub.
 
-# Running a meta-analysis of the associations between SEB domains and their correlates
+# Meta-analysis
 
-A core utility is the rapid synthesis of associations between the five SEB domains and any correlate measured in ≥2 independent samples. The app estimates **five separate meta-analytical associations** (one per SEB domain) with a **single chosen outcome** (Multivariate models are not currently supported in this section).
+A core utility is the rapid synthesis of associations between the five SEB domains and any correlate measured in $\geq 2$ independent samples. The app estimates **five separate meta-analytical associations** (one per SEB domain) with a **single chosen outcome** (Multivariate models are not currently supported in this section).
 
 ## Steps
 
 1.  **Select the data of interest (Meta-analysis → Summary).**
--    In the sidebar, choose a **broad outcome grouping** and then a **specific outcome** within it.\
-    By default, *SCHOOL → academic achievement* is selected. The full list of outcomes is in the matrix codebook (repository).
--    Optionally filter by **age class** and **year of publication**.
--    As you select, the **Samples included** table updates with study IDs, authors, year, age class, N, and DOI.
+    -    In the sidebar, choose a **broad outcome grouping** and then a **specific outcome** within it.\
+        By default, *SCHOOL → academic achievement* is selected. The full list of outcomes is in the matrix codebook (repository).
+    -    Optionally filter by **age class** and **year of publication**.
+    -    As you select, the **Samples included** table updates with study IDs, authors, year, age class, N, and DOI.
 2.  **Run the meta-analysis (Meta-analysis → Meta results).**
--    Move to the *Meta results* tab and click **Run the meta-analysis**.
--    The app computes Fisher-z correlations via `metafor::escalc(measure = "ZCOR")`, then fits **multilevel random-effects** models with `metafor::rma.mv()` using random intercepts for `paper_id/matrix_id`. Estimates are back-transformed to *r*.
--    You’ll see, for each SEB domain:
-      -   **r** and its **95% CI**, **SE**, **p**
-      -   **k** (number of effect sizes) and total **N** (sample size)
-      -   **τ²** (between-study variance; summed across random components)
-      -   **Q**, **df**, and **Q p-value** (heterogeneity)
-      -   **Prediction interval** (PI) for *r* (in the results object and plot annotation)
+    -    Move to the *Meta results* tab and click **Run the meta-analysis**.
+    -    The app computes Fisher-z correlations via `metafor::escalc(measure = "ZCOR")`, then fits **multilevel random-effects** models with `metafor::rma.mv()` using random intercepts for `paper_id/matrix_id`. Estimates are back-transformed to *r*.
+    -    You’ll see, for each SEB domain:
+          -   **r** and its **95% CI**, **SE**, **p**
+          -   **k** (number of effect sizes) and total **N** (sample size)
+          -   **$\tau^2$** (between-study variance; summed across random components)
+          -   **Q**, **df**, and **Q p-value** (heterogeneity)
+          -   **Prediction interval** (PI) for *r* (in the results object and plot annotation)
 3.  **Inspect a forest plot (Meta-analysis → Forest plots).**
--    Move to the *Forest plots* tab and choose a **skill** (SEB domain) and the app displays the forest plot for that domain–outcome association.
+    -    Move to the *Forest plots* tab and choose a **skill** (SEB domain) and the app displays the forest plot for that domain–outcome association.
 4.  **Export a brief report (Meta-analysis → Report).**
--    Download an **HTML report** that includes your selections, descriptive tables, meta-analytic results, and plots.
--   You can also download the **meta-analysis dataset (CSV)** from the Summary tab for offline work.
+    -    Download an **HTML report** that includes your selections, descriptive tables, meta-analytic results, and plots.
+    -   You can also download the **meta-analysis dataset (CSV)** from the Summary tab for offline work.
 
 ### Notes and tips
 
@@ -83,7 +82,7 @@ A core utility is the rapid synthesis of associations between the five SEB domai
 -   Interpret **PIs** for expected dispersion of future samples; **CIs** for precision of the mean effect.
 -   The **total N** is computed across unique matrices and may differ across skills when studies report different subsets.
 
-# Running a meta-SEM using the metaSEM package
+# MetaSEM
 
 This section builds a **meta-analytic correlation matrix** across selected variables and fits **one-stage MASEM** models using `metaSEM`.
 
@@ -102,27 +101,27 @@ This section builds a **meta-analytic correlation matrix** across selected varia
         -   **Studies included** table.
     -   Warnings appear if some correlations have **k \< 3** or **N \< 1000** (interpret with caution).
 2.  **Compute the pooled correlation matrix (MetaSEM → SEM matrix).**
--   Move to the *SEM matrix* tab and click **Get the meta-matrix**. The app runs `metaSEM::tssem1()` to pool the correlation structure.
--   View the **estimated correlation matrix** (rounded) and a **corrplot**.\
-    You can **download** the correlation plot (PNG).
+    -   Move to the *SEM matrix* tab and click **Get the meta-matrix**. The app runs `metaSEM::tssem1()` to pool the correlation structure.
+    -   View the **estimated correlation matrix** (rounded) and a **corrplot**.\
+        You can **download** the correlation plot (PNG).
 3.  **Specify and fit a model (MetaSEM → metaSEM).**
--   Move to the *metaSEM* tab and insert your **lavaan syntax** in the text area (e.g., `y ~ x1 + x2`). If you are not familiar with `lavaan` or `R`, please see https://lavaan.ugent.be/tutorial/syntax1.html.
-    -   You can fit both regression models and measurement models.
-    -   The app **auto-augments** your model to:
-        -   Fix exogenous variances correctly,
-        -   And saturate the residual covariances.
-    -   If you do not want the model to be saturated, unclick the **checkbox**.
-        -   You can now specify the covariances you want to estimate using `~~`.
-        -   If the model is not saturated, you can obtain fit indices.
--   Click **Fit the specified SEM model** to estimate a **one-stage MASEM** (`osmasem`) with a **diagonal random-effects** structure (`(..., RE.type = "Diag")`).
--   **Model fit** panel:
-    -    If the model is **saturated (df = 0)**, fit indices aren’t informative; focus on parameter estimates.
-    -   Otherwise, the app shows **CFI, TLI, RMSEA, SRMR**.
--   **Model estimates** table includes:
-    -   Paths and variances with **Estimate**, **SE**, **z**, **p**, **95% CI**, plus a **τ (sd)** column for random-effect variance and its transformation to SD where applicable.
--   **Residual variance / R²** table lists each variable’s residual variance and **R² = 1 − residual variance** (endogenous variables first).
+    -   Move to the *metaSEM* tab and insert your **lavaan syntax** in the text area (e.g., `y ~ x1 + x2`). If you are not familiar with `lavaan` or `R`, please see https://lavaan.ugent.be/tutorial/syntax1.html.
+        -   You can fit both regression models and measurement models.
+        -   The app **auto-augments** your model to:
+            -   Fix exogenous variances correctly,
+            -   And saturate the residual covariances.
+        -   If you do not want the model to be saturated, unclick the **checkbox**.
+            -   You can now specify the covariances you want to estimate using `~~`.
+            -   If the model is not saturated, you can obtain fit indices.
+    -   Click **Fit the specified SEM model** to estimate a **one-stage MASEM** (`osmasem`) with a **diagonal random-effects** structure (`(..., RE.type = "Diag")`).
+    -   **Model fit** panel:
+        -    If the model is **saturated (df = 0)**, fit indices aren’t informative; focus on parameter estimates.
+        -   Otherwise, the app shows **CFI, TLI, RMSEA, SRMR**.
+    -   **Model estimates** table includes:
+        -   Paths and variances with **Estimate**, **SE**, **z**, **p**, **95% CI**, plus a **$\tau$ (sd)** column for random-effect variance and its transformation to SD where applicable.
+    -   **Residual variance / R²** table lists each variable’s residual variance and **R² = 1 − residual variance** (endogenous variables first).
 4.  **Export a brief report (MetaSEM → Report).**
--   Download an **HTML report** with your selections, K/N tables, pooled matrix, model specification (original + augmented), fit indices, parameter table with τ, and R² table.
+    -   Download an **HTML report** with your selections, K/N tables, pooled matrix, model specification (original + augmented), fit indices, parameter table with $\tau$, and R² table.
 
 ## Notes and tips
 
@@ -130,29 +129,35 @@ This section builds a **meta-analytic correlation matrix** across selected varia
 -   Large models with many variables can be slow and sometimes unstable; start small and build up.
 -   Use the **auto-saturate** option if you are not familiar with SEM models. Saturated residuals can mask model misfit but will give interpretable estimates.
 
-# Reviewing and exporting literature subsets
+# Literature review
 
 The **Review** tab lets you filter the curated literature by **broad topics** and **specific topics**.
 
 ## Steps
 
 1.  **Choose topics.**
--   Select one or more **BROAD topics** and/or **Specific topics**.
--   A dynamic **Filtered based on broad topic** selector appears to help you pick specific topics that belong to the chosen broad topics.
--   The specific topic selection is nested in the broad topic selection: If you select a broad topic, specific topics will not show additional papers but will only filter the selection more (if that specific topic exist in the broader topic/s).
+    -   Select one or more **BROAD topics** and/or **Specific topics**.
+    -   A dynamic **Filtered based on broad topic** selector appears to help you pick specific topics that belong to the chosen broad topics.
+    -   The specific topic selection is nested in the broad topic selection: If you select a broad topic, specific topics will not show additional papers but will only filter the selection more (if that specific topic exist in the broader topic/s).
 2.  **View results.**
--   The **Filtered studies** table shows items matching your filters, with a banner indicating the number of matching records. Helpful messages appear when there are zero matches.
+    -   The **Filtered studies** table shows items matching your filters, with a banner indicating the number of matching records. Helpful messages appear when there are zero matches.
 3.  **Reset / export.**
--   Click **Clean selection** to clear all topic filters.
--   Click **Download the filtered data** to export the current subset as **UTF-8 CSV**.
+    -   Click **Clean selection** to clear all topic filters.
+    -   Click **Download the filtered data** to export the current subset as **UTF-8 CSV**.
 
 # What the app computes (technical details)
 
 -   **Effect sizes.** Correlations are transformed to Fisher-z via `metafor::escalc(measure = "ZCOR")`; models are fit on *z* and back-transformed to *r*.
--   **Meta-analytic model (Meta-analysis).** `rma.mv(yi, V = vi, random = ~ 1 | paper_id / matrix_id, test = "t")`.
-    -   Reported: point estimate, 95% CI, SE, p; **τ²** (sum of variance components), **Q**, **df**, **Q p-value**, and **prediction interval**.
+-   **Meta-analytic model (Meta-analysis).**
+
+    ``` r
+    rma.mv(yi, V = vi,
+           random = ~ 1 | paper_id / matrix_id,
+           test = "t")
+    ```
+    -   Reported: point estimate, 95% CI, SE, p; **$\tau^2$** (sum of variance components), **Q**, **df**, **Q p-value**, and **prediction interval**.
 -   **Pooled matrix (MetaSEM).** `tssem1()` aggregates correlations across studies.
--   **One-stage MASEM.** `osmasem()` with **diagonal random effects**; τ reported per parameter where random effects are estimated.
+-   **One-stage MASEM.** `osmasem()` with **diagonal random effects**; $\tau$ reported per parameter where random effects are estimated.
 -   **R².** Computed from residual variances in the fitted model (`R² = 1 − residual variance`), bounded at 0.
 
 # Data export & reports
@@ -210,10 +215,3 @@ The app enables rapid, transparent synthesis of BESSI-related findings and struc
 ## Conclusion
 
 The livingSEBapp lowers the barrier to evidence synthesis in SEB research by combining curated data, robust meta-analytic methods, and an accessible interface. It complements, but does not replace, full systematic meta-analysis.
-
-# References
-
-<!-- References will auto-populate in the refs div below -->
-
-::: {#refs}
-:::
