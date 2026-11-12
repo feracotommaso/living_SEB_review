@@ -322,6 +322,12 @@ return {
             if not file_exists(orcidfile) then
               orcidfile = "_extensions/apaquarto/ORCID-iD_icon-vector.svg"
             end 
+            -- Local portability fix: Word embeds PNG directly, so rendering
+            -- does not require an external SVG converter on the user's system.
+            if FORMAT:match 'docx' then
+              local pngfile = orcidfile:gsub("ORCID%-iD_icon%-vector%.svg$", "ORCID-iD_icon.png")
+              if file_exists(pngfile) then orcidfile = pngfile end
+            end
             img = pandoc.Image("Orcid ID Logo: A green circle with white letters ID", orcidfile)
             img.attr = pandoc.Attr('orchid', {'img-fluid'},  {width='4.23mm'})
             pp = pandoc.Para(pandoc.Str(""))

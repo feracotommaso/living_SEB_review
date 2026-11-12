@@ -79,8 +79,12 @@ wf_update_results <- function(save = FALSE, reason = NULL) {
   if (save) {
     if (nrow(existing_numeric) && (is.null(reason) || !nzchar(trimws(reason))))
       stop("Le variazioni numeriche sono in last_update.xlsx. Dopo la verifica, usa aggiorna_risultati(motivo = '...').", call. = FALSE)
-    wf_commit(setNames(list(result$metadata, result$review, result$records), c(unname(paths), wf_records_path)),
-      setNames(list(result$metadata, result$review), sub("\\.csv$", ".xlsx", unname(paths))))
+    source(here::here('R/report_inputs.R'), local = TRUE)
+    history <- report_search_history(results = result)
+    wf_commit(setNames(list(result$metadata, result$review, result$records, history),
+        c(unname(paths), wf_records_path, 'data/search_results_history.csv')),
+      setNames(list(result$metadata, result$review, report_history_workbook(history)),
+        c(sub("\\.csv$", ".xlsx", unname(paths)), 'data/search_results_history.xlsx')))
     wf_export_coding(force = TRUE)
     summary$valore[summary$voce == "Stato"] <- "Salvato"
     wf_write_book(list(riepilogo = summary, variazioni = changes, attenzione = result$issues), report, character())

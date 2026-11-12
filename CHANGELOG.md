@@ -1,3 +1,31 @@
+## 2026-11-12 — Resolve Word icon and Typst font warnings
+
+- Selected the installed Times New Roman font explicitly for the paper's Typst format.
+- Bundled a PNG rasterization of the original ORCID SVG and added a Word-only choice in the local APAquarto frontmatter filter. HTML and Typst continue to use SVG, while Word no longer needs an external SVG converter. The local extension adaptation and its regeneration command are documented in INSTALLATION.md.
+- Validation: Word, Typst and HTML compiled in the isolated layout fixture without the SVG-conversion or unknown-font warnings. The Word archive contains the original PNG and three ORCID drawings; the Typst PDF embeds Times New Roman. The paper body and scientific outputs are unchanged.
+
+## 2026-11-12 — Format the app manual and retain one APAquarto extension
+
+- Replaced APAquarto manual output with a self-contained HTML guide with left navigation and a standard six-page A4 PDF. Preserved the existing PDF URL, manual prose and citation includes. Improved heading/list hierarchy, mobile wrapping and long code lines; removed an empty References section.
+- Added HTML manual links to the site source and README. Only the scientific paper now declares APAquarto; retained its 49 extension files unchanged and removed the unused root and manual copies.
+- Validation: manual HTML checked at desktop/mobile widths with no horizontal overflow; PDF pages visually checked. The paper's four output formats compiled in an isolated layout-only fixture with analytical chunks omitted; warnings for omitted cross-references, Word SVG conversion and Typst's Times font remain environment/test limitations. Published paper files and scientific data were not regenerated.
+
+## 2026-11-11 — Share analysis helpers between app and local workflows
+
+- Consolidated the ten analysis, review and bibliography helpers in `app/R/utils.R`, including the former correlation-pair module. `R/utils.R` is now a compatibility loader; app startup uses the same Excel download helper.
+- Retained existing function behavior and used explicit `dplyr::select()` in review filtering as well as matrix preparation. Removed duplicate implementations and obsolete commented model-building functions.
+- Added standalone-app loading and masked-function checks, alongside the existing correlation-pair tests.
+- Validation: full R suite and October regression (14/14) passed. A standalone app bundle loaded the public data and passed server checks for data selection, review and five meta-analysis models. The deployment file list includes the shared helpers. The living results report reran with all six OSMASEM status codes zero and all four analytical tables unchanged.
+
+## 2026-11-11 — Organize materials and reconstruct update history
+
+- Moved the search strategy to `paper/materials/search_code.docx` and replaced the manual search history with `data/search_results_history.csv` and its derived Excel interface. The original workbook remains in Git history.
+- Reconstructed acquisition-batch counts from the existing import manifests, live registry and documented screening, using the current included datasets. Every distinct publication belongs to its first recorded acquisition batch. Counts describe its current status, not when screening occurred.
+- Integrated history generation into `aggiorna_risultati()` and the same guarded save as analytical outputs. Historical publisher DOI resolver URLs are recognized without changing source coding.
+- Archived the nine local analysis trial files under Git-ignored `archive_local/analysis_trials/`, verifying their hashes. Removed the unused empty matrix, three unreferenced default TIFF plots, generated LaTeX float files, and the standalone Quarto example and its sample image.
+- Retained utility implementations, historical extraction scripts, Quarto extension copies and published document paths for the separate decisions discussed with the user.
+- Validation: full R suite and October regression (14/14) passed, including a simulated future batch; exported Excel data and totals match the CSV reconstruction. Automatic workbook preview was unavailable because the bundled rendering runtime crashed during import.
+
 ## 2026-11-11 — Reconcile bibliographic counts before merging
 
 - Included the historical May `.xlsm` screening export and counted distinct publications across manual exports and canonical batches. All 370 historical publications have documented screening; the previously reported 20-record gap was a counting error.

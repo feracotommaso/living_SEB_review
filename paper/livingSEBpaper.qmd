@@ -58,7 +58,8 @@ format: #quarto render paper/livingSEBpaper.qmd --to all
   apaquarto-html: default
   apaquarto-pdf:
     documentmode: man
-  apaquarto-typst: default
+  apaquarto-typst:
+    mainfont: Times New Roman
   apaquarto-docx: default
 execute:
   echo: false
