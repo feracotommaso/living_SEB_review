@@ -20,6 +20,36 @@ test_that('audit aligns variable names, detects differences and preserves saved 
   expect_identical(digest::digest(file=path),before)
 })
 
+test_that('second historical batch reproduces matrices and keeps corrections unpromoted', {
+  needed <- c('d0026.csv','opencode0026.R','d0030a.csv','d0030b.csv',
+    'opencode0030a.R','opencode0030b.R','d0034.sav','d0034t.sav',
+    'raw/shared/bessi_scoring_v1.pdf')
+  skip_if_not(all(file.exists(file.path('data/3.meta_data/open_data',needed))),
+    'Original individual-level files are local and Git-ignored.')
+  protected <- c(list.files('data/3.meta_data/matrices',full.names=TRUE),
+    list.files('data/3.meta_data/coding',full.names=TRUE),
+    'data/3.meta_data/meta_data/metadata.csv','data/3.meta_data/meta_data/metadata.xlsx',
+    'data/3.meta_data/review_data/review_data.csv','data/3.meta_data/review_data/review_data.xlsx',
+    'data/3.meta_data/extraction/historical_audit.csv','data/3.1opendata_to_cor.R',
+    file.path('data/3.meta_data/open_data',needed))
+  hashes <- function()vapply(protected,function(p)digest::digest(file=p),character(1))
+  before <- hashes(); runs <- list()
+  for(id in c('0026','0030','0034')) {
+    e<-new.env(parent=globalenv());e$commandArgs<-function(...)'--check-only'
+    invisible(capture.output(sys.source(paste0('scripts/extraction/articles/',id,'.R'),envir=e)))
+    runs[[id]]<-e
+  }
+  expect_identical(hashes(),before)
+  rows <- dplyr::bind_rows(runs[['0026']]$audit_0026$summary,
+    runs[['0030']]$summary_0030,runs[['0034']]$audit_0034$source$summary)
+  expect_equal(sum(rows$compared_pairs),4304)
+  expect_true(all(rows$changed_pairs==0))
+  expect_equal(sum(runs[['0030']]$matched),68)
+  expect_equal(runs[['0034']]$audit_0034$sns$summary$changed_pairs,136)
+  expect_equal(runs[['0034']]$audit_0034$weights$summary$changed_pairs,335)
+  expect_equal(sum(runs[['0034']]$raw$edad<18),8)
+})
+
 test_that('historical article checks do not overwrite scientific files or the audit table', {
   needed <- c('d0013.csv','d0018.csv','d0120a.sav','d0120b.sav','d0120a_informant.sav',
     'raw/shared/bessi_scoring_v1.pdf',

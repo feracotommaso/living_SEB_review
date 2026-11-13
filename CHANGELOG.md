@@ -1,3 +1,11 @@
+## 2026-11-13 — Extend historical verification to 0026, 0030 and 0034
+
+- Added three read-only article audits using the existing aggregate comparison table. Reproduced four stored matrices (4304 coefficients); official matrices, Ns, metadata, review data, raw originals and historical scripts are unchanged.
+- Reconstructed the five 0026 BESSI-45 release-block means to supplied rounding precision, all 0030 Study 1 BESSI facets/domains, the 0030 Study 2 domain arithmetic and the 0034 selected-item facet sums. Distinguished score-level reproduction from unavailable item/reversal history.
+- Flagged 0030 sample dependence: the paper reports 83 recontacted adults; 68 unique released 32-facet profiles match across studies and agree on sex. No identity-based exclusion was inferred from score matching.
+- Quantified unapproved 0034 SNS mapping and official-weight corrections separately and together. The separate comparisons change 136 and 335 correlations. Preserved complete-constituent missingness. Recorded eight retained ages of 17, raw/prepared cohort-count discrepancies and the paper's reversed SNS item counts for review.
+- Validation: 21 targeted audit assertions passed, including unchanged scientific files/originals, independent scoring checks and current approved 0120 reproduction. New findings remain in the existing cumulative report; no candidate matrices or individual datasets exported.
+
 ## 2026-11-13 — Integrate approved historical corrections
 
 - Integrated official normalized BESSI domain weights in 0120a/b and treated the out-of-range Study 2 BESSI171 response as missing, averaging optimism over the other five items. Changed 175 and 339 correlations respectively; reference Ns remain 1103 and 123. Supplied BFI-2 scores remain unchanged.

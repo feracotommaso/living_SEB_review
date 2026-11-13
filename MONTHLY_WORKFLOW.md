@@ -217,6 +217,13 @@ Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per
 
 ## Verifiche, Git, paper e app
 
+Anche `estrai_articolo("0026")`, `estrai_articolo("0030")` e
+`estrai_articolo("0034")` sono attualmente verifiche storiche: aggiornano solo
+`data/3.meta_data/extraction/historical_audit.csv`, senza sostituire matrici,
+dati individuali o codifica. Con `verifica_soltanto = TRUE` non scrivono nulla.
+Le proposte per 0034 e la sovrapposizione di campioni in 0030 attendono decisione;
+il dettaglio è in `scripts/extraction/README.md`.
+
 La migrazione è stata confrontata con il checkpoint: 39 campioni e 51 articoli con gli stessi valori. La prova 0150 ha riprodotto gli stessi CSV individuali e della matrice: N=30719, 38 variabili, N per coppia 29244–30719, dopo l'esclusione dei 596 partecipanti sovrapposti. La matrice conserva il piccolo autovalore negativo già documentato.
 
 Restano visibili le lacune storiche 0050, 0053a e 0053b; 0104a resta esclusa secondo la decisione già registrata. Questi casi non sono stati ricodificati durante la semplificazione.
