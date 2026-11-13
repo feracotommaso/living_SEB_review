@@ -1,3 +1,11 @@
+## 2026-11-13 — Verify historical articles 0035, 0043 and 0045
+
+- Added three read-only article audits and seven rows to the existing aggregate report. Reproduced all 281 coefficients in three stored matrices, without changing scientific outputs, Ns, raw originals or historical code.
+- Independently reconstructed all five measured BESSI facets and all five BFI-44 scales for 0035 to released rounding precision. Proposed recovering omitted sex; proposed recovering 0043 parentEducation lost to a capitalization mismatch; reconstructed eight 0045 facets and proposed adding the omitted capacityforconsistency. The three proposals add 11, 20 and 9 correlations, with existing coefficients unchanged.
+- Kept the 0045 outcome-metric choice separate: current volunteering is the ordinal program-hours group; a continuous-hours comparison changes eight existing correlations. The paper's latent correlations are distinguished from observed-score Pearson correlations.
+- Progress: 10 historical articles/13 matrices have been examined; including the two new validated articles, 12 of 31 quantitative articles and 15 of 39 matrices. Remaining: 19 articles/24 matrices. Open scientific choices remain recorded for human review.
+- Validation: 30 targeted audit assertions passed, including exact numerical reproduction, original/scientific-file preservation, proposed-variable identities and the separate hours-metric comparison. No scientific outputs promoted.
+
 ## 2026-11-13 — Integrate 0034 corrections and retain 0030 samples
 
 - Corrected the two SNS construct mappings and applied official normalized BESSI domain weights in 0034a. Changed 461 correlations while preserving the existing complete-constituent missingness, all 303 participants and all eight minors. Reference and pair-specific Ns are unchanged.

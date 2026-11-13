@@ -57,6 +57,37 @@ test_that('second historical batch checks are read-only and reproduce approved o
   expect_equal(nrow(runs[['0034']]$combined_data),303)
 })
 
+test_that('third historical batch reproduces matrices and only proposes additions', {
+  needed <- c('d0035.csv','opencode0035.R','d0043.sav','opencode0043.sps',
+    'd0045.xlsx','raw/shared/bessi_scoring_v1.pdf')
+  skip_if_not(all(file.exists(file.path('data/3.meta_data/open_data',needed))),
+    'Original individual-level files are local and Git-ignored.')
+  protected <- c(list.files('data/3.meta_data/matrices',full.names=TRUE),
+    list.files('data/3.meta_data/coding',full.names=TRUE),
+    'data/3.meta_data/meta_data/metadata.csv','data/3.meta_data/meta_data/metadata.xlsx',
+    'data/3.meta_data/review_data/review_data.csv','data/3.meta_data/review_data/review_data.xlsx',
+    'data/3.meta_data/extraction/historical_audit.csv','data/3.1opendata_to_cor.R',
+    file.path('data/3.meta_data/open_data',needed))
+  hashes <- function()vapply(protected,function(p)digest::digest(file=p),character(1))
+  before <- hashes();runs <- list()
+  for(id in c('0035','0043','0045')) {
+    e<-new.env(parent=globalenv());e$commandArgs<-function(...)'--check-only'
+    invisible(capture.output(sys.source(paste0('scripts/extraction/articles/',id,'.R'),envir=e)))
+    runs[[id]]<-e
+  }
+  expect_identical(hashes(),before)
+  rows<-dplyr::bind_rows(runs[['0035']]$audit_0035$source$summary,
+    runs[['0043']]$audit_0043$source$summary,runs[['0045']]$audit_0045$source$summary)
+  expect_equal(sum(rows$compared_pairs),281)
+  expect_true(all(rows$changed_pairs==0))
+  proposals<-list(runs[['0035']]$audit_0035$sex,runs[['0043']]$audit_0043$parent,runs[['0045']]$audit_0045$facet)
+  expect_identical(vapply(proposals,function(x)x$summary$added_variables,character(1)),
+    c('sex','parentEducation','capacityforconsistency'))
+  expect_true(all(vapply(proposals,function(x)x$summary$changed_pairs==0,logical(1))))
+  expect_equal(vapply(proposals,function(x)ncol(x$candidate),integer(1)),c(12L,21L,10L))
+  expect_equal(runs[['0045']]$audit_0045$hours$summary$changed_pairs,8)
+})
+
 test_that('historical article checks do not overwrite scientific files or the audit table', {
   needed <- c('d0013.csv','d0018.csv','d0120a.sav','d0120b.sav','d0120a_informant.sav',
     'raw/shared/bessi_scoring_v1.pdf',

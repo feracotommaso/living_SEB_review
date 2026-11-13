@@ -217,7 +217,9 @@ Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per
 
 ## Verifiche, Git, paper e app
 
-Anche `estrai_articolo("0026")` e `estrai_articolo("0030")` sono verifiche storiche: aggiornano solo
+Anche `estrai_articolo("0026")`, `estrai_articolo("0030")`,
+`estrai_articolo("0035")`, `estrai_articolo("0043")` e
+`estrai_articolo("0045")` sono verifiche storiche: aggiornano solo
 `data/3.meta_data/extraction/historical_audit.csv`, senza sostituire matrici,
 dati individuali o codifica. Con `verifica_soltanto = TRUE` non scrivono nulla.
 **0034 è ora migrato:** `estrai_articolo("0034")` esporta i due mapping SNS

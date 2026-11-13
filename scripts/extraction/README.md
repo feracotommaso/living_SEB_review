@@ -133,3 +133,43 @@ preparato di 303 persone, inclusi tutti gli otto minorenni, senza nuove esclusio
 registrando la discrepanza. Il retest resta
 escluso. I totali BFI-2 riproducono le somme dei valori già presenti in entrambi
 i file; la storia delle inversioni prima del rilascio non è verificabile.
+
+## Terzo gruppo storico: 0035, 0043 e 0045
+
+I tre script sono verifiche degli output scientifici in sola lettura: salvano
+solo il riepilogo unico dell'audit; `--check-only` non scrive nulla. Le tre
+matrici esistenti riproducono tutte le 281 correlazioni salvate. N, correlazioni,
+codifica e script storici restano invariati; le proposte sotto non sono esportate.
+
+| Matrice | N di riferimento | N per coppia attuale | Verifica e proposta |
+|---|---:|---:|---|
+| 0035a | 642 | 471–603 | Cinque faccette BESSI e cinque scale BFI-44 ricostruite dagli item; sesso disponibile ma omesso, aggiungibile con 11 correlazioni. |
+| 0043a | 975 | 627–910 | Punteggi forniti; `ParentsEducation` è stato rinominato `ParentEducation`, non presente nel codebook. Il nome corretto `parentEducation` aggiungerebbe 20 correlazioni. |
+| 0045a | 248 | 236–242 | Otto faccette misurate, sette nello storico: aggiungere `capacityforconsistency` produrrebbe nove nuove correlazioni. |
+
+0035: i dati includono 468 donne, 159 uomini e 15 valori mancanti per sesso.
+Le faccette BESSI sono disponibili per 480–482 persone: il numero 642 descrive
+il campione del paper, non l'N di ogni correlazione. La proposta sul sesso
+porta gli N per coppia a 469–627; i punteggi e le correlazioni esistenti restano
+immutati. Le cinque misure SEB sono faccette rappresentative, non domini completi.
+
+0043: il file è già preparato dopo esclusioni e imputazione; non contiene gli
+item originali. Le misure di tratto sono le versioni con istruzioni di frequenza
+degli stessi item BESSI-20, non BFI-2. `ParentsEducation` ha 835 valori validi e
+140 mancanti; l'aggiunta proposta conserva tutte le persone e i punteggi forniti.
+
+0045: la faccetta omessa è documentata nel paper (Tabella 3 e appendice item).
+Il vecchio `volunteering` usa `hour_group`, cioè tre livelli ordinati: nessuna
+ora, alcune ore, raggiungimento del benchmark (40 ore estive, 20 autunnali).
+Sono disponibili anche le ore totali continue. È registrato separatamente il
+confronto con queste ultime: cambierebbe otto correlazioni attuali, con scarto
+massimo circa 0.098. La scelta della metrica resta da decidere. La Tabella 3
+pubblica correlazioni latenti; non è un riferimento di arrotondamento per le
+nostre correlazioni tra medie osservate. Si conserva la regola storica delle
+medie sugli item disponibili, con faccette interamente mancanti lasciate mancanti;
+nessuna soglia nuova o esclusione applicata.
+
+Conteggio dopo questo gruppo: 10 articoli storici e 13 matrici passati in verifica;
+con 0145 e 0150 già codificati/verificati, 12 articoli e 15 matrici su 31 e 39
+attivi nella metaanalisi. Restano 19 articoli e 24 matrici. I chiarimenti o le
+proposte ancora aperti sono distinti dalla riproduzione numerica delle matrici.
