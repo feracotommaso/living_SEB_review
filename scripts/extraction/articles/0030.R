@@ -108,7 +108,8 @@ matrix_b <- data_b[,c(unname(variable_map_b),"sex")]
 # No participant IDs survive in the score release. There are 68 unique identical
 # 32-facet profiles, also agreeing on sex, all in the adult group. This is a
 # diagnostic of possible retained overlap, not an authorized identity-based
-# exclusion. Keep both current matrices and Ns until the overlap is reviewed.
+# exclusion. User decision 2026-11-13: keep both samples and reference Ns
+# unchanged despite the small overlap; retain the documented dependence caveat.
 profile_key <- function(x) apply(x[,names(bessi192_first_item)],1,
   function(row)paste(sprintf("%.8f",row),collapse="|"))
 keys_a <- profile_key(matrix_a)
@@ -116,17 +117,17 @@ links <- match(profile_key(matrix_b),keys_a)
 matched <- !is.na(links)
 stopifnot(!anyDuplicated(keys_a),sum(matched)==68L,
   all(raw_b$group[matched]=="adult"),all(matrix_b$sex[matched]==matrix_a$sex[links[matched]]))
-overlap_note <- "Paper p.10 reports 83 Study 1 adults recontacted for Study 2. Released data have 68 identical unique 32-facet profiles agreeing on sex, all adult; no shared participant IDs are available. Possible sample dependence requires review; no participants removed or Ns changed."
+overlap_note <- "Paper p.10 reports 83 Study 1 adults recontacted for Study 2. Released data have 68 identical unique 32-facet profiles agreeing on sex, all adult; no shared participant IDs are available. User decision 2026-11-13: retain both samples and reference Ns unchanged despite the small overlap. No participants removed or correlations changed; possible sample dependence remains documented."
 
 # 7-8. Read-only numerical and source comparisons.
 audit_0030a <- audit_compare_matrix("0030","0030a",matrix_a,990,
   note=paste("All 32 BESSI facets reconstructed from items and five domains from official normalized weights. Age kept outside the matrix. Selection of translated alternatives and upstream exclusions not reconstructed.",overlap_note),
   sources=names(source_hashes),evidence="0030 PDF pp.4-5,9-10; official BESSI key; inspected author scoring code",
-  status="MATRIX_REPRODUCED_OVERLAP_REVIEW")
+  status="MATRIX_REPRODUCED_OVERLAP_RETAINED_BY_DECISION")
 audit_0030b <- audit_compare_matrix("0030","0030b",matrix_b,824,
   note=paste("Supplied scores reproduce the matrix; all five domains equal official weighted means of supplied facets. Study 2 item scoring cannot be independently reconstructed. Pair Ns 787-824; missing outcome blocks retained.",overlap_note),
   sources=names(source_hashes),evidence="0030 PDF pp.9-10; supplied facet/domain scores; official BESSI key",
-  status="MATRIX_REPRODUCED_OVERLAP_REVIEW")
+  status="MATRIX_REPRODUCED_OVERLAP_RETAINED_BY_DECISION")
 summary_0030 <- dplyr::bind_rows(audit_0030a$summary,audit_0030b$summary)
 print(summary_0030[,c("matrix_id","changed_pairs","max_abs_delta","pair_n_min","pair_n_max")])
 if(!"--check-only" %in% args)audit_save_summary(summary_0030)

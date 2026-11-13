@@ -1,6 +1,7 @@
-# 0034: historical verification only; no scientific output is promoted.
-# Run from the repository root. --check-only writes nothing; a normal run
-# updates only the single extraction/historical_audit.csv.
+# 0034: user-approved SNS mapping and official BESSI domain scoring.
+# A normal run exports the approved matrix, private coded individuals, pair Ns
+# and aggregate checks. --check-only never writes. Update final results through
+# workflow.R. User explicitly retained all 303 people, including eight aged 17.
 source("R/historical_audit.R")
 args <- commandArgs(trailingOnly=TRUE)
 stopifnot(all(args %in% "--check-only"))
@@ -25,7 +26,7 @@ links <- match(raw$ID,raw_earlier$ID)
 stopifnot(nrow(raw)==303,nrow(raw_earlier)==322,
   !anyDuplicated(raw$ID),!anyDuplicated(raw_earlier$ID),!anyNA(links))
 
-# 4-5. Explicit historical mapping, including the two suspect SNS labels.
+# 4-5. Explicit mapping, with the two SNS constructs corrected as approved.
 variable_map <- c(
   "estudios"="educationlevel",
   "DOMINIO_SelfManagement"="selfmanagement",
@@ -94,8 +95,8 @@ variable_map <- c(
   "Grit"="grit",
   "Curiosity_Test"="epistemiccuriosity",
   "PersonalidadEmprendedora"="enterprisingpersonality",
-  "ComparaciónSocial_Redes"="socialnetworkaddictiveconsequences",
-  "ConsecuenciasAdictivas_Redes"="socialnetworknegativesocialcomparison")
+  "ComparaciónSocial_Redes"="socialnetworknegativesocialcomparison",
+  "ConsecuenciasAdictivas_Redes"="socialnetworkaddictiveconsequences")
 data_scored <- raw
 names(data_scored)[match(names(variable_map),names(data_scored))] <- unname(variable_map)
 stopifnot(all(raw$sexo %in% c(1,2)))
@@ -166,25 +167,30 @@ stopifnot(length(social_comparison_items)==10L,length(addictive_items)==8L,
 data_matrix <- data_scored[,c(unname(variable_map),"sex")]
 stopifnot(!any(grepl("_TR$",names(data_matrix))))
 
-# 6-8. Preserve current scientific outputs; quantify each proposed correction.
+# 6-8. Compare the historical choices and the approved combined extraction.
 common_note <- paste("Prepared N=303; all 32 BESSI facets reproduced from selected first-wave items. Two missing items give missing facet sums; retest not included.",
   "Source domains differ from official weights. BFI sums reproduce released preprocessed item values; original reversal history unavailable. Other outcome scoring not independently reconstructed.",
-  "Eight retained ages are 17 although the paper states 18-85; original 322 rows versus reported initial 313 also requires clarification. No additional exclusions applied.")
+  "Eight retained ages are 17 although the paper states 18-85; original 322 rows versus reported initial 313 also requires clarification. User decision 2026-11-13: retain all 303 people, explicitly including minors; no additional exclusions. SNS mapping correction and official domain weights approved together.")
 audit_0034 <- list()
-audit_0034$source <- audit_compare_matrix("0034","0034a",data_matrix,303,
+# Reproduce the OLD mapping only for a readable comparison; the variable map
+# above and the exported combined data use the corrected source meanings.
+historical_data <- data_matrix
+historical_data$socialnetworkaddictiveconsequences <- raw[["ComparaciónSocial_Redes"]]
+historical_data$socialnetworknegativesocialcomparison <- raw[["ConsecuenciasAdictivas_Redes"]]
+audit_0034$source <- audit_compare_matrix("0034","0034a",historical_data,303,
   note=common_note,sources=names(source_hashes),
   evidence="0034 PDF pp.4-7; source item columns, sums and SPSS item labels",
-  status="MATRIX_REPRODUCED_SOURCE_REVIEW")
+  status="HISTORICAL_SCORING_COMPARISON")
 
 label_corrected <- data_matrix
 label_corrected$socialnetworknegativesocialcomparison <- raw[["ComparaciónSocial_Redes"]]
 label_corrected$socialnetworkaddictiveconsequences <- raw[["ConsecuenciasAdictivas_Redes"]]
 audit_0034$sns <- audit_compare_matrix("0034","0034a",label_corrected,303,
-  note=paste(common_note,"Sensitivity only: correct the two reversed historical SNS mappings using item wording/source sums; preserve their source metrics. Not approved or exported."),
+  note=paste(common_note,"Isolated SNS mapping comparison. The combined approved extraction is used for export; this isolated alternative is not exported."),
   sources=names(source_hashes),evidence="SPSS labels UPS_01_NC_01 through UPS_18_AC_8; paper p.5 item-count discrepancy",
-  status="MAPPING_REVIEW_REQUIRED",comparison="sns_mapping_sensitivity")
+  status="ISOLATED_MAPPING_COMPARISON",comparison="sns_mapping_sensitivity")
 
-official_data <- data_matrix
+official_data <- historical_data
 weighted_columns <- c(selfmanagement="MANAGEMENT_DOMAIN_WEIGHT",socialengagement="SOCIALENGAGEMENT_DOMAIN_WEIGHT",
   cooperation="COOPERATION_DOMAIN_WEIGHT",emotionalresilience="EMOTIONALRESILIENCE_DOMAIN_WEIGHT",innovation="INNOVATION_DOMAIN_WEIGHT")
 complete <- complete.cases(facet_means)
@@ -199,16 +205,37 @@ for(domain in names(bessi192_domain_weights)) {
   stopifnot(max(abs(reference[complete]-official_data[[domain]][complete]))<1e-12)
 }
 audit_0034$weights <- audit_compare_matrix("0034","0034a",official_data,303,
-  note=paste(common_note,"Sensitivity only: official normalized domain weights, preserving source facet NAs and the complete-constituent-facet rule for each domain. Author WEIGHT columns confirm complete-record scores; no candidates exported."),
+  note=paste(common_note,"Isolated weighting comparison, preserving source facet NAs and the complete-constituent-facet rule. Author WEIGHT columns confirm complete-record scores. The combined approved extraction is used for export; this isolated alternative is not exported."),
   sources=names(source_hashes),evidence="Official BESSI v1.0 key pp.1-2; prepared SAV WEIGHT columns",
-  status="WEIGHT_REVIEW_REQUIRED",comparison="official_weight_sensitivity")
+  status="ISOLATED_WEIGHTING_COMPARISON",comparison="official_weight_sensitivity")
 combined_data <- official_data
 combined_data$socialnetworknegativesocialcomparison <- label_corrected$socialnetworknegativesocialcomparison
 combined_data$socialnetworkaddictiveconsequences <- label_corrected$socialnetworkaddictiveconsequences
 audit_0034$combined <- audit_compare_matrix("0034","0034a",combined_data,303,
-  note=paste(common_note,"Combined unapproved comparison: SNS mapping corrected and official normalized domain weights applied, preserving source complete-facet missingness. No scientific outputs replaced."),
+  note=paste(common_note,"Combined user-approved extraction: corrected SNS mapping and official normalized domain weights, preserving source complete-facet missingness, N=303 and all eight minors. Exported by a normal run; --check-only never writes."),
   sources=names(source_hashes),evidence="SPSS SNS item labels and sums; official BESSI scoring key",
-  status="COMBINED_CORRECTION_REVIEW_REQUIRED",comparison="combined_correction_sensitivity")
+  status="APPROVED_EXTRACTION",comparison="combined_correction_sensitivity")
+stopifnot(identical(audit_0034$source$pair_n,audit_0034$combined$pair_n),
+  nrow(combined_data)==303,sum(raw$edad<18)==8)
 summary_0034 <- dplyr::bind_rows(lapply(audit_0034,`[[`,"summary"))
 print(summary_0034[,c("matrix_id","comparison","changed_pairs","max_abs_delta","pair_n_min","pair_n_max")])
-if(!"--check-only" %in% args)audit_save_summary(summary_0034)
+if(!"--check-only" %in% args) {
+  source("R/codebook_workflow.R",local=TRUE)
+  source("R/extraction_helpers.R",local=TRUE)
+  source("R/workflow_io.R",local=TRUE)
+  source("R/workflow_results.R",local=TRUE)
+  # Preserve the first reviewed before/after in the existing aggregate report.
+  path <- "data/3.meta_data/extraction/historical_audit.csv"
+  previous <- if(file.exists(path))readr::read_csv(path,show_col_types=FALSE)else summary_0034[FALSE,]
+  first <- summary_0034[summary_0034$comparison=="combined_correction_sensitivity",]
+  first$comparison <- "approved_integration_2026_11_13"
+  first$status <- "REVIEWED_BEFORE_AFTER"
+  first <- first[!first$matrix_id %in% previous$matrix_id[previous$comparison==first$comparison],]
+  audit_save_summary(dplyr::bind_rows(summary_0034,first))
+  individual_data <- combined_data
+  individual_data$age <- as.numeric(raw$edad)
+  checks <- extraction_check_matrix(combined_data,audit_0034$combined$candidate,audit_0034$combined$pair_n)
+  checks$retained_minors <- sum(individual_data$age<18)
+  wf_compact_extraction("0034","0034a",individual_data,audit_0034$combined$candidate,
+    audit_0034$combined$pair_n,checks)
+}

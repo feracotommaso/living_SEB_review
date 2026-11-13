@@ -36,7 +36,7 @@ test_that("exact revisions preserve the frozen baseline and reject further chang
 
 test_that("only approved historical matrices are revised and N caveats reach outputs", {
   revisions <- coding_read_historical_revisions()
-  expect_identical(revisions$matrix_id, c("0132a","0120a","0120b"))
+  expect_identical(revisions$matrix_id, c("0132a","0120a","0120b","0034a"))
   baseline <- coding_historical_contract(revisions = revisions[FALSE, ])
   expected <- coding_historical_contract()
   other <- !expected$matrix_id %in% revisions$matrix_id

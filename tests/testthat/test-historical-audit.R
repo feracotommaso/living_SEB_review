@@ -20,7 +20,7 @@ test_that('audit aligns variable names, detects differences and preserves saved 
   expect_identical(digest::digest(file=path),before)
 })
 
-test_that('second historical batch reproduces matrices and keeps corrections unpromoted', {
+test_that('second historical batch checks are read-only and reproduce approved outputs', {
   needed <- c('d0026.csv','opencode0026.R','d0030a.csv','d0030b.csv',
     'opencode0030a.R','opencode0030b.R','d0034.sav','d0034t.sav',
     'raw/shared/bessi_scoring_v1.pdf')
@@ -32,6 +32,9 @@ test_that('second historical batch reproduces matrices and keeps corrections unp
     'data/3.meta_data/review_data/review_data.csv','data/3.meta_data/review_data/review_data.xlsx',
     'data/3.meta_data/extraction/historical_audit.csv','data/3.1opendata_to_cor.R',
     file.path('data/3.meta_data/open_data',needed))
+  outputs <- c('data/3.meta_data/extraction/summary.csv',
+    'data/3.meta_data/pair_n/0034a.csv','data/3.meta_data/open_data/individual_data/0034a.csv')
+  protected <- c(protected,outputs[file.exists(outputs)])
   hashes <- function()vapply(protected,function(p)digest::digest(file=p),character(1))
   before <- hashes(); runs <- list()
   for(id in c('0026','0030','0034')) {
@@ -41,13 +44,17 @@ test_that('second historical batch reproduces matrices and keeps corrections unp
   }
   expect_identical(hashes(),before)
   rows <- dplyr::bind_rows(runs[['0026']]$audit_0026$summary,
-    runs[['0030']]$summary_0030,runs[['0034']]$audit_0034$source$summary)
+    runs[['0030']]$summary_0030,runs[['0034']]$audit_0034$combined$summary)
   expect_equal(sum(rows$compared_pairs),4304)
   expect_true(all(rows$changed_pairs==0))
   expect_equal(sum(runs[['0030']]$matched),68)
-  expect_equal(runs[['0034']]$audit_0034$sns$summary$changed_pairs,136)
-  expect_equal(runs[['0034']]$audit_0034$weights$summary$changed_pairs,335)
+  expect_equal(runs[['0034']]$audit_0034$source$summary$changed_pairs,461)
+  expect_equal(as.numeric(runs[['0034']]$combined_data$socialnetworknegativesocialcomparison),
+    as.numeric(runs[['0034']]$raw[['ComparaciónSocial_Redes']]))
+  expect_equal(as.numeric(runs[['0034']]$combined_data$socialnetworkaddictiveconsequences),
+    as.numeric(runs[['0034']]$raw[['ConsecuenciasAdictivas_Redes']]))
   expect_equal(sum(runs[['0034']]$raw$edad<18),8)
+  expect_equal(nrow(runs[['0034']]$combined_data),303)
 })
 
 test_that('historical article checks do not overwrite scientific files or the audit table', {

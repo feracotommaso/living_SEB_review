@@ -1,4 +1,11 @@
-## 2026-11-13 — Extend historical verification to 0026, 0030 and 0034
+## 2026-11-13 — Integrate 0034 corrections and retain 0030 samples
+
+- Corrected the two SNS construct mappings and applied official normalized BESSI domain weights in 0034a. Changed 461 correlations while preserving the existing complete-constituent missingness, all 303 participants and all eight minors. Reference and pair-specific Ns are unchanged.
+- Recorded the user's decision to retain both 0030 samples and all participants, with reference Ns 990 and 824 unchanged. The overlap evidence remains in coding notes and the audit; no 0030 correlations changed.
+- Updated the general coding workbook, source/evidence tables and analytical outputs through the existing workflow. Saved the 0034 coded individual dataset privately and pair Ns in the common directory. Preserved the reviewed before/after in the existing aggregate audit and registered the exact transition in the existing legacy compatibility ledger. Historical scripts and raw originals remain intact.
+- Validation: complete R suite and October regression (14/14) passed. Exactly 461 correlation values changed, only in 0034a; all sample Ns and the other 38 matrix files are unchanged. All 303 source ages, including eight minors, survive in the private coded CSV. The three updated workbook notes were visually checked; the extraction reproduces the approved saved matrix.
+
+## 2026-11-13 — Extend historical verification to 0026, 0030 and 0034 (before integration)
 
 - Added three read-only article audits using the existing aggregate comparison table. Reproduced four stored matrices (4304 coefficients); official matrices, Ns, metadata, review data, raw originals and historical scripts are unchanged.
 - Reconstructed the five 0026 BESSI-45 release-block means to supplied rounding precision, all 0030 Study 1 BESSI facets/domains, the 0030 Study 2 domain arithmetic and the 0034 selected-item facet sums. Distinguished score-level reproduction from unavailable item/reversal history.

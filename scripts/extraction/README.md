@@ -89,41 +89,47 @@ analitico. Nessuna selezione arbitraria dei record o modifica delle correlazioni
 
 ## Secondo gruppo storico: 0026, 0030 e 0034
 
-I tre nuovi script sono verifiche in sola lettura degli output scientifici.
-Salvano solo il riepilogo unico dell'audit; `--check-only` non scrive nulla.
-Le quattro matrici esistenti sono riprodotte: 4304 correlazioni, senza modifiche
-di valori, N o codifica. Gli script degli autori sono esaminati, non eseguiti.
+La prima verifica ha riprodotto le quattro matrici esistenti: 4304 correlazioni.
+0026 e 0030 restano verifiche in sola lettura degli output scientifici, che
+salvano solo il riepilogo unico. Dopo le decisioni del 13 novembre, 0034 esporta
+il mapping SNS corretto e i domini BESSI con i pesi ufficiali, con la stessa
+procedura compatta di 0120. Per tutti, `--check-only` non scrive nulla.
+Gli script degli autori sono esaminati, non eseguiti.
 
 | Matrice | N di riferimento | N per coppia | Esito |
 |---|---:|---:|---|
 | 0026a | 2992 | 2978–2992 | Domini BESSI-45 verificati come medie dei blocchi di nove item del file; differenze solo da arrotondamento dei punteggi forniti. |
 | 0030a | 990 | 990 | Faccette ricostruite dagli item e domini con i pesi ufficiali. |
 | 0030b | 824 | 787–824 | Domini verificati dalle faccette fornite; gli item originali di Study 2 non sono nel file. |
-| 0034a | 303 | 301–303 | Faccette ricostruite dai sei item spagnoli selezionati; domini e mapping riprodotti come nello storico, con proposte separate. |
+| 0034a | 303 | 301–303 | Faccette ricostruite dai sei item spagnoli selezionati; pesi ufficiali e mapping SNS corretti, con tutti i partecipanti conservati. |
 
 **0030 — sovrapposizione:** il paper (p.10) dichiara 83 adulti ricontattati da
 Study 1. Nei file rimasti dopo le esclusioni, 68 profili coincidono su tutte le
 32 faccette e sul sesso, tutti nel gruppo adulti. Mancano identificativi comuni:
 nessuna esclusione o modifica di N è applicata sulla sola corrispondenza dei
-punteggi. Va concordata la gestione della dipendenza fra le due matrici.
+punteggi. **Decisione approvata:** conservare entrambi i campioni, tutte le
+persone e gli N attuali (990 e 824), mantenendo la nota sulla dipendenza.
 
-**0034 — da decidere:** lo storico scambia i mapping di confronto sociale
+**0034 — correzioni approvate e integrate:** lo storico scambiava i mapping di confronto sociale
 negativo e conseguenze addictive dei social. Le etichette SPSS e il contenuto
 dei dieci item NC e otto item AC identificano i costrutti; il testo del paper
 (p.5) riporta invece le numerosità degli item invertite. La sola correzione del
-mapping cambierebbe 136 correlazioni (scarto massimo circa 0.379).
-I domini usano nove faccette principali per self-management e pesi uguali per
-le cinque faccette degli altri domini. I pesi ufficiali cambierebbero 335
-correlazioni (scarto massimo circa 0.084), mantenendo la regola originale che
+mapping modifica 136 correlazioni rispetto allo storico (scarto massimo circa 0.379).
+I vecchi domini usavano nove faccette principali per self-management e pesi uguali per
+le cinque faccette degli altri domini. I pesi ufficiali modificano 335
+correlazioni rispetto allo storico (scarto massimo circa 0.084), mantenendo la regola originale che
 richiede tutte le faccette costituenti. Le colonne WEIGHT degli autori confermano
-lo scoring ufficiale sui record completi. Entrambe le alternative restano in
-memoria e nel confronto aggregato; non sono approvate o esportate. Il confronto
-combinato dei due interventi cambierebbe 461 correlazioni, con N per coppia
-sempre 301–303.
+lo scoring ufficiale sui record completi. Le due correzioni sono esportate
+insieme: 461 correlazioni modificate, con N per coppia sempre 301–303.
+Il confronto iniziale resta come `approved_integration_2026_11_13` nel riepilogo
+esistente; le altre righe confrontano le alternative con la matrice corrente.
+Usare `estrai_articolo("0034")`, non il vecchio blocco storico, per lo scoring
+approvato. I dati individuali sono locali e privati, con età conservata e senza ID.
 
 Nel file preparato 0034 ci sono otto età di 17 anni, a fronte del range 18–85
 dichiarato; inoltre la versione precedente contiene 322 righe contro le 313
-iniziali descritte nel paper. Si conserva il campione preparato di 303 persone,
-senza nuove esclusioni, registrando la necessità di chiarimento. Il retest resta
+iniziali descritte nel paper. Per decisione esplicita si conserva il campione
+preparato di 303 persone, inclusi tutti gli otto minorenni, senza nuove esclusioni,
+registrando la discrepanza. Il retest resta
 escluso. I totali BFI-2 riproducono le somme dei valori già presenti in entrambi
 i file; la storia delle inversioni prima del rilascio non è verificabile.
