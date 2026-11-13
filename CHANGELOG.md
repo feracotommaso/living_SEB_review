@@ -4,6 +4,7 @@
 - Recorded the user's decision to retain both 0030 samples and all participants, with reference Ns 990 and 824 unchanged. The overlap evidence remains in coding notes and the audit; no 0030 correlations changed.
 - Updated the general coding workbook, source/evidence tables and analytical outputs through the existing workflow. Saved the 0034 coded individual dataset privately and pair Ns in the common directory. Preserved the reviewed before/after in the existing aggregate audit and registered the exact transition in the existing legacy compatibility ledger. Historical scripts and raw originals remain intact.
 - Validation: complete R suite and October regression (14/14) passed. Exactly 461 correlation values changed, only in 0034a; all sample Ns and the other 38 matrix files are unchanged. All 303 source ages, including eight minors, survive in the private coded CSV. The three updated workbook notes were visually checked; the extraction reproduces the approved saved matrix.
+- Rerendered the living results HTML from data commit 851d37f. All six OSMASEM fits returned status 0 with finite estimates. Report prose, the unchanged PRISMA diagram and acquisition-history files were preserved.
 
 ## 2026-11-13 — Extend historical verification to 0026, 0030 and 0034 (before integration)
 
