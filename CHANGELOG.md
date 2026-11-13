@@ -1,3 +1,10 @@
+## 2026-11-13 — First historical data verification
+
+- Added read-only article scripts for 0013, 0018 and 0120, with one aggregate comparison table and original-source checksums. Official matrices, coding and analytical outputs remain untouched; no individual observations are versioned.
+- Reproduced five stored matrices. Rebuilt 0018 BESSI scores against the official key and checked both 0120 samples' 32 facets against raw items. Domain scores supplied for 0120 use equal facet weights; official half-weighted domains are retained only as sensitivity candidates.
+- Flagged 0013 cohort reconciliation (897 released rows versus reference N=840) and one 0120b BESSI171 response of 32 on a 1-5 scale, propagated into the supplied optimism composite. Explicitly unapproved missing-value and weighting sensitivities quantify the differences; Table 8 is an independent publication comparison for Study 2.
+- Validation: seven targeted test assertions passed; repeated audit output is idempotent. All 4,243 stored coefficients reproduced within numerical precision. Thirty of 35 source-reconstructed Study 2 domain-correlate coefficients differ from published Table 8 beyond two-decimal rounding; source/analysis version reconciliation remains open before any promotion.
+
 ## 2026-11-12 — Resolve Word icon and Typst font warnings
 
 - Selected the installed Times New Roman font explicitly for the paper's Typst format.
