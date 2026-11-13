@@ -1,5 +1,5 @@
-# 0050: read-only historical verification of two matrices from the released Rdata.
-# Normal run: update only historical_audit.csv. --check-only never writes.
+# 0050: approved extraction from verified originals, retaining the old comparisons.
+# Normal run exports the corrected matrices. --check-only never writes.
 # Paper data/code: https://osf.io/9pvmj/. Historical retrieval date unknown.
 source("R/historical_audit.R")
 source("scripts/extraction/keys/bessi192.R",local=TRUE)
@@ -8,7 +8,11 @@ stopifnot(all(args %in% "--check-only"))
 source_hashes <- c(
   "data/3.meta_data/open_data/d0050.Rdata"="229c2fee55a3c3e578c8216eaa3c31b8b6f850dbc006ddb41a087e051cfc1cbd",
   "data/2.full_abstracting/pdfs/0050.pdf"="c479f900ed63c77541814ec7074de1ecca0d98d3a109bf115aa938ace5ac1dea",
-  "data/3.meta_data/open_data/raw/shared/bessi_scoring_v1.pdf"="9d842f5196f021131be8b6561cc70b17dd0deebdaca2cbdc2f3579dce8e0b2a9")
+  "data/3.meta_data/open_data/raw/shared/bessi_scoring_v1.pdf"="9d842f5196f021131be8b6561cc70b17dd0deebdaca2cbdc2f3579dce8e0b2a9",
+  "data/3.meta_data/open_data/raw/0050/german/german.zip"="ea50d51019f5ac154a5aa063f8d44b162213adaf487e35b242e24f4b9dd146f9",
+  "data/3.meta_data/open_data/raw/0050/german/files/german/00_data_preparation.R"="e4497f14c6779fed3c4c1bf6b67f2560b338217b43810ee6b17836a576deac83",
+  "data/3.meta_data/open_data/raw/0050/german/files/german/03_study3.R"="ba07bc3f5b31f7cad97e4c107a9f87f725e56e1224f7e772239bfda5c9b500de",
+  "data/3.meta_data/open_data/raw/0050/german/files/german/functions.R"="a999f0dacbf7d9d7ef6e6a21a91b3df1edd170945c18851f552c4ba9bea98b17")
 audit_verify_sources(source_hashes)
 
 # 1-3. Load into a private environment, not the user's workspace.
@@ -25,6 +29,8 @@ stopifnot(nrow(raw_a)==940,nrow(raw_b)==768,
 # Do not infer independence from the anonymized ID namespaces, or exclude people
 # by an unverified score match. Keep this new dependency question for discussion.
 stopifnot(nrow(raw_objects$adults_teens_t2_t4)==203)
+overlap_records <- sum(raw_a$new_id %in% raw_b$id,na.rm=TRUE)
+stopifnot(overlap_records==238)
 
 # 4-5. Explicit mappings. Questionnaire score columns are supplied means on 1-5.
 facet_map <- c(
@@ -179,13 +185,13 @@ for(sample in c("a","b")) {
   note <- paste("Reference N",if(sample=="a")940 else 767,
     "; released rows",nrow(raw),". Every source record retained. No age in correlations.",
     "Source domains use nine/four primary facets with complete-constituent means, omitting official interstitial contributions.",
-    "Study 2 and Study 3 are not proven independent: paper reports 238 recontacted adults (203 valid at both waves). Anonymized T4 IDs do not directly link; no new exclusions.",
+    "The new_id bridge links 238 T4 respondents to Study 3; 203 paired records are available for retest analyses. User decision: retain both samples and every participant, documenting dependence.",
     if(sample=="a")"All 32 supplied facet means independently reconstructed from released items."else
-      "Study 3 uses BESSI at T2, cognition at T1, and BFI items split between T0/T2. Twenty BFI scores and eligible IQ sums reproduced; 24 BESSI facets reproduce, eight revised-facet scores require source clarification. Supplied scores retained. File has 768 rows versus paper N=767; only 766 rows contribute at least two selected scores. Reference N retained pending reconciliation.")
+      "Study 3 uses BESSI at T2, cognition at T1, and BFI items split between T0/T2; the user retains these associations as staggered cross-sectional measurement. Twenty BFI scores and eligible IQ sums reproduce. Eight supplied BESSI scores use the initial key after an overwrite in the original code; the approved comparison below uses revised-key means. File has 768 rows versus paper N=767; only 766 rows contribute at least two selected scores. N=767 retained by explicit user decision, without filtering records.")
   audit_0050[[paste0(sample,"_source")]] <- audit_compare_matrix("0050",matrix_id,data_matrix,
     if(sample=="a")940 else 767,note,names(source_hashes),
     "0050 PDF pp.9 and 19-20; original Rdata objects, released score columns and item keys",
-    status="MATRIX_REPRODUCED_SCORING_AND_DEPENDENCE_REVIEW_REQUIRED")
+    status="HISTORICAL_SCORING_COMPARISON")
   item_summary <- audit_0050[[paste0(sample,"_source")]]$summary
   item_summary$comparison <- "released_item_score_check"
   item_summary$score_mismatch_facets <- sum(score_checks[[sample]]$changed_values>0 | score_checks[[sample]]$missingness_differences>0)
@@ -193,7 +199,7 @@ for(sample in c("a","b")) {
   item_summary$score_max_abs_delta <- max(score_checks[[sample]]$max_abs_delta)
   item_summary$unreconciled_facets <- paste(score_checks[[sample]]$facet[
     score_checks[[sample]]$changed_values>0 | score_checks[[sample]]$missingness_differences>0],collapse=";")
-  item_summary$status <- if(sample=="a")"32_FACET_SCORES_REPRODUCED"else"8_REVISED_FACET_SCORES_UNRECONCILED"
+  item_summary$status <- if(sample=="a")"32_FACET_SCORES_REPRODUCED"else"INITIAL_VERSUS_REVISED_KEY_DIFFERENCE_EXPLAINED"
   audit_0050[[paste0(sample,"_items")]] <- list(summary=item_summary)
 
   # Separate unapproved sensitivity: official normalized core/interstitial
@@ -208,8 +214,82 @@ for(sample in c("a","b")) {
     if(sample=="a")940 else 767,
     paste(note,"Unapproved sensitivity: official domain weights 1:0.5, normalized, with every constituent required. More constituents can reduce score coverage; missing-data policy must be decided before export."),
     names(source_hashes),"Official BESSI v1.0 scoring key pp.1-2; source planned missingness",
-    status="SCORING_AND_MISSINGNESS_REVIEW_REQUIRED",comparison="official_weight_sensitivity")
+    status="ISOLATED_COMPLETE_CONSTITUENT_COMPARISON",comparison="official_weight_sensitivity")
+
+  # Approved correction after reviewing german.zip. In 00_data_preparation.R,
+  # revised _prm scores are computed, then overwritten by the next scale_builder
+  # call starting from adults_teens_t2 (which retains initial-key _prm scores).
+  # Recompute the intended v0.2 means from the unstripped original T2 items.
+  revised <- data_matrix
+  if(sample=="b") {
+    raw_t2 <- raw_objects$adults_teens_t2
+    link <- match(raw$id,raw_t2$id)
+    for(i in seq_len(nrow(raw_objects$final_bessi_lookup))) {
+      key <- raw_objects$final_bessi_lookup[i,]
+      source <- paste0(key$scale_name,"_prm")
+      items <- as.matrix(raw_t2[,key$items[[1]]])
+      stopifnot(all(is.na(items) | (items>=1 & items<=5)))
+      value <- rowMeans(items,na.rm=TRUE);value[is.nan(value)] <- NA_real_
+      revised[[facet_map[[source]]]] <- value[link]
+      # Independent diagnosis: the supplied scores equal the INITIAL item key.
+      old_key <- raw_objects$bessi_lookup$items[[key$scale_name]]
+      old_value <- rowMeans(raw_t2[,old_key],na.rm=TRUE);old_value[is.nan(old_value)] <- NA_real_
+      stopifnot(isTRUE(all.equal(old_value[link],as.numeric(raw[[source]]),
+        check.attributes=FALSE,tolerance=1e-12)))
+    }
+    for(domain in names(legacy_domains))
+      revised[[domain]] <- rowMeans(revised[,legacy_domains[[domain]]])
+    audit_0050$b_revised <- audit_compare_matrix("0050",matrix_id,revised,767,
+      "Isolated source-code correction: intended revised v0.2 item means at T2, available-item means; retain author primary-facet domain formula for this comparison.",
+      names(source_hashes),"Original preparation script: revised _prm object overwritten by second scale_builder call",
+      status="ISOLATED_KEY_CORRECTION",comparison="revised_key_correction")
+  }
+  corrected <- revised
+  for(domain in names(bessi192_domain_weights)) {
+    weights <- bessi192_domain_weights[[domain]]
+    facets <- as.matrix(revised[,names(weights)])
+    numerator <- rowSums(sweep(facets,2,weights,"*"),na.rm=TRUE)
+    denominator <- as.numeric((!is.na(facets)) %*% weights)
+    value <- numerator/denominator
+    # Preserve the authors' primary-facet coverage: a domain is never inferred
+    # from interstitial facets alone. Add available interstitial information at
+    # half weight and normalize by the actual observed weights, without losing
+    # existing domain scores under planned missingness. No imputed item values.
+    value[is.na(revised[[domain]]) | denominator==0] <- NA_real_
+    corrected[[domain]] <- value
+  }
+  stopifnot(identical(is.na(as.matrix(corrected)),is.na(as.matrix(data_matrix))))
+  audit_0050[[paste0(sample,"_corrected")]] <- audit_compare_matrix("0050",matrix_id,corrected,
+    if(sample=="a")940 else 767,
+    paste("Approved 2026-11-13: all people retained; N=940/767 as reported, with 768 source rows in Study 3 recorded separately. Revised T2 facet means reconstructed with available original v0.2 items.",
+      "Domains retain the source primary-facet coverage, adding available interstitial facets at 0.5 and normalizing over observed weights. This documented incomplete-data convention differs from requiring all official constituent facets; no existing score coverage is lost.",
+      "Both samples and their 238 linked participants retained. Study 3 associations across T0/T1/T2 are retained as cross-sectional associations with staggered measurement, not repeated-wave matrices."),
+    names(source_hashes),"User decisions; original 00_data_preparation.R, 03_study3.R and raw T2 item key",
+    status="APPROVED_EXTRACTION",comparison="approved_extraction")
+  stopifnot(identical(audit_0050[[paste0(sample,"_corrected")]]$pair_n,
+    audit_0050[[paste0(sample,"_source")]]$pair_n))
 }
 summary_0050 <- dplyr::bind_rows(lapply(audit_0050,`[[`,"summary"))
 print(summary_0050[,c("matrix_id","comparison","changed_pairs","max_abs_delta","pair_n_min","pair_n_max","score_mismatch_facets")])
-if(!"--check-only" %in% args)audit_save_summary(summary_0050)
+if(!"--check-only" %in% args) {
+  source("R/codebook_workflow.R",local=TRUE)
+  source("R/extraction_helpers.R",local=TRUE)
+  source("R/workflow_io.R",local=TRUE)
+  source("R/workflow_results.R",local=TRUE)
+  previous <- readr::read_csv("data/3.meta_data/extraction/historical_audit.csv",show_col_types=FALSE)
+  first <- summary_0050[summary_0050$comparison=="approved_extraction",]
+  first$comparison <- "approved_integration_2026_11_13"
+  first$status <- "REVIEWED_BEFORE_AFTER"
+  first <- first[!first$matrix_id %in% previous$matrix_id[previous$comparison=="approved_integration_2026_11_13"],]
+  audit_save_summary(dplyr::bind_rows(summary_0050,first))
+  for(sample in c("a","b")) {
+    approved <- audit_0050[[paste0(sample,"_corrected")]]
+    individual_data <- approved$data_matrix
+    individual_data$age <- if(sample=="a")as.numeric(raw_a$age)else
+      rowMeans(raw_b[,c("age.x","age.y")],na.rm=TRUE)
+    individual_data$age[is.nan(individual_data$age)] <- NA_real_
+    checks <- extraction_check_matrix(approved$data_matrix,approved$candidate,approved$pair_n)
+    wf_compact_extraction("0050",paste0("0050",sample),individual_data,approved$candidate,
+      approved$pair_n,checks,reference_n=if(sample=="a")940 else 767)
+  }
+}

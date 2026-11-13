@@ -1,4 +1,4 @@
-# 0048: read-only historical audit. A normal run saves only the cumulative audit.
+# 0048: approved representative of the cohort also reported in 0013.
 # --check-only writes nothing. Original item scoring is unavailable locally.
 # Paper data/code: https://osf.io/bcgq7/. Historical retrieval date unknown.
 source("R/historical_audit.R")
@@ -83,12 +83,22 @@ stopifnot(all(overlap_delta[upper.tri(overlap_delta)]<1e-10))
 audit_0048 <- audit_compare_matrix("0048","0048a",data_matrix,897,
   note=paste("Released 897 rows; all 820 saved coefficients reproduced. Pair Ns 428-840, not 897 for every correlation. Supplied scores only; source selection/item scoring cannot be reconstructed.",
     "Complete overlap with 0013: all 897 Case IDs link, all 20 identically named scores and their missingness agree, and all 210 common correlations agree after neuroticism direction harmonization.",
-    "0013 Methods p.3 explicitly states that the same data were previously analyzed by Soto et al. Do not count common correlations as independent evidence. Matrix selection is pending user discussion; no exclusions or inclusion changes applied.",
+    "0013 Methods p.3 explicitly states that the same data were previously analyzed by Soto et al. User decision 2026-11-13: use 0048 as the quantitative representative; 0013 remains review-only and its matrix is preserved as an inactive historical artifact. Reference N=897 retained by explicit decision, with pair Ns documented.",
     "Released sex has 504 female, 387 male and six missing, whereas published demographic percentages differ; retain source values and flag provenance/version clarification. Age excluded from correlations."),
   sources=names(source_hashes),evidence="0048 PDF pp.3-5; 0013 Methods p.3; original Case-linked score files and stored matrices",
-  status="COMPLETE_SAMPLE_OVERLAP_REVIEW_REQUIRED")
+  status="APPROVED_COHORT_REPRESENTATIVE")
 audit_0048$summary$overlap_paper_id <- "0013"
 audit_0048$summary$overlap_linked_records <- length(link)
 audit_0048$summary$overlap_identical_correlations <- sum(upper.tri(overlap_delta))
 print(audit_0048$summary[,c("matrix_id","changed_pairs","pair_n_min","pair_n_max","overlap_identical_correlations")])
-if(!"--check-only" %in% args)audit_save_summary(audit_0048$summary)
+if(!"--check-only" %in% args) {
+  source("R/codebook_workflow.R",local=TRUE)
+  source("R/extraction_helpers.R",local=TRUE)
+  source("R/workflow_io.R",local=TRUE)
+  source("R/workflow_results.R",local=TRUE)
+  audit_save_summary(audit_0048$summary)
+  individual_data <- data_matrix
+  individual_data$age <- as.numeric(raw$Age)
+  checks <- extraction_check_matrix(data_matrix,audit_0048$candidate,audit_0048$pair_n)
+  wf_compact_extraction("0048","0048a",individual_data,audit_0048$candidate,audit_0048$pair_n,checks)
+}

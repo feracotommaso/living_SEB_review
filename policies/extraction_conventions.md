@@ -150,6 +150,11 @@ matrices directly into `data/3.meta_data/matrices/`, pair-specific Ns into
 CSV matrices include row labels; XLSX matrices preserve the square-column layout
 consumed by historical analysis. Keep participant identifiers out of these exports.
 
+If the documented reference N differs from released rows, pass `reference_n`
+explicitly to `wf_compact_extraction()` (as in 0050b). The technical summary keeps
+`input_rows` separately; pair Ns must not exceed reference N. Do not delete
+records to force agreement with the paper's declared N.
+
 Run `anteprima_risultati()` to compare all current results with the saved datasets.
 `aggiorna_risultati()` writes the final CSV/XLSX pairs together. Corrections to
 existing correlations or Ns require a stated scientific reason after the readable

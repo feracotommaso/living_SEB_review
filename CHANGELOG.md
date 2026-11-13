@@ -1,3 +1,12 @@
+## 2026-11-13 — Integrate cohort selection and original German scoring
+
+- Kept 0048 as the quantitative representative of the identical 0013 cohort, with reference N=897 and pair Ns 428-840. 0013 remains in the review; its matrix and all old manual source files are preserved. Registered the exact inactivity decision in the existing exclusions table and kept numerical protection for every active historical matrix. Active totals are now 30 quantitative papers/38 matrices and 51 review papers.
+- Recovered 0049 bf_emotionalvolatility from the existing BFI item scoring: 24 added correlations, no changes to the previous 276. Kept other BFI domains and self-rated performances for the separate coding expansion.
+- Preserved the user-supplied german.zip and 89 extracted original files privately. Its Rdata is identical to the historical input. Static source-code review explains all eight T2 facet discrepancies: a second scale_builder assignment discards revised _prm scores and inherits initial-key scores. Recomputed intended revised v0.2 available-item means from original T2 responses; no imputation.
+- Retained the source primary-facet coverage for 0050 domains, adding available interstitial half-weight facets and normalizing observed weights. Changed 175/702 correlations with every previous pair N and missingness pattern unchanged. Retained all participants, reference Ns 940/767, all 768 Study 3 source rows, both samples and staggered cross-sectional associations. The released new_id bridge confirms 238 shared participants; dependence is documented.
+- Updated coding, provenance/evidence, matrices, private coded individual CSVs, pair Ns, metadata/review and search history through the R workflow. The compact exporter now distinguishes explicit reference N from input_rows without filtering records.
+- Validation: complete R suite and October regression (14/14) passed. Verified 24 added 0049 correlations and 175/702 changed 0050 correlations; every other active matrix value, all original files, the inactive 0013 matrix, old manual scripts and report prose are preserved. The five updated coding notes were visually checked.
+
 ## 2026-11-13 — Extend historical audit to 0048, 0049 and 0050
 
 - Reproduced all 3629 stored correlations across four matrices without changing scientific outputs. Three new article entry points update only the existing cumulative audit; check-only mode writes nothing.

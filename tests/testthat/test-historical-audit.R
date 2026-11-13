@@ -115,19 +115,23 @@ test_that('fourth batch detects sample duplication and scoring issues without ch
     runs[['0049']]$audit_0049$source$summary,
     runs[['0050']]$audit_0050$a_source$summary,runs[['0050']]$audit_0050$b_source$summary)
   expect_equal(sum(rows$compared_pairs),3629)
-  expect_true(all(rows$changed_pairs==0))
+  expect_equal(rows$changed_pairs,c(0,0,175,702))
+  expect_true(all(vapply(runs[['0050']]$audit_0050[c('a_corrected','b_corrected')],
+    function(x)x$summary$changed_pairs==0,logical(1))))
   expect_equal(runs[['0048']]$audit_0048$summary$overlap_linked_records,897)
   expect_equal(runs[['0048']]$audit_0048$summary$overlap_identical_correlations,210)
-  expect_equal(runs[['0049']]$audit_0049$volatility$summary$added_variables,'bf_emotionalvolatility')
+  expect_equal(runs[['0049']]$audit_0049$volatility$summary$added_variables,'')
   expect_equal(ncol(runs[['0049']]$volatility_candidate),25)
   expect_equal(runs[['0049']]$audit_0049$volatility$summary$published_pairs_outside_rounding,0)
   expect_equal(sum(runs[['0050']]$score_checks$a$changed_values),0)
   expect_setequal(runs[['0050']]$score_checks$b$facet[runs[['0050']]$score_checks$b$changed_values>0],
     c('persuasiveskill','expressiveskill','organizationalskill','detailmanagement',
       'responsibilitymanagement','abstractthinkingskill','creativeskill','selfreflectionskill'))
-  expect_equal(runs[['0050']]$audit_0050$a_weights$summary$changed_pairs,175)
-  expect_equal(runs[['0050']]$audit_0050$b_weights$summary$changed_pairs,290)
   expect_equal(runs[['0050']]$audit_0050$a_weights$summary$pair_n_min,482)
+  expect_equal(runs[['0050']]$audit_0050$a_corrected$summary$pair_n_min,631)
+  expect_equal(runs[['0050']]$overlap_records,238)
+  expect_identical(runs[['0050']]$audit_0050$a_corrected$pair_n,runs[['0050']]$audit_0050$a_source$pair_n)
+  expect_identical(runs[['0050']]$audit_0050$b_corrected$pair_n,runs[['0050']]$audit_0050$b_source$pair_n)
   expect_equal(runs[['0050']]$audit_0050$b_source$summary$input_rows,768)
   expect_equal(runs[['0050']]$audit_0050$b_source$summary$reference_n,767)
 })

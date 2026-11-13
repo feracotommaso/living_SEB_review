@@ -60,7 +60,7 @@ test_that('acquisition history reconciles article counts and records external in
   x <- report_search_history()
   totals <- colSums(x[-1])
   expect_equal(unname(totals[c('identified', 'duplicates_removed', 'screened', 'full_text_assessed', 'included', 'meta')]),
-    c(614, 229, 385, 149, 51, 31))
+    c(614, 229, 385, 149, 51, 30))
   expect_equal(x$external[x$batch_id == '2026-11-external-01'], 1)
   expect_true(all(x$identified == x$duplicates_removed + x$screened))
   expect_true(all(x$screened == x$abstract_excluded + x$full_text_assessed))

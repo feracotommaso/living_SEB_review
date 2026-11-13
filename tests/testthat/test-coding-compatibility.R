@@ -54,7 +54,10 @@ test_that("0104a is an explicit inactive artifact rather than a quantitative ID"
   expect_identical(row$status, "excluded_by_recorded_decision")
   expect_identical(row$paper_id, "0104")
   expect_identical(basic$final_decision[basic$paper_id == "0104"], "review")
-  expect_equal(sum(inventory$status == "included"), 37L)
+  expect_equal(sum(inventory$status == "included"), 36L)
+  reused <- inventory[inventory$matrix_id=="0013a",]
+  expect_identical(reused$status,"excluded_by_recorded_decision")
+  expect_identical(basic$final_decision[basic$paper_id=="0013"],"review")
   expect_setequal(inventory$matrix_id[inventory$status == "missing_matrix_file"], c("0050", "0053a", "0053b"))
   invalid <- basic; invalid$final_decision[invalid$paper_id == "0104"] <- "both"
   expect_error(coding_matrix_inventory(invalid, paths), "conflicts")

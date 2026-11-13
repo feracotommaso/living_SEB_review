@@ -83,9 +83,10 @@ manuale; gli script storici non sono modificati.
 
 0013: le correlazioni esistenti usano già tutte le osservazioni disponibili per
 coppia, con N 573–840. I 897 record del file non sono l'N di nessuna correlazione.
-N di riferimento 840 è mantenuto e la nota approvata è nella codifica generale,
-nei metadata e nella review. Chiedere agli autori come individuare il campione
-analitico. Nessuna selezione arbitraria dei record o modifica delle correlazioni.
+N di riferimento 840 è mantenuto nello storico e nella review. Dopo la decisione
+successiva sul campione condiviso, 0013 non entra più nei metadata attivi: il
+rappresentante quantitativo è 0048. La discrepanza storica sul campione resta
+documentata, senza selezioni arbitrarie dei record o modifiche alla matrice 0013a.
 
 ## Secondo gruppo storico: 0026, 0030 e 0034
 
@@ -182,67 +183,86 @@ proposte ancora aperti sono distinti dalla riproduzione numerica delle matrici.
 
 ## Quarto gruppo storico: 0048, 0049 e 0050
 
-Verifiche in sola lettura degli output scientifici: quattro matrici e tutte le
-3629 correlazioni storiche riprodotte. Una normale esecuzione aggiorna soltanto
-il riepilogo unico; `--check-only` non scrive nulla. Nessuna proposta di questo
-gruppo è integrata in matrici, codifica o metadata.
+La verifica iniziale ha riprodotto tutte le 3629 correlazioni di quattro matrici.
+Dopo le decisioni del 13 novembre, i tre script esportano le estrazioni approvate,
+i dati individuali privati, gli N per coppia e i confronti nel riepilogo unico.
+`--check-only` non scrive nulla. Gli originali e gli script manuali sono conservati.
 
-| Matrice | N di riferimento | N per coppia | Punto da discutere |
+| Matrice | N di riferimento | N per coppia | Estrazione corrente |
 |---|---:|---:|---|
-| 0048a | 897 | 428–840 | Stesso campione di 0013, con una matrice più ampia. |
-| 0049a | 137 | 128–136 | Omissione di `bf_emotionalvolatility` per un nome non registrato. |
-| 0050a | 940 | 631–791 | Domini costruiti solo sulle faccette principali; dipendenza con Study 3 dichiarata dal paper. |
-| 0050b | 767 | 469–755 | Scoring di otto faccette da chiarire; campione e misure distribuiti su più occasioni. |
+| 0048a | 897 | 428–840 | Rappresentante quantitativo del campione condiviso con 0013. |
+| 0049a | 137 | 128–136 | Recuperata `bf_emotionalvolatility`: 24 correlazioni aggiunte. |
+| 0050a | 940 | 631–791 | Domini ponderati sulle faccette disponibili, senza perdita di copertura. |
+| 0050b | 767 | 469–755 | Chiave rivista delle faccette e domini aggiornati; tutte le 768 righe conservate. |
 
-**0013/0048:** i 897 identificativi Case coincidono, come tutti i 20 punteggi
-con nomi identici e la loro mancanza di dati. Dopo aver uniformato la direzione
-di neuroticismo, anche tutte le 210 correlazioni comuni coincidono. Questi
-coefficienti non costituiscono evidenze indipendenti. Anche i metodi di 0013
-(p.3) dichiarano che i dati erano già stati analizzati da Soto e colleghi.
-Proposta: usare la matrice
-più ampia di 0048 per le analisi, conservando 0013 come storico e mantenendo
-entrambi gli articoli nella review. L'utente ha chiesto di discutere prima:
-**nessun cambiamento dell'inclusione è applicato**. Resta da chiarire l'N di
-riferimento (840 contro 897), che non coincide con l'N di ogni correlazione.
-I dati 0048 hanno 504 donne, 387 uomini e sei mancanti: le percentuali del paper
-sono diverse. La versione e la codifica demografica originarie richiedono verifica;
-non sono ricodificati dati sulla sola base delle percentuali pubblicate.
+**0013/0048:** tutti i 897 identificativi Case, i 20 punteggi con nomi identici
+e la loro mancanza di dati coincidono. Uniformata la direzione di neuroticismo,
+tutte le 210 correlazioni comuni coincidono. Anche 0013 (metodi, p.3) dichiara
+di rianalizzare gli stessi dati. Decisione approvata: **0013 solo nella review**,
+0048 rappresentante quantitativo con N=897 dichiarato dagli autori e Ns per
+coppia in nota. La matrice 0013a rimane nella cartella comune come storico
+inattivo, registrato in `config/coding/matrix_exclusions.csv`. Il contratto
+numerico continua a proteggere tutte le matrici attive. I dati 0048 contengono
+504 donne, 387 uomini e sei mancanti, con percentuali diverse da quelle del
+paper: si mantengono i valori della fonte, senza ricodificarli dalle percentuali.
 
-**0049:** ricostruite sei faccette BESSI, tre compositi a due faccette, le scale
-BFI focali e le medie dei giudici. Il vecchio nome `emotionalvolatility` viene
-scartato dal codebook; il nome registrato è `bf_emotionalvolatility`. Recuperarlo
-aggiungerebbe 24 correlazioni senza modificare le 276 attuali. Nove coefficienti
-di riferimento osservati, letti nelle Tabelle 3–5, coincidono entro l'arrotondamento,
-inclusi quelli della faccetta omessa. L'età è rimossa dal file per anonimizzazione.
-Gli altri item BFI disponibili e le autovalutazioni della performance non sono
-aggiunti: appartengono all'ampliamento della codifica da progettare separatamente.
+**0049:** lo script calcolava la volatilità emotiva da BFI14_R invertito e BFI29,
+ma la chiamava `emotionalvolatility`. La selezione del codebook accetta
+`bf_emotionalvolatility`: il nome errato scartava la variabile già calcolata.
+La correzione approvata aggiunge 24 correlazioni senza cambiare le 276 precedenti.
+Nove coefficienti osservati di riferimento nelle Tabelle 3–5 coincidono entro
+l'arrotondamento, inclusi quelli della faccetta omessa. I tre compositi SEB sono
+medie di due faccette ciascuno; le performance osservate rimangono distinte.
+L'età è stata rimossa dalla fonte per anonimizzazione. Gli altri item BFI e le
+autovalutazioni della performance restano per l'ampliamento futuro.
 
-**0050:** tutti i 32 punteggi di faccetta T4 sono ricostruibili dagli item
-rilasciati. Per Study 3, 24 faccette coincidono e otto no: dettaglio,
-organizzazione, responsabilità, pensiero astratto, creatività, espressività,
-persuasione e autoriflessione. Sono 2954 valori diversi, con scarto massimo 1.5;
-la corrispondenza fra item rilasciati, traduzioni riviste e punteggi forniti va
-chiarita. I punteggi forniti restano conservati. Le 20 scale BFI coincidono con
-le medie dei valori già ricodificati; i totali cognitivi sono verificati nei
-607 casi ammessi dagli autori. Non si reintegrano i 120 casi con diverso
-protocollo temporale. Lo scoring delle risposte originarie BFI non è ricostruito.
+**0050 — originali:** l'archivio completo fornito dall'utente è conservato in
+`data/3.meta_data/open_data/raw/0050/german/german.zip`, con 89 file di origine
+estratti in `files/german/`. Le cache IDE rimangono nell'archivio senza copie
+estratte. Tutto è locale e Git-ignorato. L'Rdata dell'archivio è identico al
+file storico. Ricezione: 13 novembre 2026; download originario sconosciuto.
+Gli script degli autori sono ispezionati senza eseguirli integralmente.
 
-I vecchi domini 0050 usano nove/quattro faccette principali con regola completa.
-La sensibilità con pesi ufficiali 1:0.5 e tutte le faccette costituenti richieste
-cambia 175 e 290 correlazioni (scarti massimi circa 0.121 e 0.105). In 0050a,
-gli N minimi scendono da 631 a 482: il disegno con mancanza pianificata richiede
-una scelta esplicita sulla copertura prima di esportare nuovi domini.
-0050b ha 768 righe contro N=767 dichiarato; solo 766 righe hanno almeno due
-punteggi selezionati. Nessuna selezione arbitraria è applicata.
+**0050 — faccette:** tutti i punteggi T4 sono ricostruibili. Le otto differenze
+T2 sono spiegate da un errore nello script originale: dopo aver calcolato le
+medie `_prm` con la chiave rivista v0.2, la successiva assegnazione con
+`scale_builder(data = adults_teens_t2, suffix = "")` riparte dall'oggetto
+precedente, ereditando le vecchie medie `_prm`. I punteggi forniti coincidono
+esattamente con la chiave iniziale, mentre gli item finali sono quelli rivisti.
+L'estrazione corrente ricostruisce la v0.2 dagli item originali non rinominati:
+medie degli item disponibili, tutto mancante resta mancante, senza imputazione.
+Corrette otto faccette (2954 valori; scarto massimo 1.5). Le 20 scale BFI
+riproducono le medie dei valori già ricodificati; non si invertono nuovamente.
+I totali cognitivi coincidono nei 607 casi ammessi: i 120 casi con diverso
+protocollo temporale restano esclusi dai punteggi cognitivi, non dal dataset.
 
-Il paper (p.9) dichiara 238 adulti ricontattati, 203 con dati validi a T2 e T4.
-L'Rdata contiene 203 record appaiati, ma non una corrispondenza diretta degli
-identificativi con il campione T4 esportato. Non si presume indipendenza sulla
-base dei diversi identificativi e non si escludono record senza un collegamento
-verificato. Study 3 combina BESSI T2, cognizione T1 e item BFI suddivisi fra T0/T2:
-questa separazione temporale è distinta dall'inclusione di retest come nuove matrici.
+**0050 — domini e mancanza pianificata:** si mantiene la copertura delle
+faccette principali usata dagli autori (nove per self-management, quattro per
+gli altri domini). Si aggiungono le faccette interstiziali disponibili con peso
+0.5 e si divide per la somma dei pesi osservati. Un dominio non viene dedotto
+dalle sole faccette interstiziali. Con tutti i costituenti presenti i pesi sono
+quelli ufficiali; sui dati incompleti questa è una convenzione esplicita di
+riproporzionamento. La precedente alternativa che richiedeva tutti i costituenti
+rimane solo come confronto: avrebbe ridotto l'N minimo di 0050a a 482.
+La soluzione esportata mantiene esattamente la mancanza di dati e tutti gli N
+per coppia precedenti, modificando 175 e 702 correlazioni. La sola correzione
+della chiave T2, senza nuovi domini, ne modifica 605.
 
-Conteggio aggiornato: 13 articoli storici e 17 matrici passati in verifica;
-includendo 0145 e 0150, 15 articoli su 31 e 19 matrici su 39. Restano 16 articoli
-e 20 matrici. Sono conteggi di articoli/matrici esaminati, non di campioni
-indipendenti né di tutte le questioni scientifiche già risolte.
+**0050 — campioni e tempi:** il campo `new_id` del file rilasciato, documentato
+da MatchedIDs.xlsx, collega 238 partecipanti T4 a Study 3; sono presenti 203
+record appaiati per il retest. Per decisione esplicita si conservano entrambe
+le matrici e tutte le persone, con nota sulla dipendenza. Si conserva N=767
+dichiarato per 0050b, distinguendolo dalle 768 righe rilasciate (766 con almeno
+due punteggi selezionati). L'export registra `input_rows` separatamente da N.
+Si includono le associazioni con BESSI T2, cognizione T1 e BFI suddiviso T0/T2:
+codifica `cross`, con rilevazioni sfalsate; nessun retest è contato come nuova
+matrice indipendente. Le nostre correlazioni restano Pearson pairwise tra
+punteggi osservati, non i coefficienti PIM/FIML degli autori.
+
+La codifica generale, metadata, review e registro delle ricerche sono aggiornati
+tramite `workflow.R`. Le revisioni numeriche esatte sono nel ledger esistente;
+il primo confronto approvato resta come `approved_integration_2026_11_13`.
+Il dataset attivo ha 30 articoli quantitativi e 38 matrici, con 51 articoli nella
+review. Dei quantitativi attivi ne sono stati esaminati 14 (18 matrici);
+restano 16 articoli e 20 matrici. Anche 0013 è stato esaminato, ma non è più
+conteggiato fra gli articoli quantitativi attivi.

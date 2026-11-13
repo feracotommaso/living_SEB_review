@@ -1,5 +1,5 @@
-# 0049: read-only historical audit; no scientific outputs are promoted.
-# A normal run saves only historical_audit.csv. --check-only writes nothing.
+# 0049: approved recovery of bf_emotionalvolatility; retain the old comparison.
+# A normal run exports the reviewed matrix. --check-only writes nothing.
 # Paper data/code: https://osf.io/74qnu/. Historical retrieval date unknown.
 source("R/historical_audit.R")
 args <- commandArgs(trailingOnly=TRUE)
@@ -65,13 +65,13 @@ note <- paste("N=137 retained, pair Ns=128-136. BFI and six BESSI facet scores i
 audit_0049 <- list()
 audit_0049$source <- audit_compare_matrix("0049","0049a",data_matrix,137,note,
   names(source_hashes),"0049 PDF pp.5-8 and author scoring syntax",
-  status="ITEM_SCORES_AND_MATRIX_REPRODUCED")
+  status="HISTORICAL_SCORING_COMPARISON")
 volatility_candidate <- data_matrix
 volatility_candidate$bf_emotionalvolatility <- data_scored$bf_emotionalvolatility
 audit_0049$volatility <- audit_compare_matrix("0049","0049a",volatility_candidate,137,
-  paste(note,"Proposal only: recover bf_emotionalvolatility from reverse-keyed BFI14_R and BFI29; adds 24 correlations without changing old coefficients. Not exported."),
+  paste(note,"User-approved recovery of bf_emotionalvolatility from reverse-keyed BFI14_R and BFI29: 24 correlations added, old coefficients unchanged."),
   names(source_hashes),"Author BFI key; PDF Table 5 p.7; exact variable codebook name",
-  status="VARIABLE_ADDITION_REVIEW_REQUIRED",comparison="emotional_volatility_augmentation")
+  status="APPROVED_EXTRACTION",comparison="emotional_volatility_augmentation")
 # Independently read Table 5: selected observed-score references, including the
 # omitted facet. The latent/partial-correlation issue of other papers does not apply.
 published <- data.frame(
@@ -86,4 +86,19 @@ audit_0049$volatility$summary$published_pairs_compared <- nrow(published)
 audit_0049$volatility$summary$published_pairs_outside_rounding <- sum(abs(calculated-published$r)>.00500001)
 summary_0049 <- dplyr::bind_rows(lapply(audit_0049,`[[`,"summary"))
 print(summary_0049[,c("matrix_id","comparison","changed_pairs","added_variables","pair_n_min","pair_n_max")])
-if(!"--check-only" %in% args)audit_save_summary(summary_0049)
+data_matrix <- volatility_candidate
+approved <- audit_0049$volatility
+if(!"--check-only" %in% args) {
+  source("R/codebook_workflow.R",local=TRUE)
+  source("R/extraction_helpers.R",local=TRUE)
+  source("R/workflow_io.R",local=TRUE)
+  source("R/workflow_results.R",local=TRUE)
+  previous <- readr::read_csv("data/3.meta_data/extraction/historical_audit.csv",show_col_types=FALSE)
+  first <- approved$summary
+  first$comparison <- "approved_integration_2026_11_13"
+  first$status <- "REVIEWED_BEFORE_AFTER"
+  first <- first[!first$matrix_id %in% previous$matrix_id[previous$comparison==first$comparison],]
+  audit_save_summary(dplyr::bind_rows(summary_0049,first))
+  checks <- extraction_check_matrix(data_matrix,approved$candidate,approved$pair_n)
+  wf_compact_extraction("0049","0049a",data_matrix,approved$candidate,approved$pair_n,checks)
+}

@@ -219,9 +219,14 @@ Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per
 
 `estrai_articolo("0026")` e `estrai_articolo("0030")` sono verifiche
 storiche: aggiornano solo il riepilogo dell'audit.
-Anche `estrai_articolo("0048")`, `estrai_articolo("0049")` e
-`estrai_articolo("0050")` sono verifiche in sola lettura degli output scientifici:
-registrano sovrapposizioni e proposte nel riepilogo, senza integrarle.
+`estrai_articolo("0048")`, `estrai_articolo("0049")` e
+`estrai_articolo("0050")` esportano ora le estrazioni approvate. 0048 rappresenta
+il campione condiviso con 0013: quest'ultimo resta solo nella review e la sua
+matrice è conservata come storico inattivo. 0049 recupera `bf_emotionalvolatility`.
+0050 ricostruisce le medie riviste dagli item originali e usa domini ponderati
+sulle faccette disponibili, conservando la copertura delle faccette principali.
+Tutte le persone sono mantenute; in 0050b l'N dichiarato 767 è distinto dalle
+768 righe del file. Il codice esplicita la regola e gli N per coppia.
 `estrai_articolo("0035")`, `estrai_articolo("0043")` e
 `estrai_articolo("0045")` esportano le correzioni approvate: sesso, istruzione
 dei genitori, faccetta di consistenza e ore continue di volontariato. Conservano
@@ -235,7 +240,7 @@ precedente. Per 0030 la decisione è mantenere entrambi i campioni e gli N
 invariati, annotando la sovrapposizione. Il dettaglio è in
 `scripts/extraction/README.md`.
 
-La migrazione è stata confrontata con il checkpoint: 39 campioni e 51 articoli con gli stessi valori. La prova 0150 ha riprodotto gli stessi CSV individuali e della matrice: N=30719, 38 variabili, N per coppia 29244–30719, dopo l'esclusione dei 596 partecipanti sovrapposti. La matrice conserva il piccolo autovalore negativo già documentato.
+La migrazione iniziale è stata confrontata con il checkpoint di 39 campioni e 51 articoli, con gli stessi valori. Dopo la decisione del 13 novembre di rappresentare una sola volta il campione 0013/0048, gli output correnti hanno 38 matrici, 30 articoli quantitativi e 51 articoli nella review. La prova 0150 ha riprodotto gli stessi CSV individuali e della matrice: N=30719, 38 variabili, N per coppia 29244–30719, dopo l'esclusione dei 596 partecipanti sovrapposti. La matrice conserva il piccolo autovalore negativo già documentato.
 
 Restano visibili le lacune storiche 0050, 0053a e 0053b; 0104a resta esclusa secondo la decisione già registrata. Questi casi non sono stati ricodificati durante la semplificazione.
 

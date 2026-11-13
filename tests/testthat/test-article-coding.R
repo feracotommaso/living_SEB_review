@@ -91,7 +91,7 @@ test_that("maintenance preserves scientific values except registered exact revis
   after <- coding_numeric_contract(historical)
   expect_equal(as.data.frame(before), after, ignore_attr = TRUE)
   expect_silent(coding_validate_historical(metadata))
-  expect_equal(nrow(historical), 37L)
+  expect_equal(nrow(historical), 36L)
   expect_equal(sum(metadata$matrix_id == "0145a"), 1L)
   expect_false(any(grepl("nomoligicalnet", metadata$review_topics, fixed = TRUE)))
   codebook <- coding_read_csv("data/topics_codebook.csv")

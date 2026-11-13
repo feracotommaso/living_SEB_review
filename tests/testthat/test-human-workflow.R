@@ -63,7 +63,7 @@ test_that("invalid edits and stale Excel cannot overwrite canonical coding", {
 
 test_that("simplified preview preserves every current scientific value", {
   result <- wf_build_results()
-  expect_equal(nrow(result$metadata), 39L)
+  expect_equal(nrow(result$metadata), 38L)
   expect_equal(nrow(result$review), 51L)
   expect_equal(nrow(wf_diff(wf_read("data/3.meta_data/meta_data/metadata.csv"), result$metadata, "matrix_id", "metadata")), 0L)
   expect_equal(nrow(wf_diff(wf_read("data/3.meta_data/review_data/review_data.csv"), result$review, "paper_id", "review")), 0L)
@@ -93,6 +93,27 @@ test_that("review membership preserves history but respects explicit reassessmen
   expect_false("0107" %in% wf_current(records)$review$paper_id)
   records$final_decision[records$paper_id == "0107"] <- "both"
   expect_true("0107" %in% wf_current(records)$review$paper_id)
+})
+
+test_that("reference N can differ from retained individual rows without filtering", {
+  source(here::here("R/extraction_helpers.R"))
+  root<-tempfile("reference_n_");dir.create(root)
+  for(path in c("data/matrix_codebook.csv","config/coding/variable_suffixes.csv")) {
+    dest<-file.path(root,path);dir.create(dirname(dest),recursive=TRUE,showWarnings=FALSE)
+    stopifnot(file.copy(here::here(path),dest))
+  }
+  withr::local_dir(root)
+  x<-data.frame(selfmanagement=c(1:4,NA_real_),cooperation=c(4,1,2,3,9))
+  m<-cor(x,use="pairwise.complete.obs")
+  pn<-crossprod(!is.na(as.matrix(x)))
+  checks<-extraction_check_matrix(x,m,pn)
+  wf_compact_extraction("0099","0099a",x,m,pn,checks,reference_n=4)
+  entry<-wf_read("data/3.meta_data/extraction/summary.csv")
+  expect_equal(entry$n,"4")
+  expect_equal(entry$input_rows,"5")
+  expect_equal(nrow(wf_read("data/3.meta_data/open_data/individual_data/0099a.csv")),5)
+  expect_error(wf_compact_extraction("0099","0099a",x,m,pn,checks,reference_n=3),"incompatibile")
+  expect_error(wf_compact_extraction("0099","0099a",x,m,pn,checks,reference_n=6),"incompatibile")
 })
 
 test_that("adding a source to an initially empty sheet is an unsaved edit", {

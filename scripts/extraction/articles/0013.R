@@ -53,7 +53,9 @@ data_matrix <- data_scored[, unname(variable_map), drop=FALSE]
 audit_0013 <- audit_compare_matrix("0013","0013a",data_matrix,840,
   note="Supplied score-level data: 897 rows, article reference N=840. All 897 have at least one score; 896 have at least two; 475 are complete across the 21 variables. Big Five scores available for 840 people, BESSI domains for 838; pair Ns 573-840. Existing pairwise correlations already use all available released observations and reproduce the stored matrix. Keep reference N=840 pending cohort clarification; 897 is a file-row count, not an N achieved by any correlation. No source eligibility flags; do not force N by filtering. Original selection and item scoring not independently reconstructed. Age and sex absent. Author clarification needed to identify the intended analytic cohort.",
   sources=names(source_hashes), evidence="0013 PDF pp.3-5; downloaded author analysis opencode0013.R loads scores without an explicit selection step",
-  status="COHORT_REVIEW_REQUIRED")
+  status="REVIEW_ONLY_COHORT_REPRESENTED_BY_0048")
+audit_0013$summary$note <- paste(audit_0013$summary$note,
+  "User decision 2026-11-13: 0013 remains review-only; 0048 is the richer quantitative representative. This matrix is preserved as an inactive historical artifact. Its historical N does not enter current meta-analytic weighting.")
 print(audit_0013$summary[,c("matrix_id","input_rows","changed_pairs","max_abs_delta","pair_n_min","pair_n_max")])
 # 8. Only the aggregate audit is versioned. No matrices/individuals are exported.
 if (!"--check-only" %in% args) audit_save_summary(audit_0013$summary)

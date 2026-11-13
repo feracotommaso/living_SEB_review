@@ -1,2 +1,3 @@
 matrix_id,paper_id,legacy_meta_exclusion,source_file,reason
 0104a,0104,dataQuality,data/2.full_abstracting/26_05_01_full_decisions.xlsx,Historical report is review-only with quantitative exclusion dataQuality; retain prepared matrix without analytical inclusion
+0013a,0013,sampleOverlap,data/3.meta_data/coding/evidence.csv,User decision 2026-11-13: same cohort and 210 common correlations as 0048; use richer 0048 in analyses and retain 0013 in review only with its historical matrix preserved
