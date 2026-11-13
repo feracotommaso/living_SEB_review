@@ -1,3 +1,9 @@
+## 2026-11-13 — Integrate approved 0035, 0043 and 0045 revisions
+
+- Recovered sex in 0035a, parentEducation in 0043a and capacityforconsistency in 0045a: 40 additional correlations. Replaced the 0045 ordinal volunteering group with observed total hours: eight existing correlations changed. Every participant, reference N and all other matrix files remain unchanged.
+- Updated the general workbook, source/evidence records, common matrix CSV/XLSX pairs, pair Ns, private coded individual CSVs and final metadata/review through workflow.R. The original reviewed before/after remains in the single cumulative audit; exact transitions are registered for compatibility with the retained manual builder.
+- Validation: full R suite and October regression (14/14) passed. The three new preparation routes reproduce all 321 saved correlations; check-only mode preserves scientific files. Coding notes were visually verified. Historical scripts, originals and report prose are preserved.
+
 ## 2026-11-13 — Verify historical articles 0035, 0043 and 0045
 
 - Added three read-only article audits and seven rows to the existing aggregate report. Reproduced all 281 coefficients in three stored matrices, without changing scientific outputs, Ns, raw originals or historical code.

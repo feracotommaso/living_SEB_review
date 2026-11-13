@@ -1,5 +1,5 @@
-# 0045: historical verification only. No scientific outputs are promoted.
-# A normal run updates only extraction/historical_audit.csv.
+# 0045: approved historical correction; the original comparison stays visible.
+# A normal run exports the reviewed extraction and updates the cumulative audit.
 # --check-only writes nothing. Run from the repository root.
 source("R/historical_audit.R")
 args <- commandArgs(trailingOnly=TRUE)
@@ -60,4 +60,35 @@ audit_0045$hours <- audit_compare_matrix("0045","0045a",hours_candidate,248,
   status="OUTCOME_METRIC_REVIEW_REQUIRED",comparison="continuous_hours_sensitivity")
 summary_0045 <- dplyr::bind_rows(lapply(audit_0045,`[[`,"summary"))
 print(summary_0045[,c("matrix_id","comparison","changed_pairs","max_abs_delta","added_variables","pair_n_min","pair_n_max")])
-if(!"--check-only" %in% args)audit_save_summary(summary_0045)
+combined_data <- facet_candidate
+combined_data$volunteering <- raw$hours.total
+audit_0045$combined <- audit_compare_matrix("0045","0045a",combined_data,248,
+  note=paste(note,"User approval 2026-11-13: include capacityforconsistency and use continuous hours.total for volunteering, preserving every participant and the available-item mean rule."),
+  sources=names(source_hashes),evidence="PDF Table 3 p.7, item appendix p.14 and volunteering measure p.6; original hours.total",
+  status="APPROVED_EXTRACTION",comparison="approved_extraction")
+
+# 8. Approved 2026-11-13. Export only the reviewed extraction; keep the original
+# mapping above visible for comparison. --check-only never changes any files.
+data_matrix <- combined_data
+approved <- audit_0045$combined
+approved$summary$status <- "APPROVED_EXTRACTION"
+approved$summary$comparison <- "approved_extraction"
+approved$summary$note <- "Include all eight measured BESSI facets, including capacityforconsistency, and use observed continuous hours.total for volunteering. Historical outcome was the ordinal hour_group (session benchmarks 40 summer/20 fall). Preserve available-item means, N=248 and pair Ns=236-242; age kept only in individuals. Approved by user 2026-11-13. A normal run exports this extraction; --check-only never writes."
+summary_0045 <- dplyr::bind_rows(summary_0045[summary_0045$comparison!="approved_extraction",],approved$summary)
+if(!"--check-only" %in% args) {
+  source("R/codebook_workflow.R",local=TRUE)
+  source("R/extraction_helpers.R",local=TRUE)
+  source("R/workflow_io.R",local=TRUE)
+  source("R/workflow_results.R",local=TRUE)
+  path <- "data/3.meta_data/extraction/historical_audit.csv"
+  previous <- readr::read_csv(path,show_col_types=FALSE)
+  first <- approved$summary
+  first$comparison <- "approved_integration_2026_11_13"
+  first$status <- "REVIEWED_BEFORE_AFTER"
+  first <- first[!first$matrix_id %in% previous$matrix_id[previous$comparison==first$comparison],]
+  audit_save_summary(dplyr::bind_rows(summary_0045,first))
+  individual_data <- data_matrix
+  individual_data$age <- as.numeric(raw$age)
+  checks <- extraction_check_matrix(data_matrix,approved$candidate,approved$pair_n)
+  wf_compact_extraction("0045","0045a",individual_data,approved$candidate,approved$pair_n,checks)
+}

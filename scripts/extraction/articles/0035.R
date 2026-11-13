@@ -1,5 +1,5 @@
-# 0035: historical verification only. No scientific outputs are promoted.
-# A normal run updates only extraction/historical_audit.csv.
+# 0035: approved historical correction; the original comparison stays visible.
+# A normal run exports the reviewed extraction and updates the cumulative audit.
 # --check-only writes nothing. Run from the repository root.
 source("R/historical_audit.R")
 args <- commandArgs(trailingOnly=TRUE)
@@ -84,4 +84,28 @@ audit_0035$sex <- audit_compare_matrix("0035","0035a",sex_candidate,642,
   status="VARIABLE_ADDITION_REVIEW_REQUIRED",comparison="sex_augmentation")
 summary_0035 <- dplyr::bind_rows(lapply(audit_0035,`[[`,"summary"))
 print(summary_0035[,c("matrix_id","comparison","changed_pairs","added_variables","pair_n_min","pair_n_max")])
-if(!"--check-only" %in% args)audit_save_summary(summary_0035)
+# 8. Approved 2026-11-13. Export only the reviewed extraction; keep the original
+# mapping above visible for comparison. --check-only never changes any files.
+data_matrix <- sex_candidate
+approved <- audit_0035$sex
+approved$summary$status <- "APPROVED_EXTRACTION"
+approved$summary$comparison <- "approved_extraction"
+approved$summary$note <- "Include GENDER as sex (0 male, 1 female; 468 females, 159 males, 15 missing). Five BESSI facet and BFI-44 scores independently verified to supplied precision; retain existing coefficients and N=642, with pair Ns=469-627. Available-item means retained and no exclusions applied. Approved by user 2026-11-13. A normal run exports this extraction; --check-only never writes."
+summary_0035 <- dplyr::bind_rows(summary_0035[summary_0035$comparison!="approved_extraction",],approved$summary)
+if(!"--check-only" %in% args) {
+  source("R/codebook_workflow.R",local=TRUE)
+  source("R/extraction_helpers.R",local=TRUE)
+  source("R/workflow_io.R",local=TRUE)
+  source("R/workflow_results.R",local=TRUE)
+  path <- "data/3.meta_data/extraction/historical_audit.csv"
+  previous <- readr::read_csv(path,show_col_types=FALSE)
+  first <- approved$summary
+  first$comparison <- "approved_integration_2026_11_13"
+  first$status <- "REVIEWED_BEFORE_AFTER"
+  first <- first[!first$matrix_id %in% previous$matrix_id[previous$comparison==first$comparison],]
+  audit_save_summary(dplyr::bind_rows(summary_0035,first))
+  individual_data <- data_matrix
+  individual_data$age <- as.numeric(raw$age)
+  checks <- extraction_check_matrix(data_matrix,approved$candidate,approved$pair_n)
+  wf_compact_extraction("0035","0035a",individual_data,approved$candidate,approved$pair_n,checks)
+}

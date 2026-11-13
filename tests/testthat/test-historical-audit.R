@@ -57,7 +57,7 @@ test_that('second historical batch checks are read-only and reproduce approved o
   expect_equal(nrow(runs[['0034']]$combined_data),303)
 })
 
-test_that('third historical batch reproduces matrices and only proposes additions', {
+test_that('third historical batch reproduces approved outputs without writing in check-only mode', {
   needed <- c('d0035.csv','opencode0035.R','d0043.sav','opencode0043.sps',
     'd0045.xlsx','raw/shared/bessi_scoring_v1.pdf')
   skip_if_not(all(file.exists(file.path('data/3.meta_data/open_data',needed))),
@@ -79,13 +79,16 @@ test_that('third historical batch reproduces matrices and only proposes addition
   rows<-dplyr::bind_rows(runs[['0035']]$audit_0035$source$summary,
     runs[['0043']]$audit_0043$source$summary,runs[['0045']]$audit_0045$source$summary)
   expect_equal(sum(rows$compared_pairs),281)
-  expect_true(all(rows$changed_pairs==0))
-  proposals<-list(runs[['0035']]$audit_0035$sex,runs[['0043']]$audit_0043$parent,runs[['0045']]$audit_0045$facet)
-  expect_identical(vapply(proposals,function(x)x$summary$added_variables,character(1)),
-    c('sex','parentEducation','capacityforconsistency'))
-  expect_true(all(vapply(proposals,function(x)x$summary$changed_pairs==0,logical(1))))
-  expect_equal(vapply(proposals,function(x)ncol(x$candidate),integer(1)),c(12L,21L,10L))
-  expect_equal(runs[['0045']]$audit_0045$hours$summary$changed_pairs,8)
+  expect_equal(rows$changed_pairs,c(0,0,8))
+  approved<-lapply(runs,function(x)x$approved)
+  expect_true(all(vapply(approved,function(x)x$summary$changed_pairs==0,logical(1))))
+  expect_equal(vapply(approved,function(x)ncol(x$candidate),integer(1)),c('0035'=12L,'0043'=21L,'0045'=10L))
+  expect_equal(sum(vapply(approved,function(x)x$summary$compared_pairs,numeric(1))),321)
+  expect_equal(sum(runs[['0035']]$data_matrix$sex==1,na.rm=TRUE),468)
+  expect_equal(sum(is.na(runs[['0043']]$data_matrix$parentEducation)),140)
+  expect_identical(runs[['0045']]$data_matrix$volunteering,runs[['0045']]$raw$hours.total)
+  expect_equal(runs[['0045']]$data_matrix$capacityforconsistency,
+    rowMeans(runs[['0045']]$raw[,paste0('bessi_',seq(9,169,32))],na.rm=TRUE))
 })
 
 test_that('historical article checks do not overwrite scientific files or the audit table', {

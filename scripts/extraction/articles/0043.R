@@ -1,5 +1,5 @@
-# 0043: historical verification only. No scientific outputs are promoted.
-# A normal run updates only extraction/historical_audit.csv.
+# 0043: approved historical correction; the original comparison stays visible.
+# A normal run exports the reviewed extraction and updates the cumulative audit.
 # --check-only writes nothing. Run from the repository root.
 source("R/historical_audit.R")
 args <- commandArgs(trailingOnly=TRUE)
@@ -63,4 +63,28 @@ audit_0043$parent <- audit_compare_matrix("0043","0043a",parent_candidate,975,
   status="VARIABLE_ADDITION_REVIEW_REQUIRED",comparison="parent_education_augmentation")
 summary_0043 <- dplyr::bind_rows(lapply(audit_0043,`[[`,"summary"))
 print(summary_0043[,c("matrix_id","comparison","changed_pairs","added_variables","pair_n_min","pair_n_max")])
-if(!"--check-only" %in% args)audit_save_summary(summary_0043)
+# 8. Approved 2026-11-13. Export only the reviewed extraction; keep the original
+# mapping above visible for comparison. --check-only never changes any files.
+data_matrix <- parent_candidate
+approved <- audit_0043$parent
+approved$summary$status <- "APPROVED_EXTRACTION"
+approved$summary$comparison <- "approved_extraction"
+approved$summary$note <- "Recover ParentsEducation as registered parentEducation (835 observed, 140 missing); the historical uppercase-P spelling caused omission. Supplied processed BESSI-20, trait and Mosaic scores retained; N=975 and pair Ns=627-910. Raw item scoring unavailable; no new exclusions. Approved by user 2026-11-13. A normal run exports this extraction; --check-only never writes."
+summary_0043 <- dplyr::bind_rows(summary_0043[summary_0043$comparison!="approved_extraction",],approved$summary)
+if(!"--check-only" %in% args) {
+  source("R/codebook_workflow.R",local=TRUE)
+  source("R/extraction_helpers.R",local=TRUE)
+  source("R/workflow_io.R",local=TRUE)
+  source("R/workflow_results.R",local=TRUE)
+  path <- "data/3.meta_data/extraction/historical_audit.csv"
+  previous <- readr::read_csv(path,show_col_types=FALSE)
+  first <- approved$summary
+  first$comparison <- "approved_integration_2026_11_13"
+  first$status <- "REVIEWED_BEFORE_AFTER"
+  first <- first[!first$matrix_id %in% previous$matrix_id[previous$comparison==first$comparison],]
+  audit_save_summary(dplyr::bind_rows(summary_0043,first))
+  individual_data <- data_matrix
+  # No age in the supplied data; grade level is not age.
+  checks <- extraction_check_matrix(data_matrix,approved$candidate,approved$pair_n)
+  wf_compact_extraction("0043","0043a",individual_data,approved$candidate,approved$pair_n,checks)
+}

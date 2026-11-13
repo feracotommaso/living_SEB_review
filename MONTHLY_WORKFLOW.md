@@ -217,11 +217,14 @@ Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per
 
 ## Verifiche, Git, paper e app
 
-Anche `estrai_articolo("0026")`, `estrai_articolo("0030")`,
+`estrai_articolo("0026")` e `estrai_articolo("0030")` sono verifiche
+storiche: aggiornano solo il riepilogo dell'audit.
 `estrai_articolo("0035")`, `estrai_articolo("0043")` e
-`estrai_articolo("0045")` sono verifiche storiche: aggiornano solo
-`data/3.meta_data/extraction/historical_audit.csv`, senza sostituire matrici,
-dati individuali o codifica. Con `verifica_soltanto = TRUE` non scrivono nulla.
+`estrai_articolo("0045")` esportano le correzioni approvate: sesso, istruzione
+dei genitori, faccetta di consistenza e ore continue di volontariato. Conservano
+N e partecipanti. Il confronto storico resta in
+`data/3.meta_data/extraction/historical_audit.csv`.
+Per tutti, con `verifica_soltanto = TRUE` non si scrive nulla.
 **0034 è ora migrato:** `estrai_articolo("0034")` esporta i due mapping SNS
 corretti e i domini BESSI con i pesi ufficiali, mantenendo tutti i 303
 partecipanti, inclusi gli otto minorenni. Il vecchio blocco conserva lo scoring
