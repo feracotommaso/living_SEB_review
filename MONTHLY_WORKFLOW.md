@@ -213,7 +213,7 @@ temporanea senza eseguire le analisi; non usare questi output di prova come pape
 | Correlazione trascritta male | Correggi la trascrizione collegata alla fonte e riesegui lo script | Anteprima, aggiornamento con motivo |
 | Decisione di eleggibilità | Riapri il caso nel lotto full text | Importa screening, poi `prepara_codifica(lotto)` e aggiornamento |
 
-Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per quei paper continua a usare il relativo blocco per ricalcolare la matrice. La codifica corrente si corregge nell'Excel generale. Il normale aggiornamento finale ora passa da `workflow.R`; il vecchio `data/3.2cor_to_metadata.R` resta disponibile per compatibilità e conserva i suoi controlli storici.
+Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per gli studi non ancora migrati continua a usare il relativo blocco per ricalcolare la matrice. **0120 è ora migrato:** usa `estrai_articolo("0120")`, che applica i pesi ufficiali BESSI e tratta la risposta fuori scala come mancante; il vecchio blocco conserva lo scoring precedente. `estrai_articolo("0013", verifica_soltanto = TRUE)` e l'equivalente per 0018 eseguono invece solo le verifiche storiche. Per 0013 resta N=840, con la nota sul file di 897 record e gli N per coppia 573–840. La codifica corrente si corregge nell'Excel generale. Il normale aggiornamento finale passa da `workflow.R`; il vecchio `data/3.2cor_to_metadata.R` resta disponibile per compatibilità e conserva i suoi controlli storici.
 
 ## Verifiche, Git, paper e app
 
