@@ -259,6 +259,19 @@ codifica `cross`, con rilevazioni sfalsate; nessun retest è contato come nuova
 matrice indipendente. Le nostre correlazioni restano Pearson pairwise tra
 punteggi osservati, non i coefficienti PIM/FIML degli autori.
 
+**Confronto successivo con la pubblicazione:** i risultati salvati dagli autori
+coincidono entro l'arrotondamento con tutte le Tabelle 5–8 di Study 3. Per la
+Tabella 8 è stata replicata la stessa analisi PIM (generatore originale, CFA con
+MLR/FIML, sei item BESSI, tre parcelle cognitive, test entro il 6 febbraio 2021),
+variando soltanto l'occasione BESSI. T0 riproduce 64/64 coefficienti entro
+l'arrotondamento (tutti entro 0.0001 dai risultati salvati); T2 ne riproduce 12/64.
+Tutti i 128 modelli convergono. I confronti sono nel riepilogo unico come
+`published_table8_PIM_T0_replication` e `published_table8_PIM_T2_replication`.
+Il codice IQ riassegna effettivamente l'input a T0, mentre il testo dichiara T2:
+la discrepanza di occasione è distinta da quella fra PIM e Pearson. L'intenzione
+degli autori va chiarita prima di considerare definitiva la scelta per queste
+associazioni. Le matrici attive e il report non sono modificati da questo controllo.
+
 La codifica generale, metadata, review e registro delle ricerche sono aggiornati
 tramite `workflow.R`. Le revisioni numeriche esatte sono nel ledger esistente;
 il primo confronto approvato resta come `approved_integration_2026_11_13`.
