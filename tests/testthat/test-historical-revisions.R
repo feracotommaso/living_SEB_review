@@ -34,12 +34,12 @@ test_that("exact revisions preserve the frozen baseline and reject further chang
   expect_identical(notes$notes, c("Documented correction", NA_character_))
 })
 
-test_that("0132 is the sole registered numerical revision and its N caveat reaches outputs", {
+test_that("only approved historical matrices are revised and N caveats reach outputs", {
   revisions <- coding_read_historical_revisions()
-  expect_identical(revisions$matrix_id, "0132a")
+  expect_identical(revisions$matrix_id, c("0132a","0120a","0120b"))
   baseline <- coding_historical_contract(revisions = revisions[FALSE, ])
   expected <- coding_historical_contract()
-  other <- expected$matrix_id != "0132a"
+  other <- !expected$matrix_id %in% revisions$matrix_id
   expect_identical(expected[other, ], baseline[other, ])
   expect_identical(expected$n, baseline$n)
   metadata <- as.data.frame(readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx"))

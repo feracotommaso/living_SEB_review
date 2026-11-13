@@ -51,7 +51,7 @@ data_matrix <- data_scored[, unname(variable_map), drop=FALSE]
 # Scoring cannot be independently validated without original items. The record
 # count and the article's analytic cohort remain an explicit review question.
 audit_0013 <- audit_compare_matrix("0013","0013a",data_matrix,840,
-  note="Supplied score-level data: 897 rows, article reference N=840. No source eligibility flags; do not force N by filtering. BESSI item scoring and original selection not independently reconstructed. Age and sex absent from this file.",
+  note="Supplied score-level data: 897 rows, article reference N=840. All 897 have at least one score; 896 have at least two; 475 are complete across the 21 variables. Big Five scores available for 840 people, BESSI domains for 838; pair Ns 573-840. Existing pairwise correlations already use all available released observations and reproduce the stored matrix. Keep reference N=840 pending cohort clarification; 897 is a file-row count, not an N achieved by any correlation. No source eligibility flags; do not force N by filtering. Original selection and item scoring not independently reconstructed. Age and sex absent. Author clarification needed to identify the intended analytic cohort.",
   sources=names(source_hashes), evidence="0013 PDF pp.3-5; downloaded author analysis opencode0013.R loads scores without an explicit selection step",
   status="COHORT_REVIEW_REQUIRED")
 print(audit_0013$summary[,c("matrix_id","input_rows","changed_pairs","max_abs_delta","pair_n_min","pair_n_max")])

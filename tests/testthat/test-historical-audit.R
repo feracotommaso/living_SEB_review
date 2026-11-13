@@ -22,12 +22,21 @@ test_that('audit aligns variable names, detects differences and preserves saved 
 
 test_that('historical article checks do not overwrite scientific files or the audit table', {
   needed <- c('d0013.csv','d0018.csv','d0120a.sav','d0120b.sav','d0120a_informant.sav',
-    'raw/shared/bessi_scoring_v1.pdf')
+    'raw/shared/bessi_scoring_v1.pdf',
+    'raw/0120/osf_7efmp/7efmp-osfstorage-archive.zip',
+    'raw/0120/osf_7efmp/files/Study 1 Self Report (N = 1103).sav',
+    'raw/0120/osf_7efmp/files/Study 2 (N = 123).sav',
+    'raw/0120/osf_7efmp/files/Study 1 Informant report (N= 184).sav')
   skip_if_not(all(file.exists(file.path('data/3.meta_data/open_data',needed))),
     'Original individual-level files are local and Git-ignored.')
   protected <- c(file.path('data/3.meta_data/matrices',paste0(c('0013a','0018a','0018b','0120a','0120b'),'.xlsx')),
     'data/3.meta_data/coding/records.csv','data/3.meta_data/meta_data/metadata.xlsx',
     'data/3.meta_data/review_data/review_data.xlsx','data/3.1opendata_to_cor.R')
+  approved_outputs <- c(file.path('data/3.meta_data/matrices',paste0(c('0120a','0120b'),'.csv')),
+    file.path('data/3.meta_data/pair_n',paste0(c('0120a','0120b'),'.csv')),
+    file.path('data/3.meta_data/open_data/individual_data',paste0(c('0120a','0120b'),'.csv')),
+    'data/3.meta_data/extraction/summary.csv','data/3.meta_data/coding/coding.xlsx')
+  protected <- c(protected,approved_outputs[file.exists(approved_outputs)])
   report <- 'data/3.meta_data/extraction/historical_audit.csv'
   if(file.exists(report)) protected <- c(protected,report)
   hashes <- function() vapply(protected,function(p)digest::digest(file=p),character(1))
@@ -37,6 +46,18 @@ test_that('historical article checks do not overwrite scientific files or the au
     invisible(capture.output(sys.source(file.path('scripts/extraction/articles',paste0(id,'.R')),envir=e)))
   }
   expect_identical(hashes(),before)
-  expect_equal(e$audit_0120$b_source$summary$changed_pairs,0)
-  expect_gt(e$audit_0120$b_invalid_as_missing$summary$max_abs_delta,.1)
+  expect_equal(e$audit_0120$b_approved$summary$changed_pairs,0)
+  expect_gt(e$audit_0120$b_source$summary$max_abs_delta,.1)
+  # Independent source reconstruction must not silently become a correction.
+  facets <- e$bfi_score_comparison[grepl('^bf_',e$bfi_score_comparison$scale),]
+  expect_equal(sum(facets$changed_values),9)
+  expect_equal(sum(facets$changed_values>0),6)
+  bfi_row <- e$summary_0120[e$summary_0120$comparison=='bfi2_item_reconstruction',]
+  expect_equal(bfi_row$table9_pairs_compared,480)
+  expect_equal(bfi_row$table9_pairs_outside_rounding,440)
+  approved <- e$audit_0120$b_approved$data_matrix
+  expect_equal(approved$capacityforoptimism[e$raw_b$BESSI171==32],2.6)
+  unchanged <- setdiff(names(approved),c(names(e$bessi192_domain_weights),'capacityforoptimism'))
+  expect_identical(approved[,unchanged],e$audit_0120$b_source$data_matrix[,unchanged])
+  expect_equal(e$audit_0120$b_approved$summary$reference_n,123)
 })
