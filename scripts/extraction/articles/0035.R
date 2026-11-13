@@ -74,14 +74,14 @@ note <- "Released cohort N=642 matches paper p.4. Five six-item BESSI facets and
 audit_0035 <- list()
 audit_0035$source <- audit_compare_matrix("0035","0035a",data_matrix,642,
   note=note,sources=names(source_hashes),evidence="0035 PDF p.4 and Table 2 p.7; inspected original author scoring code",
-  status="ITEM_SCORES_AND_MATRIX_REPRODUCED")
+  status="HISTORICAL_SCORING_COMPARISON")
 stopifnot(all(is.na(raw$GENDER) | raw$GENDER %in% c("male","female")))
 sex_candidate <- data_matrix
 sex_candidate$sex <- unname(c(male=0,female=1)[raw$GENDER])
 audit_0035$sex <- audit_compare_matrix("0035","0035a",sex_candidate,642,
-  note=paste(note,"Proposal only: include available GENDER as sex (0 male, 1 female); 468 females, 159 males, 15 missing. Adds eleven correlations, without changing existing coefficients. Not exported."),
+  note=paste(note,"Approved addition: include available GENDER as sex (0 male, 1 female); 468 females, 159 males, 15 missing. Originally added eleven correlations without changing existing coefficients."),
   sources=names(source_hashes),evidence="Original GENDER strings; PDF p.4 female percentage",
-  status="VARIABLE_ADDITION_REVIEW_REQUIRED",comparison="sex_augmentation")
+  status="APPROVED_COMPARISON",comparison="sex_augmentation")
 summary_0035 <- dplyr::bind_rows(lapply(audit_0035,`[[`,"summary"))
 print(summary_0035[,c("matrix_id","comparison","changed_pairs","added_variables","pair_n_min","pair_n_max")])
 # 8. Approved 2026-11-13. Export only the reviewed extraction; keep the original

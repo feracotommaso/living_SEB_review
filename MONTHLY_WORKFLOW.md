@@ -219,6 +219,9 @@ Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per
 
 `estrai_articolo("0026")` e `estrai_articolo("0030")` sono verifiche
 storiche: aggiornano solo il riepilogo dell'audit.
+Anche `estrai_articolo("0048")`, `estrai_articolo("0049")` e
+`estrai_articolo("0050")` sono verifiche in sola lettura degli output scientifici:
+registrano sovrapposizioni e proposte nel riepilogo, senza integrarle.
 `estrai_articolo("0035")`, `estrai_articolo("0043")` e
 `estrai_articolo("0045")` esportano le correzioni approvate: sesso, istruzione
 dei genitori, faccetta di consistenza e ore continue di volontariato. Conservano

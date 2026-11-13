@@ -1,8 +1,18 @@
+## 2026-11-13 — Extend historical audit to 0048, 0049 and 0050
+
+- Reproduced all 3629 stored correlations across four matrices without changing scientific outputs. Three new article entry points update only the existing cumulative audit; check-only mode writes nothing.
+- Detected complete duplication between 0013 and 0048: 897 linked records, identical values/missingness on 20 shared score columns and all 210 common correlations identical after direction harmonization. The user requested discussion before selecting a representative matrix; both remain included for now.
+- Proposed recovering omitted 0049 bf_emotionalvolatility (24 additional correlations); nine selected published observed-score correlations agree within rounding. Kept additional BFI domains and self-rated performance outside this focused correction.
+- Flagged 0050 official-domain weighting/missingness sensitivity (175/290 changed coefficients; minimum pair N for 0050a falls from 631 to 482), 8 unreconciled revised-facet scores in Study 3, the reported 238/203 recontacted adults, the 768-versus-767 file/cohort discrepancy, and the measurement timing. No automatic exclusions, score replacements or matrix changes.
+- Progress: 15 of 31 quantitative articles examined, 19 of 39 matrices; 16 articles/20 matrices remain. Examined articles are not assumed to be independent samples or fully adjudicated.
+- Validation: complete R suite passed, including 48 historical-audit assertions. New checks verify the overlap, published 0049 reference coefficients, the eight unreconciled 0050 facets, scoring sensitivities and preservation of scientific outputs. Original retrieval dates remain unknown; no new data were downloaded.
+
 ## 2026-11-13 — Integrate approved 0035, 0043 and 0045 revisions
 
 - Recovered sex in 0035a, parentEducation in 0043a and capacityforconsistency in 0045a: 40 additional correlations. Replaced the 0045 ordinal volunteering group with observed total hours: eight existing correlations changed. Every participant, reference N and all other matrix files remain unchanged.
 - Updated the general workbook, source/evidence records, common matrix CSV/XLSX pairs, pair Ns, private coded individual CSVs and final metadata/review through workflow.R. The original reviewed before/after remains in the single cumulative audit; exact transitions are registered for compatibility with the retained manual builder.
 - Validation: full R suite and October regression (14/14) passed. The three new preparation routes reproduce all 321 saved correlations; check-only mode preserves scientific files. Coding notes were visually verified. Historical scripts, originals and report prose are preserved.
+- Rerendered the living-results HTML from data commit 28a75de; all six OSMASEM models returned status 0 with finite estimates. Report source prose and unchanged PRISMA contents were preserved.
 
 ## 2026-11-13 — Verify historical articles 0035, 0043 and 0045
 

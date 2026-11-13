@@ -179,3 +179,70 @@ Conteggio dopo questo gruppo: 10 articoli storici e 13 matrici passati in verifi
 con 0145 e 0150 già codificati/verificati, 12 articoli e 15 matrici su 31 e 39
 attivi nella metaanalisi. Restano 19 articoli e 24 matrici. I chiarimenti o le
 proposte ancora aperti sono distinti dalla riproduzione numerica delle matrici.
+
+## Quarto gruppo storico: 0048, 0049 e 0050
+
+Verifiche in sola lettura degli output scientifici: quattro matrici e tutte le
+3629 correlazioni storiche riprodotte. Una normale esecuzione aggiorna soltanto
+il riepilogo unico; `--check-only` non scrive nulla. Nessuna proposta di questo
+gruppo è integrata in matrici, codifica o metadata.
+
+| Matrice | N di riferimento | N per coppia | Punto da discutere |
+|---|---:|---:|---|
+| 0048a | 897 | 428–840 | Stesso campione di 0013, con una matrice più ampia. |
+| 0049a | 137 | 128–136 | Omissione di `bf_emotionalvolatility` per un nome non registrato. |
+| 0050a | 940 | 631–791 | Domini costruiti solo sulle faccette principali; dipendenza con Study 3 dichiarata dal paper. |
+| 0050b | 767 | 469–755 | Scoring di otto faccette da chiarire; campione e misure distribuiti su più occasioni. |
+
+**0013/0048:** i 897 identificativi Case coincidono, come tutti i 20 punteggi
+con nomi identici e la loro mancanza di dati. Dopo aver uniformato la direzione
+di neuroticismo, anche tutte le 210 correlazioni comuni coincidono. Questi
+coefficienti non costituiscono evidenze indipendenti. Anche i metodi di 0013
+(p.3) dichiarano che i dati erano già stati analizzati da Soto e colleghi.
+Proposta: usare la matrice
+più ampia di 0048 per le analisi, conservando 0013 come storico e mantenendo
+entrambi gli articoli nella review. L'utente ha chiesto di discutere prima:
+**nessun cambiamento dell'inclusione è applicato**. Resta da chiarire l'N di
+riferimento (840 contro 897), che non coincide con l'N di ogni correlazione.
+I dati 0048 hanno 504 donne, 387 uomini e sei mancanti: le percentuali del paper
+sono diverse. La versione e la codifica demografica originarie richiedono verifica;
+non sono ricodificati dati sulla sola base delle percentuali pubblicate.
+
+**0049:** ricostruite sei faccette BESSI, tre compositi a due faccette, le scale
+BFI focali e le medie dei giudici. Il vecchio nome `emotionalvolatility` viene
+scartato dal codebook; il nome registrato è `bf_emotionalvolatility`. Recuperarlo
+aggiungerebbe 24 correlazioni senza modificare le 276 attuali. Nove coefficienti
+di riferimento osservati, letti nelle Tabelle 3–5, coincidono entro l'arrotondamento,
+inclusi quelli della faccetta omessa. L'età è rimossa dal file per anonimizzazione.
+Gli altri item BFI disponibili e le autovalutazioni della performance non sono
+aggiunti: appartengono all'ampliamento della codifica da progettare separatamente.
+
+**0050:** tutti i 32 punteggi di faccetta T4 sono ricostruibili dagli item
+rilasciati. Per Study 3, 24 faccette coincidono e otto no: dettaglio,
+organizzazione, responsabilità, pensiero astratto, creatività, espressività,
+persuasione e autoriflessione. Sono 2954 valori diversi, con scarto massimo 1.5;
+la corrispondenza fra item rilasciati, traduzioni riviste e punteggi forniti va
+chiarita. I punteggi forniti restano conservati. Le 20 scale BFI coincidono con
+le medie dei valori già ricodificati; i totali cognitivi sono verificati nei
+607 casi ammessi dagli autori. Non si reintegrano i 120 casi con diverso
+protocollo temporale. Lo scoring delle risposte originarie BFI non è ricostruito.
+
+I vecchi domini 0050 usano nove/quattro faccette principali con regola completa.
+La sensibilità con pesi ufficiali 1:0.5 e tutte le faccette costituenti richieste
+cambia 175 e 290 correlazioni (scarti massimi circa 0.121 e 0.105). In 0050a,
+gli N minimi scendono da 631 a 482: il disegno con mancanza pianificata richiede
+una scelta esplicita sulla copertura prima di esportare nuovi domini.
+0050b ha 768 righe contro N=767 dichiarato; solo 766 righe hanno almeno due
+punteggi selezionati. Nessuna selezione arbitraria è applicata.
+
+Il paper (p.9) dichiara 238 adulti ricontattati, 203 con dati validi a T2 e T4.
+L'Rdata contiene 203 record appaiati, ma non una corrispondenza diretta degli
+identificativi con il campione T4 esportato. Non si presume indipendenza sulla
+base dei diversi identificativi e non si escludono record senza un collegamento
+verificato. Study 3 combina BESSI T2, cognizione T1 e item BFI suddivisi fra T0/T2:
+questa separazione temporale è distinta dall'inclusione di retest come nuove matrici.
+
+Conteggio aggiornato: 13 articoli storici e 17 matrici passati in verifica;
+includendo 0145 e 0150, 15 articoli su 31 e 19 matrici su 39. Restano 16 articoli
+e 20 matrici. Sono conteggi di articoli/matrici esaminati, non di campioni
+indipendenti né di tutte le questioni scientifiche già risolte.

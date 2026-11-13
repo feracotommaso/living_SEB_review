@@ -91,6 +91,47 @@ test_that('third historical batch reproduces approved outputs without writing in
     rowMeans(runs[['0045']]$raw[,paste0('bessi_',seq(9,169,32))],na.rm=TRUE))
 })
 
+test_that('fourth batch detects sample duplication and scoring issues without changing science', {
+  needed<-c('d0048.sav','d0049.xlsx','opencode0049.R','d0050.Rdata','d0013.csv')
+  skip_if_not(all(file.exists(file.path('data/3.meta_data/open_data',needed))),
+    'Original individual-level files are local and Git-ignored.')
+  protected<-c(list.files('data/3.meta_data/matrices',full.names=TRUE),
+    list.files('data/3.meta_data/coding',full.names=TRUE),
+    list.files('data/3.meta_data/pair_n',full.names=TRUE),
+    'data/3.meta_data/meta_data/metadata.csv','data/3.meta_data/meta_data/metadata.xlsx',
+    'data/3.meta_data/review_data/review_data.csv','data/3.meta_data/review_data/review_data.xlsx',
+    'data/3.meta_data/extraction/historical_audit.csv','data/3.meta_data/extraction/summary.csv',
+    'data/3.1opendata_to_cor.R','paper/livingSEBresults.qmd',
+    file.path('data/3.meta_data/open_data',needed))
+  hashes<-function()vapply(protected,function(p)digest::digest(file=p),character(1))
+  before<-hashes();runs<-list()
+  for(id in c('0048','0049','0050')) {
+    e<-new.env(parent=globalenv());e$commandArgs<-function(...)'--check-only'
+    invisible(capture.output(sys.source(paste0('scripts/extraction/articles/',id,'.R'),envir=e)))
+    runs[[id]]<-e
+  }
+  expect_identical(hashes(),before)
+  rows<-dplyr::bind_rows(runs[['0048']]$audit_0048$summary,
+    runs[['0049']]$audit_0049$source$summary,
+    runs[['0050']]$audit_0050$a_source$summary,runs[['0050']]$audit_0050$b_source$summary)
+  expect_equal(sum(rows$compared_pairs),3629)
+  expect_true(all(rows$changed_pairs==0))
+  expect_equal(runs[['0048']]$audit_0048$summary$overlap_linked_records,897)
+  expect_equal(runs[['0048']]$audit_0048$summary$overlap_identical_correlations,210)
+  expect_equal(runs[['0049']]$audit_0049$volatility$summary$added_variables,'bf_emotionalvolatility')
+  expect_equal(ncol(runs[['0049']]$volatility_candidate),25)
+  expect_equal(runs[['0049']]$audit_0049$volatility$summary$published_pairs_outside_rounding,0)
+  expect_equal(sum(runs[['0050']]$score_checks$a$changed_values),0)
+  expect_setequal(runs[['0050']]$score_checks$b$facet[runs[['0050']]$score_checks$b$changed_values>0],
+    c('persuasiveskill','expressiveskill','organizationalskill','detailmanagement',
+      'responsibilitymanagement','abstractthinkingskill','creativeskill','selfreflectionskill'))
+  expect_equal(runs[['0050']]$audit_0050$a_weights$summary$changed_pairs,175)
+  expect_equal(runs[['0050']]$audit_0050$b_weights$summary$changed_pairs,290)
+  expect_equal(runs[['0050']]$audit_0050$a_weights$summary$pair_n_min,482)
+  expect_equal(runs[['0050']]$audit_0050$b_source$summary$input_rows,768)
+  expect_equal(runs[['0050']]$audit_0050$b_source$summary$reference_n,767)
+})
+
 test_that('historical article checks do not overwrite scientific files or the audit table', {
   needed <- c('d0013.csv','d0018.csv','d0120a.sav','d0120b.sav','d0120a_informant.sav',
     'raw/shared/bessi_scoring_v1.pdf',

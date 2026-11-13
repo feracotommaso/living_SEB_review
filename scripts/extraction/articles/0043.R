@@ -54,13 +54,13 @@ note <- "Released N=975 matches the article. Supplied BESSI-20 skill/trait and M
 audit_0043 <- list()
 audit_0043$source <- audit_compare_matrix("0043","0043a",data_matrix,975,
   note=note,sources=names(source_hashes),evidence="0043 PDF pp.3-4; original processed data and SPSS analysis syntax",
-  status="SCORE_LEVEL_MATRIX_REPRODUCED")
+  status="HISTORICAL_SCORING_COMPARISON")
 parent_candidate <- data_matrix
 parent_candidate$parentEducation <- as.numeric(raw$ParentsEducation)
 audit_0043$parent <- audit_compare_matrix("0043","0043a",parent_candidate,975,
-  note=paste(note,"Proposal only: recover ParentsEducation as registered parentEducation. Historical spelling ParentEducation caused its omission during codebook selection. 835 observed source scores, 140 missing. Adds twenty correlations; no original coefficients changed. Not exported."),
+  note=paste(note,"Approved recovery of ParentsEducation as registered parentEducation. Historical spelling ParentEducation caused its omission during codebook selection. 835 observed source scores, 140 missing. Originally added twenty correlations without changing old coefficients."),
   sources=names(source_hashes),evidence="Original ParentsEducation; historical rename; matrix_codebook.csv exact canonical name",
-  status="VARIABLE_ADDITION_REVIEW_REQUIRED",comparison="parent_education_augmentation")
+  status="APPROVED_COMPARISON",comparison="parent_education_augmentation")
 summary_0043 <- dplyr::bind_rows(lapply(audit_0043,`[[`,"summary"))
 print(summary_0043[,c("matrix_id","comparison","changed_pairs","added_variables","pair_n_min","pair_n_max")])
 # 8. Approved 2026-11-13. Export only the reviewed extraction; keep the original

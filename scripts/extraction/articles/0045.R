@@ -45,19 +45,19 @@ note <- "Released N=248 matches article. Reconstructed the seven historical face
 audit_0045 <- list()
 audit_0045$source <- audit_compare_matrix("0045","0045a",data_matrix,248,
   note=note,sources=names(source_hashes),evidence="0045 PDF pp.4-7 and item appendix p.14; official BESSI facet key",
-  status="ITEM_SCORES_AND_MATRIX_REPRODUCED")
+  status="HISTORICAL_SCORING_COMPARISON")
 facet_candidate <- data_matrix
 facet_candidate$capacityforconsistency <- data_scored$capacityforconsistency
 audit_0045$facet <- audit_compare_matrix("0045","0045a",facet_candidate,248,
-  note=paste(note,"Proposal only: include the eighth measured facet, capacityforconsistency, explicitly reported in Table 3 and the item appendix. Adds nine correlations with unchanged existing values. Not exported."),
+  note=paste(note,"Isolated facet comparison: include capacityforconsistency but preserve historical ordinal volunteering. The approved export combines this facet with continuous total hours."),
   sources=names(source_hashes),evidence="PDF Table 3 p.7 and Appendix p.14; six source items bessi_9:169 in steps of 32",
-  status="VARIABLE_ADDITION_REVIEW_REQUIRED",comparison="consistency_facet_augmentation")
+  status="ISOLATED_FACET_COMPARISON",comparison="consistency_facet_augmentation")
 hours_candidate <- data_matrix
 hours_candidate$volunteering <- raw$hours.total
 audit_0045$hours <- audit_compare_matrix("0045","0045a",hours_candidate,248,
-  note=paste(note,"Separate unapproved metric comparison: replace the ordinal group outcome with observed total volunteer hours; preserve the seven historical facets to isolate this choice. The groups use session-dependent benchmarks (40 summer, 20 fall). Not exported."),
+  note=paste(note,"Isolated metric comparison: replace the ordinal group outcome with observed total volunteer hours; preserve the seven historical facets to isolate this choice. The approved combined export also includes capacityforconsistency."),
   sources=names(source_hashes),evidence="Source hour_group and hours.total; PDF volunteering measure p.6",
-  status="OUTCOME_METRIC_REVIEW_REQUIRED",comparison="continuous_hours_sensitivity")
+  status="ISOLATED_METRIC_COMPARISON",comparison="continuous_hours_sensitivity")
 summary_0045 <- dplyr::bind_rows(lapply(audit_0045,`[[`,"summary"))
 print(summary_0045[,c("matrix_id","comparison","changed_pairs","max_abs_delta","added_variables","pair_n_min","pair_n_max")])
 combined_data <- facet_candidate
