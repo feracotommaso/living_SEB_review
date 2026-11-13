@@ -227,6 +227,11 @@ matrice è conservata come storico inattivo. 0049 recupera `bf_emotionalvolatili
 sulle faccette disponibili, conservando la copertura delle faccette principali.
 Tutte le persone sono mantenute; in 0050b l'N dichiarato 767 è distinto dalle
 768 righe del file. Il codice esplicita la regola e gli N per coppia.
+**0050 è nuovamente in verifica scientifica:** le matrici correnti sono quelle
+approvate in precedenza, non una replica esatta del paper. Il confronto autonomo
+`scripts/extraction/articles/0050_publication.R` non le modifica. La separazione
+dei blocchi T0/T2 e sette coefficienti pubblicati con problemi di convergenza
+richiedono discussione prima della prossima integrazione.
 `estrai_articolo("0035")`, `estrai_articolo("0043")` e
 `estrai_articolo("0045")` esportano le correzioni approvate: sesso, istruzione
 dei genitori, faccetta di consistenza e ore continue di volontariato. Conservano

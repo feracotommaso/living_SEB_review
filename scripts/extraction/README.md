@@ -272,6 +272,42 @@ la discrepanza di occasione è distinta da quella fra PIM e Pearson. L'intenzion
 degli autori va chiarita prima di considerare definitiva la scelta per queste
 associazioni. Le matrici attive e il report non sono modificati da questo controllo.
 
+**Replica estesa e struttura da discutere:** lo script dedicato
+`0050_publication.R` riproduce le analisi delle Tabelle 5–9 senza esportare
+matrici attive. Eseguire dalla radice:
+`Rscript scripts/extraction/articles/0050_publication.R --check-only`.
+Senza `--check-only` salva soltanto i riepiloghi nel registro unico. La funzione
+PIM originale è letta dopo verifica del checksum; il resto dello script degli
+autori non viene eseguito. Sono stati calcolati 704 modelli PIM convergenti e
+35 coefficienti dal modello FIML dei domini: 732/739 sono compatibili con i
+risultati salvati entro 0.001; due differenze minime attraversano il confine
+dell'arrotondamento del PDF. I sette scarti sostanziali sono tutti nella Tabella 6.
+La matrice FIML completa 12×12 dei domini coincide con quella salvata dagli autori
+entro 0.0000002.
+
+Il controllo della versione lavaan 0.6-10 indicata da `renv.lock`, installata in
+una libreria temporanea isolata, riproduce entro l'arrotondamento sei dei sette
+coefficienti problematici, ma tutti e sette i fit diagnostici risultano non
+convergenti. I due controlli convergono. Questo è un indizio concreto di
+coefficienti estratti da fit non convergenti, non una prova dello stato di tutti
+i fit originali (che non è salvato). Non si promuovono coefficienti non
+convergenti soltanto perché assomigliano a quelli del PDF. Per ripetere la
+diagnostica, impostare `LIVING_SEB_REPLICATION_LIBRARY` alla libreria isolata
+contenente lavaan 0.6-10 e aggiungere `--legacy-diagnostics`.
+
+I blocchi pubblicati hanno origini diverse:
+Tabelle 5–6 = faccette T2 × BFI T0/T2 (PIM);
+Tabella 7 = domini T2 × BFI T0/T2 (FIML);
+Tabella 8 = faccette T0 × intelligenza T1 (PIM);
+Tabella 9 = domini T2 × intelligenza T1 (FIML).
+I domini riproducono i punteggi `_prm` effettivamente usati dagli autori,
+senza sostituirli silenziosamente con quelli rivisti o con pesi armonizzati.
+Una singola matrice non può rappresentare le faccette come misurate una sola
+volta se queste associazioni usano T0 e T2. La proposta di distinguere una
+componente T0–T1 per la Tabella 8 rimane **da discutere con l'utente**:
+nessun nuovo ID assegnato, nessuna sostituzione delle matrici attive, nessuna
+analisi longitudinale o nuovo campione indipendente dedotto.
+
 La codifica generale, metadata, review e registro delle ricerche sono aggiornati
 tramite `workflow.R`. Le revisioni numeriche esatte sono nel ledger esistente;
 il primo confronto approvato resta come `approved_integration_2026_11_13`.

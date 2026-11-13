@@ -1,3 +1,11 @@
+## 2026-11-13 — Reproduce German publication blocks before matrix reconciliation
+
+- Added a dedicated publication-only R script, preserving original-source checksums and leaving every active matrix, canonical coding row, metadata/review value and report unchanged. Evaluated 704 PIM models with current lavaan plus the exact 12-variable author domain FIML model. Across Tables 5-9, 732/739 coefficients agree with saved author results within 0.001; seven substantive Table 6 discrepancies remain. Two additional tiny numerical differences cross printed rounding boundaries.
+- Confirmed that Table 8 facet-IQ uses T0/T1, while Table 9 domain-IQ uses source T2 domain scores. The user requested discussion before creating a separate analytical component; no new sample/matrix ID is assigned.
+- Tested seven discrepant fits and two controls in the authors' locked lavaan 0.6-10, downloaded from the official CRAN archive into an isolated temporary library. All seven discrepant fits are nonconvergent; six reproduce published rounded values, while both controls converge. Diagnostic values from nonconvergent fits are not approved analytical effects. Historical original fit convergence is unavailable, so the source explanation remains qualified.
+- Validation: all 704 current-version PIM fits converge; the domain covariance result agrees with the saved 12x12 matrix within 0.0000002. Publication-script reference checks and cumulative-audit I/O were verified using those completed fits; the isolated legacy diagnostic mode was run directly. Analytical file hashes are unchanged.
+- The targeted historical-audit test file also passes after adding the publication comparisons. No production extraction, metadata/review, coding, matrix or report file is changed in this checkpoint.
+
 ## 2026-11-13 — Integrate cohort selection and original German scoring
 
 - Kept 0048 as the quantitative representative of the identical 0013 cohort, with reference N=897 and pair Ns 428-840. 0013 remains in the review; its matrix and all old manual source files are preserved. Registered the exact inactivity decision in the existing exclusions table and kept numerical protection for every active historical matrix. Active totals are now 30 quantitative papers/38 matrices and 51 review papers.
