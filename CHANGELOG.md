@@ -6,6 +6,7 @@
 - Retained the source primary-facet coverage for 0050 domains, adding available interstitial half-weight facets and normalizing observed weights. Changed 175/702 correlations with every previous pair N and missingness pattern unchanged. Retained all participants, reference Ns 940/767, all 768 Study 3 source rows, both samples and staggered cross-sectional associations. The released new_id bridge confirms 238 shared participants; dependence is documented.
 - Updated coding, provenance/evidence, matrices, private coded individual CSVs, pair Ns, metadata/review and search history through the R workflow. The compact exporter now distinguishes explicit reference N from input_rows without filtering records.
 - Validation: complete R suite and October regression (14/14) passed. Verified 24 added 0049 correlations and 175/702 changed 0050 correlations; every other active matrix value, all original files, the inactive 0013 matrix, old manual scripts and report prose are preserved. The five updated coding notes were visually checked.
+- Verified the retained historical builder and its numerical guard against the current 38-matrix metadata. Rerendered the living-results HTML from data commit f241423: all six OSMASEM fits returned status 0 with finite estimates. Updated PRISMA to 30 quantitative/51 review articles and checked the diagram and analytical figures visually. The QMD source remains unchanged.
 
 ## 2026-11-13 — Extend historical audit to 0048, 0049 and 0050
 
