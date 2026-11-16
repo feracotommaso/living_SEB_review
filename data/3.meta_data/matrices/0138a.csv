@@ -1,0 +1,6 @@
+variable,neuroticism,neuroticismiat,emotionalresilience,selfefficacy,growthmindset
+neuroticism,1,0.27,-0.74,-0.41,-0.12
+neuroticismiat,0.27,1,-0.24,-0.21,-0.11
+emotionalresilience,-0.74,-0.24,1,0.43,0.14
+selfefficacy,-0.41,-0.21,0.43,1,0.16
+growthmindset,-0.12,-0.11,0.14,0.16,1

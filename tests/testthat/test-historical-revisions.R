@@ -36,13 +36,22 @@ test_that("exact revisions preserve the frozen baseline and reject further chang
 
 test_that("only approved historical matrices are revised and N caveats reach outputs", {
   revisions <- coding_read_historical_revisions()
-  expect_identical(revisions$matrix_id, c("0132a","0120a","0120b","0034a","0035a","0043a","0045a","0049a","0050a","0050b"))
+  expect_identical(revisions$matrix_id, c("0132a","0120a","0120b","0034a","0035a","0043a","0045a","0049a","0050a","0050b","0050a","0050a","0068a","0070a","0100a","0107a","0108a","0118a","0126a","0138a"))
   baseline <- coding_historical_contract(revisions = revisions[FALSE, ])
   expected <- coding_historical_contract()
   other <- !expected$matrix_id %in% revisions$matrix_id
   expect_identical(expected[other, ], baseline[other, ])
-  expect_identical(expected$n, baseline$n)
+  same_n <- !expected$matrix_id %in% c("0068a","0126a")
+  expect_identical(expected$n[same_n], baseline$n[same_n])
+  expect_identical(expected$n[expected$matrix_id=="0068a"], "356")
+  expect_identical(expected$n[expected$matrix_id=="0126a"], "1917")
   expect_false("0013a"%in%expected$matrix_id)
+  restored <- revisions[revisions$revision_id=="2026-11-14-0050a-two-samples",]
+  expect_identical(restored$previous_n, "1855")
+  expect_identical(restored$n, "940")
+  expect_identical(restored$effects_sha256,
+    revisions$effects_sha256[match("2026-11-13-0050a", revisions$revision_id)])
+  expect_true("0050b"%in%expected$matrix_id)
   metadata <- as.data.frame(readxl::read_excel("data/3.meta_data/meta_data/metadata.xlsx"))
   expect_silent(coding_validate_historical(metadata))
   row <- metadata[metadata$matrix_id == "0132a", ]

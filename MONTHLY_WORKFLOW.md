@@ -227,17 +227,70 @@ matrice è conservata come storico inattivo. 0049 recupera `bf_emotionalvolatili
 sulle faccette disponibili, conservando la copertura delle faccette principali.
 Tutte le persone sono mantenute; in 0050b l'N dichiarato 767 è distinto dalle
 768 righe del file. Il codice esplicita la regola e gli N per coppia.
-**0050 è nuovamente in verifica scientifica:** le matrici correnti sono quelle
-approvate in precedenza, non una replica esatta del paper. Il confronto autonomo
-`scripts/extraction/articles/0050_publication.R` non le modifica. La separazione
-dei blocchi T0/T2 e sette coefficienti pubblicati con problemi di convergenza
-richiedono discussione prima della prossima integrazione.
+**0050 — decisione corrente del 14 novembre 2026:** si mantengono i due campioni
+dell'impostazione manuale, T4 in `0050a` e Study 3 in `0050b`. La prova del campione
+unico con N=1.855 è stata annullata. Restano le correzioni di scoring già
+approvate, senza unire tutte le persone T0/T4 né introdurre una terza matrice.
+Le 238 persone condivise e gli N diversi per correlazione restano documentati.
+Il confronto autonomo `scripts/extraction/articles/0050_publication.R` conserva
+la replica delle tabelle pubblicate senza sostituire le matrici Pearson.
 `estrai_articolo("0035")`, `estrai_articolo("0043")` e
 `estrai_articolo("0045")` esportano le correzioni approvate: sesso, istruzione
 dei genitori, faccetta di consistenza e ore continue di volontariato. Conservano
 N e partecipanti. Il confronto storico resta in
 `data/3.meta_data/extraction/historical_audit.csv`.
 Per tutti, con `verifica_soltanto = TRUE` non si scrive nulla.
+`estrai_articolo("0053")` verifica le matrici storiche e aggiorna soltanto
+l'audit. `estrai_articolo("0070")` esporta la matrice con SPACS codificata come
+`sustainabilitycompetence` e PebSingle come `proenvironmentalbehavior`: otto
+correlazioni aggiunte, nessun coefficiente precedente modificato, N=702.
+`estrai_articolo("0068")` esporta invece
+la correzione approvata il 14 novembre: tutte le 356 persone, due medie dei voti
+ricalcolate e rendimento standardizzato separatamente per anno scolastico.
+Nei dati privati restano anche media grezza, anno scolastico ed età. Le proposte
+sui descrittivi other-report di 0053g sono state approvate: si usano età/sesso
+delle persone valutate, conservando i dati degli informatori nelle note.
+Il recupero di PebSingle in 0070 è approvato dopo il chiarimento sulla sua
+distinzione dalla competenza percepita SPACS, documentata nell'audit.
+`estrai_articolo("0071")`, `estrai_articolo("0080")` e
+`estrai_articolo("0087")` aggiornano soltanto l'audit, senza riscrivere matrici
+o dati individuali. I primi due ricostruiscono le correlazioni osservate;
+0087 verifica la trascrizione della tabella pubblicata. Per decisione esplicita,
+0087 resta incluso con N=373 e con nota su correlazioni da modello corrette
+per errore di misura, FIML e 221 rispondenti a T2. Non sono disponibili N per
+coppia osservati. Per ripetere i controlli senza salvare:
+`estrai_articolo("0087", verifica_soltanto = TRUE)`.
+Per il gruppo successivo, `estrai_articolo("0095")` (Sewell et al., volontariato)
+aggiorna solo l'audit: rimangono medie degli item disponibili e T1.
+`estrai_articolo("0100")` (Pellegrino et al., studenti con SLD) esporta voti
+standardizzati per tipo di laurea e intelligenza fluida Cattell.
+`estrai_articolo("0107")` (Fallucchi et al., cooperazione condizionale) esporta
+259 persone abbinate senza duplicazioni, genere binario mancante per i quattro
+casi `Altro` e scoring BESSI verificato nel questionario supplementare: sei item
+etici e pesi normalizzati del dominio. La misura del compito di cooperazione
+condizionale non viene aggiunta. Tutti gli N di riferimento restano invariati.
+`estrai_articolo("0108")` (Soto et al., intervento comportamentale) conserva
+la prima misurazione disponibile, inclusi cinque esiti raccolti inizialmente a T2,
+e usa il contrasto binario del sesso senza escludere persone.
+`estrai_articolo("0118")` (Cravet e Usai, giochi da tavolo) esporta i quattro
+totali CPM corretti e il sesso secondo il paper, come approvato dall'utente.
+`estrai_articolo("0126")` (Allemand et al., cambiamento di personalità) seleziona
+tutti i 1.917 rispondenti della seconda parte, corregge l'N da 1.898 e conserva
+esattamente le correlazioni. Le tre età mancanti restano nei dati individuali.
+`estrai_articolo("0134")` (Pellegrino et al., engagement longitudinale) ricalcola
+gli item e conserva soltanto T1: tutte le 45 correlazioni e N=1330 sono confermati.
+La sovrapposizione con 0068 è annotata in entrambe le codifiche, senza esclusioni.
+`estrai_articolo("0138")` (Kramer et al., intervento sul nevroticismo) riscrive
+soltanto la matrice pubblicata con autoefficacia × growth mindset=.16, come
+approvato dall'utente e riportato nella Figura S3 T1. Non genera individui o N
+per coppia fittizi. `0128.R` e `0141.R` verificano le matrici pubblicate/fornite
+dagli autori e aggiornano solo l'audit: non ci sono dati individuali utilizzabili.
+Per 0141 il sesso storico è confermato dall'utente tramite email degli autori;
+per 0128 l'utente mantiene il contrasto cis-man con nota esplicita: la matrice
+è invariata e `sex` non va interpretato come confronto soltanto donne-uomini.
+L'audit ha esaminato tutti i 30 articoli quantitativi attivi e le 38 matrici;
+i limiti di fonte e le dipendenze documentate non sono considerati risolti per
+il solo fatto di aver completato l'esame.
 **0034 è ora migrato:** `estrai_articolo("0034")` esporta i due mapping SNS
 corretti e i domini BESSI con i pesi ufficiali, mantenendo tutti i 303
 partecipanti, inclusi gli otto minorenni. Il vecchio blocco conserva lo scoring
