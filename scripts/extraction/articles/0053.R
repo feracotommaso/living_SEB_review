@@ -1,6 +1,7 @@
-# 0053: verify the five historical full-inventory samples, without promotion.
+# 0053: verify five historical samples; normal run exports only the approved
+# college SECA-facet expansion (2026-11-17). Other matrices are not rewritten.
 # Source: Soto et al., doi:10.1037/pspp0000401, OSF 4zgyr. Original dates unknown.
-# A normal run updates only historical_audit.csv; --check-only never writes.
+# --check-only never writes. Supplied SECA means retain their original 1-4 scale.
 source('R/historical_audit.R')
 source('scripts/extraction/keys/bessi192.R',local=TRUE)
 source('scripts/extraction/keys/0053.R',local=TRUE)
@@ -68,6 +69,17 @@ for(sample in names(expected_n)) {
   for(domain in names(bfi2_domain_facets))stopifnot(isTRUE(all.equal(
    rowMeans(bfi_rebuilt[,bfi2_domain_facets[[domain]]]),data_scored[[domain]],
    check.attributes=FALSE,tolerance=1e-12)))
+  # Five SECA facets reported in Study 4 but previously omitted from the map.
+  # Import author-provided scale means; do not invent an item key from names.
+  # Self-Concept is named StrengthsWeaknesses in the shared source. These are
+  # distinct from BESSI skills. All five means have the same 249 observed cases.
+  seca_facets <- c('secaSelfconcept','secaEmotionknowledge','secaEmotionregulation',
+    'secaGoalmanagement','secaSchoolwork')
+  seca_mask <- !is.na(data_scored$secaSelfconcept)
+  stopifnot(sum(seca_mask)==249L,
+    all(vapply(data_scored[,seca_facets],function(v)identical(!is.na(v),seca_mask),logical(1))),
+    all(as.matrix(data_scored[seca_mask,seca_facets])>=1),
+    all(as.matrix(data_scored[seca_mask,seca_facets])<=4))
  }
  if(sample=='f') {
   for(source in names(school_map))data_scored[[school_map[[source]]]]<-as.numeric(raw[[source]])
@@ -90,6 +102,7 @@ for(sample in names(expected_n)) {
  data_matrix<-data_scored[,names(data_scored)%in%codebook$column_name,drop=FALSE]
  note<-paste('All released participants retained. All 32 BESSI item means and five official weighted domains reproduce; supplied data already contain source item-mean imputation.',
   if(sample=='e')'All 20 BFI-2 facet/domain scores independently reconstructed; remaining non-BESSI composites supplied. Study 4 eligibility differs by measure (313/249 in paper), so retain pair Ns rather than assuming all 322 per correlation. Case labels are not unique (165 repeated labels), but no full records or BESSI item profiles duplicate; retain the released sample without inventing exclusions.',
+  if(sample=='e')'User-approved 2026-11-17: recover five omitted SECA facets (Self-Concept, Emotion Knowledge, Emotion Regulation, Goal Management, School Work) from author-provided means on the original 1-4 scale, each observed for 249 people. Source Self-Concept is labelled StrengthsWeaknesses. Retain all 322 records; no new exclusions or invented item-level scoring. Five distinct constructs add 420 associations; existing coefficients and reference N remain unchanged.',
   if(sample=='f')'Retain the historical available-term winter/spring GPA mean, with prospective timing documented; do not change occasions or participants. Outcome-specific coverage gives pair Ns 62-499, especially for relationship measures; do not assume N=499 for every coefficient.',
   if(sample=='g')paste('Observer-report BESSI: historical unsuffixed variable names retained pending separate method harmonization. Sex is target sex, not rater sex.',
    'User decision 2026-11-14: current age/gender descriptives refer to rated targets (mean age 47.52; 46.72% female). Rater descriptives (mean age 49.26; 51.64% female) remain documented in notes.'),
@@ -100,7 +113,24 @@ for(sample in names(expected_n)) {
  result$summary$score_mismatch_values<-0L
  result$summary$duplicate_source_case_ids<-sum(duplicated(raw$Case))
  audit_0053[[sample]]<-result
+ if(sample=='e') {
+  college_data <- cbind(data_matrix,age=as.numeric(raw$Age))
+  # Preserve exact saved historical values in the common block. Independent
+  # Pearson reconstruction above must still agree; no numerical repair is made.
+  saved <- as.matrix(readxl::read_excel('data/3.meta_data/matrices/0053e.xlsx'))
+  rownames(saved)<-colnames(saved);common<-colnames(saved)
+  stopifnot(result$summary$changed_pairs==0L)
+  college_cor <- result$candidate
+  college_cor[common,common] <- saved
+  college_pair_n <- result$pair_n
+ }
 }
 summary_0053<-dplyr::bind_rows(lapply(audit_0053,`[[`,'summary'))
 print(summary_0053[,c('matrix_id','reference_n','variables','compared_pairs','changed_pairs','pair_n_min','pair_n_max')])
-if(!'--check-only'%in%args)audit_save_summary(summary_0053)
+if(!'--check-only'%in%args) {
+ audit_save_summary(summary_0053)
+ source('R/codebook_workflow.R',local=TRUE);source('R/extraction_helpers.R',local=TRUE)
+ source('R/workflow_io.R',local=TRUE);source('R/workflow_results.R',local=TRUE)
+ checks <- extraction_check_matrix(college_data[,colnames(college_cor)],college_cor,college_pair_n)
+ wf_compact_extraction('0053','0053e',college_data,college_cor,college_pair_n,checks)
+}

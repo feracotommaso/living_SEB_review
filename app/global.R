@@ -2,6 +2,8 @@
 
 # Load the same implementation used by local analyses.
 source("R/utils.R", local = TRUE)
+source("R/variable_lookup.R", local = TRUE)
+source("R/review_coding.R", local = TRUE)
 
 # Necessary data and info
 # Data
@@ -16,7 +18,9 @@ admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review
 admcol <- load_xlsx_url(admcol_url)
 
 cat(">>> Preparing varlist...\n")
-varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that can be used with different grain [Topic, BROAD, specific, and label]
+suffixes_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/config/coding/variable_suffixes.csv"
+variable_suffixes <- utils::read.csv(suffixes_url, stringsAsFactors = FALSE)
+varlist <- variable_menu_lookup(as.data.frame(admcol[complete.cases(admcol[,1:4]),]), names(combined_data), variable_suffixes)
 labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
 
 pred_vars <- sort(c("selfmanagement", "cooperation", "socialengagement", "innovation", "emotionalresilience"))

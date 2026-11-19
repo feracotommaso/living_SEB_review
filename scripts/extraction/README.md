@@ -91,15 +91,16 @@ documentata, senza selezioni arbitrarie dei record o modifiche alla matrice 0013
 ## Secondo gruppo storico: 0026, 0030 e 0034
 
 La prima verifica ha riprodotto le quattro matrici esistenti: 4304 correlazioni.
-0026 e 0030 restano verifiche in sola lettura degli output scientifici, che
-salvano solo il riepilogo unico. Dopo le decisioni del 13 novembre, 0034 esporta
+0030 resta una verifica in sola lettura degli output scientifici, che
+salva solo il riepilogo unico. Dal18 novembre0026 esporta anche i due indicatori
+di performance approvati, come descritto sotto. Dopo le decisioni del13 novembre,0034 esporta
 il mapping SNS corretto e i domini BESSI con i pesi ufficiali, con la stessa
 procedura compatta di 0120. Per tutti, `--check-only` non scrive nulla.
 Gli script degli autori sono esaminati, non eseguiti.
 
 | Matrice | N di riferimento | N per coppia | Esito |
 |---|---:|---:|---|
-| 0026a | 2992 | 2978–2992 | Domini BESSI-45 verificati come medie dei blocchi di nove item del file; differenze solo da arrotondamento dei punteggi forniti. |
+| 0026a | 2992 | 2195–2992 | Domini BESSI-45 verificati; dal18 novembre31 correlazioni aggiunte per i due indicatori oggettivi. Vecchio blocco invariato. |
 | 0030a | 990 | 990 | Faccette ricostruite dagli item e domini con i pesi ufficiali. |
 | 0030b | 824 | 787–824 | Domini verificati dalle faccette fornite; gli item originali di Study 2 non sono nel file. |
 | 0034a | 303 | 301–303 | Faccette ricostruite dai sei item spagnoli selezionati; pesi ufficiali e mapping SNS corretti, con tutti i partecipanti conservati. |
@@ -650,3 +651,343 @@ per diagnosi differiscono fra loro: non sostituiscono i due totali concordanti.
 e quattro gli script rispettano `--check-only` senza scrivere file. I nuovi
 originali pubblici OSF sono locali e ignorati da Git, con SHA256 e download del
 15 novembre in `coding/sources.csv`; le date originali ignote restano ignote.
+
+## SECA facet recovery in 0053e (17 November 2026)
+
+The pilot exposed five SECA facets reported in Study 4 but missing from the
+previous matrix. The original college file contains all five scale means:
+SECA_SA_StrengthsWeaknesses (Self-Concept), SECA_SA_EmotionKnowledge,
+SECA_SM_EmotionRegulation, SECA_SM_GoalManagement and SECA_SM_SchoolWork.
+They map to secaSelfconcept, secaEmotionknowledge, secaEmotionregulation,
+secaGoalmanagement and secaSchoolwork. Original 1-4 means are supplied by the
+authors; no independent item-key reconstruction is claimed.
+
+All five share 249 observed participants among the 322 retained records.
+The matrix has 87 variables and 3741 pairs: 420 additions, no changed old
+coefficient or N. New pairs have Ns 247-249. The old common block is saved
+exactly after Pearson reconstruction agreement is checked. No automatic
+positive-definiteness correction or additional participant selection is applied.
+
+0053.R exports only 0053e through the compact workflow: private individual CSV
+with age, common matrix CSV/XLSX, pair Ns and summary. The other four matrices
+remain read-only checks. --check-only writes nothing. The existing exact
+revision ledger and last_update.xlsx document the addition.
+
+The approved review pilot is now integrated in records.csv, coding.xlsx and
+review_data. Topics reflect scientific focus; analyzed constructs are indexed
+once per article, including empirical review-only papers. All 51 current articles
+have received the expanded coding. The remaining fields stay explicitly blank.
+
+Second review group, 2026-11-18: 0071 Feraco et al. (SEB/SRL integration),
+0080 Sharabi et al. (university achievement and satisfaction), and 0113 Feraco
+et al. (SLD replication and synthesis). The first two are cross-sectional;
+0113 includes cross-sectional reanalysis plus a mini-meta-analysis. The 0113
+cohort is the same as 0071 and remains review-only/noNewData. Its final Figure 1
+and note 3 identify two high-school studies; no university context is inferred
+from residual discussion of an earlier three-study version. Indexed constructs:
+14, 9 and 14 respectively, with no duplicate scores or extra matrices. All three
+old positiveschooloutcomes assignments have been replaced after reading the
+papers; the code is retained as retired for historical compatibility. No
+coefficient, reference N, matrix file or historical manual script was changed.
+
+Third review group, 2026-11-18: 0012 Vega-Dienstmaier et al. (Peruvian
+emotional-resilience validation), 0014 Walton et al. (raters and item formats),
+and 0015 Lechner and Urban (social-category inequalities). All remain review-only
+with their historical sample fields. Indexed constructs: one, 22 and 37.
+The five ability-framed BFI domains in 0014 have their own non-BESSI family;
+Likert/forced-choice and self/caregiver variants do not duplicate the construct
+list. External criteria are mapped explicitly in coding evidence, including
+two tolerance indicators under one broad construct; no composite is computed.
+0015 uses two independent cohorts, not longitudinal repeated measurements,
+and analyzes all 32 BESSI facets plus five domains. Its social-group dimensions
+are indexed by focus topics; age is a sample descriptor, not a focal age effect.
+Four source-defined topics were registered (response formats, migration
+background, educational tracking and intersectionality); no older unreviewed
+paper was automatically recoded. No quantitative data or matrix changed.
+
+Fourth review group, 2026-11-18: 0018 Feraco et al. (SLD profiles and outcomes),
+0023 Beatty et al. (purpose during university), and 0026 Chen et al. (workplace).
+Indexed constructs: 12, 38 and 15. In0018, only the five innovation facets are
+separately analyzed in addition to the domains; other historically available
+matrix facets are not automatically added to the analyzed-construct list.
+In0023, the32 facets are actual predictors; domain labels identify blocks of
+predictors rather than five aggregate scores. Two purpose scales index one
+construct. Beatty remains review-only/missingData; Walton0014 remains
+review-only/noValidatedMeasure with no matrix.
+
+The user explicitly approved recovering both objective performance indicators
+in0026a. Released showing_center and deal_center are already monthly and
+centered within city. Keep them unchanged as jobperformanceactivity and
+jobperformancesales:15 to17 variables,105 to136 associations,31 additions,
+no old coefficient changed. Retain all2992 people; observed indicator Ns are
+2723/2196, with new pair Ns2195-2723. Eighteen of20 published performance
+correlations reproduce within rounding. The two printed stability/performance
+signs disagree with the reversal of the released neuroticism associations.
+Preserve the actual-data coefficients and document the discrepancy.
+
+0026.R now exports the common CSV/XLSX matrix, pair Ns, extraction summary and
+private individual CSV with age. --check-only remains read-only. Source URLs,
+unknown original retrieval dates, hashes and exact historical transition are
+recorded in the existing provenance/evidence/ledger tables.
+
+Fifth review group, 2026-11-19: 0027 Sewell et al. (BESSI short forms),
+0030 Feraco et al. (Italian BESSI), and 0034 Postigo et al. (Spanish BESSI).
+Indexed constructs:78,46 and68 respectively. In0027, the43 criterion rows in
+Table4 represent41 unique constructs after merging repeated GPA and life
+satisfaction entries; the five BESSI domains and32 facets are indexed once
+across forms and informants. New entries represent personal income and personal
+burnout; neither implies a new matrix. Finer SECA subscales recovered in0053
+are not separate analyzed criteria in0027. The paper remains review-only/noNewData.
+
+Focus topics are assessment/short forms/language adaptation for0027,
+assessment/language adaptation/nomological network for0030, and those three
+plus incremental validity for0034. Individual validation criteria remain
+discoverable through constructs. Generic selfreport tags are removed where
+self-report is a method rather than a dedicated comparison. SEB measurement
+still records ability, informant and frequency/typical-behavior methods as
+actually used. SEC-Q in0034 retains its historical broad construct mappings;
+this does not imply administration of the SECA instrument.
+
+All three retain cross: ancillary reliability retests do not add a longitudinal
+tag, and0030 recontacting supplies remaining questionnaires rather than modeled
+skill change. Existing quantitative routes, sample IDs, Ns, overlap decisions,
+matrix/pair-N files, source extraction scripts and historical manual files are
+unchanged. Coding evidence retains source pages and PDF hashes.
+
+Sixth review group, 2026-11-19 (five articles):0035 Yoon et al. (ACT prediction),
+0042 Feraco and Meneghetti (adolescent age/gender differences),0043 Soto et al.
+(matched skill/trait items),0045 Sewell et al. (prospective volunteering),
+and0048 Soto et al. (adolescent outcomes beyond traits). Indexed constructs:
+11,37,19,9 and40, using only existing variable/topic codes.
+
+0035 includes five representative BESSI facets,not five complete domains; ACT
+is indexed as standardized achievement. 0042 includes all32 facets explicitly
+analyzed in AppendixA as well as five domains; cross-sectional age patterns
+are not within-person change. Its historical review-only route is retained.
+0043 has ability/frequency versions of the same20 BESSI items plus five Mosaic
+scores; frequency-framed traits retain their existing broad trait mapping and
+are not mislabeled BFI-2. Forced-choice self-report is not a performance task.
+The focal response-format comparison is now an explicit topic. Two school-grade
+indicators index one construct; no new aggregate is computed.
+
+0045 includes all eight analyzed facets,including capacity for consistency,
+and volunteering once regardless of hour/category operationalization. Initial
+skills predict hours over ten weeks,so long is retained; program participation
+does not establish an evaluated SEB training intervention or repeated skill
+change. 0048 indexes five BESSI domains,five Big Five traits,five SECA dimensions
+and25 outcomes. Its topics describe nomological network,incremental validity
+and skill-trait differences; school outcomes are searchable through constructs.
+The approved representative status over0013 and all historical numerical values
+are unchanged. No matrix,pair-N file,codebook or extraction script was modified.
+
+Seventh review group,2026-11-19:0049 Breil et al. (self-concepts and role-play
+performance),0050 Lechner et al. (German BESSI),0057 Napolitano et al.
+(conceptual skill model),0061 Feraco et al. (change goals/beliefs),and0065
+Napolitano et al. (longitudinal correlated change). Indexed constructs:
+24,59,not applicable,4 and29. Coverage is30/51 articles and775 construct links.
+
+Three new personal-change constructs distinguish perceived feasibility,
+motivation and anticipated benefit from desired change. In0061 the skill/trait
+names are referents for these judgments,not measured ability/personality levels;
+SEB measurement is Not applicable. Its within-person framing experiment remains
+exp and is not a skill-training intervention. Purely conceptual0057 has theory
+design and Not applicable for actual samples,administered measures and analyzed
+constructs; its conceptual content is indexed by focused theory,trait-skill,
+assessment and developmental-process topics.
+
+New temporalstability distinguishes substantive rank-order/true-score stability
+from normative mean change and ancillary reliability retests. It is assigned to
+0050 and0065. The German paper explicitly studies temporal stability as a
+central aim; its pilot/report and Study2 design now include cross;long. The
+Study3 matrix remains cross with the previously accepted staggered timing.
+The two selected matrices,all scores,occasions,Ns and overlap decisions remain
+unchanged. 0065 is long and remains review-only; emotional/behavioral engagement
+are separate constructs,while outcomes from the wider baseline dataset are not
+automatically added. All three waves index each base construct only once.
+
+0049 includes expressed skills once across self/observer appraisals. The user
+approved the separately prepared recovery on2026-11-19. The registered self
+suffix identifies task_socialengagementself,task_cooperationself and
+task_emotionalresilienceself; existing observer task codes are unchanged.
+The common matrix now has28 variables and378 correlations (78 additions),
+with new pair Ns130-137 and all137 participants retained. All300 old coefficients
+are preserved exactly. Nine selected published observed-score references match
+rounding. The script exports the common CSV/XLSX,pair Ns,private individual CSV
+and aggregate checks; the exact approved transition and evidence are recorded.
+Source self-appraisals retain their1-6 metric,distinct from global BESSI scores.
+
+Eighth review group,2026-11-19:0066 De Fruyt/Scheirlinckx (assessment review),
+0073 Ichsan et al. (VR review),0087 Collie/Ryan (autonomy/PSEC),0095 Sewell et al.
+(volunteering experiences) and0100 Pellegrino et al. (university SLD).
+Indexed constructs: not applicable,not applicable,13,9 and13. Coverage is35/51
+articles and810 links. Only experientiallearning required a new base construct;
+positive reflection valence and coded social interaction reuse positiveaffect
+and socialsituation with explicit operational evidence.
+
+0066 is a narrative methodological review; measurement modalities are focal
+topics rather than falsely administered measures. 0073 is a descriptive systematic
+review: its SEB categories classify technologies/studies and do not establish
+quantitatively synthesized BESSI scores or pooled effects,despite a Meta-Analysis
+section heading. Both have review design and no original sampled context or
+analyzed-score index. 0087 is long for T1 support predicting T2 competence/skills;
+its retained model correlations,N373,FIML,221 follow-up participants and15 blanks
+are unchanged. 0095 is long;exp for the reported nonrandomized quasi-experimental
+program comparison,not random allocation. Later experience features enter only
+review coverage; its first-occasion matrix/available-item scoring are unchanged.
+0100 indexes13 actually analyzed scores; scoring intermediates are not invented
+as separate reported subscale analyses. School factors are now an explicit focus
+topic. No quantitative value outside the approved0049 addition was changed.
+
+## 2026-11-18: CAAS and SPACS resources
+
+0068 Pellegrino et al., "Ready for What's Next? The Associations Between Social,
+Emotional, and Behavioral Skills and Career Adaptability in High School Students":
+four CAAS resources (concern, control, curiosity, confidence), each a six-item
+mean independently checked against the supplied score. Retain the overall
+adaptability score and all 356 people. Matrix 0068a expands from 9 to 13 variables,
+36 to 78 associations, preserving its old common block exactly. The published
+350-person reference still reproduces all 55 Table 2 coefficients; it does not
+override the approved retained sample or corrected within-year grades.
+
+0070 Feraco et al., "The role of social, emotional, and behavioral skills for
+nature connectedness, action competence, and proenvironmental behaviors in
+adolescence": add SPACS Knowledge of Action Possibilities (items 1-4), Confidence
+in Own Influence (5-8), and Willingness to Act (9-12), as four-item means using
+the authors' key. All 30 published associations involving these resources
+reproduce within rounding. Matrix 0070a expands from 9 to 12 variables, 36 to
+66 associations, retaining all 702 people, the total score and PebSingle.
+
+Both additions were explicitly approved by the user. Common matrix CSV/XLSX,
+private individual CSV, pair Ns, extraction summary, exact revision ledger and
+coding evidence are updated. No old coefficient or reference N changes.
+
+
+Ninth review group,2026-11-19:0104 Sun et al. (longitudinal mental-health
+networks),0107 Fallucchi et al. (conditional-cooperation validation),0108 Soto
+et al. (behavioral challenges),0114 Jalynskij et al. (adult age differences),
+and0118 Cravet/Usai (board games). Indexed constructs:9,26,19,59 and15;
+coverage is40/51 articles and938 article/construct links. Nine base constructs
+and the boardgames focus topic were registered before workbook import.
+Existing variable groupings and compact,unwrapped Excel formatting are preserved.
+
+0104 stays review-only/dataQuality,with nine network nodes; wellbeing component
+scales are not duplicated as separate analyzed outcomes. 0107 stays meta-only;
+its construct index includes individual-item regression and supplementary
+behavioral/environmental analyses,but does not add the five BESSI facets merely
+because they are available for scoring. Distinct conditions/items are indexed
+under shared constructs without calculating new totals. The user's earlier
+choice not to recover conditional-cooperation matrix correlations remains in
+force. Design exp identifies experimental behavioral elicitation,not skill
+training or random intervention allocation.
+
+0108 has five skill domains,twelve outcomes,change goals and skill practice;
+Big Five scores available in the release/historical matrix are not automatically
+indexed as analyzed paper constructs. Its design is long;exp for a repeated
+single-arm intervention. 0114 remains cross and review-only/noNewData: skill
+and trait age patterns come from separate adult samples,and BFI halves across
+occasions do not make this an analysis of within-person developmental change.
+It indexes all32 BESSI and15 Big Five facets,plus domains and life-quality
+criteria. 0118 is long;exp for a teacher-selected,nonrandomized classroom trial;
+its BESSI method follows the paper's stated frequency anchors,with unavailable
+administered-form confirmation explicit in evidence. Teacher BRIEF and cognitive
+tasks are external outcomes,not extra SEB methods. Innovation is indexed because
+it is described/analyzed at baseline despite omission from later models.
+
+No correlation,sample N,eligibility,download date,matrix,pair-N file or extraction
+script changed in this group. CSV/XLSX and editable-workbook round-trips,local
+app filters and the relevant codebook/workflow/review/reconciliation tests passed.
+The results report was rendered again; all six models converged with finite
+estimates. Historical manual scripts and user-edited QMD prose remain unchanged.
+
+
+Tenth review group,2026-11-19:0119 Jayawickreme/Fleeson (dynamic personality
+models),0120 Fernandes et al. (Brazilian BESSI/self-informant agreement),0123
+Rakhimbekova et al. (Kazakhstani teacher adaptation/profiles),0124 Hopwood
+(personality-functioning conceptualizations),and0126 Allemand et al. (change
+stages and human/digital support). Construct counts: not applicable,59,21,
+not applicable,and6. Coverage is45/51 articles and1024 article/construct links.
+No new variable codes were needed; skillprofiles and digitalassistance were
+registered as reusable focus topics before coding/import.
+
+0119 and0124 are theory papers: cited findings,instrument names and conceptual
+figures do not constitute newly analyzed or quantitatively synthesized scores.
+Their empirical construct index and participant/measurement fields are Not
+applicable; their substantive arguments remain searchable through focus topics.
+0120 indexes all37 BESSI domains/facets,20 Big Five domains/facets,life
+satisfaction and self-esteem once across studies,informants and occasions.
+Its brief14-day test-retest subset concerns reliability; both components are
+classified cross under the substantive-design convention rather than inheriting
+long from the repeated administration alone. The previously approved scoring,
+invalid-item handling,N1103/N123 and unresolved publication discrepancies remain
+unchanged. No author contact is performed.
+
+0123 remains review-only/noValidatedMeasure. Its modified45-item version uses
+reverse-phrased adaptations and lacks confirmed equivalence to original facet
+scores. The initial21-construct index at the tenth-group checkpoint was
+superseded by the user's clarification on2026-11-19: the45-item form covers all
+29 non-compound facets,excluding self-reflection,adaptability and capacity for
+independence. The current index has five domains and29 facets,with the adapted
+format and continued quantitative exclusion explicit in notes/evidence. Earlier
+coverage-limit evidence is retained as superseded rather than left unresolved.
+No original six-item facet-score equivalence or new matrix is asserted.
+Teachers are classified as Workplace; AI/digital-era framing does not establish
+measured AI practices or an intervention.
+
+0126 indexes six constructs,including categorical human/digital support
+preference analyzed in the paper but absent from the local quantitative subset.
+The three-stage change item is indexed once under the existing broad changegoals
+code,not duplicated as a second independently measured motivation scale.
+BESSI coverage is adaptability only. All1917 approved Part2 participants and
+all existing matrix values are retained; Sample1 receives no BESSI matrix.
+
+All correlations,Ns,eligibility,download dates,matrices,pair-N files,extraction
+scripts and historical manual inputs are unchanged. Editable workbook/CSV
+round-trips,source/hash checks,local app construct/topic/design filtering and
+codebook/human-workflow/review-coding tests passed. Results HTML was rebuilt;
+all six models converged with finite estimates,and user QMD prose is unchanged.
+
+
+Eleventh/final expanded-review group,2026-11-19: user-confirmed0123 correction
+plus0132 Pellegrino et al. (dual rating),0141 Sharabi (SLD/ADHD academic
+adjustment),0144 Feraco et al. (change beliefs/workshop framing),0145 Lubczyk
+et al. (cognition/personality/sustainability),0148 Njoten/Feyer (4S framework),
+and0150 Napolitano et al. (life-span age gradients). The seven current construct
+counts are34,18,9,3,32,not applicable,and37. All51 current articles now have
+the five expanded fields,substantive designs and focus topics; the general
+workbook contains1136 unique article/construct links. Two base codes were added:
+interventioninterest and overall complexproblemsolving,without new matrix
+columns or scores. The skillforeducation focus topic captures substantive
+educational applications that cannot be represented by achievement outcomes.
+
+0132 indexes domains,external outcomes and similarity beliefs once across
+instruments/informants; dual frequency ratings are trait comparisons,not a second
+SEB ability method. Existing anxiety/social-status/parent-aggregation corrections
+and N598 are retained. 0141 has nine constructs and remains cross; ADHD justifies
+the general disabilities topic alongside SLD. Supplied N525 and user-confirmed
+sex direction are unchanged. 0144 measures change goals,feasibility beliefs and
+hypothetical-workshop interest,not current skill levels. Its design cross;exp
+includes randomized vignette framing; no program is delivered and no skill-change
+outcome or quantitative matrix is invented.
+
+0145 indexes both studies,including Study1 Big Five predictors and Study2 overall
+CPS with its separately analyzed knowledge/performance indicators. BESSI/HEXACO
+facets computed for domain scoring and SECS subscale scores available in the
+project matrix are not automatically treated as separately analyzed source
+outcomes. All existing matrix columns are retained. Different reasoning tests
+are indexed under broad fluid intelligence without pooling or computing new
+scores. Supplementary source code was inspected statically for the analyzed
+attitude subscales and cognitive indicators. 0148 is review;theory: bibliometric
+keyword counts and proposed competencies do not constitute a pooled synthesis
+of participant skill scores; the analyzed-score index is Not applicable.
+0150 indexes all37 BESSI domains/facets,retains cross,and uses normativechange
+instead of generic skilldevelopment for its typical age-pattern question.
+The approved596 overlap removals and analytic N30719 are unchanged.
+
+All correlations,Ns,eligibility,download dates,matrices,pair-N files,extraction
+scripts and historical manual inputs are unchanged. CSV/XLSX/import round-trips,
+complete-field/registered-code checks and local app filters passed. Relevant
+codebook,historical-revision,human-workflow and review-coding tests passed after
+replacing a test assumption that an uncoded production article must still exist
+with explicit missing/blank/pending fixtures. Not applicable and Not reported
+remain independently tested. Results HTML was rebuilt; all six models converged
+with finite estimates and user-edited QMD prose is unchanged.

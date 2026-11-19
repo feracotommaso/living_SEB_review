@@ -25,7 +25,7 @@ wf_commit <- function(tables, xlsx = list()) {
   invisible(paths)
 }
 
-wf_write_book <- function(tables, path, sources, editable = list(), instructions = NULL) {
+wf_write_book <- function(tables, path, sources, editable = list(), instructions = NULL, compact=FALSE) {
   wb <- openxlsx::createWorkbook()
   openxlsx::modifyBaseFont(wb, fontName = "Arial", fontSize = 10)
   if (!is.null(instructions)) tables <- c(list(istruzioni = instructions), tables)
@@ -43,10 +43,17 @@ wf_write_book <- function(tables, path, sources, editable = list(), instructions
     widths[names(x) %in% c("title", "notes", "evidence", "description", "definition", "istruzione", "provenance_note", "source", "path", "review_topics", "authors", "open_data", "doi", "ai_rationale", "ai_evidence", "adjudication_note", "issue")] <- 65
     widths[names(x) == "abstract"] <- 100
     openxlsx::setColWidths(wb, name, seq_len(ncol(x)), widths)
-    openxlsx::addStyle(wb, name, openxlsx::createStyle(wrapText = TRUE, valign = "top"),
+    openxlsx::addStyle(wb, name, openxlsx::createStyle(wrapText = !compact, valign = "top"),
       rows = seq_len(nrow(x) + 1L), cols = seq_len(ncol(x)), gridExpand = TRUE, stack = TRUE)
     openxlsx::setRowHeights(wb, name, 1, 35)
-    ft_fit_wrapped_rows(wb, name, x, widths, minimum = 30)
+    if(!compact)ft_fit_wrapped_rows(wb, name, x, widths, minimum = 30)
+    if(compact) {
+      widths<-vapply(x,function(v)min(230,max(18,max(c(nchar(wf_text(v)),0))+3)),numeric(1))
+      openxlsx::setColWidths(wb,name,seq_len(ncol(x)),widths)
+      openxlsx::addStyle(wb,name,openxlsx::createStyle(wrapText=FALSE,valign='center'),
+        rows=seq_len(nrow(x)+1L),cols=seq_len(ncol(x)),gridExpand=TRUE,stack=TRUE)
+      openxlsx::setRowHeights(wb,name,seq_len(nrow(x)+1L),heights=19)
+    }
     ids <- which(grepl("_id$", names(x)))
     if (length(ids) && nrow(x)) openxlsx::addStyle(wb, name,
       openxlsx::createStyle(numFmt = "@", halign = "left"), rows = seq_len(nrow(x)) + 1L,

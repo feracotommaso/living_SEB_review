@@ -15,6 +15,17 @@ rules, implementation conventions and unresolved legacy mappings/definitions.
 The shared article-script style, evolving codebook rules and registered measure
 suffixes are specified in `policies/extraction_conventions.md`.
 
+Update 2026-11-18: the workbook dictionary also describes five article-level
+review fields: main_objective, sample_context, seb_measurement,
+study_contribution and constructs_analyzed. Their values live in the existing
+records.csv and review_data, while the analytical 31-field contract is unchanged.
+Study design accepts multiple semicolon-separated codes. Quantitative components
+retain their own design; article/review views show the union. Use the full paper
+to code substantive designs and construct coverage, including review-only papers
+that analyze or quantitatively synthesize existing data. Do not extract new
+sample demographics merely to fill review-only rows. Blank means not yet
+assessed; explicit Not reported and Not applicable are distinguished.
+
 ## Scope and units
 
 Review-only papers receive bibliographic information, review topics, framework

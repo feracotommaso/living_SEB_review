@@ -4,7 +4,7 @@ source("workflow.R")
 copy_workflow_fixture <- function() {
   root <- tempfile("human_workflow_"); dir.create(root)
   files <- c(list.files("data/3.meta_data/coding", pattern = "^(records|sources|evidence)\\.csv$", full.names = TRUE),
-    "config/coding/legacy_31_fields.csv", "data/topics_codebook.csv")
+    "config/coding/legacy_31_fields.csv", "data/topics_codebook.csv",'data/matrix_codebook.csv')
   for (path in files) {
     target <- file.path(root, path); dir.create(dirname(target), recursive = TRUE, showWarnings = FALSE)
     stopifnot(file.copy(path, target))

@@ -1,4 +1,4 @@
-# 0049: approved recovery of bf_emotionalvolatility; retain the old comparison.
+# 0049: approved emotional-volatility and matched self-rated task recoveries.
 # A normal run exports the reviewed matrix. --check-only writes nothing.
 # Paper data/code: https://osf.io/74qnu/. Historical retrieval date unknown.
 source("R/historical_audit.R")
@@ -86,8 +86,43 @@ audit_0049$volatility$summary$published_pairs_compared <- nrow(published)
 audit_0049$volatility$summary$published_pairs_outside_rounding <- sum(abs(calculated-published$r)>.00500001)
 summary_0049 <- dplyr::bind_rows(lapply(audit_0049,`[[`,"summary"))
 print(summary_0049[,c("matrix_id","comparison","changed_pairs","added_variables","pair_n_min","pair_n_max")])
+# Approved 2026-11-19: matched self-appraisals after each role-play, not the
+# six auxiliary cross-exercise ratings. These are task performance on 1-6,
+# distinct from the global BESSI self-concepts and the existing observer scores.
+self_performance_sources <- c(task_socialengagementself='Agency_self',
+  task_cooperationself='Communion_self',task_emotionalresilienceself='Resilience_self')
 data_matrix <- volatility_candidate
-approved <- audit_0049$volatility
+for(variable in names(self_performance_sources)) {
+  value <- as.numeric(raw[[self_performance_sources[[variable]]]])
+  stopifnot(length(value)==137L,!anyNA(value),all(value>=1&value<=6))
+  data_matrix[[variable]] <- value
+}
+self_performance_note <- paste('User-approved 2026-11-19: recover three matched role-play self-appraisals with registered attached self suffix.',
+  'task_socialengagementself=Agency_self; task_cooperationself=Communion_self; task_emotionalresilienceself=Resilience_self.',
+  'Existing unsuffixed task codes remain observer-rated performance; global BESSI self-concepts remain separate.',
+  'All137 people retained. Each self-appraisal has137 observations on the original1-6 metric; no rescaling,imputation or exclusions.',
+  'Expand25 to28 variables and300 to378 correlations:78 additions,all previously stored coefficients and N=137 preserved exactly.',
+  'New pair Ns130-137; full-matrix pair Ns128-137. Nine selected self-rating references in Tables3-5 reproduce within rounding.',
+  'Six auxiliary cross-exercise self-ratings are outside the matched focal analyses and are not added.')
+audit_0049$self <- audit_compare_matrix('0049','0049a',data_matrix,137,
+  self_performance_note,names(source_hashes),'0049 PDF Tables3-5 pp.6-7; matched original self-appraisal columns; user approval2026-11-19',
+  status='APPROVED_SELF_RATED_PERFORMANCE',comparison='approved_self_rated_performance')
+references <- data.frame(self=rep(names(self_performance_sources),each=3),
+  other=c('task_socialengagement','extraversion','socialengagement',
+    'task_cooperation','agreeableness','cooperation',
+    'task_emotionalresilience','neuroticism','emotionalresilience'),
+  r=c(.44,.24,.29,.22,.28,.49,.24,-.17,.25))
+calculated_self <- audit_0049$self$candidate[cbind(references$self,references$other)]
+stopifnot(all(abs(calculated_self-references$r)<.0050001))
+audit_0049$self$summary$published_pairs_compared <- nrow(references)
+audit_0049$self$summary$published_pairs_outside_rounding <- 0L
+# Retain the saved common block exactly after independent Pearson agreement.
+saved <- as.matrix(readxl::read_excel('data/3.meta_data/matrices/0049a.xlsx'))
+rownames(saved) <- colnames(saved);common <- intersect(colnames(saved),colnames(audit_0049$self$candidate))
+stopifnot(isTRUE(all.equal(saved[common,common],audit_0049$self$candidate[common,common],tolerance=1e-12)))
+audit_0049$self$candidate[common,common] <- saved[common,common]
+summary_0049 <- dplyr::bind_rows(summary_0049,audit_0049$self$summary)
+approved <- audit_0049$self
 if(!"--check-only" %in% args) {
   source("R/codebook_workflow.R",local=TRUE)
   source("R/extraction_helpers.R",local=TRUE)

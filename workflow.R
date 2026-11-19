@@ -60,6 +60,7 @@ aggiungi_campione <- function(paper_id, componente, campione, occasione = "First
 importa_articolo <- function(file_json, lotto) wf_import_article(file_json, lotto)
 importa_codebook <- function() {
   tables <- list()
+  books <- list()
   for (kind in c("variables", "topics")) {
     stem <- if (kind == "variables") "data/matrix_codebook" else "data/topics_codebook"
     edited <- codebook_excel(paste0(stem, ".xlsx")); current <- codebook_csv(paste0(stem, ".csv"))
@@ -68,9 +69,17 @@ importa_codebook <- function() {
     if (length(setdiff(na.omit(current[[key]]), na.omit(edited[[key]])))) stop("Non rinominare/eliminare codici gia usati: ", kind)
     added <- edited[!codebook_blank(edited[[key]]) & !edited[[key]] %in% current[[key]], , drop = FALSE]
     if (nrow(added)) codebook_validate(added, kind, additions = TRUE)
+    if(kind=='variables') {
+      edited <- codebook_order_variables(edited)
+      books[[paste0(stem,'.xlsx')]] <- codebook_variable_workbook(edited)
+    } else {
+      edited<-edited[order(match(edited$Broad_topic,unique(edited$Broad_topic))),,drop=FALSE]
+      rownames(edited)<-NULL
+      books[[paste0(stem,'.xlsx')]]<-codebook_variable_workbook(edited,'Broad_topic')
+    }
     tables[[paste0(stem, ".csv")]] <- edited
   }
-  wf_commit(tables)
+  wf_commit(tables,books)
   message("Codebook importati; codici esistenti preservati.")
 }
 

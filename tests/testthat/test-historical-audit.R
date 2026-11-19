@@ -47,6 +47,16 @@ test_that('second historical batch checks are read-only and reproduce approved o
     runs[['0030']]$summary_0030,runs[['0034']]$audit_0034$combined$summary)
   expect_equal(sum(rows$compared_pairs),4304)
   expect_true(all(rows$changed_pairs==0))
+  chen<-runs[['0026']]
+  expect_equal(ncol(chen$data_performance),17)
+  expect_equal(chen$data_performance$jobperformanceactivity,chen$raw_scores$showing_center)
+  expect_equal(chen$data_performance$jobperformancesales,chen$raw_scores$deal_center)
+  expect_equal(chen$audit_0026_performance$summary$changed_pairs,0)
+  expect_equal(chen$audit_0026_performance$summary$published_pairs_checked,20)
+  expect_equal(chen$audit_0026_performance$summary$published_pairs_outside_rounding,2)
+  expect_equal(chen$audit_0026_performance$pair_n['jobperformanceactivity','jobperformanceactivity'],2723)
+  expect_equal(chen$audit_0026_performance$pair_n['jobperformancesales','jobperformancesales'],2196)
+  expect_equal(chen$audit_0026_performance$pair_n['jobperformanceactivity','jobperformancesales'],2196)
   expect_equal(sum(runs[['0030']]$matched),68)
   expect_equal(runs[['0034']]$audit_0034$source$summary$changed_pairs,461)
   expect_equal(as.numeric(runs[['0034']]$combined_data$socialnetworknegativesocialcomparison),
@@ -123,6 +133,10 @@ test_that('fourth batch detects sample duplication and scoring issues without ch
   expect_equal(runs[['0049']]$audit_0049$volatility$summary$added_variables,'')
   expect_equal(ncol(runs[['0049']]$volatility_candidate),25)
   expect_equal(runs[['0049']]$audit_0049$volatility$summary$published_pairs_outside_rounding,0)
+  expect_equal(runs[['0049']]$audit_0049$self$summary$published_pairs_compared,9)
+  expect_equal(runs[['0049']]$audit_0049$self$summary$published_pairs_outside_rounding,0)
+  expect_equal(runs[['0049']]$audit_0049$self$summary$pair_n_min,128)
+  expect_equal(runs[['0049']]$audit_0049$self$summary$pair_n_max,137)
   expect_equal(sum(runs[['0050']]$score_checks$a$changed_values),0)
   expect_setequal(runs[['0050']]$score_checks$b$facet[runs[['0050']]$score_checks$b$changed_values>0],
     c('persuasiveskill','expressiveskill','organizationalskill','detailmanagement',

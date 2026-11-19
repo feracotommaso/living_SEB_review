@@ -88,7 +88,7 @@ weights <- c(perspectivetakingskill=1,capacityfortrust=1,
 data_scored$cooperation <- as.numeric(as.matrix(data_scored[,names(weights)]) %*% weights/sum(weights))
 matrices$scoring <- data_scored
 matrices$recovery <- data_scored
-matrices$recovery$conditionalcooperation <- data_analytic$CClab # CC1 vs all other lab types.
+matrices$recovery$conditionalcooperationtask <- data_analytic$CClab # CC1 vs all other lab types.
 
 # 6. Four available TIPI pairs reproduce supplied traits exactly. Extraversion's
 # second raw item (6) is absent; preserve the supplied score, not a guessed item.

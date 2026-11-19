@@ -2,8 +2,8 @@
 wf_coding_dir <- "data/3.meta_data/coding"
 wf_records_path <- file.path(wf_coding_dir, "records.csv")
 wf_coding_path <- file.path(wf_coding_dir, "coding.xlsx")
-wf_context <- c("batch_id", "screening_record_id", "component_label", "sample_label", "occasion_label", "occasion_role", "change_note")
-wf_paper_fields <- setdiff(coding_article_fields(), "notes")
+wf_context <- c("batch_id", "screening_record_id", "component_label", "sample_label", "occasion_label", "occasion_role", "change_note",review_coding_fields())
+wf_paper_fields <- c(setdiff(coding_article_fields(), "notes"),review_coding_fields(),'study_design')
 wf_sample_fields <- c("component_label", "sample_label", "occasion_label", "occasion_role", coding_sample_fields(), "review_topics", "exclusion_meta", "change_note")
 
 wf_coding_views <- function(records) {
@@ -13,8 +13,23 @@ wf_coding_views <- function(records) {
   # Review-only notes belong to the article; quantitative notes stay by sample.
   papers$notes <- records$notes[match(papers$paper_id, records$paper_id)]
   papers$notes[papers$final_decision %in% c("both", "meta")] <- NA_character_
+  papers$study_design <- vapply(papers$paper_id,function(id) {
+    v<-unique(review_coding_tokens(records$study_design[records$paper_id==id]))
+    if(length(v))paste(v,collapse='; ') else NA_character_
+  },character(1))
   samples <- records[records$final_decision %in% c("both", "meta"), c("paper_id", "sample_id", "matrix_id", wf_sample_fields), drop = FALSE]
-  list(articoli = papers, campioni = samples)
+  catalog<-codebook_csv('data/matrix_codebook.csv')
+  constructs<-lapply(seq_len(nrow(papers)),function(i){
+    codes<-review_coding_tokens(papers$constructs_analyzed[i])
+    codes<-unique(codes[codes%in%catalog$column_name])
+    if(!length(codes))return(NULL)
+    j<-match(codes,catalog$column_name)
+    data.frame(paper_id=papers$paper_id[i],author_et_al=papers$author_et_al[i],
+      construct_code=codes,label=catalog$label[j],Topic=catalog$Topic[j],broad=catalog$broad[j])
+  })
+  constructs<-dplyr::bind_rows(constructs)
+  if(!ncol(constructs))constructs<-wf_empty(c('paper_id','author_et_al','construct_code','label','Topic','broad'))
+  list(articoli = papers, campioni = samples,costrutti=constructs)
 }
 wf_coding_tables <- function() {
   list(records = wf_read(wf_records_path),
@@ -27,7 +42,7 @@ wf_export_coding <- function(force = FALSE) {
       stop("Ci sono modifiche in coding.xlsx: importa_codifica() prima di rigenerarlo.", call. = FALSE)
   }
   data <- wf_coding_tables(); views <- wf_coding_views(data$records)
-  tables <- c(views, list(fonti = data$sources, evidenze = data$evidence, dizionario = coding_dictionary()))
+  tables <- c(views, list(fonti = data$sources, evidenze = data$evidence, dizionario = review_coding_dictionary(coding_dictionary())))
   instructions <- data.frame(azione = c("Articoli", "Campioni", "Note", "Correzioni", "Nuovi campioni", "Fonti", "Importare"),
     istruzione = c("Celle gialle modificabili. Gli identificativi e la decisione di screening si aggiornano tramite il lotto.",
       "Una riga per campione quantitativo. Restano visibili le righe storiche incomplete, senza inventare dati.",
@@ -35,14 +50,14 @@ wf_export_coding <- function(force = FALSE) {
       "Inserisci una breve motivazione in change_note per le correzioni. Una modifica di un campo articolo vale per tutti i suoi campioni; le modifiche esplicite nel foglio campioni hanno precedenza.",
       "Usa aggiungi_campione(): gli ID vengono assegnati da R. Non aggiungere o cancellare righe direttamente nell'Excel.",
       "Registra URL, percorso locale, data nota o sconosciuta e provenienza in fonti. Evidenze riporta pagine e motivazioni della codifica.",
-      "Salva e chiudi Excel, poi importa_codifica(). Controlla anteprima_risultati() e infine aggiorna_risultati()."))
+      "Salva e chiudi Excel, poi importa_codifica(). Costrutti e una vista di controllo: modifica constructs_analyzed in articoli. Il disegno quantitativo si modifica in campioni; articoli ne mostra l'insieme. Controlla anteprima_risultati() e infine aggiorna_risultati()."))
   wf_write_book(tables, wf_coding_path,
     file.path(wf_coding_dir, c("records.csv", "evidence.csv", "sources.csv")),
     editable = list(articoli = c(wf_paper_fields, "notes", "change_note"), campioni = wf_sample_fields,
-      fonti = setdiff(names(data$sources), "sha256"), evidenze = names(data$evidence)), instructions = instructions)
+      fonti = setdiff(names(data$sources), "sha256"), evidenze = names(data$evidence)), instructions = instructions,compact=TRUE)
 }
 
-wf_validate_records <- function(records, previous = NULL) {
+wf_validate_records <- function(records, previous = NULL, topic_catalog = wf_read("data/topics_codebook.csv")) {
   fields <- c(coding_dictionary()$field, wf_context)
   if (!identical(names(records), fields)) stop("Contratto della codifica non valido.")
   if (anyNA(records$paper_id) || anyNA(records$matrix_id) || anyDuplicated(records$matrix_id) ||
@@ -56,7 +71,9 @@ wf_validate_records <- function(records, previous = NULL) {
   }
   date <- wf_text(records$download_date)
   if (any(nzchar(date) & (!grepl("^[0-9]{4}-[0-9]{2}-[0-9]{2}$", date) | is.na(as.Date(date, format = "%Y-%m-%d"))))) stop("Data di download non valida.")
-  enums <- list(study_design = c("cross", "long", "exp"), age_class = c("children", "school_age", "young_adult", "adult", "older_adult"),
+  for(v in records$study_design)review_validate_design(v)
+  review_validate_article(records,codebook_csv('data/matrix_codebook.csv'))
+  enums <- list(age_class = c("children", "school_age", "young_adult", "adult", "older_adult"),
     clinical = c("clinical", "not_clinical"), seb_measure_type = c("short", "long"))
   for (field in names(enums)) {
     changed <- if (is.null(previous)) rep(TRUE, nrow(records)) else
@@ -64,13 +81,17 @@ wf_validate_records <- function(records, previous = NULL) {
     bad <- changed & nzchar(wf_text(records[[field]])) & !records[[field]] %in% enums[[field]]
     if (any(bad)) stop("Categoria non valida: ", field)
   }
-  known <- wf_read("data/topics_codebook.csv")$Topic
+  known <- topic_catalog$Topic
   for (i in seq_len(nrow(records))) {
     old <- if (!is.null(previous)) previous$review_topics[match(records$matrix_id[i], previous$matrix_id)] else NA_character_
     if (!wf_same(records$review_topics[i], old)) {
       topics <- trimws(strsplit(wf_text(records$review_topics[i]), ";", fixed = TRUE)[[1]])
       unknown <- setdiff(topics[nzchar(topics)], known)
       if (length(unknown)) stop("Topic da aggiungere al codebook: ", paste(unknown, collapse = ", "))
+      catalog<-topic_catalog
+      retired<-catalog$Topic[!is.na(catalog$notes)&grepl('LEGACY_ONLY',catalog$notes,fixed=TRUE)]
+      newly_assigned<-setdiff(topics,review_coding_tokens(old))
+      if(any(newly_assigned%in%retired))stop('Topic storico da ricodificare, non assegnare nuovamente: ',paste(intersect(newly_assigned,retired),collapse=', '))
     }
     if (!is.na(records$batch_id[i]) && records$final_decision[i] %in% c("both", "meta") && !is.na(records$sample_id[i])) {
       if (!identical(records$occasion_role[i], "first_eligible")) stop("Solo la prima occasione eleggibile e attiva.")
@@ -89,6 +110,13 @@ wf_import_coding <- function(save = TRUE) {
   wf_check_version(wf_coding_path)
   data <- wf_coding_tables(); before <- data$records; after <- before
   views <- wf_coding_views(before)
+  derived<-wf_read_book(wf_coding_path,'costrutti')
+  baseline<-wf_read_book(wf_coding_path,'_base')
+  stored<-baseline$value[baseline$sheet=='costrutti']
+  expected<-if(identical(stored,'null'))views$costrutti[FALSE,] else
+    do.call(rbind,lapply(stored,function(v)as.data.frame(jsonlite::fromJSON(v),stringsAsFactors=FALSE)))
+  if(!identical(lapply(derived,wf_text),lapply(as.data.frame(expected),wf_text)))
+    stop('Costrutti e una vista di controllo: modifica constructs_analyzed nel foglio articoli.')
   papers <- wf_check_keys(views$articoli, wf_read_book(wf_coding_path, "articoli"), "paper_id")
   samples <- wf_check_keys(views$campioni, wf_read_book(wf_coding_path, "campioni"), "matrix_id")
   for (field in setdiff(names(papers), c(wf_paper_fields, "notes", "change_note")))
@@ -98,6 +126,8 @@ wf_import_coding <- function(save = TRUE) {
   for (i in seq_len(nrow(papers))) for (field in c(wf_paper_fields, "notes", "change_note")) {
     if (wf_same(papers[[field]][i], views$articoli[[field]][i])) next
     if (field == "notes" && papers$final_decision[i] %in% c("both", "meta")) stop("Inserisci le note quantitative nel foglio campioni: ", papers$paper_id[i])
+    if(field=='study_design' && papers$final_decision[i]%in%c('both','meta'))
+      stop('Modifica il disegno delle componenti nel foglio campioni; la vista articolo ne mostra l\'insieme: ',papers$paper_id[i])
     after[[field]][after$paper_id == papers$paper_id[i]] <- papers[[field]][i]
   }
   for (i in seq_len(nrow(samples))) for (field in wf_sample_fields) {
@@ -140,6 +170,11 @@ wf_current <- function(records = wf_read(wf_records_path)) {
   provenance <- data.frame(paper_id = records$paper_id, matrix_id = records$matrix_id,
     origin = ifelse(is.na(records$batch_id), "historical", ifelse(grepl("-external-", records$batch_id, fixed = TRUE), "external_coding", "monthly_coding")),
     batch_id = records$batch_id, eligibility_status = ifelse(is.na(records$batch_id), "historical_not_reassessed", "full_text_v2_resolved"))
+  for(f in review_coding_fields())review[[f]]<-records[[f]][match(review$matrix_id,records$matrix_id)]
+  review$study_design <- vapply(review$paper_id,function(id) {
+    v<-unique(review_coding_tokens(records$study_design[records$paper_id==id]))
+    if(length(v))paste(v,collapse='; ') else NA_character_
+  },character(1))
   list(basic = basic, review = review, legacy = coding_read_basic_info(), provenance = provenance, matrices = data.frame())
 }
 

@@ -10,7 +10,8 @@ wf_build_results <- function(records = wf_read(wf_records_path)) {
     current$basic$n[j] <- as.numeric(extraction$n[i])
     records$n[j] <- extraction$n[i]
   }
-  current$review <- current$basic[match(current$review$matrix_id, current$basic$matrix_id), , drop = FALSE]
+  # Preserve article-level expanded fields and design union in the review view.
+  current$review$n <- current$basic$n[match(current$review$matrix_id,current$basic$matrix_id)]
   paths <- list.files("data/3.meta_data/matrices", pattern = "\\.xlsx$", full.names = TRUE)
   ids <- tools::file_path_sans_ext(basename(paths))
   matched <- match(ids, current$basic$matrix_id)

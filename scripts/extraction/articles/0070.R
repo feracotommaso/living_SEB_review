@@ -64,6 +64,36 @@ peb_delta<-abs(audit_0070$peb$candidate[names(peb_reference),'proenvironmentalbe
 stopifnot(all(peb_delta<=.0050001))
 audit_0070$peb$summary$published_pairs_checked<-length(delta)+length(peb_delta)
 audit_0070$peb$summary$published_pairs_outside_rounding<-sum(c(delta,peb_delta)>.0050001)
+# 2026-11-18: recover the three SPACS resources, retaining the total score.
+# Author model: KAP items 1-4, COI 5-8, WTA 9-12; four-item means, no missing items.
+spacs_facets<-list(sustainabilityknowledge=1:4,sustainabilityinfluence=5:8,
+ sustainabilitywillingnesstoact=9:12)
+with_subscales<-with_peb
+for(f in names(spacs_facets)) {
+ items<-raw[,paste0('SPACS_',spacs_facets[[f]])]
+ stopifnot(!anyNA(items),all(as.matrix(items)>=1 & as.matrix(items)<=5))
+ with_subscales[[f]]<-rowMeans(items)
+}
+facet_note<-paste(note,'User-approved 2026-11-18: add SPACS Knowledge of Action Possibilities, Confidence in Own Influence and Willingness to Act as four-item means from the author key. Retain SPACS total and PebSingle; expand 9 to 12 variables, adding 30 associations, preserving all old coefficients and N=702.')
+audit_0070$subscales<-audit_compare_matrix('0070','0070a',with_subscales,702,facet_note,
+ names(source_hashes),'0070 PDF pp.7-10, Table 3; original author SPACS model',
+ status='APPROVED_EXTRACTION',comparison='spacs_subscale_recovery')
+# Table 3 independently checks all 27 published cells involving these resources.
+facet_reference<-rbind(sustainabilityknowledge=c(.28,.29,.34,.11,.19,.13,.52,.79,.40),
+ sustainabilityinfluence=c(.22,.25,.23,.15,.14,.17,.50,.85,.33),
+ sustainabilitywillingnesstoact=c(.17,.29,.22,.06,.10,.14,.58,.87,.39))
+colnames(facet_reference)<-c(names(positions),'sex','natureconnectedness','sustainabilitycompetence','proenvironmentalbehavior')
+facet_delta<-abs(audit_0070$subscales$candidate[rownames(facet_reference),colnames(facet_reference)]-facet_reference)
+within_reference<-c(.49,.55,.60)
+within_facets<-audit_0070$subscales$candidate[names(spacs_facets),names(spacs_facets)]
+facet_delta<-c(facet_delta,abs(within_facets[upper.tri(within_facets)]-within_reference))
+stopifnot(all(facet_delta<=.0050001))
+audit_0070$subscales$summary$published_pairs_checked<-length(facet_delta)
+audit_0070$subscales$summary$published_pairs_outside_rounding<-sum(facet_delta>.0050001)
+saved<-as.matrix(readxl::read_excel('data/3.meta_data/matrices/0070a.xlsx'))
+rownames(saved)<-colnames(saved);common<-intersect(colnames(saved),names(with_subscales))
+stopifnot(isTRUE(all.equal(saved[common,common],audit_0070$subscales$candidate[common,common],tolerance=1e-12)))
+audit_0070$subscales$candidate[common,common]<-saved[common,common]
 summary_0070<-dplyr::bind_rows(lapply(audit_0070,`[[`,'summary'))
 print(summary_0070[,c('matrix_id','comparison','compared_pairs','changed_pairs','added_variables','pair_n_min','pair_n_max')])
 if(!'--check-only'%in%args) {
@@ -74,7 +104,7 @@ if(!'--check-only'%in%args) {
  first$comparison<-'approved_integration_2026_11_14';first$status<-'REVIEWED_BEFORE_AFTER'
  if(any(old$matrix_id=='0070a' & old$comparison==first$comparison))first<-first[FALSE,]
  audit_save_summary(dplyr::bind_rows(summary_0070,first))
- individual_data<-cbind(with_peb,age=raw$age)
- checks<-extraction_check_matrix(with_peb,audit_0070$peb$candidate,audit_0070$peb$pair_n)
- wf_compact_extraction('0070','0070a',individual_data,audit_0070$peb$candidate,audit_0070$peb$pair_n,checks)
+ individual_data<-cbind(with_subscales,age=raw$age)
+ checks<-extraction_check_matrix(with_subscales,audit_0070$subscales$candidate,audit_0070$subscales$pair_n)
+ wf_compact_extraction('0070','0070a',individual_data,audit_0070$subscales$candidate,audit_0070$subscales$pair_n,checks)
 }

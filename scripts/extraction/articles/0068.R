@@ -69,12 +69,29 @@ grade_mismatches<-sum(abs(mean_grade-raw$achievement)>1e-10)
 stopifnot(grade_mismatches==2L)
 data_scored$academicachievement<-ave(mean_grade,raw$Grade,FUN=function(x)as.numeric(scale(x)))
 data_matrix<-data_scored
+# 2026-11-18: recover the four six-item CAAS resources (PDF pp.4-6).
+# The released means independently reproduce from consecutive item blocks.
+career_facets<-c(careerconcern='concern',careercontrol='control',
+ careercuriosity='curiosity',careerconfidence='confidence')
+for(i in seq_along(career_facets)) {
+ items<-raw[,paste0('career_',seq((i-1)*6+1,i*6))]
+ stopifnot(!anyNA(items),all(as.matrix(items)>=1 & as.matrix(items)<=5))
+ score<-rowMeans(items)
+ stopifnot(isTRUE(all.equal(score,raw[[career_facets[[i]]]],tolerance=1e-12)))
+ data_matrix[[names(career_facets)[i]]]<-score
+}
 approved_note<-paste('User-approved 2026-11-14: retain every one of 356 participants and set reference N=356; six non-boy/girl codes remain missing only for binary sex.',
  'Recalculate mean achievement from the five subject grades, correcting two source aggregates (11 -> 10; 9.2 -> 9), then standardize it separately within fourth/fifth year over all 356 retained people, following the author within-year analysis convention.',
- 'BESSI-45, efficacy and adaptability scoring independently verified; unchanged supplied questionnaire scores retained. Female share refers to all retained people (207/356 = 58.15%); mean age 16.65. Raw grade means, school year and age kept in private individual data. Source/published comparisons remain separate.')
+ 'BESSI-45, efficacy and adaptability scoring independently verified; unchanged supplied questionnaire scores retained. Female share refers to all retained people (207/356 = 58.15%); mean age 16.65. Raw grade means, school year and age kept in private individual data. Source/published comparisons remain separate.',
+ 'User-approved 2026-11-18: add the four CAAS resources, concern/control/curiosity/confidence, as means of six consecutive items each, verified against supplied scores. Keep the global careeradaptability score. Expand 9 to 13 variables and add 42 associations; all old coefficients and N=356 unchanged.')
 audit_0068$approved<-audit_compare_matrix('0068','0068a',data_matrix,356,approved_note,
  names(source_hashes),'User decisions 2026-11-14; original items; author Grade standardization',
  status='APPROVED_EXTRACTION',comparison='approved_extraction')
+# Preserve the saved common block exactly after independent reconstruction.
+saved<-as.matrix(readxl::read_excel('data/3.meta_data/matrices/0068a.xlsx'))
+rownames(saved)<-colnames(saved);common<-intersect(colnames(saved),names(data_matrix))
+stopifnot(isTRUE(all.equal(saved[common,common],audit_0068$approved$candidate[common,common],tolerance=1e-12)))
+audit_0068$approved$candidate[common,common]<-saved[common,common]
 summary_0068<-dplyr::bind_rows(audit_0068$source$summary,publication,audit_0068$approved$summary)
 print(summary_0068[,c('matrix_id','comparison','reference_n','input_rows','changed_pairs','pair_n_min','pair_n_max')])
 

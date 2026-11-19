@@ -427,10 +427,26 @@ make_osmasem_summary <- function(tab,
 
 
 # Review filtering and bibliography helpers used by the app.
-makeReviewTable <- function(topics = NULL, subtopics = NULL, data = review, topics_df = topics_list) {
+makeReviewTable <- function(topics = NULL, subtopics = NULL, data = review, topics_df = topics_list,
+                           constructs=NULL,context=NULL,measurement=NULL,contribution=NULL,design=NULL) {
   library(dplyr)
   library(tidyr)
   library(stringr)
+  # OR within each selected field; AND between fields. Old deployments lacking
+  # expanded columns remain usable until the new data release is published.
+  filters<-list(constructs_analyzed=constructs,sample_context=context,seb_measurement=measurement,
+    study_contribution=contribution,study_design=design)
+  for(f in names(filters)) {
+    selected<-filters[[f]]
+    if(is.null(selected)||!length(selected))next
+    if(!f%in%names(data)){data<-data[FALSE,,drop=FALSE];next}
+    keep<-vapply(data[[f]],function(v){
+      tokens<-if(is.na(v)||!nzchar(v))'Not yet assessed' else trimws(strsplit(v,';',fixed=TRUE)[[1]])
+      any(tokens%in%selected)
+    },logical(1))
+    data<-data[keep,,drop=FALSE]
+  }
+  topics_df<-topics_df[!is.na(topics_df$Topic)&nzchar(topics_df$Topic),,drop=FALSE]
 
   # Step 1: Expand the review_topics into separate rows
   review_expanded <- data %>%
@@ -458,7 +474,8 @@ makeReviewTable <- function(topics = NULL, subtopics = NULL, data = review, topi
     dplyr::select(-id)
 
   # Step 4: Review Table
-  revInfo <- c("paper_id","author_et_al","year","title","review_topics","doi")
+  revInfo <- c("paper_id","author_et_al","year","title",
+    intersect(c('main_objective','sample_context','study_design'),names(result)),"review_topics","doi")
   revTab <- result[,revInfo]
   revTab$year <- as.character(revTab$year)
   return(list(filteredData = result,

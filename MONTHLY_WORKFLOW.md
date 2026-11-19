@@ -1,6 +1,6 @@
 # Living SEB — guida operativa unica
 
-Aggiornata l'8 novembre 2026. Aprire il progetto RStudio nella radice della repository.
+Aggiornata il 18 novembre 2026. Aprire il progetto RStudio nella radice della repository.
 Il punto di ripristino precedente alla semplificazione è il commit `0e1daaa`.
 
 ## I file che usi normalmente
@@ -99,9 +99,37 @@ Ometti `data_download` se sconosciuta. La funzione aggiunge gli articoli mantenu
 
 - `articoli`: titolo, autori, date, topic e informazioni comuni;
 - `campioni`: campioni quantitativi, n, descrittive, misure e note scientifiche;
+- `costrutti`: vista di consultazione con una riga per costrutto/articolo e le etichette del codebook;
 - `fonti`: originali, URL, date, checksum e riferimenti storici;
 - `evidenze`: pagine, campi, motivazioni e limiti della codifica;
-- `dizionario`: definizione dei 31 campi della compatibilità analitica.
+- `dizionario`: i 31 campi della compatibilità analitica e i cinque nuovi campi della review.
+
+In `articoli` si compilano `main_objective` (una frase sull'obiettivo),
+`sample_context`, `seb_measurement` (solo il modo di misurare le skill),
+`study_contribution` e `constructs_analyzed`. Categorie e definizioni sono nel
+dizionario. Nei campi multipli separa i valori con `;`. Per i costrutti usa i
+codici di `matrix_codebook`, una sola volta per articolo: strumenti diversi,
+informatori e tempi non duplicano il medesimo costrutto. Domini e sottoscale
+distinte effettivamente analizzate possono essere entrambi presenti.
+Il foglio `costrutti` si rigenera automaticamente: modifica l'elenco in `articoli`.
+
+`study_design` accetta più codici (`cross; long`, ad esempio). Per articoli
+quantitativi modifica il disegno di ciascuna componente in `campioni`:
+`articoli` e la review ne mostrano l'insieme. Per i review-only lo modifichi in
+`articoli`. Classifica le analisi presentate, non ogni raccolta del progetto;
+un piccolo retest di affidabilità da solo non richiede `long`.
+
+I topic descrivono il focus scientifico; gli esiti usati solo per validazione
+si trovano attraverso i costrutti. Le sintesi quantitative hanno costrutti
+analizzati anche senza un nuovo campione. Lascia vuoto ciò che non è ancora
+esaminato; `Not reported` e `Not applicable` hanno significati distinti.
+La revisione procede articolo per articolo: i campi vuoti non significano che
+un costrutto sia assente. I nuovi filtri della review nell'app riportano la
+copertura della codifica. La codifica ampliata dei 51 articoli attuali è completa. Per i nuovi inserimenti si applicano gli stessi campi e criteri.
+
+I cinque campi sono salvati nel medesimo `records.csv` ed esportati in
+`review_data` (36 colonne). `metadata` conserva i 31 campi descrittivi seguiti
+dalle correlazioni. Non occorre mantenere una nuova tabella manuale separata.
 
 Le note dei review-only si modificano in `articoli`; quelle quantitative in `campioni`. I campioni dei nuovi review-only non vengono codificati. Le informazioni review-only già presenti nello storico restano nel CSV per mantenere la compatibilità, senza nuove estrazioni.
 
@@ -132,6 +160,36 @@ Lo script `scripts/extraction/articles/<paper_id>.R` mostra selezione, ricodific
 Le regole scientifiche restano in `policies/extraction_conventions.md`: medie degli item, SEB/BESSI sulla metrica 1–5, conversione documentata del dual rating, età nei dati individuali e descrittivi ma non nelle matrici, sesso/genere opportunamente codificato nelle matrici. Nessuna correzione automatica delle correlazioni osservate.
 
 Per nuove variabili o topic, modifica gli Excel `data/matrix_codebook.xlsx` e `data/topics_codebook.xlsx`, mantenendo i codici già usati e documentando le aggiunte, poi esegui `importa_codebook()`. I suffissi ammessi restano in `config/coding/variable_suffixes.csv`. Riusa i topic esistenti quando adeguati; aggiungine per differenze sostanziali.
+Il dizionario dei topic comprende 50 topic attivi e il codice storico
+`positiveschooloutcomes`, ritirato e conservato per compatibilita. Le sue ultime
+tre assegnazioni (0071, 0080, 0113) sono state rilette e ricodificate sul focus:
+nessun articolo corrente lo utilizza. Non assegnarlo a nuovi articoli.
+Per 0014 sono stati registrati i punteggi di abilita derivati dal BFI in un
+gruppo distinto dai domini BESSI. Le forme forced-choice restano self-report;
+non sono prove di prestazione. I nuovi topic `responseformats`,
+`migrationbackground`, `educationaltracking` e `intersectionality` descrivono
+focus sostanziali verificati nei paper; non ricodificano automaticamente gli
+articoli ancora da esaminare.
+Il topic `purposeinlife` rende individuabile il focus di Beatty et al. (0023),
+che rimane review-only. Anche Walton et al. (0014) rimane review-only e non
+ha matrici quantitative: registrare un costrutto nel codebook non ne determina
+l'inclusione nella meta-analisi.
+Il codebook delle variabili comprende `definition` obbligatoria e `synonyms`
+facoltativi per la ricerca. Le etichette delle 32 faccette BESSI sono complete.
+L'importazione riordina le variabili per `Topic` e `broad`, anche se inserite
+inizialmente in fondo, e mantiene l'Excel senza testo a capo. Le categorie con
+una sola variabile sono ammesse. Sono registrati `other`, `iat` e `task`;
+l'app distingue le varianti presenti nei dati e conserva gli ID nelle selezioni.
+I sinonimi servono a trovare un costrutto, non ad assegnargli automaticamente
+nuove misure. `conditionalcooperationtask` sostituisce il precedente codice
+solo nella prova non integrata di 0107: non esiste una matrice attiva da rinominare.
+Il 17 novembre sono state recuperate anche cinque sottoscale SECA di 0053:
+`secaSelfconcept`, `secaEmotionknowledge`, `secaEmotionregulation`,
+`secaGoalmanagement`, `secaSchoolwork`. Lo script `0053.R` esporta soltanto
+l'espansione approvata di `0053e`: 87 variabili, 420 associazioni aggiuntive,
+N di riferimento 322 invariato e 249 osservazioni per ciascuna nuova sottoscala.
+Le altre quattro matrici vengono verificate ma non riscritte. I punteggi sono
+le medie fornite dagli autori sulla scala originale 1–4, senza nuove esclusioni.
 
 ```r
 estrai_articolo("0150", verifica_soltanto = TRUE)
@@ -217,8 +275,20 @@ Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per
 
 ## Verifiche, Git, paper e app
 
-`estrai_articolo("0026")` e `estrai_articolo("0030")` sono verifiche
-storiche: aggiornano solo il riepilogo dell'audit.
+`estrai_articolo("0026")` include ora i due indicatori oggettivi approvati:
+`jobperformanceactivity` (immobili mostrati) e `jobperformancesales` (vendite).
+Le colonne originali sono gia rapportate ai mesi lavorati e centrate per citta;
+non si ripete la trasformazione. La matrice contiene 17 variabili e 136
+correlazioni: 31 aggiunte, nessun coefficiente precedente cambiato. Restano
+2.992 partecipanti; i due indicatori sono osservati per 2.723 e 2.196 persone.
+I nuovi N per coppia sono 2.195-2.723 e sono salvati in `pair_n/0026a.csv`.
+Nelle note e nelle evidenze sono documentati due segni della Tabella 2
+discordanti dai dati originali per il contrasto neuroticismo/stabilita emotiva.
+La review indicizza una sola volta il costrutto generale `jobperformance`;
+le due colonne quantitative restano distinte.
+
+`estrai_articolo("0030")` resta una verifica
+storica: aggiorna solo il riepilogo dell'audit.
 `estrai_articolo("0048")`, `estrai_articolo("0049")` e
 `estrai_articolo("0050")` esportano ora le estrazioni approvate. 0048 rappresenta
 il campione condiviso con 0013: quest'ultimo resta solo nella review e la sua
@@ -240,15 +310,23 @@ dei genitori, faccetta di consistenza e ore continue di volontariato. Conservano
 N e partecipanti. Il confronto storico resta in
 `data/3.meta_data/extraction/historical_audit.csv`.
 Per tutti, con `verifica_soltanto = TRUE` non si scrive nulla.
-`estrai_articolo("0053")` verifica le matrici storiche e aggiorna soltanto
-l'audit. `estrai_articolo("0070")` esporta la matrice con SPACS codificata come
+`estrai_articolo("0053")` verifica le cinque matrici ed esporta soltanto
+l'espansione SECA di 0053e descritta sopra. `estrai_articolo("0070")` esporta la matrice con SPACS codificata come
 `sustainabilitycompetence` e PebSingle come `proenvironmentalbehavior`: otto
 correlazioni aggiunte, nessun coefficiente precedente modificato, N=702.
+Dal 18 novembre include anche le tre sottoscale SPACS (quattro item ciascuna):
+`sustainabilityknowledge`, `sustainabilityinfluence`,
+`sustainabilitywillingnesstoact`. Sono 12 variabili e 66 correlazioni: 30 nuove
+rispetto alla matrice con PebSingle, tutte verificate con la Tabella 3.
 `estrai_articolo("0068")` esporta invece
 la correzione approvata il 14 novembre: tutte le 356 persone, due medie dei voti
 ricalcolate e rendimento standardizzato separatamente per anno scolastico.
-Nei dati privati restano anche media grezza, anno scolastico ed età. Le proposte
-sui descrittivi other-report di 0053g sono state approvate: si usano età/sesso
+Nei dati privati restano anche media grezza, anno scolastico ed età.
+Dal 18 novembre sono presenti anche le quattro risorse CAAS (sei item ciascuna):
+`careerconcern`, `careercontrol`, `careercuriosity`, `careerconfidence`,
+conservando il totale. Sono 13 variabili e 78 correlazioni: 42 nuove,
+nessun coefficiente precedente o N modificato.
+Le proposte sui descrittivi other-report di 0053g sono state approvate: si usano età/sesso
 delle persone valutate, conservando i dati degli informatori nelle note.
 Il recupero di PebSingle in 0070 è approvato dopo il chiarimento sulla sua
 distinzione dalla competenza percepita SPACS, documentata nell'audit.

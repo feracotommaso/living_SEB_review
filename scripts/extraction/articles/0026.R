@@ -1,6 +1,6 @@
-# 0026: historical verification only; no scientific output is promoted.
+# 0026: verified historical scores plus user-approved objective performance.
 # Run from the repository root. --check-only writes nothing; a normal run
-# updates only the single extraction/historical_audit.csv.
+# exports the expanded matrix, pair Ns and private coded individual CSV.
 source("R/historical_audit.R")
 args <- commandArgs(trailingOnly=TRUE)
 stopifnot(all(args %in% "--check-only"))
@@ -68,4 +68,48 @@ audit_0026 <- audit_compare_matrix("0026","0026a",data_matrix,2992,
   sources=names(source_hashes),evidence="0026 PDF pp.3-5; released SES_1:45 and domain scores; author code inspected without execution",
   status="BESSI45_ARITHMETIC_AND_MATRIX_REPRODUCED")
 print(audit_0026$summary[,c("matrix_id","changed_pairs","max_abs_delta","pair_n_min","pair_n_max")])
-if(!"--check-only" %in% args)audit_save_summary(audit_0026$summary)
+
+# User-approved 2026-11-18: keep the two objective indicators distinct.
+# PDF p.4: both are already divided by months employed and centered by city
+# in the release. Do not apply these transformations a second time.
+data_performance <- data_matrix
+data_performance$jobperformanceactivity <- raw_scores$showing_center
+data_performance$jobperformancesales <- raw_scores$deal_center
+stopifnot(sum(!is.na(raw_scores$showing_center))==2723L,
+  sum(!is.na(raw_scores$deal_center))==2196L)
+performance_note <- paste('User-approved 2026-11-18: recover showing_center as jobperformanceactivity and deal_center as jobperformancesales.',
+  'These company-recorded indicators are already expressed per month employed and centered within city; retain their original metric.',
+  'Retain all2992 people and reference N=2992. Activity is observed for2723, sales for2196; new pair Ns=2195-2723, with2196 for the activity-sales association.',
+  'Expand15 to17 variables and105 to136 associations:31 additions, all previously saved coefficients unchanged.',
+  'Table2 p.8 reproduces18/20 performance correlations within rounding. Two printed Emotional Stability correlations (+.02,+.02) have the opposite sign to stability obtained by reversing the released neuroticism score (about-.018 for each).',
+  'Keep the released neuroticism direction and independently computed performance correlations; do not flip values merely to match the table. No raw non-BESSI item scoring or participant exclusions are reconstructed.')
+audit_0026_performance <- audit_compare_matrix('0026','0026a',data_performance,2992,
+  performance_note,names(source_hashes),'0026 PDF p.4 andTable2 p.8; released performance columns; user decision2026-11-18',
+  status='APPROVED_PERFORMANCE_RECOVERY',comparison='approved_performance_recovery')
+
+# Published Table2, with Emotional Stability translated to the opposite-pole
+# neuroticism code for comparison. Preserve and document its two discrepancies.
+predictors <- c('selfmanagement','socialengagement','cooperation','emotionalresilience','innovation',
+  'conscientiousness','extraversion','agreeableness','neuroticism','openness')
+performance_reference <- cbind(jobperformanceactivity=c(.03,.02,.02,.01,.00,.04,.03,.02,-.02,.00),
+  jobperformancesales=c(.02,.04,.01,-.01,-.02,.05,.03,.00,-.02,-.03))
+performance_delta <- abs(audit_0026_performance$candidate[predictors,colnames(performance_reference)]-performance_reference)
+stopifnot(sum(performance_delta>.0050001)==2L,
+  all(which(performance_delta>.0050001,arr.ind=TRUE)[,1]==match('neuroticism',predictors)))
+audit_0026_performance$summary$published_pairs_checked <- length(performance_delta)
+audit_0026_performance$summary$published_pairs_outside_rounding <- sum(performance_delta>.0050001)
+
+# Preserve the old common block exactly after independent Pearson agreement.
+saved <- as.matrix(readxl::read_excel('data/3.meta_data/matrices/0026a.xlsx'))
+rownames(saved) <- colnames(saved);common <- intersect(colnames(saved),names(data_performance))
+stopifnot(isTRUE(all.equal(saved[common,common],audit_0026_performance$candidate[common,common],tolerance=1e-12)))
+audit_0026_performance$candidate[common,common] <- saved[common,common]
+print(audit_0026_performance$summary[,c('matrix_id','variables','compared_pairs','changed_pairs','pair_n_min','pair_n_max')])
+if(!'--check-only'%in%args) {
+  source('R/codebook_workflow.R',local=TRUE);source('R/extraction_helpers.R',local=TRUE)
+  source('R/workflow_io.R',local=TRUE);source('R/workflow_results.R',local=TRUE)
+  audit_save_summary(audit_0026_performance$summary)
+  individual_data <- cbind(data_performance,age=raw_scores$age)
+  checks <- extraction_check_matrix(data_performance,audit_0026_performance$candidate,audit_0026_performance$pair_n)
+  wf_compact_extraction('0026','0026a',individual_data,audit_0026_performance$candidate,audit_0026_performance$pair_n,checks)
+}

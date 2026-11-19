@@ -1,55 +1,57 @@
 Broad_topic,Broad_topic_labs,Topic,Topic_labs,Explanation,notes
-change,Change & Development,changegoals,Change goals,,
-change,Change & Development,volitionalchange,Volitional change,,
-change,Change & Development,normativechange,Normative change,,
-change,Change & Development,interventions,Interventions,,
-change,Change & Development,skilldevelopment,Skill development,,
-,,,,,
-beliefs,Skill beliefs,skillutilitybelief,Skill utility belief,,
-beliefs,Skill beliefs,skillmalleabilitybelief,Skill malleability beliefs,,
-,,,,,
-individual_differences,Individual differences,age,Age,,
-individual_differences,Individual differences,gender,Gender & Sex,,
-individual_differences,Individual differences,ses,Socio-economic status,,
-individual_differences,Individual differences,disabilities,Disabilities,,
-,,,,,
-measurement,Measurement & Assessment,skillassessment,Skill assessment,,
-measurement,Measurement & Assessment,selfreport,Self-report,,
-measurement,Measurement & Assessment,otherreport,Other-report,,
-measurement,Measurement & Assessment,incrementalvalidity,Incremental validity,,
-measurement,Measurement & Assessment,nomologicalnet,Nomological network,,
-measurement,Measurement & Assessment,shortversions,Short versions,,
-measurement,Measurement & Assessment,languageadaptation,Language adaptation,,
-measurement,Measurement & Assessment,behavioralassessment,Behavioral assessment,,
-,,,,,
-prosociality,Prosocial behaviors,proenvironment,Pro-environmental behaviors,,
-prosociality,Prosocial behaviors,volunteering,Volunteering,,
-,,,,,
-school_education,School & Education,academicachievement,Academic achievement,,
-school_education,School & Education,learningfactors,Learning factors,,
-school_education,School & Education,schoolsatisfaction,School satisfaction,,
-school_education,School & Education,learningdisabilities,Learning disabilities,,
-school_education,School & Education,positiveschooloutcomes,Positive school outcomes,,
-school_education,School & Education,autonomysupport,Autonomy support,,
-,,,,,
-skill_vs_traits,Skill vs traits,skilltraitdifferences,Skills vs traits,,
-,,,,,
-theory,Theoretical paper,theorydevelopment,Theory development,,
-,,,,,
-workplace,Workplace,jobperformance,Job performance,,
-workplace,Workplace,skillfortheworkplace,Skills for the workplace,,
-,,,,,
-virtual_reality,VR,virtualrealityuse,Use of VR,,
-,,,,,
-wellbeing,Wellbeing,mentalhealth,Mental health,,
-wellbeing,Wellbeing,wellbeing,Wellbeing,,
-wellbeing,Wellbeing,personalityfunctioning,Personality Functioning,,
-wellbeing,Wellbeing,emotionregulation,Emotion Regulation,,
-,,,,,
-methods,Methods,esm,ESM,,
-methods,Methods,ema,EMA,,
-methods,Methods,metaanalysis,Meta analysis,,
-,,,,,
-context,Context,skilluse,Skill use,,
-,,,,,
-AI,Artificial intelligence,artificialintelligenceforskills,AI for skills,,
+change,Change and development,changegoals,Change goals,"Desire, intention or preference to change personal skills or closely related personal characteristics.",Desire alone is not evidence of actual or successful change.
+change,Change and development,volitionalchange,Volitional change,"Deliberate attempts to change skills or personal characteristics, including self-directed change.",Use with change goals only when both intentions and attempts are substantive aims.
+change,Change and development,normativechange,Normative development,Typical age-related or developmental patterns in skills across a population.,Age used only as a control or sample descriptor is insufficient.
+change,Change and development,interventions,Skill interventions,Evaluation or substantive discussion of organized activities intended to change SEB skills.,An intervention targeting another outcome does not automatically qualify.
+change,Change and development,skilldevelopment,Developmental processes,Factors and mechanisms that facilitate or constrain the development of SEB skills.,"Not a generic label for every intervention, age comparison or repeated measurement."
+change,Change and development,temporalstability,Temporal stability,Rank-order or true-score stability of SEB skills across occasions as a substantive research question.,Distinguish persistence of individual differences from normative mean-level change. Do not assign for an ancillary reliability retest alone.
+change,Change and development,boardgames,Board games,Use or evaluation of physical board games as a vehicle for developing SEB skills and examining transfer to other outcomes.,Distinguish physical board-game activities from generic gamification or digital behavioral challenges.
+beliefs,Beliefs about skills,skillutilitybelief,Skill utility beliefs,"Beliefs about the usefulness, value or practical benefits of SEB skills.",No minimum number of articles is required to retain this topic.
+beliefs,Beliefs about skills,skillmalleabilitybelief,Skill malleability beliefs,Beliefs about whether and how SEB skills can change or develop.,Generic mindset measures qualify only when beliefs about skills are substantively addressed.
+individual_differences,Individual differences,age,Age differences,Substantive analysis or discussion of age differences in SEB skills or their associations.,Do not assign for descriptive age statistics or adjustment for age alone.
+individual_differences,Individual differences,gender,Sex and gender differences,Substantive analysis or discussion of sex or gender differences in skills or their associations.,Do not assign merely because sex/gender is measured or controlled.
+individual_differences,Individual differences,ses,Socioeconomic differences,"SEB skills in relation to socioeconomic conditions, resources or inequalities.",Socioeconomic information reported only to describe the sample is insufficient.
+individual_differences,Individual differences,disabilities,Disability and neurodevelopmental conditions,SEB skills in relation to disability or neurodevelopmental conditions.,For an SLD-only focus use Specific learning disabilities without automatically adding this general topic.
+individual_differences,Individual differences,learningdisabilities,Specific learning disabilities,SEB skills in people with specific learning disabilities or in comparisons involving those conditions.,Educational context is recorded separately; this topic is not restricted to school-age samples.
+individual_differences,Individual differences,migrationbackground,Migration background,"SEB skills in relation to immigrant or migration background, including differences between migration-background groups.","Do not infer migration background merely from nationality, language or country of recruitment."
+individual_differences,Individual differences,intersectionality,Intersectional inequalities,Joint or interacting social-category memberships as a substantive explanation of inequalities in SEB skills.,Merely adding several demographic covariates is insufficient; the combined social positions must be a research focus.
+individual_differences,Individual differences,skillprofiles,Skill profiles,"Patterns of relative skill strengths and weaknesses within individuals,examined through person-centered or profile analyses.",Do not assign for a simple comparison of overall mean skill levels. Profile labels do not imply fixed or diagnostic person types.
+measurement,Measurement and assessment,skillassessment,Skill assessment,"Development, validation or critical evaluation of the measurement of SEB skills.",Using a validated inventory in an applied study is insufficient.
+measurement,Measurement and assessment,selfreport,Self-report assessment,"Self-report skill assessment as an explicit object of evaluation, comparison or methodological discussion.",Do not assign merely because a self-report questionnaire is used.
+measurement,Measurement and assessment,otherreport,Other-report assessment,"Informant-based skill assessment as an explicit object of evaluation, comparison or methodological discussion.","The presence of a parent, teacher or peer report alone is insufficient."
+measurement,Measurement and assessment,behavioralassessment,Behavioral assessment,Behavioral or performance-based skill assessment as a substantive methodological focus.,Using any behavioral outcome does not automatically make this an assessment topic.
+measurement,Measurement and assessment,shortversions,Short-form assessment,"Development, validation or comparison of shortened SEB skill measures.",Routine use of an existing short form is insufficient.
+measurement,Measurement and assessment,languageadaptation,Language and cultural adaptation,"Translation, adaptation or evaluation of skill measures across languages or cultural settings.",Country or survey language alone does not qualify.
+measurement,Measurement and assessment,incrementalvalidity,Incremental validity,Evaluation of whether skills provide explanatory or predictive information beyond specified alternative predictors.,Do not infer this topic from a model containing covariates without an explicit incremental question.
+measurement,Measurement and assessment,nomologicalnet,Nomological network,Investigation of how skills fit within a network of related and distinct constructs.,Not a generic label for every reported bivariate association.
+measurement,Measurement and assessment,responseformats,Assessment response formats,"Effects of questionnaire response formats, such as single-stimulus ratings versus forced-choice blocks, on skill scores, validity or skill-trait differentiation.",Use when response format is a substantive object of comparison; routine use of a format is insufficient.
+skill_vs_traits,"Skills, personality and cognition",skilltraitdifferences,Skills–traits distinction,Conceptual or empirical differentiation of SEB skills from personality traits.,Measuring traits solely as incidental controls is insufficient.
+skill_vs_traits,"Skills, personality and cognition",cognitiveabilities,Cognitive abilities,Substantive investigation of relations between SEB skills and intelligence or other cognitive abilities.,NEW: confirm usefulness in the pilot; incidental cognitive covariates do not qualify.
+school_education,Education,academicachievement,Academic achievement,"SEB skills in relation to academic attainment or performance, including grades and academic tests.",A performance measure used only as an incidental covariate is insufficient.
+school_education,Education,academicengagement,Academic engagement,"SEB skills in relation to overall academic engagement or its affective, behavioral, cognitive or agentic components.",NEW: retain components as constructs without requiring a separate topic for each component.
+school_education,Education,learningfactors,Academic motivation and self-regulated learning,"SEB skills in relation to academic motivation, goals, self-efficacy or regulation of learning.",Engagement has a separate topic; reassess old Learning factors assignments.
+school_education,Education,schoolsatisfaction,School and university satisfaction,SEB skills in relation to satisfaction with educational life or experiences.,"Not interchangeable with grades, engagement or general life satisfaction."
+school_education,Education,autonomysupport,Autonomy support,"Role of autonomy-supportive relationships or environments in skill development, expression or functioning.",May involve teachers or parents; do not restrict the topic to the reporter.
+school_education,Education,positiveschooloutcomes,Positive school outcomes (retired),Retired broad topic. All current articles have been reviewed and assigned focus-based topics; retained solely for historical code compatibility.,LEGACY_ONLY: all assignments reviewed on 2026-11-18; zero current assignments. Do not reuse for new coding.
+school_education,Education,educationaltracking,Educational tracking,"SEB skills in relation to educational tracks, pathways or institutional grouping within education systems.","Distinguish school-track comparisons from incidental school descriptors, grades and general sample context."
+school_education,Education,skillforeducation,Educational skills and applications,"Role,use or application of SEB skills in educational curricula,teaching and preparation for life and work.",Use when educational applications are a substantive focus; recruiting students or mentioning educational implications alone is insufficient.
+prosociality,Social and environmental functioning,socialrelationships,Social relationships,"SEB skills in relation to peer acceptance, friendships or the quality and functioning of social relationships.","NEW: assign when relationships are substantive, rather than simply the setting."
+prosociality,Social and environmental functioning,cooperationprosocialbehavior,Cooperation and prosocial behavior,"Cooperative, reciprocal or helping behavior as a substantive focus of the skills study.",NEW: do not automatically add to every volunteering paper; the broader cooperative process must also be a focus.
+prosociality,Social and environmental functioning,proenvironment,Environment and sustainability,"SEB skills in relation to environmental competence, attitudes, motivation or sustainable behavior.",Broader than the former behavior-only label; retain distinctions in the construct list.
+prosociality,Social and environmental functioning,volunteering,Volunteering,SEB skills in relation to participation in volunteering or voluntary service.,Distinguish formal volunteering from other forms of informal helping.
+workplace,Work and careers,jobperformance,Job performance,SEB skills in relation to performance and effectiveness at work.,A working-adult sample alone does not qualify.
+workplace,Work and careers,skillfortheworkplace,Workplace skills and applications,"Role, use or application of SEB skills in professional and organizational contexts.",Use with job performance only when both broader applications and performance are substantive.
+workplace,Work and careers,careerdevelopment,Career development,"SEB skills in relation to career adaptability, transitions, preparation or development.",NEW: distinct from current job performance; confirm boundaries in the pilot.
+wellbeing,Mental health and wellbeing,mentalhealth,Mental health,"SEB skills in relation to psychological symptoms, distress or mental-health problems.",Wellbeing is a separate topic; assign both only when both are substantively addressed.
+wellbeing,Mental health and wellbeing,wellbeing,Wellbeing,"SEB skills in relation to satisfaction, positive experience or positive psychological functioning.",Not an automatic umbrella label for every mental-health study.
+wellbeing,Mental health and wellbeing,personalityfunctioning,Personality functioning,SEB skills in relation to adaptive or impaired personality functioning.,Distinguish from ordinary Big Five or HEXACO trait associations.
+wellbeing,Mental health and wellbeing,emotionregulation,Emotion regulation,"Emotion-regulation processes, strategies or behaviors as a substantive focus of the skills study.",An emotional-resilience scale alone does not make this the topic of the article.
+wellbeing,Mental health and wellbeing,purposeinlife,Purpose in life,"SEB skills in relation to a sense of life direction, personally meaningful goals or engagement in valued activities.","Use when purpose is a substantive focus, not merely an incidental scale item or generic mention of goals."
+context,Skills in context,skilluse,Skill use in daily life,"When, where and under what situational conditions skills are used or expressed.",Situational use is the substantive focus; it does not require a particular sampling method.
+theory,Theory and integration,theorydevelopment,Theory development and integration,"Development, critical comparison or integration of concepts and models concerning SEB skills.",A conventional introduction or discussion section is insufficient.
+methods,Methods and technology,esm,Diary/ESM/EMA research,Skills investigated through intensive repeated measurement in everyday life when this approach is central to the contribution.,Proposed merger of esm and ema; routine design information also belongs in study_design.
+methods,Methods and technology,researchinfrastructure,Research infrastructure,"Development or substantive evaluation of shared research resources, databases, platforms or workflows supporting cumulative SEB research.",Do not assign for routine use of an existing repository or software package.
+methods,Methods and technology,metaanalysis,Meta-analytic methods,Methodological issues concerning quantitative evidence synthesis relevant to SEB skills.,A meta-analysis is not automatically about meta-analytic methods; record article type in study_design and contribution.
+methods,Methods and technology,virtualrealityuse,Virtual reality applications,"Virtual reality as a substantive tool or object of skill assessment, development or application.",Routine mention of VR without substantive analysis does not qualify.
+methods,Methods and technology,artificialintelligenceforskills,AI applications for skills,"Artificial intelligence as a substantive tool or object of skill assessment, development or application.",AI used only for routine data processing does not qualify.
+methods,Methods and technology,digitalassistance,Digital assistance for change,"Use,acceptance or preference for software and apps to support intentional change in skills or personal characteristics.",Digital assistance need not involve artificial intelligence. A theoretical preference or self-reported use does not establish an evaluated intervention.
