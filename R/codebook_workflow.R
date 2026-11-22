@@ -1,3 +1,4 @@
+source(here::here('R', 'excel_layout.R'), local = TRUE)
 # Additive, audited codebook maintenance. CSV is canonical; XLSX is an interface.
 source(here::here('app','R','variable_lookup.R'),local=TRUE)
 codebook_columns <- function(kind) switch(kind,
@@ -58,7 +59,7 @@ codebook_variable_workbook <- function(x, group_cols=c('Topic','broad')) {
   openxlsx::writeDataTable(wb,sheet,x,tableStyle='TableStyleLight1')
   openxlsx::addStyle(wb,sheet,openxlsx::createStyle(fontName='Arial',fontSize=10,wrapText=FALSE,valign='center'),rows=1:(nrow(x)+1),cols=1:ncol(x),gridExpand=TRUE,stack=TRUE)
   openxlsx::setRowHeights(wb,sheet,rows=1:(nrow(x)+1),heights=19)
-  widths <- vapply(x,function(v)min(230,max(18,max(nchar(ifelse(is.na(v),'',v)))+3)),numeric(1))
+  widths <- vapply(x,function(v)min(40,max(18,max(nchar(ifelse(is.na(v),'',v)))+3)),numeric(1))
   openxlsx::setColWidths(wb,sheet,cols=1:ncol(x),widths=widths)
   groups <- do.call(paste,c(x[group_cols],sep='|'));start <- which(c(TRUE,groups[-1]!=groups[-length(groups)]))+1L
   openxlsx::addStyle(wb,sheet,openxlsx::createStyle(textDecoration='bold',border='Top',borderColour='#90A4B7'),rows=start,cols=1:2,gridExpand=TRUE,stack=TRUE)
@@ -199,6 +200,7 @@ codebook_sync <- function(root = ".", add_variables = NULL, add_topics = NULL) {
       if(kind%in%c('variables','topics')) {
         temp_xlsx <- file.path(scratch,paste0(kind,'.xlsx'))
         openxlsx::saveWorkbook(codebook_variable_workbook(x,if(kind=='variables')c('Topic','broad') else 'Broad_topic'),temp_xlsx)
+        excel_compact_file(temp_xlsx)
         if(!identical(codebook_excel(temp_xlsx),x))stop('XLSX round-trip differs.')
         stage(xlsx,temp_xlsx)
         next
@@ -211,6 +213,7 @@ codebook_sync <- function(root = ".", add_variables = NULL, add_topics = NULL) {
       codebook_format_new_rows(wb, sheet, seq_len(nrow(appended)) + nrow(original[[kind]]) + 1L, appended, xlsx)
       temp_xlsx <- file.path(scratch, paste0(kind, ".xlsx"))
       openxlsx::saveWorkbook(wb, temp_xlsx, overwrite = TRUE)
+      excel_compact_file(temp_xlsx)
       if (!identical(codebook_excel(temp_xlsx), x)) stop("XLSX round-trip differs.", call. = FALSE)
       stage(xlsx, temp_xlsx)
     }

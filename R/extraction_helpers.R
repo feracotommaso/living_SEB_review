@@ -1,3 +1,4 @@
+source(here::here('R', 'excel_layout.R'), local = TRUE)
 # Shared technical checks only. Scientific scoring stays in the article script.
 extraction_arguments <- function(args) {
   if (any(!args %in% "--check-only")) stop("Only --check-only is accepted.", call. = FALSE)
@@ -119,6 +120,7 @@ extraction_export <- function(paper_id, matrix_id, individual_data, cor_matrix,
     rows = seq_len(nrow(cor_matrix)) + 1L, cols = seq_len(ncol(cor_matrix)), gridExpand = TRUE)
   openxlsx::freezePane(wb, "matrix", firstRow = TRUE)
   openxlsx::saveWorkbook(wb, staged[[3]], overwrite = TRUE)
+  excel_compact_file(staged[[3]])
   restored <- as.matrix(readxl::read_excel(staged[[3]]))
   if (!identical(colnames(restored), colnames(cor_matrix)) ||
       !isTRUE(all.equal(unname(restored), unname(cor_matrix), tolerance = 1e-14))) stop("Matrix XLSX round-trip differs.")

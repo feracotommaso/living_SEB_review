@@ -208,6 +208,7 @@ wf_prepare_coding <- function(batch, download_date = NULL) {
     if (is.na(j)) stop("Record bibliografico mancante: ", id)
     for (field in intersect(names(input), names(row))) row[[field]] <- input[[field]][j]
     row$authors <- input$author[j]
+    if (!nzchar(wf_text(row$open_data))) row$open_data <- 'Not reported'
     row$paper_id <- id; row$matrix_id <- id; row$screening_record_id <- decision$screening_record_id
     row$title <- decision$title; row$doi <- decision$doi; row$batch_id <- batch
     row$download_date <- if (is.null(download_date)) NA_character_ else as.character(as.Date(download_date))
@@ -261,6 +262,7 @@ wf_import_article <- function(path, batch) {
   row <- as.data.frame(setNames(rep(list(NA_character_), ncol(records)), names(records)))
   row$paper_id <- obj$paper_id; row$screening_record_id <- obj$screening_record_id; row$batch_id <- batch
   for (field in coding_article_fields()) row[[field]] <- as.character(coding_flat(obj$article[[field]]))
+  if (!nzchar(wf_text(row$open_data))) row$open_data <- 'Not reported'
   row$exclusion_general <- "include"; row$exclusion_meta <- if (decision$meta_status == "eligible") "include" else decision$meta_exclusion_reason
   row$final_decision <- decision$final_route; row$matrix_id <- obj$paper_id
   row$change_note <- paste("Initial coding", obj$coding_version, "on", obj$coding_date, "from", basename(path))

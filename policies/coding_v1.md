@@ -225,3 +225,24 @@ with the pre-extraction artifact retained. October is integrated through the
 guarded bridge, with 0145a in the common matrix folder and the final datasets
 updated to 38 quantitative samples and 50 review papers. No historical scientific
 values or eligibility judgments were changed.
+
+
+Human-review clarification,2026-11-20: Development/change is a broad scientific
+contribution category covering observed developmental patterns as well as change
+goals,motivation and feasibility/malleability beliefs. It does not imply observed
+within-person change; study_design retains that distinction. Single-item external
+criteria may be indexed under broad constructs,but their proxy status and wording
+must be explicit in notes/evidence; an index entry is not proof of a validated
+multi-item scale. Walton0014 has11 external criterion indicators,not11 validated
+outcome scales; no new composite or correlation is inferred.
+
+For open_data,preserve dataset/resource URLs and use explicit source-based statuses:
+Available on request,Not publicly available,Not reported or Not applicable. Never
+infer prohibited sharing from a blank or legacyNA/NO code. Code/material-only links
+do not establish publicly available participant data. Record provenance and remote
+access limitations in evidence. New coding rows start at Not reported when no
+location/status is supplied. Existing raw bibliography/manual historical inputs
+remain untouched; missing/truncated abstracts can be repaired from the publication
+in canonical records.csv,with source/page evidence. Both the current workflow and
+legacy analytical entry point read that canonical table,so prior bibliographic
+exports do not need to be rewritten.

@@ -1,7 +1,9 @@
+source(here::here('R', 'excel_layout.R'), local = TRUE)
 # Canonical outputs, safe rebuilds and migration of existing operational data.
 
 ft_save_workbook <- function(wb, path) {
   openxlsx::saveWorkbook(wb, path, overwrite = TRUE)
+  excel_compact_file(path)
   # openxlsx 4.2.x can emit relationships to nonexistent default drawing/VML/
   # printer parts even for plain tables. Remove only these absent default parts
   # and their corresponding references; reject any other broken internal link.

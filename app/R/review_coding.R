@@ -52,8 +52,8 @@ review_coding_dictionary <- function(legacy) {
  definitions<-c('One short sentence stating the main research question.',
   'Contexts of the original samples; no new sample in a synthesis is Not applicable.',
   'How SEB skills are measured; do not infer from methods used for other constructs.',
-  'Substantive scientific contributions, allowing multiple categories.',
-  'Distinct base constructs explicitly analyzed, including quantitative syntheses; not a list of matrix suffix variants.')
+  'Substantive scientific contributions, allowing multiple categories. Development/change includes observed developmental patterns and goals,motivation or beliefs about change; it does not itself imply observed longitudinal change.',
+  'Distinct base constructs explicitly analyzed, including quantitative syntheses; not a list of matrix suffix variants. A broad construct may be indexed through a single-item proxy; identify that limitation in notes/evidence rather than implying a validated scale.')
  extra<-legacy[rep(1,length(fields)),,drop=FALSE]
  extra$dictionary_version<-'1.1.0';extra$order<-as.character(nrow(legacy)+seq_along(fields))
  extra$field<-fields;extra$level<-'paper';extra$type<-c('string',rep('string_list',4))

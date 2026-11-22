@@ -1,3 +1,4 @@
+source(here::here('R', 'excel_layout.R'), local = TRUE)
 # Shared I/O for the human workflow. Scientific calculations live in article R files.
 wf_hash <- function(path) if (file.exists(path)) digest::digest(file = path, algo = "sha256") else "absent"
 wf_read <- function(path) as.data.frame(readr::read_csv(path, col_types = readr::cols(.default = "c"), na = "", progress = FALSE))
@@ -20,6 +21,7 @@ wf_commit <- function(tables, xlsx = list()) {
   for (i in seq_along(xlsx)) {
     if (inherits(xlsx[[i]], 'Workbook')) openxlsx::saveWorkbook(xlsx[[i]], files[[length(tables) + i]])
     else writexl::write_xlsx(xlsx[[i]], files[[length(tables) + i]])
+    excel_compact_file(files[[length(tables) + i]])
   }
   codebook_commit_files(files, paths, unname(before))
   invisible(paths)
@@ -48,7 +50,7 @@ wf_write_book <- function(tables, path, sources, editable = list(), instructions
     openxlsx::setRowHeights(wb, name, 1, 35)
     if(!compact)ft_fit_wrapped_rows(wb, name, x, widths, minimum = 30)
     if(compact) {
-      widths<-vapply(x,function(v)min(230,max(18,max(c(nchar(wf_text(v)),0))+3)),numeric(1))
+      widths<-vapply(x,function(v)min(40,max(18,max(c(nchar(wf_text(v)),0))+3)),numeric(1))
       openxlsx::setColWidths(wb,name,seq_len(ncol(x)),widths)
       openxlsx::addStyle(wb,name,openxlsx::createStyle(wrapText=FALSE,valign='center'),
         rows=seq_len(nrow(x)+1L),cols=seq_len(ncol(x)),gridExpand=TRUE,stack=TRUE)

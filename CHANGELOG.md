@@ -1,3 +1,18 @@
+## 2026-11-20 - Human review corrections
+
+- Clarified Walton0014:11 external criterion indicators mapped to broad constructs,not11 validated outcome scales. Retained source-based index with explicit proxy/item limitations.
+- Expanded Living SEB0129 topics with nomological network,incremental validity and achievement; added intervention/digital-assistance topics for Kramer0138.
+- Applied the user-approved broader Development/change contribution to0061,0126 and0144,without changing their designs or claiming observed longitudinal change.
+- Recovered18 full publication abstracts: five missing and13 truncated. Canonical coding and derived outputs are updated; raw bibliographic exports and manual historical inputs remain unchanged.
+- Reconciled missing/legacy open_data values using publication declarations,distinguishing request-only,prohibited/unavailable sharing,unreported and inapplicable cases; recovered declared data-resource links. Remote access was not reverified.
+- Updated dictionary/defaults and readable evidence. Workbook/filter/targeted tests passed; results HTML rebuilt with six converged models. All correlations,Ns,eligibility,dates and source matrices remain unchanged.
+
+## 2026-11-19 - Compact Excel presentation
+
+- Capped current generated workbook column widths at40 Excel units and disabled text wrapping,without changing cell values,formulas,filters or source data.
+- Applied the same presentation rule to workflow,screening,deduplication,codebook and matrix exports. Manual historical inputs and downloaded originals remain unchanged.
+- Verified all52 current workbooks against their original cell data/formulas; full test suite and October regression14/14 passed.
+
 ## 2026-11-19 - Completed expanded coding and corrected0123 coverage
 
 - Applied the user's0123 clarification: five domains plus all29 non-compound facets of the adapted45-item form. Kept the format caveat and quantitative exclusion; superseded the earlier incomplete-mapping evidence.

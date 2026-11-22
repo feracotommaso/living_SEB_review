@@ -1,3 +1,4 @@
+source(here::here('R', 'excel_layout.R'), local = TRUE)
 # Helper functions for Living SEB bibliographic import, normalisation,
 # deduplication, validation, comparison, and audit logging.
 
@@ -729,6 +730,7 @@ write_review_workbook <- function(
 
   openxlsx::setRowHeights(wb, "review", rows = 1, heights = 28)
   openxlsx::saveWorkbook(wb, path, overwrite = overwrite)
+  excel_compact_file(path)
   invisible(path)
 }
 
@@ -874,6 +876,7 @@ write_human_workbook <- function(data, path, sheet = "records") {
   }
 
   openxlsx::saveWorkbook(wb, path, overwrite = TRUE)
+  excel_compact_file(path)
   invisible(path)
 }
 
@@ -918,6 +921,7 @@ write_comparison_workbook <- function(sheets, path) {
   }
 
   openxlsx::saveWorkbook(wb, path, overwrite = TRUE)
+  excel_compact_file(path)
   invisible(path)
 }
 

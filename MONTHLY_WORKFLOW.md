@@ -89,6 +89,8 @@ R riapre il caso e precompila i valori precedenti. Completa la correzione nell'E
 
 PDF mancanti impediscono la valutazione, mentre dati individuali non accessibili non costituiscono una nuova ragione di esclusione. Review e meta-eleggibilità restano valutate separatamente.
 
+Gli Excel correnti del workflow usano testo senza ritorni a capo automatici e colonne larghe al massimo 40 caratteri Excel. Per leggere integralmente una cella lunga, selezionala e usa la barra della formula. Le esportazioni successive mantengono questa impostazione.
+
 ## 4. Codifica generale
 
 ```r
@@ -126,6 +128,8 @@ esaminato; `Not reported` e `Not applicable` hanno significati distinti.
 La revisione procede articolo per articolo: i campi vuoti non significano che
 un costrutto sia assente. I nuovi filtri della review nell'app riportano la
 copertura della codifica. La codifica ampliata dei 51 articoli attuali è completa. Per i nuovi inserimenti si applicano gli stessi campi e criteri.
+
+`Development/change` comprende anche desideri, motivazioni e credenze sul cambiamento: non implica di per sé un cambiamento osservato nel tempo. La distinzione resta in `study_design`. In `open_data` usa un link oppure `Available on request`, `Not publicly available`, `Not reported`, `Not applicable`, secondo la fonte. Gli indicatori a singolo item sono qualificati nelle note/evidenze.
 
 I cinque campi sono salvati nel medesimo `records.csv` ed esportati in
 `review_data` (36 colonne). `metadata` conserva i 31 campi descrittivi seguiti
