@@ -39,7 +39,7 @@ and [Full-text eligibility](scripts/full_text/README.md). Setup instructions are
 │   ├── 1.abstracting/         # Historical exports and current screening workbooks
 │   ├── 2.full_abstracting/    # Full-text decisions, paper IDs and local PDFs
 │   ├── 3.meta_data/
-│   │   ├── basic_info/        # Historical manually coded sample/article information
+│   │   ├── basic_info/        # Historical outputs generated from full-text decisions
 │   │   ├── coding/           # Canonical coding CSVs and general coding workbook
 │   │   ├── matrices/         # Common correlation-matrix directory
 │   │   ├── pair_n/           # Sample sizes for individual correlations
@@ -56,6 +56,7 @@ and [Full-text eligibility](scripts/full_text/README.md). Setup instructions are
 ├── prompts/                   # Structured AI judgment instructions
 ├── schemas/                   # Decision-output schemas
 ├── tests/                     # Workflow checks and validated reference cases
+├── templates/manual_workflow/ # Generic R runtime only; local manual data are ignored
 ├── .agents/skills/             # Repository screening skills
 ├── paper/
 │   ├── livingSEBpaper.qmd      # Scientific paper: APAquarto formats
@@ -80,6 +81,14 @@ historical R scripts directly under `data/` remain available until the articles
 have been recoded with the current method. Local analysis trials are kept in
 `archive_local/analysis_trials/`, excluded from Git alongside private individual
 data and downloaded PDFs.
+
+The independently runnable manual copy also stays under Git-ignored
+`archive_local/manual_workflow_*/`. Accepted monthly updates refresh it through
+`R/manual_backup.R`, including the expanded coding and topics. New quantitative
+articles receive an explicit simple local scoring script during extraction;
+only generic technical templates in `templates/manual_workflow/` are versioned.
+The updater checks equivalence and preserves autonomous human edits. See
+`MONTHLY_WORKFLOW.md` for the monthly completion steps.
 
 Rendered HTML/PDF files accompany the document sources. GitHub Pages publishes
 the files on its configured publishing branch; updating the deployed Shiny code

@@ -206,3 +206,27 @@ remain in their article scripts and `config/extraction/*_decisions.csv`.
 Bibliographic download dates are edited in the general coding workbook. They remain
 separate from PDF and individual-data acquisition dates; unknown dates stay missing.
 Historical scripts are retained. The sole operating guide is `MONTHLY_WORKFLOW.md`.
+
+## Local manual counterpart during monthly updates
+
+The user-approved manual copy remains entirely under Git-ignored
+`archive_local/manual_workflow_*/`. Each automated monthly/external extraction
+also creates or updates its local `data/codici_articoli/<paper_id>.R`: one visible
+assignment per score, with explicit items, reversals, means, weights and source
+missingness. Reuse the local technical export helpers. Do not copy the audit or
+registry framework into these scripts and do not invent scoring from a final
+correlation matrix. Published-matrix fallbacks remain explicitly distinguished.
+
+Prepare and verify this counterpart while extracting each new quantitative
+paper, before `aggiorna_risultati()`. The accepted final update automatically
+refreshes monthly full_decisions, generated basic_info, codebooks, source copies,
+the scoring index and final manual outputs, then compares matrices, available
+pair Ns, metadata and review against the accepted main outputs. This includes
+the expanded coding and harmonized topics. A pending local scoring scaffold is
+an incomplete task, never a completed backup. Finish it within the automated
+batch rather than asking the user to implement it.
+
+Preserve standalone human edits: reconcile a divergence instead of silently
+overwriting it. The original historical archive is not rewritten. Only the
+generic updater and technical templates are versioned; local article scripts,
+data, workbooks, original downloads and provenance snapshots stay ignored.

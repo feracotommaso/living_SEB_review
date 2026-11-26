@@ -80,6 +80,8 @@ wf_update_results <- function(save = FALSE, reason = NULL) {
   if (save) {
     if (nrow(existing_numeric) && (is.null(reason) || !nzchar(trimws(reason))))
       stop("Le variazioni numeriche sono in last_update.xlsx. Dopo la verifica, usa aggiorna_risultati(motivo = '...').", call. = FALSE)
+    # Check local edits and prepare missing scoring tasks before writing accepted outputs.
+    backup_path <- wf_manual_backup_preflight(result)
     source(here::here('R/report_inputs.R'), local = TRUE)
     history <- report_search_history(results = result)
     wf_commit(setNames(list(result$metadata, result$review, result$records, history),
@@ -89,6 +91,8 @@ wf_update_results <- function(save = FALSE, reason = NULL) {
     wf_export_coding(force = TRUE)
     summary$valore[summary$voce == "Stato"] <- "Salvato"
     wf_write_book(list(riepilogo = summary, variazioni = changes, attenzione = result$issues), report, character())
+    if (!is.null(backup_path)) tryCatch(wf_manual_backup_update(result, backup_path),
+      error=function(e)stop('Risultati principali salvati; backup manuale ancora da completare: ',conditionMessage(e),call.=FALSE))
   }
   message(if (save) "Risultati salvati" else "Anteprima pronta", ": ", nrow(result$metadata), " campioni, ", nrow(result$review),
     " articoli; ", nrow(changes), " variazioni. Riepilogo: ", report)

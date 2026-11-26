@@ -1,3 +1,14 @@
+## 2026-11-26 - Publication review and local manual backup
+
+- Added local manual-backup synchronization to accepted monthly result updates,
+  with simple local per-article scoring prepared during extraction, protection
+  for autonomous workbook edits, and comparison against accepted outputs.
+- Kept all backup data and article scripts Git-ignored; versioned only the generic
+  updater and technical runtime templates. Historical original files are preserved.
+- Re-executed the publication report against the reviewed current datasets.
+- Replaced the report's inaccurate "independent samples" wording with sample-level
+  correlation matrices, preserving previously removed text.
+
 ## 2026-11-20 - Human review corrections
 
 - Clarified Walton0014:11 external criterion indicators mapped to broad constructs,not11 validated outcome scales. Retained source-based index with explicit proxy/item limitations.

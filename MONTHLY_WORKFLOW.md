@@ -402,3 +402,43 @@ quarto render paper/livingSEBresults.qmd --to html --execute
 Apri `paper/livingSEBresults.html` e controlla provenienza dei dati, conteggi, diagramma e risultati. Il report legge gli XLSX locali; `R/report_inputs.R` combina gli export storici (anche `.xlsm`) e i CSV canonici. Ogni articolo viene contato una volta tramite il registro bibliografico, anche se compare in più export. Le analisi vengono rieseguite e i modelli OSMASEM devono superare i controlli numerici. Dopo la riconciliazione del 10 novembre: 614 record importati, 229 duplicati, 385 articoli sottoposti a screening e 149 full text. Il precedente divario di 20 record era un errore di conteggio, non screening mancanti. L'aggiornamento del report non modifica i dataset.
 
 L'app, anche avviata localmente, legge gli XLSX e i codebook da GitHub `main`: un push sulla branch di lavoro non aggiorna l'app. Bibliografia, rendering del paper e pubblicazione dell'app restano passaggi espliciti separati dall'aggiornamento dei dati.
+
+## Copia manuale locale durante gli aggiornamenti automatizzati
+
+La copia operativa resta in `archive_local/manual_workflow_2026-11-23/`, esclusa
+da Git. `storico_originale/` resta un archivio: non e il progetto da aggiornare.
+Il codice pubblico in `R/manual_backup.R` e i template tecnici non contengono
+nessun dato individuale o contenuto della copia privata.
+
+Durante l'estrazione di ogni nuovo articolo quantitativo, l'assistente prepara
+anche `data/codici_articoli/<paper_id>.R` nella copia locale: item, inversioni,
+medie, soglie e pesi espliciti, nello stile semplice concordato. Un file con
+`TODO_SCORING` va completato e verificato prima di considerare concluso il mese.
+Gli articoli review-only non richiedono scoring o matrici inutili.
+
+`aggiorna_risultati()` ora aggiorna automaticamente anche questa copia: crea i
+nuovi full_decisions mensili, importa la codifica ampliata e i topics, aggiorna
+codebook e originali locali, estende l'indice degli scoring e rigenera i risultati
+manuali. Controlla quindi equivalenza di matrici, N per coppia disponibili,
+metadata e review_data. `batch_id`, conservato negli input manuali come contesto,
+distingue le decisioni moderne meta-only dalle inclusioni storiche nella review;
+non modifica i 31 campi analitici o la data di download.
+
+Per ripetere soltanto la sincronizzazione locale:
+
+```r
+source('workflow.R')
+aggiorna_backup_manuale()
+```
+
+Il controllo locale e in `verifica/ultimo_sync.md`; un piccolo registro in
+`provenienza/manual_sync.csv` protegge le modifiche autonome ai full_decisions e
+ai codebook. Se trova modifiche manuali, si ferma conservandole: vanno confrontate
+con la codifica principale, non sovrascritte. Se lo scoring non riproduce gli
+output accettati, la copia e segnalata come incompleta. L'assenza della copia su
+un altro computer non pubblica ne ricostruisce dati privati: l'assistente deve
+predisporla localmente prima di chiudere il relativo aggiornamento.
+
+Per ogni mese, anche senza nuovi inclusi, concludere con `aggiorna_risultati()`
+per includere nel backup le nuove fonti e gli esiti dello screening. Il report
+Quarto e il merge/push restano operazioni di pubblicazione separate.
