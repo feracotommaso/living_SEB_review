@@ -124,7 +124,7 @@
 - Validation: complete R suite passed with no failures, warnings or skips; October regression passed 14/14. Regenerated the HTML report; all six OSMASEM optimizers returned status 0 with finite estimates. Independent pilot checks confirm 35 field entries and 147 mapped construct entries with no within-article duplicates. No commit or push performed.
 
 
-## 2026-11-17 — Integrate the approved variable codebook
+## 2026-11-17 â€” Integrate the approved variable codebook
 
 - Integrated the reviewed 227-variable taxonomy with mandatory operational definitions, optional search aliases and the 32 complete BESSI facet labels verified against the official SEB Skills site. BESSI/BESSI_facet/BIGFIVE identifiers remain stable; compact CSV/XLSX agree and all variable rows are grouped by topic and subgroup with no wrapping.
 - Registered the task suffix. Renamed conditionalcooperation to conditionalcooperationtask only in the inactive 0107 recovery candidate and its tests; no saved matrix contains the old name, and the earlier decision not to include this candidate is preserved. All active matrix bytes, coefficients and sample Ns remain unchanged.
