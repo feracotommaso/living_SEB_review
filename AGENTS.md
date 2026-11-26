@@ -74,6 +74,14 @@
   source correction and readable before/after comparison have been reviewed.
 - Long article keys may be in an explicitly sourced `scripts/extraction/keys/`
   companion; keep scientific operations visible in the main article script.
+- During every automated monthly or external update, also prepare/update each
+  new quantitative article's simple scoring script in the existing local manual
+  backup under `archive_local/manual_workflow_*/data/codici_articoli/`. Keep item
+  keys, reversals, means, weights and missingness explicit; use the shared local
+  export helpers. Do not leave TODO_SCORING placeholders at batch completion.
+  `aggiorna_risultati()` refreshes and verifies that local backup automatically.
+  Keep all backup contents, raw sources and individuals Git-ignored. Reconcile
+  autonomous manual edits instead of overwriting them; preserve storico_originale.
 - Save new matrices directly in the common matrix directory, pair Ns by matrix
   in `data/3.meta_data/pair_n/`, and aggregate checks in `extraction/summary.csv`.
   Confirm bibliographic dates in the general coding workbook; do not infer them

@@ -15,7 +15,7 @@ server <- function(input, output, session) {
   # Reactive list of choices
   outlist <- reactive({
     req(input$outcomeTopics)  # ensure it's available
-    varlist$column_name[varlist$Topic == input$outcomeTopics]
+    variable_search_choices(varlist[varlist$Topic == input$outcomeTopics,])
   })
   # Dynamic UI generation
   output$dynamic_outcome_select <- renderUI({
@@ -591,6 +591,22 @@ server <- function(input, output, session) {
   })
   ### Review results ----
   # Review table
+  output$review_coding_filters <- renderUI({
+    if(!'constructs_analyzed'%in%names(review))return(NULL)
+    tokens<-function(f)unique(unlist(lapply(review[[f]],function(v)if(is.na(v))character() else trimws(strsplit(v,';',fixed=TRUE)[[1]]))))
+    codes<-tokens('constructs_analyzed');codes<-intersect(admcol$column_name,codes)
+    choices<-variable_search_choices(as.data.frame(admcol[admcol$column_name%in%codes,]))
+    designs<-tokens('study_design');labels<-review_coding_options()$study_design
+    design_choices<-stats::setNames(designs,ifelse(designs%in%names(labels),labels[designs],designs))
+    tagList(
+      p(sprintf('Detailed coding available for %d of %d articles. These filters search the coded articles; the complete list remains available without filters.',
+        sum(!is.na(review$main_objective)&nzchar(review$main_objective)),nrow(review))),
+      selectInput('review_constructs','Analyzed constructs (any selected):',choices=choices,multiple=TRUE),
+      selectInput('review_context','Sample context:',choices=c(tokens('sample_context'),'Not yet assessed'),multiple=TRUE),
+      selectInput('review_measurement','SEB measurement:',choices=c(tokens('seb_measurement'),'Not yet assessed'),multiple=TRUE),
+      selectInput('review_contribution','Scientific contribution:',choices=c(tokens('study_contribution'),'Not yet assessed'),multiple=TRUE),
+      selectInput('review_design','Study design:',choices=design_choices,multiple=TRUE))
+  })
   revSelection <- reactive({
     # Inputs from UI
     topLab    <- input$topics
@@ -604,7 +620,9 @@ server <- function(input, output, session) {
     subtopics <- if (is.null(allSubLab) || !length(allSubLab)) NULL else
       unique(topics_list$Topic[topics_list$Topic_labs %in% allSubLab])
     
-    makeReviewTable(subtopics = subtopics, topics = topics)
+    makeReviewTable(subtopics = subtopics, topics = topics,
+      constructs=input$review_constructs,context=input$review_context,measurement=input$review_measurement,
+      contribution=input$review_contribution,design=input$review_design)
   })
   # Disable download if nothing to download
   shinyjs::disable("downloadFiltered")
@@ -629,14 +647,16 @@ server <- function(input, output, session) {
     tags$div(
       role = "status", `aria-live` = "polite",
       class = if (n > 0) "alert alert-info" else "alert alert-warning",
-      if (n > 0) sprintf("Found %d records matching your topic filters.", n)
-      else "No matching records. Adjust your broad/specific topic filters."
+      if (n > 0) sprintf("Found %d records matching your filters.", n)
+      else "No matching records. Adjust the selected filters."
     )
   })
   ### Clean selection ---
   observeEvent(input$clean_rev, {
     updateSelectInput(session, "topics",    selected = character(0))
     updateSelectInput(session, "subtopics", selected = character(0))
+    for(id in c('review_constructs','review_context','review_measurement','review_contribution','review_design'))
+      updateSelectInput(session,id,selected=character(0))
     if ("filtTopic" %in% names(input)) {
       updateSelectInput(session, "filtTopic", selected = character(0))
     }

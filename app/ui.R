@@ -26,7 +26,7 @@ ui <- navbarPage(
 #  useShinyjs(),
   title = "Making SEB research living",
   id = "pages",
-  
+
 ## INTRODUCTION ####
   tabPanel(
     title = "Home",
@@ -44,12 +44,12 @@ ui <- navbarPage(
            href = "https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf",
            target = "_blank"),
     h3("What you can do"),
-  
+
     # Use a 2-column layout
     bslib::layout_columns(
       col_widths = c(4, 8), # left 2/3, right 1/3
       gap = "10px",
-    
+
       # LEFT COLUMN (all your workflow cards)
       div(
         bslib::card(
@@ -92,7 +92,7 @@ ui <- navbarPage(
           )
         )
       ),
-    
+
       # RIGHT COLUMN (resources card only)
       bslib::card(
         bslib::card(
@@ -109,7 +109,7 @@ ui <- navbarPage(
             )
           )
         )
-      ) 
+      )
     )
   ), #END PAGE 1
 
@@ -120,7 +120,7 @@ ui <- navbarPage(
     sidebarLayout(
       sidebarPanel(h3("Select the outcome of interest"),
                    radioButtons("outcomeTopics", "Select the broad outcome grouping:",
-                               unique(c(varlist$Topic[varlist$Topic != "SKILLS"])), selected = "SCHOOL" ),
+                               unique(c(varlist$Topic[!varlist$Topic %in% c("SKILLS", "BESSI-based SEB skills")])), selected = if ("Education" %in% varlist$Topic) "Education" else "SCHOOL" ),
                    uiOutput("dynamic_outcome_select"),
                    selectInput("age_filter","Filter by age",
                                choices = unique(combined_data$age_class),
@@ -129,7 +129,7 @@ ui <- navbarPage(
                                choices = unique(combined_data$year),
                                multiple = TRUE)
                    # selectInput("metaModerators", "Moderators?",
-                   #             c(list("XXXX","YYYY","ZZZZ")), 
+                   #             c(list("XXXX","YYYY","ZZZZ")),
                    #             multiple = FALSE )
       ),
       mainPanel(
@@ -143,7 +143,7 @@ ui <- navbarPage(
             # Button
             downloadButton("downloadMetaData", "Download the data")
           ),
-          
+
 ### .b meta-matrix ####
           tabPanel(
             title="Meta results",
@@ -160,7 +160,7 @@ ui <- navbarPage(
           tabPanel(
             title="Forest plots",
             selectInput("forestSelected", "Skill to show",
-                        pred_vars, 
+                        pred_vars,
                         multiple = FALSE),
             plotOutput("forestPlot")
           ),
@@ -168,7 +168,7 @@ ui <- navbarPage(
 ### .d report ####
           tabPanel(
             title = "Report",
-            h4("You can download a report only if you run the meta-analysis first", 
+            h4("You can download a report only if you run the meta-analysis first",
                align = "left", style = "color: red; font-weight: bold;"), # WARNING
             br(),
             downloadButton("report", "Generate a brief report of the results")
@@ -187,17 +187,17 @@ ui <- navbarPage(
     sidebarLayout(
       sidebarPanel(h3("Select the variables of interest"),
                    selectInput("SEBdomains", "SEB domains:",
-                               c(varlist$column_name[varlist$broad == "BESSI"]), 
+                               variable_search_choices(varlist[varlist$broad == "BESSI",]),
                                multiple = TRUE ),
                    selectInput("SEBfacets", "SEB facets:",
-                               c(varlist$column_name[varlist$broad == "BESSI_facet"]), 
+                               variable_search_choices(varlist[varlist$broad == "BESSI_facet",]),
                                multiple = TRUE ),
                    selectInput("PersonalityTraits", "Personality traits:",
-                               c(varlist$column_name[varlist$broad == "BIGFIVE"]), 
+                               variable_search_choices(varlist[varlist$broad == "BIGFIVE",]),
                                multiple = TRUE ),
                    selectInput("Outcomes", "Outcomes:",
-                               c(varlist$column_name[!(varlist$Topic %in% c("SKILLS", "TRAITS"))]), 
-                               multiple = TRUE ), 
+                               variable_search_choices(varlist[!(varlist$Topic %in% c("SKILLS", "TRAITS", "BESSI-based SEB skills", "Personality traits")),]),
+                               multiple = TRUE ),
                    selectInput("age_filter_masem","Filter by age",
                                choices = unique(combined_data$age_class),
                                multiple = TRUE),
@@ -205,12 +205,12 @@ ui <- navbarPage(
                                choices = unique(combined_data$year),
                                multiple = TRUE),
                    # selectInput("Moderators", "Moderators?",
-                   #             c(list("XXXX","YYYY","ZZZZ")), 
-                   #             multiple = TRUE ), 
+                   #             c(list("XXXX","YYYY","ZZZZ")),
+                   #             multiple = TRUE ),
                    actionButton("k_info", "Get info",
                                 style="color: #fff; background-color: black; border-color: black")
       ),
-      
+
       mainPanel(
         tabsetPanel(
           tabPanel("Summary",
@@ -218,7 +218,7 @@ ui <- navbarPage(
                    downloadButton("downloadList", "Download the data as R list"),
                    downloadButton("downloadZip", "Download the data as csv files"),
                    br(),
-                   
+
                    h4("K correlations"),
                    uiOutput("zero_banner"),   # persistent red banner when k=0 pairs exist
                    verbatimTextOutput("K_table"),
@@ -229,7 +229,7 @@ ui <- navbarPage(
                    h4("Studies included"),
                    tableOutput("Study_table")
           ),
-          
+
 ### .b meta-matrix ####
           tabPanel(
             title="SEM matrix",
@@ -256,7 +256,7 @@ ui <- navbarPage(
               value =
                 "
 # ADD THE REGRESSIONS YOU WANT TO ESTIMATE
-# Regression coefficients as 'y ~ x1 + x2' 
+# Regression coefficients as 'y ~ x1 + x2'
 academicachievement ~ selfmanagement + socialengagement + conscientiousness + extraversion
 
 # YOU CAN SATURATE THE MODEL (ESTIMATE ALL COVARIANCES BY THICKING THE BOX BELOW)
@@ -277,13 +277,13 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
             withSpinner(tableOutput("SEMresults")), #withSpinner
             h4("Residual variance"),
             withSpinner(tableOutput("R2_table"))#withSpinner
-            
+
           ),
 
 ### .d report ####
           tabPanel(
             title = "Report",
-            h4("You can download a report only if you run both the SEM matrix and the metaSEM", 
+            h4("You can download a report only if you run both the SEM matrix and the metaSEM",
                align = "left", style = "color: red; font-weight: bold;"), # WARNING
             br(),
             downloadButton("report_masem", "Generate a brief report of the maSEM results")
@@ -309,6 +309,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
                                choices = unique(topics_list$Topic_labs),
                                multiple = TRUE ),
                    uiOutput("dynamic_topic_select"),
+                   uiOutput('review_coding_filters'),
                    actionButton("clean_rev", "Clean selection",
                                 style="color: #fff; background-color: black; border-color: black"),
                    br(),br(),
@@ -368,7 +369,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
         )
       ),
       br(),
-      
+
       # Contact & feedback
       bslib::card(
         bslib::card_header(tags$strong("Contact & feedback")),
@@ -392,7 +393,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
         )
       ),
     )
-  ), 
+  ),
 
 # ---------------------------------------------------------------------------------------------------------------- #
 
@@ -409,7 +410,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
     bslib::layout_columns(
       col_widths = c(9, 3), # left 2/3, right 1/3
       gap = "10px",
-      
+
       # ===== LEFT COLUMN ===
       div(
         # How to cite
@@ -424,7 +425,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
           downloadButton("download_bib", "Download .bib")
           ),
         br(),
-        
+
         # Version / data snapshot
         bslib::card(
           bslib::card_header(tags$strong("Version & data snapshot")),
@@ -434,7 +435,7 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
           )
         )
       ), # <-- CLOSE LEFT COLUMN DIV
-      
+
       # ===== RIGHT COLUMN ===
       div(
         bslib::card(

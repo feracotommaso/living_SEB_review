@@ -10,14 +10,15 @@ wf_build_results <- function(records = wf_read(wf_records_path)) {
     current$basic$n[j] <- as.numeric(extraction$n[i])
     records$n[j] <- extraction$n[i]
   }
-  current$review <- current$basic[match(current$review$matrix_id, current$basic$matrix_id), , drop = FALSE]
+  # Preserve article-level expanded fields and design union in the review view.
+  current$review$n <- current$basic$n[match(current$review$matrix_id,current$basic$matrix_id)]
   paths <- list.files("data/3.meta_data/matrices", pattern = "\\.xlsx$", full.names = TRUE)
   ids <- tools::file_path_sans_ext(basename(paths))
   matched <- match(ids, current$basic$matrix_id)
   inactive <- !is.na(matched) & !current$basic$final_decision[matched] %in% c("both", "meta")
   inventory <- coding_matrix_inventory(current$basic, paths[!inactive])
   if (any(inactive)) inventory <- rbind(inventory, data.frame(paper_id = current$basic$paper_id[matched[inactive]],
-    matrix_id = ids[inactive], matrix_path = paths[inactive], status = "excluded_by_recorded_decision", reason = "Resolved current full-text route is not quantitative"))
+    matrix_id = ids[inactive], matrix_path = paths[inactive], status = "excluded_by_recorded_decision", reason = "Recorded current decision excludes quantitative inclusion"))
   active <- inventory$matrix_path[inventory$status == "included"]
   issues <- list()
   for (path in active) {
@@ -79,6 +80,8 @@ wf_update_results <- function(save = FALSE, reason = NULL) {
   if (save) {
     if (nrow(existing_numeric) && (is.null(reason) || !nzchar(trimws(reason))))
       stop("Le variazioni numeriche sono in last_update.xlsx. Dopo la verifica, usa aggiorna_risultati(motivo = '...').", call. = FALSE)
+    # Check local edits and prepare missing scoring tasks before writing accepted outputs.
+    backup_path <- wf_manual_backup_preflight(result)
     source(here::here('R/report_inputs.R'), local = TRUE)
     history <- report_search_history(results = result)
     wf_commit(setNames(list(result$metadata, result$review, result$records, history),
@@ -88,13 +91,15 @@ wf_update_results <- function(save = FALSE, reason = NULL) {
     wf_export_coding(force = TRUE)
     summary$valore[summary$voce == "Stato"] <- "Salvato"
     wf_write_book(list(riepilogo = summary, variazioni = changes, attenzione = result$issues), report, character())
+    if (!is.null(backup_path)) tryCatch(wf_manual_backup_update(result, backup_path),
+      error=function(e)stop('Risultati principali salvati; backup manuale ancora da completare: ',conditionMessage(e),call.=FALSE))
   }
   message(if (save) "Risultati salvati" else "Anteprima pronta", ": ", nrow(result$metadata), " campioni, ", nrow(result$review),
     " articoli; ", nrow(changes), " variazioni. Riepilogo: ", report)
   invisible(c(result, list(changes = changes)))
 }
 
-wf_compact_extraction <- function(paper_id, matrix_id, individual_data, cor_matrix, pair_n, checks) {
+wf_compact_extraction <- function(paper_id, matrix_id, individual_data, cor_matrix, pair_n, checks, reference_n = NULL) {
   verified <- extraction_check_matrix(individual_data[, colnames(cor_matrix), drop = FALSE], cor_matrix, pair_n)
   if (as.numeric(checks$n) != verified$n) stop("N dei controlli diverso dai dati individuali.")
   stem <- file.path("data/3.meta_data/matrices", matrix_id)
@@ -103,6 +108,15 @@ wf_compact_extraction <- function(paper_id, matrix_id, individual_data, cor_matr
   summary_path <- "data/3.meta_data/extraction/summary.csv"
   summary <- if (file.exists(summary_path)) wf_read(summary_path) else data.frame(matrix_id = character())
   entry <- as.data.frame(c(list(paper_id = paper_id, matrix_id = matrix_id), lapply(checks, as.character)), stringsAsFactors = FALSE)
+  # A documented reference N can differ from released rows (e.g. 0050b).
+  # Keep both counts explicit; no participant filtering is inferred here.
+  if (!is.null(reference_n)) {
+    if (length(reference_n)!=1L || is.na(reference_n) || !is.finite(reference_n) ||
+        reference_n!=floor(reference_n) || reference_n<max(pair_n[upper.tri(pair_n)]) ||
+        reference_n>verified$n) stop("N di riferimento incompatibile con gli N per coppia o le righe disponibili.")
+    entry$input_rows <- as.character(verified$n)
+    entry$n <- as.character(reference_n)
+  }
   summary <- dplyr::bind_rows(summary[summary$matrix_id != matrix_id, , drop = FALSE], entry)
   labelled <- data.frame(variable = rownames(cor_matrix), cor_matrix, check.names = FALSE)
   wf_commit(setNames(list(individual_data, labelled, pairs, summary), c(

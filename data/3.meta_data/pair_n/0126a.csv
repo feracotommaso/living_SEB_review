@@ -1,0 +1,16 @@
+var1,var2,n
+sex,adaptability,1906
+sex,satisfactionwithlife,1905
+adaptability,satisfactionwithlife,1894
+sex,changegoals,1810
+adaptability,changegoals,1806
+satisfactionwithlife,changegoals,1799
+sex,willingnessfordigitalassistance,1862
+adaptability,willingnessfordigitalassistance,1856
+satisfactionwithlife,willingnessfordigitalassistance,1850
+changegoals,willingnessfordigitalassistance,1774
+sex,useofdigitalassistance,1861
+adaptability,useofdigitalassistance,1857
+satisfactionwithlife,useofdigitalassistance,1849
+changegoals,useofdigitalassistance,1773
+willingnessfordigitalassistance,useofdigitalassistance,1825

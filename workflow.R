@@ -9,6 +9,7 @@ source("R/codebook_workflow.R")
 source("R/workflow_io.R")
 source("R/workflow_coding.R")
 source("R/workflow_results.R")
+source("R/manual_backup.R")
 source("R/title_abstract_screening.R")
 source("R/workflow_screening.R")
 
@@ -54,12 +55,15 @@ mostra_codifica <- function() wf_export_coding()
 importa_codifica <- function() wf_import_coding()
 anteprima_risultati <- function() wf_update_results()
 aggiorna_risultati <- function(motivo = NULL) wf_update_results(save = TRUE, reason = motivo)
+aggiorna_backup_manuale <- function(percorso = wf_manual_backup_path())
+  wf_manual_backup_update(path = percorso)
 prepara_codifica <- function(lotto, data_download = NULL) wf_prepare_coding(lotto, data_download)
 aggiungi_campione <- function(paper_id, componente, campione, occasione = "First eligible occasion")
   wf_add_sample(paper_id, componente, campione, occasione)
 importa_articolo <- function(file_json, lotto) wf_import_article(file_json, lotto)
 importa_codebook <- function() {
   tables <- list()
+  books <- list()
   for (kind in c("variables", "topics")) {
     stem <- if (kind == "variables") "data/matrix_codebook" else "data/topics_codebook"
     edited <- codebook_excel(paste0(stem, ".xlsx")); current <- codebook_csv(paste0(stem, ".csv"))
@@ -68,9 +72,17 @@ importa_codebook <- function() {
     if (length(setdiff(na.omit(current[[key]]), na.omit(edited[[key]])))) stop("Non rinominare/eliminare codici gia usati: ", kind)
     added <- edited[!codebook_blank(edited[[key]]) & !edited[[key]] %in% current[[key]], , drop = FALSE]
     if (nrow(added)) codebook_validate(added, kind, additions = TRUE)
+    if(kind=='variables') {
+      edited <- codebook_order_variables(edited)
+      books[[paste0(stem,'.xlsx')]] <- codebook_variable_workbook(edited)
+    } else {
+      edited<-edited[order(match(edited$Broad_topic,unique(edited$Broad_topic))),,drop=FALSE]
+      rownames(edited)<-NULL
+      books[[paste0(stem,'.xlsx')]]<-codebook_variable_workbook(edited,'Broad_topic')
+    }
     tables[[paste0(stem, ".csv")]] <- edited
   }
-  wf_commit(tables)
+  wf_commit(tables,books)
   message("Codebook importati; codici esistenti preservati.")
 }
 

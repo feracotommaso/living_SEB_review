@@ -1,5 +1,6 @@
 # Descriptive extraction v1. Scientific values are supplied as evidence-based JSON;
 # deterministic R validates, assigns stable quantitative sample IDs, and exports.
+source(here::here('app','R','review_coding.R'),local=TRUE)
 
 coding_article_fields <- function() c("download_date", "doi", "title", "abstract", "journal", "authors",
   "author_et_al", "year", "review_topics", "email", "open_data", "coder", "notes", "additional")
@@ -47,7 +48,8 @@ coding_validate_artifact <- function(obj, eligibility, topics) {
     if (is.null(s$n) || s$n <= 0 || s$n != floor(s$n)) stop("Positive analytic n required.", call. = FALSE)
     if (!is.null(s$gender) && (s$gender < 0 || s$gender > 100)) stop("gender must be a percentage from 0 to 100.", call. = FALSE)
     if (!is.null(s$age) && s$age < 0) stop("age must be nonnegative.", call. = FALSE)
-    enums <- list(study_design = c("cross", "long", "exp"), age_class = c("children", "school_age", "young_adult", "adult", "older_adult"),
+    review_validate_design(coding_flat(s$study_design))
+    enums <- list(age_class = c("children", "school_age", "young_adult", "adult", "older_adult"),
       clinical = c("clinical", "not_clinical"), seb_measure_type = c("short", "long"))
     for (field in names(enums)) if (!is.null(s[[field]]) && !s[[field]] %in% enums[[field]]) stop("Invalid sample category: ", field, call. = FALSE)
   }

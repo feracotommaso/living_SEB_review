@@ -15,6 +15,17 @@ rules, implementation conventions and unresolved legacy mappings/definitions.
 The shared article-script style, evolving codebook rules and registered measure
 suffixes are specified in `policies/extraction_conventions.md`.
 
+Update 2026-11-18: the workbook dictionary also describes five article-level
+review fields: main_objective, sample_context, seb_measurement,
+study_contribution and constructs_analyzed. Their values live in the existing
+records.csv and review_data, while the analytical 31-field contract is unchanged.
+Study design accepts multiple semicolon-separated codes. Quantitative components
+retain their own design; article/review views show the union. Use the full paper
+to code substantive designs and construct coverage, including review-only papers
+that analyze or quantitatively synthesize existing data. Do not extract new
+sample demographics merely to fill review-only rows. Blank means not yet
+assessed; explicit Not reported and Not applicable are distinguished.
+
 ## Scope and units
 
 Review-only papers receive bibliographic information, review topics, framework
@@ -214,3 +225,24 @@ with the pre-extraction artifact retained. October is integrated through the
 guarded bridge, with 0145a in the common matrix folder and the final datasets
 updated to 38 quantitative samples and 50 review papers. No historical scientific
 values or eligibility judgments were changed.
+
+
+Human-review clarification,2026-11-20: Development/change is a broad scientific
+contribution category covering observed developmental patterns as well as change
+goals,motivation and feasibility/malleability beliefs. It does not imply observed
+within-person change; study_design retains that distinction. Single-item external
+criteria may be indexed under broad constructs,but their proxy status and wording
+must be explicit in notes/evidence; an index entry is not proof of a validated
+multi-item scale. Walton0014 has11 external criterion indicators,not11 validated
+outcome scales; no new composite or correlation is inferred.
+
+For open_data,preserve dataset/resource URLs and use explicit source-based statuses:
+Available on request,Not publicly available,Not reported or Not applicable. Never
+infer prohibited sharing from a blank or legacyNA/NO code. Code/material-only links
+do not establish publicly available participant data. Record provenance and remote
+access limitations in evidence. New coding rows start at Not reported when no
+location/status is supplied. Existing raw bibliography/manual historical inputs
+remain untouched; missing/truncated abstracts can be repaired from the publication
+in canonical records.csv,with source/page evidence. Both the current workflow and
+legacy analytical entry point read that canonical table,so prior bibliographic
+exports do not need to be rewritten.

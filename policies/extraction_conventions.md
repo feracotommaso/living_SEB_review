@@ -72,6 +72,13 @@ force a reported N by dropping arbitrary rows; discrepancies require explanation
 `scripts/coding/03_update_codebooks.R` bootstraps a missing CSV from its current
 XLSX without changing the workbook, and applies documented additive proposals to
 both formats. It refuses conflicting CSV/XLSX values and silent redefinitions.
+The variable schema is `Topic, broad, column_name, label, notes, definition,
+synonyms`. Definitions are concise operational descriptions for literature
+mapping, not instrument scoring keys. Synonyms are optional search terms and
+never trigger automatic construct recoding. BESSI facet labels follow the full
+names at https://www.sebskills.com/about-seb-skills.html (verified 2026-11-17).
+Both additive maintenance and `importa_codebook()` group rows by Topic/broad,
+retain within-group order, and export compact Excel rows with wrap disabled.
 
 Reuse an existing broad construct name when the construct is sufficiently
 similar, including when a different questionnaire measures it. If no entry fits,
@@ -84,20 +91,52 @@ are handled; never overwrite one silently or average distinct measures by defaul
 `config/coding/variable_suffixes.csv` registers measurement suffixes. Append them
 directly without a separator: `selfmanagement`, `selfmanagementother`,
 `selfmanagementiat`. The unsuffixed SEB/BESSI name denotes the ordinary self-report
-measure. `other` denotes another informant and `iat` an IAT measure. A different
+measure. `other` denotes another informant, `iat` an IAT measure, and `task` a
+behavioral/performance task. A different
 questionnaire alone does not require a suffix. Historical `...other` names remain
 unchanged. A suffixed variable requires both a registered base name and a
 registered, scientifically appropriate suffix. Preserve the distinction in
 analysis rather than pooling methods implicitly. Future suffixes must first be
 defined in the shared registry; do not introduce ad hoc exceptions per script.
 
+Approved 2026-11-19: `self` denotes an appraisal of one's own performance in a
+specific task when the historical unsuffixed task code denotes observer ratings,
+for example `task_socialengagementself`. Keep the observer task codes unchanged
+and make their method explicit in the base-code notes. This is distinct from
+ordinary global BESSI self-report,which continues to use unsuffixed BESSI names.
+Task performance keeps its source metric; the 0049 self-appraisals are on1-6.
+
 `codebook_resolve_variables()` in `R/codebook_workflow.R` validates exact names and
 registered variants and supplies base construct, suffix and readable labels.
 Exact registered names take precedence, including historical names containing
-underscores. An unknown or ambiguous variant fails explicitly. Downstream app
-label/selection support remains separate work before publishing new variants.
+underscores. An unknown or ambiguous variant fails explicitly. The standalone
+app shares the resolver in `app/R/variable_lookup.R`, adds registered variants
+actually present in effect-column names to its menus, and displays their method
+labels. Aliases aid searching while selections submit canonical IDs. Historical
+`task_*` names are retained; the approved `conditionalcooperationtask` code is
+explicitly registered and remains distinct from the BESSI cooperation domain.
 
 ## Review topics: commonality and useful distinctions
+
+User clarification 2026-11-17: topics identify the article's main scientific
+focus. Do not turn outcomes used to validate a measure, or illustrative outcomes
+in a resource paper, into a long topic list. Those remain discoverable through
+the separately coded construct list. Index each base construct once per article,
+not once per instrument, informant or occasion. Domains and distinct subscales
+may both be listed when actually analyzed. Quantitative syntheses can have
+analyzed constructs despite collecting no new individual data; purely theoretical
+discussion is represented by topics. Classify the substantive study design;
+ancillary test-retest reliability alone does not require a longitudinal tag.
+The approved pilot is integrated in the cumulative coding table. Historical
+harmonization proceeds article by article; blank expanded fields mean not yet
+assessed. Five article-level fields (main_objective, sample_context,
+seb_measurement, study_contribution, constructs_analyzed) extend review exports
+without changing the legacy 31 analytical fields. The shared specification is
+`app/R/review_coding.R`; quantitative component designs are edited in campioni,
+and their union is displayed at article level. The LEGACY_ONLY topic
+positiveschooloutcomes is retired: all its article assignments were individually
+reviewed by 2026-11-18. The code remains for historical compatibility; new
+assignments are rejected rather than automatically mapped to an outcome.
 
 Topics must both group related articles and describe substantive or useful
 differences. Reuse existing topics when they describe the article adequately;
@@ -150,6 +189,11 @@ matrices directly into `data/3.meta_data/matrices/`, pair-specific Ns into
 CSV matrices include row labels; XLSX matrices preserve the square-column layout
 consumed by historical analysis. Keep participant identifiers out of these exports.
 
+If the documented reference N differs from released rows, pass `reference_n`
+explicitly to `wf_compact_extraction()` (as in 0050b). The technical summary keeps
+`input_rows` separately; pair Ns must not exceed reference N. Do not delete
+records to force agreement with the paper's declared N.
+
 Run `anteprima_risultati()` to compare all current results with the saved datasets.
 `aggiorna_risultati()` writes the final CSV/XLSX pairs together. Corrections to
 existing correlations or Ns require a stated scientific reason after the readable
@@ -162,3 +206,27 @@ remain in their article scripts and `config/extraction/*_decisions.csv`.
 Bibliographic download dates are edited in the general coding workbook. They remain
 separate from PDF and individual-data acquisition dates; unknown dates stay missing.
 Historical scripts are retained. The sole operating guide is `MONTHLY_WORKFLOW.md`.
+
+## Local manual counterpart during monthly updates
+
+The user-approved manual copy remains entirely under Git-ignored
+`archive_local/manual_workflow_*/`. Each automated monthly/external extraction
+also creates or updates its local `data/codici_articoli/<paper_id>.R`: one visible
+assignment per score, with explicit items, reversals, means, weights and source
+missingness. Reuse the local technical export helpers. Do not copy the audit or
+registry framework into these scripts and do not invent scoring from a final
+correlation matrix. Published-matrix fallbacks remain explicitly distinguished.
+
+Prepare and verify this counterpart while extracting each new quantitative
+paper, before `aggiorna_risultati()`. The accepted final update automatically
+refreshes monthly full_decisions, generated basic_info, codebooks, source copies,
+the scoring index and final manual outputs, then compares matrices, available
+pair Ns, metadata and review against the accepted main outputs. This includes
+the expanded coding and harmonized topics. A pending local scoring scaffold is
+an incomplete task, never a completed backup. Finish it within the automated
+batch rather than asking the user to implement it.
+
+Preserve standalone human edits: reconcile a divergence instead of silently
+overwriting it. The original historical archive is not rewritten. Only the
+generic updater and technical templates are versioned; local article scripts,
+data, workbooks, original downloads and provenance snapshots stay ignored.

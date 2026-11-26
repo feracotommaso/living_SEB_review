@@ -168,7 +168,7 @@ reviewData <- readxl::read_excel(here::here("data/3.meta_data/review_data/review
 nReviewPapers <- nrow(reviewData)
 ```
 
-At the time of writing, the recorded searches and external discoveries identified `r totDownload` records (Scopus = `r totSc`; WOS = `r totWs`; external sources = `r totExternal`). The current analytical datasets contain `r nReviewPapers` papers for the living review and `r nMetaPapers` papers for quantitative synthesis. These include a total of `r nMetaSamples` independent samples (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`).
+At the time of writing, the recorded searches and external discoveries identified `r totDownload` records (Scopus = `r totSc`; WOS = `r totWs`; external sources = `r totExternal`). The current analytical datasets contain `r nReviewPapers` papers for the living review and `r nMetaPapers` papers for quantitative synthesis. These are represented by `r nMetaSamples` sample-level correlation matrices (see @fig-prisma), with sample sizes ranging from `r minSampleSize` to `r maxSampleSize` (median = `r medSampleSize`).
 
 Across these studies, a total of `r nTotEff` correlation coefficients were coded, representing `r nTotCor` unique pairwise associations. Of these, `r nTotBessiEff` correlations (`r nTotBessiCor` unique associations) involved at least one SEB domain or facet measured with a BESSI instrument.
 

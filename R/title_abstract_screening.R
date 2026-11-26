@@ -1,3 +1,4 @@
+source(here::here('R', 'excel_layout.R'), local = TRUE)
 # Living SEB title/abstract screening helpers.
 # AI supplies structured decisions; R validates them and applies the
 # deterministic retention/exclusion policy.
@@ -330,6 +331,7 @@ screening_write_input_workbook <- function(data, path) {
   screening_set_widths(wb, "records", data)
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   openxlsx::saveWorkbook(wb, path, overwrite = TRUE)
+  excel_compact_file(path)
   invisible(path)
 }
 
@@ -528,6 +530,7 @@ screening_write_records_workbook <- function(data, path, sheet = "records") {
 
   screening_set_widths(wb, sheet, data)
   openxlsx::saveWorkbook(wb, path, overwrite = TRUE)
+  excel_compact_file(path)
   invisible(path)
 }
 
@@ -586,6 +589,7 @@ screening_write_decisions_workbook <- function(
   }
 
   openxlsx::saveWorkbook(wb, path, overwrite = TRUE)
+  excel_compact_file(path)
   invisible(path)
 }
 

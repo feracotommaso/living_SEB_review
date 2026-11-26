@@ -1,3 +1,5 @@
 suffix,label,definition,example
 other,Other-report,A rating of the base construct provided by another informant,selfmanagementother
 iat,IAT,A measurement of the base construct using an Implicit Association Test,selfmanagementiat
+task,Task,A measurement of the base construct obtained from a behavioral or performance task,selfmanagementtask
+self,Self-rated performance,Self-appraisal of performance in a specific task; for task-based constructs whose historical unsuffixed code denotes observer assessment. Distinct from ordinary global BESSI self-report.,task_socialengagementself

@@ -49,7 +49,18 @@ coding_read_basic_info <- function(directory = "data/3.meta_data/basic_info") {
     paper_id = data$paper_id[changed], matrix_id = data$matrix_id[changed],
     old_value = old_topics[changed], new_value = data$review_topics[changed])
   rownames(data) <- NULL
-  coding_apply_historical_revisions(data)
+  data <- coding_apply_historical_revisions(data)
+  # Explicit later decisions overlay the retained manual source without editing it.
+  path <- "config/coding/matrix_exclusions.csv"
+  if (file.exists(path)) {
+    exclusions <- coding_read_csv(path)
+    for (i in seq_len(nrow(exclusions))) {
+      rows <- data$paper_id == exclusions$paper_id[i]
+      data$final_decision[rows] <- "review"
+      data$exclusion_meta[rows] <- exclusions$legacy_meta_exclusion[i]
+    }
+  }
+  data
 }
 
 coding_matrix_inventory <- function(basic, paths,
@@ -205,6 +216,14 @@ coding_historical_contract <- function(
     expected$n_effects[[j]] <- as.integer(revision$n_effects)
     expected$effects_sha256[[j]] <- revision$effects_sha256
   }
+  # Approved inactive artifacts remain on disk and in the frozen baseline,
+  # but are no longer required among active analytical rows.
+  path <- "config/coding/matrix_exclusions.csv"
+  if (file.exists(path)) {
+    excluded <- coding_read_csv(path)$matrix_id
+    expected <- expected[!expected$matrix_id %in% excluded, , drop = FALSE]
+  }
+  rownames(expected) <- NULL
   expected
 }
 

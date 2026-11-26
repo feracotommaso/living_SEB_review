@@ -25,13 +25,19 @@ test_that("new variables/topics require definitions and provenance and additions
   root <- codebook_fixture()
   provenance <- data.frame(paper_id = "9999", change_date = "2026-11-04", reason = "Distinct useful construct/topic",
     source = "Test fixture, not a scientific coding decision")
-  variables <- cbind(data.frame(Topic = "SOCIAL", broad = "test", column_name = "newconstruct",
-    label = "New construct", notes = "Defined distinctly from existing constructs"), provenance)
+  variables <- cbind(data.frame(Topic = "Social", broad = "Relationships", column_name = "newconstruct",
+    label = "New construct", notes = NA_character_, definition = "Defined distinctly from existing constructs", synonyms = NA_character_), provenance)
   topics <- cbind(data.frame(Broad_topic = "application", Broad_topic_labs = "Application",
     Topic = "newtopic", Topic_labs = "New topic", Explanation = "A substantive topic definition", notes = NA_character_), provenance)
   old <- codebook_sync(root)
   result <- codebook_sync(root, variables, topics)
-  expect_identical(head(result$variables, nrow(old$variables)), old$variables)
+  previous <- result$variables[match(old$variables$column_name,result$variables$column_name),]
+  rownames(previous)<-NULL
+  expect_identical(previous,old$variables)
+  groups <- paste(result$variables$Topic,result$variables$broad)
+  expect_length(rle(groups)$values,length(unique(groups)))
+  wb <- openxlsx::loadWorkbook(file.path(root,'data/matrix_codebook.xlsx'))
+  expect_false(any(vapply(wb$styleObjects,function(s)isTRUE(s$style$wrapText),logical(1))))
   expect_true("newconstruct" %in% codebook_excel(file.path(root, "data/matrix_codebook.xlsx"))$column_name)
   expect_true("newtopic" %in% codebook_excel(file.path(root, "data/topics_codebook.xlsx"))$Topic)
   expect_equal(nrow(result$changes), 2L)
@@ -69,4 +75,43 @@ test_that("registered attached suffixes preserve complete base names and reject 
   expect_error(codebook_resolve_variables("selfmanagement_iat", base), "Unregistered")
   expect_error(codebook_resolve_variables("unknownother", base), "Unregistered")
   expect_error(codebook_resolve_variables(c("sex", "sex"), base), "unique")
+})
+
+test_that('full facet labels, task variants and search aliases preserve canonical IDs', {
+  x <- codebook_csv('data/matrix_codebook.csv')
+  expect_identical(x$label[match(c('stressregulation','capacityforconsistency','persuasiveskill'),x$column_name)],
+    c('Stress Regulation','Capacity for Consistency','Persuasive Skill'))
+  expect_equal(sum(x$broad=='BESSI_facet'),32)
+  expect_true(all(!is.na(x$definition)))
+  v <- codebook_resolve_variables(c('selfmanagementtask','conditionalcooperationtask'))
+  expect_identical(v$suffix,c('task',''))
+  expect_match(v$label[1],'Task')
+  menu <- variable_menu_lookup(x,c('emotionalresilience_neuroticismiat','selfmanagementother_sex'),codebook_suffixes())
+  expect_true(all(c('neuroticismiat','selfmanagementother')%in%menu$column_name))
+  expect_false('selfmanagementiat'%in%menu$column_name)
+  expect_match(menu$label[match('neuroticismiat',menu$column_name)],'IAT')
+  choices <- variable_search_choices(x[x$column_name=='academicachievement',])
+  expect_match(names(choices),'GPA')
+  expect_identical(unname(choices),'academicachievement')
+  groups <- paste(x$Topic,x$broad)
+  expect_length(rle(groups)$values,length(unique(groups)))
+})
+
+test_that('manual workbook additions are imported into their existing group', {
+  source('workflow.R',local=TRUE)
+  root <- codebook_fixture();old <- codebook_sync(root)$variables
+  withr::local_dir(root)
+  added <- old[1,,drop=FALSE];added[1,] <- NA_character_
+  added$Topic<-'Education';added$broad<-'Academic engagement';added$column_name<-'manualfixture'
+  added$label<-'Manual fixture';added$definition<-'Synthetic test construct, not a scientific addition.'
+  wb <- openxlsx::loadWorkbook('data/matrix_codebook.xlsx')
+  openxlsx::writeData(wb,1,added,startRow=nrow(old)+2,colNames=FALSE)
+  openxlsx::saveWorkbook(wb,'data/matrix_codebook.xlsx',overwrite=TRUE)
+  importa_codebook()
+  x <- codebook_csv('data/matrix_codebook.csv')
+  expect_equal(nrow(x),nrow(old)+1)
+  expect_identical(x,codebook_excel('data/matrix_codebook.xlsx'))
+  groups <- paste(x$Topic,x$broad)
+  expect_length(rle(groups)$values,length(unique(groups)))
+  expect_lt(match('manualfixture',x$column_name),nrow(x))
 })

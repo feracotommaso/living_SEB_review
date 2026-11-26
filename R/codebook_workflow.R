@@ -1,6 +1,8 @@
+source(here::here('R', 'excel_layout.R'), local = TRUE)
 # Additive, audited codebook maintenance. CSV is canonical; XLSX is an interface.
+source(here::here('app','R','variable_lookup.R'),local=TRUE)
 codebook_columns <- function(kind) switch(kind,
-  variables = c("Topic", "broad", "column_name", "label", "notes"),
+  variables = c("Topic", "broad", "column_name", "label", "notes", "definition", "synonyms"),
   topics = c("Broad_topic", "Broad_topic_labs", "Topic", "Topic_labs", "Explanation", "notes"),
   stop("Unknown codebook kind: ", kind, call. = FALSE))
 
@@ -20,7 +22,8 @@ codebook_validate <- function(x, kind, additions = FALSE) {
   if (any(!grepl("^[A-Za-z][A-Za-z0-9_]*$", key[present])))
     stop("Invalid codebook name: ", kind, call. = FALSE)
   required <- if (kind == "variables") expected[1:4] else expected[1:4]
-  if (additions) required <- c(required, if (kind == "variables") "notes" else "Explanation")
+  if (kind == 'variables') required <- c(required,'definition')
+  if (additions && kind != 'variables') required <- c(required,'Explanation')
   for (field in required) if (any(codebook_blank(x[[field]][present])))
     stop("Missing codebook field ", field, ": ", kind, call. = FALSE)
   if (additions && any(!present)) stop("An addition requires a codebook key.", call. = FALSE)
@@ -39,27 +42,29 @@ codebook_suffixes <- function(path = "config/coding/variable_suffixes.csv") {
 codebook_resolve_variables <- function(requested,
     variables = codebook_csv("data/matrix_codebook.csv"), suffixes = codebook_suffixes()) {
   codebook_validate(variables, "variables")
-  if (any(codebook_blank(requested)) || anyDuplicated(requested))
-    stop("Requested variable names must be present and unique.", call. = FALSE)
-  base <- variables[!codebook_blank(variables$column_name), , drop = FALSE]
-  rows <- lapply(requested, function(name) {
-    j <- match(name, base$column_name)
-    suffix <- ""
-    if (is.na(j)) {
-      candidates <- which(vapply(suffixes$suffix, function(s) endsWith(name, s) &&
-        substr(name, 1L, nchar(name) - nchar(s)) %in% base$column_name, logical(1)))
-      if (length(candidates) != 1L) stop("Unregistered or ambiguous variable: ", name, call. = FALSE)
-      suffix <- suffixes$suffix[[candidates]]
-      j <- match(substr(name, 1L, nchar(name) - nchar(suffix)), base$column_name)
-    }
-    data.frame(column_name = name, base_name = base$column_name[[j]], suffix = suffix,
-      Topic = base$Topic[[j]], broad = base$broad[[j]], label = if (nzchar(suffix))
-        paste0(base$label[[j]], " (", suffixes$label[match(suffix, suffixes$suffix)], ")") else base$label[[j]],
-      stringsAsFactors = FALSE)
-  })
-  if (!length(rows)) return(data.frame(column_name = character(), base_name = character(),
-    suffix = character(), Topic = character(), broad = character(), label = character()))
-  do.call(rbind, rows)
+  resolve_variable_lookup(requested,variables,suffixes)
+}
+
+codebook_order_variables <- function(x) {
+  topics <- unique(x$Topic)
+  groups <- unique(paste(x$Topic,x$broad,sep='|'))
+  x <- x[order(match(x$Topic,topics),match(paste(x$Topic,x$broad,sep='|'),groups)),,drop=FALSE]
+  rownames(x)<-NULL;x
+}
+
+codebook_variable_workbook <- function(x, group_cols=c('Topic','broad')) {
+  # One compact row per variable. New additions are sorted into their group.
+  sheet<-if(identical(group_cols,'Broad_topic'))'topics' else 'variables'
+  wb <- openxlsx::createWorkbook();openxlsx::addWorksheet(wb,sheet,gridLines=FALSE)
+  openxlsx::writeDataTable(wb,sheet,x,tableStyle='TableStyleLight1')
+  openxlsx::addStyle(wb,sheet,openxlsx::createStyle(fontName='Arial',fontSize=10,wrapText=FALSE,valign='center'),rows=1:(nrow(x)+1),cols=1:ncol(x),gridExpand=TRUE,stack=TRUE)
+  openxlsx::setRowHeights(wb,sheet,rows=1:(nrow(x)+1),heights=19)
+  widths <- vapply(x,function(v)min(40,max(18,max(nchar(ifelse(is.na(v),'',v)))+3)),numeric(1))
+  openxlsx::setColWidths(wb,sheet,cols=1:ncol(x),widths=widths)
+  groups <- do.call(paste,c(x[group_cols],sep='|'));start <- which(c(TRUE,groups[-1]!=groups[-length(groups)]))+1L
+  openxlsx::addStyle(wb,sheet,openxlsx::createStyle(textDecoration='bold',border='Top',borderColour='#90A4B7'),rows=start,cols=1:2,gridExpand=TRUE,stack=TRUE)
+  openxlsx::freezePane(wb,sheet,firstActiveRow=2,firstActiveCol=4)
+  wb
 }
 
 codebook_add <- function(current, proposals, kind) {
@@ -159,6 +164,12 @@ codebook_sync <- function(root = ".", add_variables = NULL, add_topics = NULL) {
       stop("CSV/XLSX codebook conflict; reconcile explicitly: ", kind, call. = FALSE)
     original[[kind]] <- canonical
     results[[kind]] <- codebook_add(canonical, proposals[[kind]], kind)
+    if(kind=='variables')results[[kind]]$data <- codebook_order_variables(results[[kind]]$data)
+    if(kind=='topics') {
+      x<-results[[kind]]$data
+      x<-x[order(match(x$Broad_topic,unique(x$Broad_topic))),,drop=FALSE]
+      rownames(x)<-NULL;results[[kind]]$data<-x
+    }
     audits[[kind]] <- results[[kind]]$audit
   }
   ledger <- if (file.exists(ledger_path)) codebook_csv(ledger_path) else NULL
@@ -186,6 +197,14 @@ codebook_sync <- function(root = ".", add_variables = NULL, add_topics = NULL) {
       stage(csv, temp_csv)
     }
     if (changed) {
+      if(kind%in%c('variables','topics')) {
+        temp_xlsx <- file.path(scratch,paste0(kind,'.xlsx'))
+        openxlsx::saveWorkbook(codebook_variable_workbook(x,if(kind=='variables')c('Topic','broad') else 'Broad_topic'),temp_xlsx)
+        excel_compact_file(temp_xlsx)
+        if(!identical(codebook_excel(temp_xlsx),x))stop('XLSX round-trip differs.')
+        stage(xlsx,temp_xlsx)
+        next
+      }
       wb <- openxlsx::loadWorkbook(xlsx)
       sheet <- names(wb)[[1]]
       appended <- x[seq.int(nrow(original[[kind]]) + 1L, nrow(x)), , drop = FALSE]
@@ -194,6 +213,7 @@ codebook_sync <- function(root = ".", add_variables = NULL, add_topics = NULL) {
       codebook_format_new_rows(wb, sheet, seq_len(nrow(appended)) + nrow(original[[kind]]) + 1L, appended, xlsx)
       temp_xlsx <- file.path(scratch, paste0(kind, ".xlsx"))
       openxlsx::saveWorkbook(wb, temp_xlsx, overwrite = TRUE)
+      excel_compact_file(temp_xlsx)
       if (!identical(codebook_excel(temp_xlsx), x)) stop("XLSX round-trip differs.", call. = FALSE)
       stage(xlsx, temp_xlsx)
     }
