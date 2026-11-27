@@ -2170,64 +2170,7 @@ vertical-align: -.125em;
 <style>html{ scroll-behavior: smooth; }</style>
 
 
-<style type="text/css">
-:root {
---manual-ink: #213447;
---manual-accent: #216a78;
-}
-body {
-color: var(--manual-ink);
-line-height: 1.65;
-overflow-wrap: anywhere;
-}
-main.content {
-max-width: 860px;
-}
-#title-block-header {
-border-bottom: 2px solid var(--manual-accent);
-padding-bottom: 1.1rem;
-margin-bottom: 1.5rem;
-}
-#title-block-header .title {
-font-weight: 650;
-letter-spacing: -0.025em;
-}
-#title-block-header .subtitle {
-color: #526c7d;
-font-size: 1.3rem;
-}
-h1:not(.title) {
-margin-top: 2.8rem;
-font-size: 1.8rem;
-}
-h2 {
-margin-top: 1.8rem;
-font-size: 1.25rem;
-}
-li {
-margin-bottom: 0.45rem;
-}
-li > ul {
-margin-top: 0.55rem;
-}
-#TOC {
-font-size: 0.9rem;
-}
-.btn {
-margin: 0 0.6rem 1rem 0;
-}
-pre {
-border-left: 3px solid var(--manual-accent);
-}
-code {
-overflow-wrap: anywhere;
-}
-@media (max-width: 767px) {
-h1:not(.title) {
-font-size: 1.5rem;
-}
-}
-</style>
+<style type="text/css">:root {--manual-ink: #213447;--manual-accent: #216a78;}body {color: var(--manual-ink);line-height: 1.65;overflow-wrap: anywhere;}main.content {max-width: 860px;}#title-block-header {border-bottom: 2px solid var(--manual-accent);padding-bottom: 1.1rem;margin-bottom: 1.5rem;}#title-block-header .title {font-weight: 650;letter-spacing: -0.025em;}#title-block-header .subtitle {color: #526c7d;font-size: 1.3rem;}h1:not(.title) {margin-top: 2.8rem;font-size: 1.8rem;}h2 {margin-top: 1.8rem;font-size: 1.25rem;}li {margin-bottom: 0.45rem;}li > ul {margin-top: 0.55rem;}#TOC {font-size: 0.9rem;}.btn {margin: 0 0.6rem 1rem 0;}pre {border-left: 3px solid var(--manual-accent);}code {overflow-wrap: anywhere;}@media (max-width: 767px) {h1:not(.title) {font-size: 1.5rem;}}</style>
 </head>
 
 <body class="quarto-light">
@@ -2238,32 +2181,31 @@ font-size: 1.5rem;
     <h2 id="toc-title">In this manual</h2>
    
   <ul class="collapse">
-  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting started</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link active" data-scroll-target="#getting-started">Getting started</a>
+  <ul class="collapse">
+  <li><a href="#articles-matrices-and-n" id="toc-articles-matrices-and-n" class="nav-link" data-scroll-target="#articles-matrices-and-n">Articles, matrices and N</a></li>
+  </ul></li>
   <li><a href="#meta-analysis" id="toc-meta-analysis" class="nav-link" data-scroll-target="#meta-analysis">Meta-analysis</a>
   <ul class="collapse">
-  <li><a href="#steps" id="toc-steps" class="nav-link" data-scroll-target="#steps">Steps</a></li>
+  <li><a href="#select-and-estimate" id="toc-select-and-estimate" class="nav-link" data-scroll-target="#select-and-estimate">Select and estimate</a></li>
+  <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model">Model</a></li>
   </ul></li>
   <li><a href="#metasem" id="toc-metasem" class="nav-link" data-scroll-target="#metasem">MetaSEM</a>
   <ul class="collapse">
-  <li><a href="#steps-1" id="toc-steps-1" class="nav-link" data-scroll-target="#steps-1">Steps</a></li>
-  <li><a href="#notes-and-tips-1" id="toc-notes-and-tips-1" class="nav-link" data-scroll-target="#notes-and-tips-1">Notes and tips</a></li>
+  <li><a href="#select-variables-and-inspect-coverage" id="toc-select-variables-and-inspect-coverage" class="nav-link" data-scroll-target="#select-variables-and-inspect-coverage">Select variables and inspect coverage</a></li>
+  <li><a href="#optional-pooled-matrix" id="toc-optional-pooled-matrix" class="nav-link" data-scroll-target="#optional-pooled-matrix">Optional pooled matrix</a></li>
+  <li><a href="#write-and-fit-a-model" id="toc-write-and-fit-a-model" class="nav-link" data-scroll-target="#write-and-fit-a-model">Write and fit a model</a></li>
+  <li><a href="#read-the-results" id="toc-read-the-results" class="nav-link" data-scroll-target="#read-the-results">Read the results</a></li>
+  <li><a href="#save-the-analysis" id="toc-save-the-analysis" class="nav-link" data-scroll-target="#save-the-analysis">Save the analysis</a></li>
   </ul></li>
-  <li><a href="#literature-review" id="toc-literature-review" class="nav-link" data-scroll-target="#literature-review">Literature review</a>
+  <li><a href="#literature-review" id="toc-literature-review" class="nav-link" data-scroll-target="#literature-review">Literature review</a></li>
+  <li><a href="#resources-citation-and-reproducibility" id="toc-resources-citation-and-reproducibility" class="nav-link" data-scroll-target="#resources-citation-and-reproducibility">Resources, citation and reproducibility</a>
   <ul class="collapse">
-  <li><a href="#steps-2" id="toc-steps-2" class="nav-link" data-scroll-target="#steps-2">Steps</a></li>
+  <li><a href="#common-questions" id="toc-common-questions" class="nav-link" data-scroll-target="#common-questions">Common questions</a></li>
   </ul></li>
-  <li><a href="#what-the-app-computes-technical-details" id="toc-what-the-app-computes-technical-details" class="nav-link" data-scroll-target="#what-the-app-computes-technical-details">What the app computes (technical details)</a></li>
-  <li><a href="#data-export-reports" id="toc-data-export-reports" class="nav-link" data-scroll-target="#data-export-reports">Data export &amp; reports</a></li>
-  <li><a href="#reproducibility-checklist" id="toc-reproducibility-checklist" class="nav-link" data-scroll-target="#reproducibility-checklist">Reproducibility checklist</a></li>
-  <li><a href="#troubleshooting-faq" id="toc-troubleshooting-faq" class="nav-link" data-scroll-target="#troubleshooting-faq">Troubleshooting &amp; FAQ</a></li>
-  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
-  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
-  <ul class="collapse">
-  <li><a href="#limitations-and-future-directions" id="toc-limitations-and-future-directions" class="nav-link" data-scroll-target="#limitations-and-future-directions">Limitations and Future Directions</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul></li>
+  <li><a href="#project-citation" id="toc-project-citation" class="nav-link" data-scroll-target="#project-citation">Project citation</a></li>
   </ul>
-<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="..\livingSEBapp_manual.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</nav>
 </div>
 <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
 </div>
@@ -2303,239 +2245,154 @@ font-size: 1.5rem;
 
 
 <p><a href="https://feracotommaso.github.io/living_SEB_review/shiny-app.html" class="btn btn-primary">Open the app</a> <a href="livingSEBapp_manual.pdf" class="btn btn-outline-secondary">Download PDF</a></p>
-<p>The livingSEBapp (<a href="https://feracotommaso.github.io/living_SEB_review/shiny-app.html" class="uri">https://feracotommaso.github.io/living_SEB_review/shiny-app.html</a>) is a free and open-source Shiny app for synthesizing peer-reviewed studies that used the Behavioral, Emotional, and Social Skills Inventory (BESSI). The app is designed as a rapid tool for data synthesis, effect-size visualization, and for building priors/hypotheses. It is <strong>not</strong> a replacement for a full systematic meta-analysis; results should be interpreted as a high-quality <em>rapid synthesis</em>. For a full meta-analysis, use the open data here as a starting point, add study-level moderators as needed, enrich the dataset with additional studies if needed, and tailor the analyses on your hypotheses.</p>
-<p>Below, each function of the app is described to guide correct and efficient use.</p>
+<p><strong>Manual for app interface 0.2.0. Updated 27 November 2026.</strong> This date describes the manual, not the latest scientific database update.</p>
+<p>The Living SEB app helps you browse the curated literature and explore associations involving social, emotional and behavioral skills. The quantitative sections use the included correlation matrices; Review also includes papers retained only for the literature map. The app supports evidence mapping and exploratory synthesis. A dedicated meta-analysis may require additional searches, decisions about participant overlap and measurement, and a model tailored to the research question.</p>
 <section id="getting-started" class="level1">
 <h1>Getting started</h1>
-<ul>
-<li><strong>Home tab.</strong> Read the overview and use the quick-start buttons to jump to <strong>Meta-analysis</strong>, <strong>MetaSEM</strong>, or <strong>Review</strong> pages.</li>
-<li><strong>Navigation.</strong> You can switch tabs anytime; your selections persist within each section until you change them or click “Clean selection” (Review tab).</li>
-<li><strong>Data sources.</strong> All analyses run on the <em>combined</em> dataset curated from BESSI studies and related correlates. The data should hopefully cover the full list of cross-sectional associations between SEB skills (as measured with the BESSI) and all other measures included in each study). Code and data are linked on the app’s GitHub.</li>
-</ul>
+<p>Use the navigation bar or the Home quick-start buttons. The three workflows are independent:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Your goal</th>
+<th style="text-align: left;">Section</th>
+<th style="text-align: left;">First action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Find and read an article</td>
+<td style="text-align: left;">Review</td>
+<td style="text-align: left;">Search or select filters, then select a row</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Synthesize domain-outcome associations</td>
+<td style="text-align: left;">Meta-analysis</td>
+<td style="text-align: left;">Choose an outcome, then run the analysis</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Specify a structural model</td>
+<td style="text-align: left;">MetaSEM</td>
+<td style="text-align: left;">Select variables, then click Get info</td>
+</tr>
+</tbody>
+</table>
+<p>The app loads the published GitHub <code>main</code> data when it starts. An app release and a data release can change separately. <strong>About &amp; Citation</strong> shows the app version, the loaded article/matrix counts, retrieval time and analysis environment. Retrieval time is not the date of the latest scientific database change. Save the selected data and report to document your actual analysis.</p>
+<section id="articles-matrices-and-n" class="level2">
+<h2 class="anchored" data-anchor-id="articles-matrices-and-n">Articles, matrices and N</h2>
+<p>An article can contribute several correlation matrices. Some matrices share participants, and pair-specific sample sizes can vary. Counts of matrices are therefore not necessarily counts of independent samples. <strong>Sum of reference Ns</strong> adds the coded sample sizes for contributing matrices; it is not a count of unique people or an exact N for every correlation. Check the source notes before interpreting or reusing these values. The app does not deduplicate participants or replace missing correlations automatically.</p>
+</section>
 </section>
 <section id="meta-analysis" class="level1">
 <h1>Meta-analysis</h1>
-<p>A core utility is the rapid synthesis of associations between the five SEB domains and any correlate measured in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\geq 2</annotation></semantics></math> independent samples. The app estimates <strong>five separate meta-analytical associations</strong> (one per SEB domain) with a <strong>single chosen outcome</strong> (Multivariate models are not currently supported in this section).</p>
-<section id="steps" class="level2">
-<h2 class="anchored" data-anchor-id="steps">Steps</h2>
+<p>This section fits one multilevel random-effects model for each of the five BESSI domains against a single selected outcome.</p>
+<section id="select-and-estimate" class="level2">
+<h2 class="anchored" data-anchor-id="select-and-estimate">Select and estimate</h2>
 <ol type="1">
-<li><strong>Select the data of interest (Meta-analysis → Summary).</strong>
-<ul>
-<li>In the sidebar, choose a <strong>broad outcome grouping</strong> and then a <strong>specific outcome</strong> within it.<br>
-By default, <em>SCHOOL → academic achievement</em> is selected. The full list of outcomes is in the matrix codebook (repository).</li>
-<li>Optionally filter by <strong>age class</strong> and <strong>year of publication</strong>.</li>
-<li>As you select, the <strong>Samples included</strong> table updates with study IDs, authors, year, age class, N, and DOI.</li>
-</ul></li>
-<li><strong>Run the meta-analysis (Meta-analysis → Meta results).</strong>
-<ul>
-<li>Move to the <em>Meta results</em> tab and click <strong>Run the meta-analysis</strong>.</li>
-<li>The app computes Fisher-z correlations via <code>metafor::escalc(measure = &quot;ZCOR&quot;)</code>, then fits <strong>multilevel random-effects</strong> models with <code>metafor::rma.mv()</code> using random intercepts for <code>paper_id/matrix_id</code>. Estimates are back-transformed to <em>r</em>.</li>
-<li>You’ll see, for each SEB domain:
-<ul>
-<li><strong>r</strong> and its <strong>95% CI</strong>, <strong>SE</strong>, <strong>p</strong></li>
-<li><strong>k</strong> (number of effect sizes) and total <strong>N</strong> (sample size)</li>
-<li><strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>τ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\tau^2</annotation></semantics></math></strong> (between-study variance; summed across random components)</li>
-<li><strong>Q</strong>, <strong>df</strong>, and <strong>Q p-value</strong> (heterogeneity)</li>
-<li><strong>Prediction interval</strong> (PI) for <em>r</em> (in the results object and plot annotation)</li>
-</ul></li>
-</ul></li>
-<li><strong>Inspect a forest plot (Meta-analysis → Forest plots).</strong>
-<ul>
-<li>Move to the <em>Forest plots</em> tab and choose a <strong>skill</strong> (SEB domain) and the app displays the forest plot for that domain–outcome association.</li>
-</ul></li>
-<li><strong>Export a brief report (Meta-analysis → Report).</strong>
-<ul>
-<li>Download an <strong>HTML report</strong> that includes your selections, descriptive tables, meta-analytic results, and plots.</li>
-<li>You can also download the <strong>meta-analysis dataset (CSV)</strong> from the Summary tab for offline work.</li>
-</ul></li>
+<li>Choose a <strong>broad outcome grouping</strong> and a <strong>specific outcome</strong> in the sidebar. You can restrict the data by age class and publication year.</li>
+<li>In <strong>Summary</strong>, inspect coverage by skill and the <strong>Included matrices</strong> table. Counts and reference Ns are displayed as whole numbers. <strong>Invalid values</strong> counts observed correlations that cannot be analyzed because r is non-finite or outside -1 &lt; r &lt; 1, or the reference N is non-finite or at most 3. Ordinary missing correlations are not counted. The CSV download retains source values and gives the reason in <code>analysis_status</code>. DOI links in the source table open the corresponding publications.</li>
+<li>Open <strong>Meta results</strong> and click <strong>Run the meta-analysis</strong>. A domain needs at least two usable matrices. A sparse or failed domain is reported separately, so other domains can still be estimated.</li>
+<li>Read the main table: <strong>r</strong>, <strong>95% CI (r)</strong>, <strong>p</strong>, <strong>Papers</strong>, <strong>Matrices (k)</strong> and <strong>Sum of reference Ns</strong>. The summary plot shows the correlations and confidence intervals.</li>
+<li>Expand <strong>Model details</strong> for <strong>SE (z)</strong>, <strong>Tau-squared (z)</strong>, <strong>Q (df)</strong> and model status. SE and heterogeneity variance are on the Fisher-z scale; they are not standard errors or variances on the displayed r scale.</li>
+<li>Open <strong>Forest plots</strong> and choose a domain to inspect the contributing estimates, labeled by authors, year and matrix code. Values are labeled as r along a Fisher-z plotting axis.</li>
 </ol>
-<section id="notes-and-tips" class="level3">
-<h3 class="anchored" data-anchor-id="notes-and-tips">Notes and tips</h3>
-<ul>
-<li>If filters yield <strong>no data</strong>, the results tab will indicate this. Broaden your filters or pick a different outcome.</li>
-<li>Interpret <strong>PIs</strong> for expected dispersion of future samples; <strong>CIs</strong> for precision of the mean effect.</li>
-<li>The <strong>total N</strong> is computed across unique matrices and may differ across skills when studies report different subsets.</li>
-</ul>
+<p>Changing the selected outcome or filters makes the previous results unavailable. Run the analysis again before interpreting or exporting them. <strong>Summary</strong> downloads always refer to the current selection; an <strong>HTML report</strong> is enabled only for a successfully estimated, current analysis.</p>
 </section>
+<section id="model" class="level2">
+<h2 class="anchored" data-anchor-id="model">Model</h2>
+<p>Correlations are transformed with <code>metafor::escalc(measure = &quot;ZCOR&quot;)</code>. The model is:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>metafor<span class="sc">::</span><span class="fu">rma.mv</span>(yi, <span class="at">V =</span> vi,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> paper_id <span class="sc">/</span> matrix_id,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="st">&quot;REML&quot;</span>, <span class="at">test =</span> <span class="st">&quot;t&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Estimates and confidence limits are back-transformed to r. SE and heterogeneity variances remain on the Fisher-z scale. The interface plots confidence intervals; it does not display prediction intervals. Reference Ns and documented sample overlaps require substantive review even when the model converges.</p>
 </section>
 </section>
 <section id="metasem" class="level1">
 <h1>MetaSEM</h1>
-<p>This section builds a <strong>meta-analytic correlation matrix</strong> across selected variables and fits <strong>one-stage MASEM</strong> models using <code>metaSEM</code>.</p>
-<section id="steps-1" class="level2">
-<h2 class="anchored" data-anchor-id="steps-1">Steps</h2>
+<p>This section fits a <strong>one-stage meta-analytic SEM</strong> directly to the contributing study matrices and reference Ns. The optional pooled matrix is a separate exploratory calculation; it is not the input to the one-stage model.</p>
+<section id="select-variables-and-inspect-coverage" class="level2">
+<h2 class="anchored" data-anchor-id="select-variables-and-inspect-coverage">Select variables and inspect coverage</h2>
 <ol type="1">
-<li><strong>Select variables and get coverage (MetaSEM → Summary).</strong>
-<ul>
-<li>In the sidebar, select any combination of <strong>SEB domains</strong>, <strong>SEB facets</strong>, <strong>Big Five traits</strong>, and <strong>outcomes</strong>. Optional filters: <strong>age class</strong> and <strong>year</strong>.</li>
-<li>Click <strong>Get info</strong>. The app assembles the data and shows:
-<ul>
-<li><strong>K correlations</strong> (how many independent samples contribute to each pair).<br>
-A red banner appears if any <strong>k = 0</strong> pairs exist; please remove variables so every pair has coverage. As a general rule of thumb, use metaSEM if each pair of correlations has
-<ul>
-<li>2 studies = minimum (barely usable, only fixed-effect style).</li>
-<li>3–5 studies = acceptable for exploratory models, but limited power.</li>
-<li>10+ studies per correlation = good practice for reliable meta-SEM.</li>
-</ul></li>
-<li><strong>Sample size per correlation (N)</strong>.</li>
-<li><strong>Studies included</strong> table.</li>
-</ul></li>
-<li>Warnings appear if some correlations have <strong>k &lt; 3</strong> or <strong>N &lt; 1000</strong> (interpret with caution).</li>
-</ul></li>
-<li><strong>Compute the pooled correlation matrix (MetaSEM → SEM matrix).</strong>
-<ul>
-<li>Move to the <em>SEM matrix</em> tab and click <strong>Get the meta-matrix</strong>. The app runs <code>metaSEM::tssem1()</code> to pool the correlation structure.</li>
-<li>View the <strong>estimated correlation matrix</strong> (rounded) and a <strong>corrplot</strong>.<br>
-You can <strong>download</strong> the correlation plot (PNG).</li>
-</ul></li>
-<li><strong>Specify and fit a model (MetaSEM → metaSEM).</strong>
-<ul>
-<li>Move to the <em>metaSEM</em> tab and insert your <strong>lavaan syntax</strong> in the text area (e.g., <code>y ~ x1 + x2</code>). If you are not familiar with <code>lavaan</code> or <code>R</code>, please see https://lavaan.ugent.be/tutorial/syntax1.html.
-<ul>
-<li>You can fit both regression models and measurement models.</li>
-<li>The app <strong>auto-augments</strong> your model to:
-<ul>
-<li>Fix exogenous variances correctly,</li>
-<li>And saturate the residual covariances.</li>
-</ul></li>
-<li>If you do not want the model to be saturated, unclick the <strong>checkbox</strong>.
-<ul>
-<li>You can now specify the covariances you want to estimate using <code>~~</code>.</li>
-<li>If the model is not saturated, you can obtain fit indices.</li>
-</ul></li>
-</ul></li>
-<li>Click <strong>Fit the specified SEM model</strong> to estimate a <strong>one-stage MASEM</strong> (<code>osmasem</code>) with a <strong>diagonal random-effects</strong> structure (<code>(..., RE.type = &quot;Diag&quot;)</code>).</li>
-<li><strong>Model fit</strong> panel:
-<ul>
-<li>If the model is <strong>saturated (df = 0)</strong>, fit indices aren’t informative; focus on parameter estimates.</li>
-<li>Otherwise, the app shows <strong>CFI, TLI, RMSEA, SRMR</strong>.</li>
-</ul></li>
-<li><strong>Model estimates</strong> table includes:
-<ul>
-<li>Paths and variances with <strong>Estimate</strong>, <strong>SE</strong>, <strong>z</strong>, <strong>p</strong>, <strong>95% CI</strong>, plus a <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math> (sd)</strong> column for random-effect variance and its transformation to SD where applicable.</li>
-</ul></li>
-<li><strong>Residual variance / R²</strong> table lists each variable’s residual variance and <strong>R² = 1 − residual variance</strong> (endogenous variables first).</li>
-</ul></li>
-<li><strong>Export a brief report (MetaSEM → Report).</strong>
-<ul>
-<li>Download an <strong>HTML report</strong> with your selections, K/N tables, pooled matrix, model specification (original + augmented), fit indices, parameter table with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math>, and R² table.</li>
-</ul></li>
+<li>Select SEB domains/facets, personality traits and outcomes. Optional age and year filters apply to this section independently of Meta-analysis.</li>
+<li>Click <strong>Get info</strong>. Inspect the number of articles and matrices, <strong>Contributing matrices per correlation (k)</strong>, <strong>Sum of reference Ns per correlation</strong>, and <strong>Studies included</strong>.</li>
+<li>Expand <strong>Selected variable codes and matrix checks</strong> for the readable labels, codes and available-pair counts. Incomplete matrices retain their missing entries.</li>
 </ol>
+<p>The app requires at least two contributing matrices overall and at least one reported correlation for every selected variable pair. Pairs with k = 0 prevent estimation. Warnings for fewer than three matrices per pair or a reference-N sum below 1000 are advisory, not automatic exclusions. These checks do not guarantee identification, adequate precision or a scientifically appropriate model.</p>
 </section>
-<section id="notes-and-tips-1" class="level2">
-<h2 class="anchored" data-anchor-id="notes-and-tips-1">Notes and tips</h2>
+<section id="optional-pooled-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="optional-pooled-matrix">Optional pooled matrix</h2>
+<p>In <strong>SEM matrix</strong>, click <strong>Get the meta-matrix</strong> to run <code>metaSEM::tssem1()</code> with its existing defaults. Inspect the pooled correlations and plot, and download the plot as PNG if useful. This step is optional for one-stage estimation and for its report. Large selections can take substantially longer to fit.</p>
+</section>
+<section id="write-and-fit-a-model" class="level2">
+<h2 class="anchored" data-anchor-id="write-and-fit-a-model">Write and fit a model</h2>
+<p>In the <strong>metaSEM</strong> tab, use the codes listed as comments at the top of the editor. Each line gives <code>code = readable label</code>. The list updates when the selection changes, preserving the model you have written below it. Lines starting with <code>#</code> are comments and do not enter the model.</p>
+<p>For a small worked example, select <strong>Self-management</strong>, <strong>BF Conscientiousness</strong> and <strong>Academic achievement</strong>, click <strong>Get info</strong>, and replace the example model in the editor with:</p>
+<pre class="text"><code>academicachievement ~ selfmanagement + conscientiousness</code></pre>
+<p>The editor supports regressions (<code>~</code>), variances/covariances (<code>~~</code>), factor loadings (<code>=~</code>) and parameter labels. A directed coefficient can be fixed explicitly, for example <code>academicachievement ~ 0.1*selfmanagement + conscientiousness</code>. Intercepts, explicit constraint expressions and defined parameters are not supported by this app editor; use R for specifications requiring them.</p>
 <ul>
-<li>Do not proceed with models when the <strong>K table</strong> shows <strong>k = 0</strong> pairs or <strong>k &lt; 5</strong>; adjust the variable set.</li>
-<li>Large models with many variables can be slow and sometimes unstable; start small and build up.</li>
-<li>Use the <strong>auto-saturate</strong> option if you are not familiar with SEM models. Saturated residuals can mask model misfit but will give interpretable estimates.</li>
+<li><strong>Automatic covariances:</strong> the checkbox adds covariances among exogenous variables and among endogenous residuals. Exogenous observed variances default to 1 unless explicitly specified, independently of the checkbox. Inspect the effective syntax shown below the editor.</li>
+<li><strong>Measurement models:</strong> switch automatic covariances off, specify the required covariances explicitly, and identify the factor scale appropriately. The <a href="https://lavaan.ugent.be/tutorial/syntax1.html">official lavaan syntax guide</a> explains the operators; the app implements the subset described above.</li>
+<li><strong>Fixed paths and variables without directed paths</strong> are supported. Feedback loops are rejected because this correlation-model calculation requires an acyclic specification.</li>
 </ul>
+<p>Click <strong>Fit the specified SEM model</strong>. The current one-stage settings are <code>RE.type = &quot;Zero&quot;</code>, <code>acov = &quot;weighted&quot;</code> and <code>intervals.type = &quot;z&quot;</code>: between-study heterogeneity is fixed at zero and intervals use Wald-z inference. This interface update does not change those settings.</p>
+</section>
+<section id="read-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-results">Read the results</h2>
+<ul>
+<li><strong>Model fit</strong> reports optimizer status and relevant warnings. A solution that fails the app’s convergence/uncertainty checks does not enable the estimates or report.</li>
+<li>For a <strong>saturated model (df = 0)</strong>, global fit indices are not informative. Otherwise, the fit table shows chi-square, df, p, CFI, TLI, RMSEA and SRMR. Turning off automatic covariances does not by itself guarantee positive degrees of freedom or an identified model.</li>
+<li><strong>Model estimates</strong> lists free parameters with estimate, 95% CI and p. Expand <strong>Model details</strong> for SE and z. Fixed coefficients remain visible in the syntax. Regression coefficients, factor loadings, covariances and variances are different quantities; they are not all Pearson correlations. No path-specific heterogeneity column is reported for this zero-heterogeneity model.</li>
+<li><strong>Residual variance / R2</strong> is reported for endogenous variables where applicable. R2 is one minus residual variance divided by model-implied total variance. It is not reported when the outcome residual correlates with a predictor. Out-of-range values are retained and flagged, not forced to zero or one.</li>
+</ul>
+<p>Changing variables or age/year filters requires <strong>Get info</strong> again and fresh estimation. Changing syntax or the automatic-covariance option invalidates the SEM results but does not invalidate a pooled matrix computed for the same data selection. These safeguards prevent reports from mixing an earlier fit with a new selection.</p>
+</section>
+<section id="save-the-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="save-the-analysis">Save the analysis</h2>
+<p>From <strong>Summary</strong>, download an <strong>RDS list</strong> or <strong>ZIP of CSV files</strong>. These preserve variable names, missing correlations, source information, reference Ns, pair coverage, current selection, model syntax and package versions. Each matrix CSV includes a variable-name column. The ZIP also includes the source table, coverage and completeness tables, and a text file with settings.</p>
+<p>From <strong>Report</strong>, generate the HTML report after fitting a current, validated one-stage model. It includes selected data sources, coverage, effective syntax, diagnostics, estimates, technical details, R2 and references. The exploratory pooled matrix appears only if it was calculated successfully for the same selection. The report does not require pooling first. The data exports do not replace the fitted-model report or your scientific decisions.</p>
 </section>
 </section>
 <section id="literature-review" class="level1">
 <h1>Literature review</h1>
-<p>The <strong>Review</strong> tab lets you filter the curated literature by <strong>broad topics</strong> and <strong>specific topics</strong>.</p>
-<section id="steps-2" class="level2">
-<h2 class="anchored" data-anchor-id="steps-2">Steps</h2>
+<p>Review covers all included articles, including review-only articles that contribute no active quantitative matrix.</p>
 <ol type="1">
-<li><strong>Choose topics.</strong>
-<ul>
-<li>Select one or more <strong>BROAD topics</strong> and/or <strong>Specific topics</strong>.</li>
-<li>A dynamic <strong>Filtered based on broad topic</strong> selector appears to help you pick specific topics that belong to the chosen broad topics.</li>
-<li>The specific topic selection is nested in the broad topic selection: If you select a broad topic, specific topics will not show additional papers but will only filter the selection more (if that specific topic exist in the broader topic/s).</li>
-</ul></li>
-<li><strong>View results.</strong>
-<ul>
-<li>The <strong>Filtered studies</strong> table shows items matching your filters, with a banner indicating the number of matching records. Helpful messages appear when there are zero matches.</li>
-</ul></li>
-<li><strong>Reset / export.</strong>
-<ul>
-<li>Click <strong>Clean selection</strong> to clear all topic filters.</li>
-<li>Click <strong>Download the filtered data</strong> to export the current subset as <strong>UTF-8 CSV</strong>.</li>
-</ul></li>
+<li>Use <strong>Search articles</strong> to search codes, the <strong>full author list</strong>, titles, abstracts and readable coding labels, including fields hidden from the compact table. An author search finds contributions in any author position, even when the table shows only the abbreviated first-author citation.</li>
+<li>Filter by <strong>BROAD topics</strong>, <strong>Specific topics</strong> or <strong>Analyzed constructs</strong>. Choosing a broad topic also offers a selector restricted to its specific topics. Topics describe the focus of an article; constructs describe what was analyzed, so a construct can be present without being a topic.</li>
+<li>Expand <strong>More filters</strong> for sample context, SEB measurement, scientific contribution and study design. Multiple choices within a field match any selected value; different fields and the text search are combined. If no article matches, clear some filters or use <strong>Clean selection</strong> before trying a new search.</li>
+<li>The compact <strong>Included articles</strong> table starts in article-code order and shows <strong>Code</strong>, abbreviated <strong>Authors</strong>, <strong>Year</strong> and <strong>Title</strong>. Click headings to sort, change the number of rows per page, and choose <strong>Columns to show</strong>. Code is always retained. Add the optional <strong>Full authors</strong> column when you need every contributor; it is hidden initially and is always included in text searches. Additional columns use horizontal scrolling instead of squeezing all columns into the available width. Rows scroll vertically inside a bounded table area (up to 45% of the window height); the column headings and horizontal scrollbar stay in place within that area. Short results shrink to their content.</li>
+<li><strong>Click an article code</strong> to open its DOI in a new browser tab. Underlined codes have a small external-link marker; articles without a valid DOI retain a plain code. <strong>Click elsewhere in a row</strong> to open the <strong>article card</strong> inside the app. It shows objectives, topics, analyzed constructs, instruments, abstract, DOI, data access and coding notes where available. Quantitative papers list their active matrix codes and reference Ns; review-only papers are clearly distinguished. After filters or displayed columns change, select a row again if necessary.</li>
+<li><strong>Download the filtered data</strong> exports every matching article and all coded fields, regardless of the visible columns or selected row. The UTF-8 CSV retains the underlying machine-readable codes. <strong>Clean selection</strong> clears search and filters.</li>
 </ol>
+<p>Detailed filters search the available structured coding. The sidebar reports how many articles have detailed coding; missing coding should not be interpreted as evidence that an article did not analyze a construct.</p>
+</section>
+<section id="resources-citation-and-reproducibility" class="level1">
+<h1>Resources, citation and reproducibility</h1>
+<p><strong>Resources</strong> links to this manual in HTML/PDF, the two simple R tutorials, codebooks and data, the living results, preregistration and project site. Local checkouts open the newly rendered manual; a standalone deployed app links to the published manual on GitHub Pages.</p>
+<p><strong>About &amp; Citation</strong> provides the project citation and a downloadable BibTeX entry. This entry cites the project, not a particular filtered analysis or data snapshot. Analysis reports include references for all contributing articles, using DOI/title matches and full coded bibliographic metadata for articles absent from the historical bibliography. If required reference metadata are missing, export stops and identifies the article instead of silently omitting it. A separate filtered-study BibTeX download is not provided.</p>
+<p>For reproducibility, save the data export and HTML report, record your app version and filters, and document decisions about overlap and measurement. MetaSEM reports and data exports include metaSEM, lavaan and OpenMx versions. The revised app requires <strong>metaSEM &gt;= 2.0</strong> and <strong>lavaan &gt;= 0.7-3</strong>; restart R after updating packages. Local setup instructions are in the repository’s <a href="https://github.com/feracotommaso/living_SEB_review/blob/main/INSTALLATION.md">INSTALLATION.md</a>.</p>
+<section id="common-questions" class="level2">
+<h2 class="anchored" data-anchor-id="common-questions">Common questions</h2>
+<p><strong>Why are there no matches?</strong> Search text and filters are combined. Clear the selection, check whether detailed coding is available, and try fewer restrictions.</p>
+<p><strong>Why is a model or report unavailable after an edit?</strong> Re-run the relevant step for the current selection. MetaSEM variable/filter edits require Get info, then estimation; syntax edits require a new SEM fit.</p>
+<p><strong>Why does a selected article have no matrix?</strong> Some papers are included only in the review, or their matrix was superseded/excluded from the active quantitative data. Check the article card and coding notes.</p>
+<p><strong>Why is an N different across sections or skills?</strong> Different matrices can contribute to different variable pairs. N is the sum of coded reference Ns, with possible participant overlap and pair-specific missingness.</p>
+<p><strong>Why does a large model take time or fail?</strong> Coverage, identification, precision and convergence are distinct issues. Start with a smaller scientifically justified model, inspect diagnostics and save the data if you need a tailored local analysis. The app does not repair matrices or change the model automatically.</p>
 </section>
 </section>
-<section id="what-the-app-computes-technical-details" class="level1">
-<h1>What the app computes (technical details)</h1>
-<ul>
-<li><p><strong>Effect sizes.</strong> Correlations are transformed to Fisher-z via <code>metafor::escalc(measure = &quot;ZCOR&quot;)</code>; models are fit on <em>z</em> and back-transformed to <em>r</em>.</p></li>
-<li><p><strong>Meta-analytic model (Meta-analysis).</strong></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rma.mv</span>(yi, <span class="at">V =</span> vi,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> paper_id <span class="sc">/</span> matrix_id,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">test =</span> <span class="st">&quot;t&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ul>
-<li>Reported: point estimate, 95% CI, SE, p; <strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>τ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\tau^2</annotation></semantics></math></strong> (sum of variance components), <strong>Q</strong>, <strong>df</strong>, <strong>Q p-value</strong>, and <strong>prediction interval</strong>.</li>
-</ul></li>
-<li><p><strong>Pooled matrix (MetaSEM).</strong> <code>tssem1()</code> aggregates correlations across studies.</p></li>
-<li><p><strong>One-stage MASEM.</strong> <code>osmasem()</code> with <strong>diagonal random effects</strong>; <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>τ</mi><annotation encoding="application/x-tex">\tau</annotation></semantics></math> reported per parameter where random effects are estimated.</p></li>
-<li><p><strong>R².</strong> Computed from residual variances in the fitted model (<code>R² = 1 − residual variance</code>), bounded at 0.</p></li>
-</ul>
-</section>
-<section id="data-export-reports" class="level1">
-<h1>Data export &amp; reports</h1>
-<ul>
-<li><strong>Meta-analysis data (CSV).</strong> The exact dataset used to compute the meta-analysis.</li>
-<li><strong>MetaSEM data (ZIP CSV/RDS).</strong> The exact datasets used to compute the metaSEM or pooled correlations.</li>
-<li><strong>Correlation plot (PNG).</strong> High-resolution (2000×2000 px, 300 dpi) of the pooled correlation matrix.</li>
-<li><strong>Review subset (CSV).</strong> Filtered literature table.</li>
-<li><strong>Reports (HTML).</strong> <code>report_meta.html</code> and <code>report_masem.html</code> include selections, methods, tables, and figures.</li>
-<li><strong>Bibliography.</strong> Reports include a <strong>filtered .bib</strong> of the cited studies based on your current data.</li>
-</ul>
-</section>
-<section id="reproducibility-checklist" class="level1">
-<h1>Reproducibility checklist</h1>
-<ul>
-<li>Save your <strong>filters</strong> and <strong>selected outcome/variables</strong>.</li>
-<li>Download the <strong>CSV/RDS/ZIP</strong> outputs alongside the <strong>HTML reports</strong>.</li>
-<li>For full reproducibility, clone the GitHub repository and note your <strong>R</strong> and <strong>package versions</strong> when running locally.</li>
-</ul>
-</section>
-<section id="troubleshooting-faq" class="level1">
-<h1>Troubleshooting &amp; FAQ</h1>
-<ul>
-<li><strong>No results / disabled download.</strong> You’ll see a friendly message; broaden filters or change the outcome/topic.</li>
-<li><strong>K table shows zeros.</strong> Remove variables so every pair has coverage; otherwise, MASEM is not identified.</li>
-<li><strong>Saturated SEM (df = 0).</strong> Fit indices are not meaningful; focus on estimates and CIs.</li>
-<li><strong>Buttons do nothing.</strong> Ensure you clicked <strong>Get info</strong> (MetaSEM) or <strong>Run the meta-analysis</strong> (Meta-analysis) first.</li>
-<li><strong>Large models are slow.</strong> Reduce the number of variables, fit the matrix first, then gradually add paths. Alternatively, download the data and code and run locally (faster).</li>
-</ul>
-</section>
-<section id="citation" class="level1">
-<h1>Citation</h1>
-<p>If you use this app or dataset, please cite:</p>
-<p>Feraco, T., Calderan, M. &amp; Pellegrino G. (2026). The Living SEB Skills Project: A Living Resource for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. <em>European Journal of Personality</em>. https://doi.org/10.1177/08902070261467477</p>
-<p>A BibTeX entry is:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bibtex code-with-copy"><code class="sourceCode bibtex"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">@Article</span>{<span class="ot">Feraco2026livingSEB</span>,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>    = {Tommaso Feraco and Margherita Calderan and Gerardo Pellegrino},</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">doi</span>         = {https://doi.org/10.1177/08902070261467477},</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>     = {The Living SEB Skills Project: A Living Resource for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>      = {2026},</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">publisher</span> = {European Journal of Personality}</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="discussion" class="level1">
-<h1>Discussion</h1>
-<p>The app enables rapid, transparent synthesis of BESSI-related findings and structural models. It is ideal for:</p>
-<ul>
-<li><strong>Scoping evidence</strong> and visualizing effect sizes,</li>
-<li><strong>Generating priors/hypotheses</strong> for confirmatory work,</li>
-<li><strong>Literature research and review</strong> on SEB skills.</li>
-<li><strong>Teaching</strong> meta-analytic and MASEM concepts with real data.</li>
-</ul>
-<section id="limitations-and-future-directions" class="level2">
-<h2 class="anchored" data-anchor-id="limitations-and-future-directions">Limitations and Future Directions</h2>
-<ul>
-<li>Extend meta-analysis to <strong>facet-level</strong> skills.</li>
-<li>Add <strong>moderator/meta-regression</strong> capabilities (study-level covariates).</li>
-<li>Expand the <strong>Review</strong> schema (e.g., study design, region) for finer filtering.</li>
-<li>Consider <strong>multivariate meta-analysis</strong> in the Meta-analysis section.</li>
-<li>Extend to non-crossectional analyses</li>
-</ul>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>The livingSEBapp lowers the barrier to evidence synthesis in SEB research by combining curated data, robust meta-analytic methods, and an accessible interface. It complements, but does not replace, full systematic meta-analysis.</p>
-</section>
+<section id="project-citation" class="level1">
+<h1>Project citation</h1>
+<p>Feraco, T., Calderan, M., &amp; Pellegrino, G. (2026). The Living SEB Skills Project: A Living Resource for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills. <em>European Journal of Personality</em>. https://doi.org/10.1177/08902070261467477</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bibtex code-with-copy"><code class="sourceCode bibtex"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="va">@Article</span>{<span class="ot">Feraco2026livingSEB</span>,</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">author</span>    = {Tommaso Feraco and Margherita Calderan and Gerardo Pellegrino},</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">doi</span>         = {https://doi.org/10.1177/08902070261467477},</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">title</span>     = {The Living SEB Skills Project: A Living Resource for Review and Meta-Analysis of Social, Emotional, and Behavioral Skills},</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">year</span>      = {2026},</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">journal</span>   = {European Journal of Personality}</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 
 </main>

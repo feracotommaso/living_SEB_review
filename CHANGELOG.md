@@ -1,3 +1,152 @@
+## 2026-11-27 - Manual refresh and release-bundle verification
+
+- Updated the manual for full-author searches, optional Full authors, code-to-DOI
+  links, fixed table headers/scrollbar, integer Ns and explained invalid values.
+  Documented complete report references and regenerated/visually checked HTML/PDF.
+- Built the actual rsconnect archive locally from the twelve deployment files,
+  resolved its 142 package dependencies and verified its R 4.5.1 manifest.
+- Tested the isolated app with published data, both statistical models and
+  CSV/HTML/ZIP/RDS exports, unchanged numerical references, complete bibliography
+  and stale-result guards. App-focused tests passed; no upload or deployment.
+- Clarified the current OpenMx/R requirement and the release order: publish the
+  reviewed manual/citations on main/Pages before deploying the app.
+
+## 2026-11-27 - Review search across all authors
+
+- Include the full author list in text searches, even when hidden. Added optional
+  Full authors column with readable separators, retaining the compact default
+  Authors/Year/Title view and unchanged source data/CSV exports. Local preview only.
+
+## 2026-11-27 - Direct article links in Review
+
+- Made the always-present article code a compact DOI link with an external-link
+  marker, tooltip and accessible name. Links open in a new tab; articles without
+  a valid DOI retain a plain code. Other columns remain escaped text, and CSV
+  exports retain original codes and data. Local preview only.
+
+## 2026-11-27 - Review table scrolling preview
+
+- Added native vertical scrolling within the Review table (up to 45% of the
+  viewport height), keeping column headers and the horizontal scrollbar outside
+  the scrolling rows. Short filtered results shrink to their content.
+- Retained compact initial columns, readable added columns, sorting, pagination,
+  article selection and full CSV downloads. Local preview only.
+
+## 2026-11-27 - Local app/report corrections
+
+- Show initial, stale-selection and failed-fit instructions once in the relevant
+  status area. Unready tables and plots stay empty, preventing repeated validation
+  messages from overlapping adjacent content; download guards remain in place.
+- Display reference Ns and counts as integers and make source-table/report DOI
+  links clickable. Explain that invalid values are observed r/N combinations
+  that cannot be estimated, excluding ordinary missing correlations from the count.
+- Build complete report bibliographies using DOI/title matches, supplemented by
+  full coded review metadata for acquisitions absent from the historical bib.
+  Missing reference metadata blocks export instead of silently dropping articles.
+  Original bibliographic exports are unchanged.
+- Share HTML table formatting between both reports; render conditional tables as
+  HTML, including the optional pooled matrix. Verified four references for fluid
+  intelligence, preserved estimates/SE, fresh/stale states and rendered tables.
+  Local preview only; no deployment.
+
+## 2026-11-27 - App guide and release information
+
+- Updated Home, Resources and About & Citation for interface 0.2.0, including
+  article search/cards, compact results, model settings, package versions and
+  loaded-data counts. Retrieval time is explicitly distinct from data revision
+  dates. Local checkouts open the newly rendered manual; standalone apps use Pages.
+- Rewrote the manual to match Review, Meta-analysis and MetaSEM, and regenerated
+  its HTML and six-page PDF. Corrected the shared APA punctuation and BibTeX
+  journal field without duplicating the project citation.
+- Updated tutorial comments and made the local data source the explicit default;
+  the remote alternative remains commented. Both tutorials reproduce their prior
+  results exactly with the same local data. Statistical models are unchanged.
+- Verified app checks, standalone initialization/model fitting, rendered document
+  layout and public resource links. Publisher DOI pages reject automated access
+  with HTTP 403 after resolving correctly. No publication or deployment.
+
+## 2026-11-26 - Controlled local metaSEM 2.0 update
+
+- Updated the tested runtime to metaSEM 2.0 and lavaan 0.7-3, with previous
+  packages retained in a local ignored library. Kept the one-stage statistical
+  model, sampling-covariance settings, missing values and reference Ns unchanged.
+- Replaced the old safety restriction on fixed paths and variables without
+  directed paths with an acyclicity check that includes both fixed and free
+  paths. Added a minimum-version check and recorded runtime versions in reports
+  and exports. No automatic package installation occurs when launching the app.
+- Added numeric reference and variable-order tests, alongside actual fitted
+  fixed-path, isolated-variable and covariance-only examples. Local preview only.
+- Re-ran the twelve OSMASEM model blocks and their formatted tables/narrative
+  summaries from both paper documents, plus the tutorial, in isolated old/new
+  libraries. Estimates and standard errors match exactly; parameter names,
+  variable mappings and fields used by the summaries remain compatible.
+- Passed the complete repository test suite after updating the Review test
+  fixture for the model-editor variable notes. Verified actual HTML/ZIP/RDS
+  downloads and the local browser flow with the updated regular R library.
+- Also completed the larger eleven-variable pooling from both documents in
+  old/new libraries; the resulting tables match at their reported two decimals.
+
+## 2026-11-26 - Local MetaSEM workflow review
+
+- Listed selected variable codes and readable labels as automatically refreshed
+  comments in the model editor, retaining the user's syntax. Removed the optional
+  eigenvalue audit and its notices at the user's request; source values are unchanged.
+- Kept one-stage OSMASEM settings unchanged (weighted sampling covariances,
+  zero between-study heterogeneity and Wald-z intervals). Reference estimates
+  and standard errors match the previous workflow exactly.
+- Bound data, exploratory TSSEM and one-stage results to their saved selections;
+  model edits invalidate only SEM results, while variable/filter edits require
+  reloading data. Reports and exports reject stale selections.
+- Preserved model syntax using the lavaan parser, including labels and explicit
+  variances, with clear rejection of unsupported constructs. Added preflight
+  checks for fixed nonzero paths, unused variables and feedback structures that
+  can hang the installed metaSEM 1.5 backend; no constraints are silently dropped.
+- Added readable K/reference-N matrices, distinct-pair coverage warnings, matrix
+  audits and sortable source information. Missing values and source Ns remain
+  unchanged. R-squared uses model-implied total variance for applicable endogenous
+  variables, retaining and flagging out-of-range values.
+- Rewrote the report to distinguish exploratory pooling from one-stage estimation
+  and to state dependency/heterogeneity limitations. ZIP exports preserve one CSV
+  per matrix with variable names, source information, coverage and model settings.
+- Verified mouse-independent controller behavior, numerical equivalence, syntax
+  protection, CFA, missing cells, ZIP/RDS round trips and real HTML report download.
+  Local preview only; no deployment or merge to main.
+
+## 2026-11-26 - Local meta-analysis preview
+
+- Kept r, confidence intervals, p, articles, matrices and reference N in the main
+  results table; moved SE, heterogeneity variance, Q and status to expandable
+  model details in both the app and its HTML report. Fitted models are unchanged.
+- Made the app's disclosure visibly interactive with a bordered header, rotating
+  chevron, hover and keyboard-focus feedback; verified mouse and keyboard toggling.
+- Preserved the REML paper/matrix model and coded reference Ns. Added per-domain
+  coverage, explicit unusable-value flags and isolated handling of sparse or
+  failed domains without changing source data.
+- Saved data, filters, labels and models together at calculation. Results and
+  report are blocked when the current selection differs from that saved run.
+- Added sortable matrix information and explicit article/matrix/reference-N
+  counts. Shared small R helpers format the app and report consistently on the
+  correct r or Fisher-z scale, including forest plots.
+- Corrected report effect counts, association summaries and dependency wording;
+  removed codebook downloads and global-variable dependencies from the report.
+- Verified unchanged academic-achievement estimates, empty/sparse/invalid/error
+  cases, filter invalidation and real Shiny HTML report generation (11 articles,
+  12 matrices, 60 effects). Local preview only; no deployment or merge.
+
+## 2026-11-26 - Local Review browser preview
+
+- Added a compact, paginated article table, initially ordered by article code,
+  with sortable headings and a human-selectable set of displayed columns.
+- Kept minimum readable column widths, with compact code/author/year/title columns
+  and horizontal scrolling when the selected columns exceed the available space.
+- Added article details with objectives, readable construct/topic/design labels,
+  instruments, abstract, DOI, data access and coding notes. Filtering and text
+  search include review-only papers; CSV downloads retain all original fields.
+- Kept the implementation in the existing Shiny UI/server style, with a small
+  presentation helper and no new package dependencies. Verified search, selection,
+  column changes, empty states, downloads and existing review/shared helpers.
+- Local preview only; no Shiny deployment or merge to main.
+
 ## 2026-11-26 - Publication review and local manual backup
 
 - Added local manual-backup synchronization to accepted monthly result updates,

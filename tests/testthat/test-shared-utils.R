@@ -8,7 +8,8 @@ test_that('local and standalone app entry points load the same functions', {
   app <- new.env()
   withr::with_dir(bundle, sys.source('R/utils.R', envir = app))
   expected <- c('load_xlsx_url', 'data_combine', 'sem_results_df', 'augment_lavaan_model',
-    'make_osmasem_summary', 'makeReviewTable', 'generateBib', 'correlation_pair_key', 'getSEMdata', 'getMETAdata')
+    'make_osmasem_summary', 'makeReviewTable', 'generateBib', 'doi_code', 'doi_links', 'report_table',
+    'correlation_pair_key', 'getSEMdata', 'getMETAdata')
   expect_setequal(ls(local), expected)
   expect_setequal(ls(app), expected)
   for (name in expected) {

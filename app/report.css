@@ -1,0 +1,7 @@
+.report-table { width: 100%; overflow-x: auto; margin: 1em 0 1.5em; }
+.report-table table { border-collapse: collapse; min-width: 50%; }
+.report-table th, .report-table td { padding: 8px 12px; border-bottom: 1px solid #ddd; vertical-align: top; }
+.report-table th { background: #f2f4f6; white-space: nowrap; }
+.report-table caption { text-align: left; padding: 8px 0; color: #555; }
+details { border: 1px solid #ccd4dc; border-radius: 5px; padding: 12px; margin: 1em 0; }
+summary { cursor: pointer; font-weight: bold; }

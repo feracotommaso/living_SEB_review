@@ -1,9 +1,22 @@
 # GLOBAL VARIABLES
+app_version <- "0.2.0"
+manual_html_url <- "https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.html"
+manual_pdf_url <- "https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf"
+# Local checkouts show the newly rendered manual; standalone deployments use Pages.
+if (dir.exists("../appManual")) {
+  shiny::addResourcePath("app-manual", normalizePath("../appManual"))
+  manual_html_url <- "app-manual/livingSEBapp_manual.html"
+  manual_pdf_url <- "app-manual/livingSEBapp_manual.pdf"
+}
 
 # Load the same implementation used by local analyses.
 source("R/utils.R", local = TRUE)
 source("R/variable_lookup.R", local = TRUE)
 source("R/review_coding.R", local = TRUE)
+source("R/review_browser.R", local = TRUE)
+source("R/meta_analysis.R", local = TRUE)
+source("R/masem_workflow.R", local = TRUE)
+masem_require_versions()
 
 # Necessary data and info
 # Data
@@ -53,6 +66,10 @@ bibAll <- ReadBib(dest_file)
 
 # Citations app
 load_text_url <- function(url, fallback = NULL, keep_newlines = TRUE) {
+  if (!is.null(fallback) && file.exists(fallback)) {
+    txt <- readLines(fallback, warn = FALSE, encoding = "UTF-8")
+    return(paste(txt, collapse = if (keep_newlines) "\n" else ""))
+  }
   temp_file <- tempfile(fileext = ".txt")
   tryCatch({
     download.file(url, destfile = temp_file, mode = "wb", quiet = TRUE)
@@ -75,5 +92,7 @@ apa_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/ma
 bib_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/R/cite.bib"
 
 # Load once at app startup
-apa_text <- load_text_url(apa_url, fallback = "apa.txt", keep_newlines = TRUE)
-bib_text <- load_text_url(bib_url, fallback = "cite.bib", keep_newlines = TRUE)
+# Share the edited repository citation locally; standalone bundles use main.
+apa_text <- load_text_url(apa_url, fallback = if (file.exists("../R/apa.txt")) "../R/apa.txt" else "apa.txt")
+bib_text <- load_text_url(bib_url, fallback = if (file.exists("../R/cite.bib")) "../R/cite.bib" else "cite.bib")
+data_loaded_at <- format(Sys.time(), "%Y-%m-%d %H:%M %Z")
