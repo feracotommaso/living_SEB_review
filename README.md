@@ -2,7 +2,7 @@
 
 This repository contains all the open materials of the **Living SEB Skills Project**, a living meta-analysis on Social, Emotional, and Behavioral (SEB) skills updated regularly, alongside an interactive Shiny application for exploring the results.
 
-[![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20398350.svg)](https://doi.org/10.5281/zenodo.20398350)
+[![Zenodo DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19101246.svg)](https://doi.org/10.5281/zenodo.19101246)
 
 [![Latest release](https://img.shields.io/github/v/release/feracotommaso/living_SEB_review)](https://github.com/feracotommaso/living_SEB_review/releases)
 
@@ -11,9 +11,10 @@ This repository contains all the open materials of the **Living SEB Skills Proje
 
 - 🔗 **Shiny app:** [https://feracotommaso.github.io/living_SEB_review/shiny-app.html](https://feracotommaso.github.io/living_SEB_review/shiny-app.html)
 - **App manual:** [HTML](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.html) · [PDF](https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf)
+- **Published app release:** [Living SEB App 0.2.0](https://github.com/feracotommaso/living_SEB_review/releases/tag/app-v0.2.0) · [Version DOI](https://doi.org/10.5281/zenodo.24592687) (27 November 2026)
 - 📄 **Postprint:** [https://doi.org/10.31234/osf.io/ewvuf_v2](https://doi.org/10.31234/osf.io/ewvuf_v2)
 - 📝 **Published paper:** [https://doi.org/10.1177/08902070261467477](https://doi.org/10.1177/08902070261467477)
-- 📊 **Updated living results:** [feracotommaso.github.io/living_SEB_results](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html)
+- 📊 **Updated living results:** [Results and database overview](https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html)
 
 
 ## Repository Structure
@@ -122,15 +123,18 @@ Feraco, T., Calderan, M. & Pellegrino, G. (2026). The Living SEB Skills Project:
   title     = {The Living SEB Skills Project: A Living Resource for Review
                and Meta-Analysis of Social, Emotional, and Behavioral Skills},
   year      = {2026},
-  publisher = {European Journal of Personality}
+  journal   = {European Journal of Personality}
 }
 ```
 
 
 ### Data
 
-[![Latest release](https://img.shields.io/github/v/release/feracotommaso/living_SEB_review)](https://github.com/feracotommaso/living_SEB_review/releases)
+[![Latest repository release](https://img.shields.io/github/v/release/feracotommaso/living_SEB_review)](https://github.com/feracotommaso/living_SEB_review/releases)
 
 The dataset is updated approximately once a month. 
-This project is linked to **Zenodo**, and each dataset update will trigger a new release. If no new articles are available, a no-data release will be published anyway.
-To ensure reproducibility, please cite a specific release using its version tag.
+Monthly database updates receive their own releases. If no new articles are available, a no-data release will be published anyway. App and workflow releases are identified separately; `app-v0.2.0` records the app code and documentation published on 27 November 2026.
+
+Published GitHub releases are archived through the project's **Zenodo** integration. Verify the matching tag and archive after publishing. The badge at the top uses the [concept DOI](https://doi.org/10.5281/zenodo.19101246), which groups all versions. For reproducibility, cite the DOI and tag of the specific release used; the archived app release is [10.5281/zenodo.24592687](https://doi.org/10.5281/zenodo.24592687).
+
+The live app loads the current published database from `main` when it starts. Save the selected analysis data and report: the app interface version alone does not identify the data used in a later session.
