@@ -2,7 +2,6 @@
 source("R/utils.R")
 library(shiny)
 library(shinyjs)
-library(bslib)
 library(shinycssloaders)
 library(DT)
 library(tidyverse)
@@ -62,16 +61,14 @@ ui <- navbarPage(
            class = "btn btn-outline-dark"),
     h3("What you can do"),
 
-    # Use a 2-column layout
-    bslib::layout_columns(
-      col_widths = c(4, 8), # left 2/3, right 1/3
-      gap = "10px",
+    # Simple containers compatible with the existing Bootstrap 3 theme
+    tagList(
 
-      # LEFT COLUMN (all your workflow cards)
+      # Workflow descriptions
       div(
-        bslib::card(
-          bslib::card_header(tags$strong("Meta-analysis of correlations")),
-          bslib::card_body(
+        div(
+          div(tags$strong("Meta-analysis of correlations")),
+          div(
             tags$ul(
               tags$li(tags$b("Choose outcomes:"), " pick a broad group and a specific outcome."),
               tags$li(tags$b("Filter:"), " restrict by age class and publication year."),
@@ -82,9 +79,9 @@ ui <- navbarPage(
           )
         ),
         br(),
-        bslib::card(
-          bslib::card_header(tags$strong("Meta-analytic SEM (one-stage MASEM)")),
-          bslib::card_body(
+        div(
+          div(tags$strong("Meta-analytic SEM (one-stage MASEM)")),
+          div(
             tags$ul(
               tags$li(tags$b("Select variables:"), " SEB domains/facets, traits, and outcomes."),
               tags$li(tags$b("Filter:"), " restrict by age class and publication year."),
@@ -98,9 +95,9 @@ ui <- navbarPage(
           )
         ),
         br(),
-        bslib::card(
-          bslib::card_header(tags$strong("Review browser")),
-          bslib::card_body(
+        div(
+          div(tags$strong("Review browser")),
+          div(
             tags$ul(
               tags$li(tags$b("Find articles:"), " search text, topics, analyzed constructs and study characteristics."),
               tags$li(tags$b("Browse:"), " articles initially ordered by code; sort headings and choose columns."),
@@ -111,11 +108,11 @@ ui <- navbarPage(
         )
       ),
 
-      # RIGHT COLUMN (resources card only)
-      bslib::card(
-        bslib::card(
-          bslib::card_header(tags$strong("Quick start")),
-          bslib::card_body(
+      # Quick-start links
+      div(
+        div(
+          div(tags$strong("Quick start")),
+          div(
             p("Jump straight to a workflow:"),
             div(
               style = "display:flex; flex-direction:column; gap:10px; max-width:320px;",
@@ -378,9 +375,9 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
 ## RESOURCES ####
   tabPanel(
     title = "Resources",
-    bslib::card(
-      bslib::card_header(tags$strong("Resources")),
-      bslib::card_body(
+    div(
+      div(tags$strong("Resources")),
+      div(
         h4("Learn to use the app"),
         p(tags$a("Manual (HTML)", href = manual_html_url, target = "_blank", rel = "noopener", class = "btn btn-dark"),
           " ", tags$a("Manual (PDF)", href = manual_pdf_url, target = "_blank", rel = "noopener", class = "btn btn-outline-dark")),
@@ -399,9 +396,9 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
       br(),
 
       # Contact & feedback
-      bslib::card(
-        bslib::card_header(tags$strong("Contact & feedback")),
-        bslib::card_body(
+      div(
+        div(tags$strong("Contact & feedback")),
+        div(
           p("Questions or suggestions?"),
           div(
             style = "display:flex; gap:10px; flex-wrap:wrap;",
@@ -434,16 +431,14 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
       "This app was developed by Tommaso Feraco to help researchers explore SEB literature, run classic meta-analyses of correlations, ",
       "and estimate meta-analytic SEMs."
     ),
-    # Two-column layout
-    bslib::layout_columns(
-      col_widths = c(9, 3), # left 2/3, right 1/3
-      gap = "10px",
+    # Citation and release information
+    tagList(
 
-      # ===== LEFT COLUMN ===
+      # Citation and data snapshot
       div(
         # How to cite
-        bslib::card_header(tags$strong("Cite this app")),
-        bslib::card_body(
+        div(tags$strong("Cite this app")),
+        div(
           p("If you use this app or dataset, cite the Living SEB Skills Project:"),
           p("Also record the app version, selected variables and filters, and save the analysis data and report. The project citation does not identify a particular data snapshot."),
           uiOutput("apa_cite"),
@@ -455,9 +450,9 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
         br(),
 
         # Version / data snapshot
-        bslib::card(
-          bslib::card_header(tags$strong("Version & loaded data")),
-          bslib::card_body(
+        div(
+          div(tags$strong("Version & loaded data")),
+          div(
             p(paste("App interface version:", app_version)),
             p("Data source: the published GitHub main branch, loaded when the app starts."),
             p(paste("Data loaded at:", data_loaded_at)),
@@ -473,14 +468,14 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
         )
       ), # <-- CLOSE LEFT COLUMN DIV
 
-      # ===== RIGHT COLUMN ===
+      # Credits
       div(
-        bslib::card(
+        div(
           # Credits & acknowledgments
-          bslib::card(
-            bslib::card_header(tags$strong("Credits & acknowledgments")),
+          div(
+            div(tags$strong("Credits & acknowledgments")),
             br(),
-            bslib::card_body(
+            div(
               tags$ul(
                 tags$li(HTML("<b>Packages:</b> metafor, metaSEM, lavaan, OpenMx, ggplot2, corrplot, shiny, DT, bslib, shinyjs")),
                 tags$li(HTML("<b>Inspiration:</b> webMASEM — Jak et al. (2021), <a href='https://doi.org/10.1002/jrsm.1498' target='_blank'>https://doi.org/10.1002/jrsm.1498</a>")),

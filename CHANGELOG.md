@@ -1,3 +1,10 @@
+## 2026-11-27 - Online release compatibility check
+
+- Replaced Bootstrap-5-only bslib card/grid wrappers with plain Shiny containers
+  in Home, Resources and About, preserving the existing Bootstrap 3 appearance
+  and content. Removed their browser compatibility errors without changing the
+  analysis interfaces, models, source data or exports.
+
 ## 2026-11-27 - Manual refresh and release-bundle verification
 
 - Updated the manual for full-author searches, optional Full authors, code-to-DOI
