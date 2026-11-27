@@ -47,6 +47,13 @@ are retained under Git-ignored `archive_local/metasem_version_check_2026_11_26/`
 
 ## App release
 
+The published [Living SEB App 0.2.0 release](https://github.com/feracotommaso/living_SEB_review/releases/tag/app-v0.2.0)
+records deployed commit `bbfe33d` (27 November 2026), with the updated Pages
+manual and online checks completed. Its Zenodo archive is
+[10.5281/zenodo.24592687](https://doi.org/10.5281/zenodo.24592687).
+Use the [stable app link](https://feracotommaso.github.io/living_SEB_review/shiny-app.html)
+when sharing the app.
+
 Render `appManual/livingSEBapp_manual.qmd` to HTML and PDF, then version the
 reviewed app, manual, citation files and tutorials. Merge/push the approved
 changes to `main` and wait for GitHub Pages to publish the updated manual before
@@ -58,6 +65,13 @@ templates and `report.css`. `rsconnect::listDeploymentFiles("app")` lists the
 payload; `rsconnect::appDependencies("app")` resolves package versions. Keep the
 local manual backup, raw/individual data and validation artifacts outside this
 payload. After deployment, check startup and one current analysis/report online.
+
+Create the GitHub release/tag on the commit actually deployed, then verify the
+matching version, GitHub tag link and downloadable archive on Zenodo. Record the
+version DOI; the [concept DOI](https://doi.org/10.5281/zenodo.19101246) groups all
+versions. App and monthly data releases have separate tags. The live app loads
+data from `main` at process startup, so a software tag alone does not identify
+the data used by a later session: retain the exported analysis data and report.
 
 ## Paper formats
 

@@ -19,7 +19,21 @@ L'aggiornamento finale usa `anteprima_risultati()` e `aggiorna_risultati()`.
 0150: N=30719 dopo 596 esclusioni per sovrapposizione con 0053d; N per coppia 29244–30719.
 Le decisioni scientifiche restano in `config/extraction/<paper_id>_decisions.csv` e nel codice.
 
-## Verifica storica (branch di audit)
+## Verifica storica conclusa e integrata
+
+Stato al 27 novembre 2026: esaminati tutti i 30 articoli quantitativi attivi e
+le 38 matrici; codifica ampliata e topics completati per i 51 articoli della
+review. Le correzioni approvate sono integrate in `main`. La copia manuale
+aggiornata resta locale e viene sincronizzata da `aggiorna_risultati()`.
+
+Le sezioni successive conservano il registro cronologico dei gruppi di audit,
+dei confronti e delle decisioni. I conteggi intermedi e le prove poi superate
+descrivono quei checkpoint; per lo stato operativo corrente usa
+`MONTHLY_WORKFLOW.md`, la codifica generale e le decisioni finali registrate.
+Esaminare tutte le matrici non significa aver ricostruito ogni misura dagli
+item originali: fonti disponibili, sovrapposizioni e discrepanze residue restano
+esplicite nelle note. La richiesta agli autori di 0120 descritta sotto è ancora
+da effettuare.
 
 `articles/0013.R` e `0018.R` verificano i dati scientifici senza modificarli:
 un'esecuzione normale salva soltanto il riepilogo aggregato unico
@@ -38,8 +52,8 @@ controllati tramite checksum; la loro data di acquisizione non viene inventata.
 `keys/bessi192.R` contiene soltanto la chiave ufficiale e i pesi del BESSI-192.
 In 0120 il riepilogo distingue riproduzione dei punteggi forniti dagli autori e
 confronti separati su pesi, risposta fuori scala e ricostruzione BFI-2.
-Le tre verifiche non costituiscono ancora una ricodifica
-completa di tutte le misure degli articoli.
+Queste prime tre verifiche non costituiscono una ricodifica completa di tutte
+le misure degli articoli; i gruppi successivi documentano l'estensione dell'audit.
 
 Per 0120, l'archivio OSF completo fornito dall'utente il 13 novembre 2026 è
 conservato, insieme agli otto file estratti, in

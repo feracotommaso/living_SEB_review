@@ -1,6 +1,6 @@
 # Living SEB — guida operativa unica
 
-Aggiornata il 18 novembre 2026. Aprire il progetto RStudio nella radice della repository.
+Aggiornata il 27 novembre 2026. Aprire il progetto RStudio nella radice della repository.
 Il punto di ripristino precedente alla semplificazione è il commit `0e1daaa`.
 
 ## I file che usi normalmente
@@ -61,7 +61,7 @@ Puoi intervenire direttamente nel foglio `abstract` compilando `human_decision`,
 importa_screening(lotto)
 ```
 
-I risultati canonici sono `..._title_abstract_decisions.csv`; il CSV `..._included.csv` è l'ingresso della fase successiva. Un lotto senza articoli mantenuti si conclude qui.
+I risultati canonici sono `..._title_abstract_decisions.csv`; il CSV `..._included.csv` è l'ingresso della fase successiva. Se nessun articolo è mantenuto, salta full text e nuova codifica; concludi comunque con `aggiorna_risultati()` per aggiornare riepiloghi e backup locale anche nei mesi senza nuovi inclusi.
 
 ## 3. PDF e full text
 
@@ -164,7 +164,7 @@ Lo script `scripts/extraction/articles/<paper_id>.R` mostra selezione, ricodific
 Le regole scientifiche restano in `policies/extraction_conventions.md`: medie degli item, SEB/BESSI sulla metrica 1–5, conversione documentata del dual rating, età nei dati individuali e descrittivi ma non nelle matrici, sesso/genere opportunamente codificato nelle matrici. Nessuna correzione automatica delle correlazioni osservate.
 
 Per nuove variabili o topic, modifica gli Excel `data/matrix_codebook.xlsx` e `data/topics_codebook.xlsx`, mantenendo i codici già usati e documentando le aggiunte, poi esegui `importa_codebook()`. I suffissi ammessi restano in `config/coding/variable_suffixes.csv`. Riusa i topic esistenti quando adeguati; aggiungine per differenze sostanziali.
-Il dizionario dei topic comprende 50 topic attivi e il codice storico
+Il dizionario dei topic comprende 55 topic attivi e il codice storico
 `positiveschooloutcomes`, ritirato e conservato per compatibilita. Le sue ultime
 tre assegnazioni (0071, 0080, 0113) sono state rilette e ricodificate sul focus:
 nessun articolo corrente lo utilizza. Non assegnarlo a nuovi articoli.
@@ -172,8 +172,8 @@ Per 0014 sono stati registrati i punteggi di abilita derivati dal BFI in un
 gruppo distinto dai domini BESSI. Le forme forced-choice restano self-report;
 non sono prove di prestazione. I nuovi topic `responseformats`,
 `migrationbackground`, `educationaltracking` e `intersectionality` descrivono
-focus sostanziali verificati nei paper; non ricodificano automaticamente gli
-articoli ancora da esaminare.
+focus sostanziali verificati nei paper; ogni assegnazione richiede comunque
+la lettura del focus dell'articolo, senza ricodifiche automatiche dal codebook.
 Il topic `purposeinlife` rende individuabile il focus di Beatty et al. (0023),
 che rimane review-only. Anche Walton et al. (0014) rimane review-only e non
 ha matrici quantitative: registrare un costrutto nel codebook non ne determina
@@ -275,7 +275,11 @@ temporanea senza eseguire le analisi; non usare questi output di prova come pape
 | Correlazione trascritta male | Correggi la trascrizione collegata alla fonte e riesegui lo script | Anteprima, aggiornamento con motivo |
 | Decisione di eleggibilità | Riapri il caso nel lotto full text | Importa screening, poi `prepara_codifica(lotto)` e aggiornamento |
 
-Gli script storici, incluso `data/3.1opendata_to_cor.R`, restano conservati. Per gli studi non ancora migrati continua a usare il relativo blocco per ricalcolare la matrice. **0120 è ora migrato:** usa `estrai_articolo("0120")`, che applica i pesi ufficiali BESSI e tratta la risposta fuori scala come mancante; il vecchio blocco conserva lo scoring precedente. `estrai_articolo("0013", verifica_soltanto = TRUE)` e l'equivalente per 0018 eseguono invece solo le verifiche storiche. Per 0013 resta N=840, con la nota sul file di 897 record e gli N per coppia 573–840. La codifica corrente si corregge nell'Excel generale. Il normale aggiornamento finale passa da `workflow.R`; il vecchio `data/3.2cor_to_metadata.R` resta disponibile per compatibilità e conserva i suoi controlli storici.
+L'audit dei 30 articoli quantitativi attivi è concluso. Per il workflow corrente usa lo script articolo richiamato da `estrai_articolo()`: alcuni script esportano correzioni approvate, altri verificano soltanto gli output esistenti. Il comportamento è indicato nei commenti dello script e in `scripts/extraction/README.md`; `verifica_soltanto = TRUE` non salva nulla. Per esempio, `estrai_articolo("0120")` esporta lo scoring BESSI corretto, mentre gli script di 0013 e 0018 aggiornano soltanto l'audit.
+
+0013 rimane nella review e la sua matrice è conservata come storico: nelle analisi il campione condiviso è rappresentato da 0048. L'N storico 840 e la discrepanza con le 897 righe originali restano documentati, senza contribuire alla ponderazione quantitativa corrente. La codifica si corregge nell'Excel generale e l'integrazione passa da `workflow.R`.
+
+Gli script storici, inclusi `data/3.1opendata_to_cor.R` e `data/3.2cor_to_metadata.R`, restano conservati come riferimento. Per usare l'intero percorso manuale aggiornato apri invece il progetto nella copia locale `archive_local/manual_workflow_2026-11-23/`, descritta nella sezione finale: comprende le correzioni, le codifiche ampliate e i topics accettati.
 
 ## Verifiche, Git, paper e app
 
@@ -382,7 +386,9 @@ invariati, annotando la sovrapposizione. Il dettaglio è in
 
 La migrazione iniziale è stata confrontata con il checkpoint di 39 campioni e 51 articoli, con gli stessi valori. Dopo la decisione del 13 novembre di rappresentare una sola volta il campione 0013/0048, gli output correnti hanno 38 matrici, 30 articoli quantitativi e 51 articoli nella review. La prova 0150 ha riprodotto gli stessi CSV individuali e della matrice: N=30719, 38 variabili, N per coppia 29244–30719, dopo l'esclusione dei 596 partecipanti sovrapposti. La matrice conserva il piccolo autovalore negativo già documentato.
 
-Restano visibili le lacune storiche 0050, 0053a e 0053b; 0104a resta esclusa secondo la decisione già registrata. Questi casi non sono stati ricodificati durante la semplificazione.
+La riga storica `0050` senza suffisso non ha una propria matrice: le due matrici attive dello studio sono `0050a` e `0050b`, entrambe esaminate e aggiornate secondo le decisioni approvate. Anche `0053a` e `0053b` restano righe storiche senza file di matrice e non contribuiscono alle analisi; le cinque matrici disponibili di 0053 sono state verificate. Queste righe possono quindi comparire tra le segnalazioni di matrice mancante in `last_update.xlsx`: non indicano che l'audit dei 38 file attivi sia ancora da completare. `0013a` e `0104a` sono conservate ma escluse dagli output quantitativi secondo le decisioni registrate.
+
+I limiti ancora aperti sono esplicitati nelle note e nell'audit. In particolare, per 0120 resta da chiedere agli autori il codice e la versione dei dati delle Tabelle 8–9; la verifica completata non rende risolta la discrepanza con i risultati pubblicati.
 
 Dopo modifiche al workflow:
 
@@ -401,7 +407,21 @@ quarto render paper/livingSEBresults.qmd --to html --execute
 
 Apri `paper/livingSEBresults.html` e controlla provenienza dei dati, conteggi, diagramma e risultati. Il report legge gli XLSX locali; `R/report_inputs.R` combina gli export storici (anche `.xlsm`) e i CSV canonici. Ogni articolo viene contato una volta tramite il registro bibliografico, anche se compare in più export. Le analisi vengono rieseguite e i modelli OSMASEM devono superare i controlli numerici. Dopo la riconciliazione del 10 novembre: 614 record importati, 229 duplicati, 385 articoli sottoposti a screening e 149 full text. Il precedente divario di 20 record era un errore di conteggio, non screening mancanti. L'aggiornamento del report non modifica i dataset.
 
-L'app, anche avviata localmente, legge gli XLSX e i codebook da GitHub `main`: un push sulla branch di lavoro non aggiorna l'app. Bibliografia, rendering del paper e pubblicazione dell'app restano passaggi espliciti separati dall'aggiornamento dei dati.
+L'app, anche avviata localmente, carica gli XLSX e i codebook da GitHub `main` all'avvio del processo Shiny: un push su una branch di lavoro non aggiorna i dati pubblici e una sessione già avviata non ricarica automaticamente i file. Dopo un aggiornamento dei dati controlla i conteggi e l'orario di caricamento in About & Citation; se il processo usa ancora i dati precedenti, riavvialo e verifica una nuova sessione. Le modifiche al codice dell'app richiedono una nuova distribuzione. Bibliografia, rendering del paper e distribuzione dell'app restano passaggi separati dall'aggiornamento dei dataset.
+
+## Pubblicazione dell'app e archiviazione delle release
+
+Il 27 novembre 2026 sono stati pubblicati il manuale HTML/PDF su GitHub Pages e l'app 0.2.0; la release [app-v0.2.0](https://github.com/feracotommaso/living_SEB_review/releases/tag/app-v0.2.0) identifica il commit `bbfe33d`. L'archivio Zenodo corrispondente è [10.5281/zenodo.24592687](https://doi.org/10.5281/zenodo.24592687). Il collegamento stabile all'app resta [shiny-app.html](https://feracotommaso.github.io/living_SEB_review/shiny-app.html).
+
+Per una successiva release dell'app:
+
+1. aggiorna il manuale, rigenera HTML/PDF e controlla il pacchetto da distribuire;
+2. integra il codice approvato in `main` e attendi che GitHub Pages mostri il manuale aggiornato;
+3. distribuisci l'app e verifica online avvio, analisi e report/download;
+4. crea la release GitHub sul commit effettivamente distribuito, con novità e link stabili;
+5. verifica su Zenodo che versione/tag, collegamento GitHub e archivio ZIP corrispondano alla release; riporta il DOI specifico della versione.
+
+Il [DOI generale del progetto](https://doi.org/10.5281/zenodo.19101246) raggruppa le versioni. Per documentare un'analisi usa invece il DOI della release utilizzata e conserva i dati e il report esportati. La versione dell'interfaccia non fissa i dati che l'app caricherà successivamente da `main`. Gli aggiornamenti mensili del database mantengono le proprie release.
 
 ## Copia manuale locale durante gli aggiornamenti automatizzati
 

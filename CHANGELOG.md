@@ -1,3 +1,24 @@
+## 2026-11-27 - App 0.2.0 published and archived
+
+- Merged the reviewed app, manual and tutorials into `main`, published the HTML/PDF
+  manual on GitHub Pages, and deployed the app. Published
+  [Living SEB App 0.2.0](https://github.com/feracotommaso/living_SEB_review/releases/tag/app-v0.2.0)
+  on deployed commit `bbfe33d`; removed the merged work branch locally and remotely.
+- Verified public Review/full-author search, meta-analysis, MetaSEM, report
+  bibliographies and CSV/HTML/ZIP/RDS exports. Tested estimates, intervals,
+  source Ns and matrices match local references; 195 app-focused automated checks
+  and isolated deployment-bundle checks passed. Model settings are unchanged.
+- Confirmed the published Zenodo record for `app-v0.2.0`, its matching GitHub tag
+  and attached archive: [10.5281/zenodo.24592687](https://doi.org/10.5281/zenodo.24592687).
+  Verified the ZIP checksum and byte-for-byte agreement of the twelve app files
+  and the manual source/HTML/PDF with the release tag; both version and concept
+  DOIs are registered as findable in DataCite.
+- Updated the operational guide and extraction-audit status to distinguish
+  completed verification from historical placeholder rows and scientific limits.
+  Kept earlier preview-stage changelog entries as the development history.
+- Replaced the README's May-only DOI badge with the project concept DOI and
+  documented the app version DOI, release order and live-data loading behavior.
+
 ## 2026-11-27 - Online release compatibility check
 
 - Replaced Bootstrap-5-only bslib card/grid wrappers with plain Shiny containers
