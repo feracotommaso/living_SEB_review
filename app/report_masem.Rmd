@@ -1,231 +1,120 @@
 ---
-title: "Report - metaSEM"
+title: "One-stage meta-analytic SEM"
 author: "Living SEB app"
 output:
-  bookdown::html_document2
+  bookdown::html_document2:
+    css: report.css
 params:
-  target_vars: NA
-  metaD: NA
-  age_filter: NA
-  year_filter: NA
-  cfa1: NA
-  SumTable: NA
-  lavmodel: NA
-  augmented_model: NA
-  SEM: NA
-  sumfit: NA
-  SEMresults_df: NA
-  R2_table: NA
+  run: NA
   bibfile: NA
 bibliography: '`r normalizePath(params$bibfile, winslash = "/", mustWork = TRUE)`'
 nocite: "@*"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE)
+source("masem_workflow.R", local=TRUE)
+source("utils.R", local=TRUE)
+run <- params$run
+data <- run$data
+filters <- function(x) if(length(x)) paste(x,collapse=", ") else "All"
+```
 
-library(kableExtra)
-library(ggplot2)
-library(metaSEM)
+# Selection and estimation
 
+Analysis run: **`r run$created`**.
 
-#   - Labels for the plots and tables
-load_xlsx_url <- function(url) {
-  temp_file <- tempfile(fileext = ".xlsx")
-  tryCatch({
-    download.file(url, destfile = temp_file, mode = "wb")
-    readxl::read_excel(temp_file)
-  }, error = function(e) {
-    stop("Failed to download or read Excel file: ", e$message)
-  })
+Software: `r if(length(run$software)) paste(names(run$software),run$software,collapse="; ") else "Not recorded in this saved run"`.
+
+- Variables (canonical codes): `r paste(run$selection$variables, collapse=", ")`.
+- Age groups: `r filters(run$selection$ages)`.
+- Publication years: `r filters(run$selection$years)`.
+- Automatic exogenous covariances and endogenous residual covariances: `r run$auto_covariances`.
+
+The model uses **one-stage MASEM (OSMASEM)**, fitted directly to the selected study-level correlation matrices and coded reference Ns. It does not fit a second-stage model to the exploratory pooled matrix. Sampling covariances use `acov="weighted"`; between-study heterogeneity is fixed at zero (`RE.type="Zero"`), and parameter intervals use the existing Wald-z setting. These settings have not been changed by this interface update.
+
+The evidence base contains **`r length(unique(data$basic_info$paper_id))` articles** and **`r nrow(data$basic_info)` correlation matrices**. Matrices may share participants. Ns are reference sizes already coded in the database; their sum is not a count of unique people, and available N can vary by pair. Missing correlations are preserved. No automatic imputation, matrix repair, participant exclusion or replacement of Ns is performed.
+
+# Data coverage
+
+```{r variables, results='asis'}
+report_table(data.frame(Code=run$selection$variables, Label=unname(run$labels[run$selection$variables])),caption="Selected variables")
+```
+
+```{r papers, results='asis'}
+report_table(masem_sample_table(data),caption="Contributing matrices")
+```
+
+```{r coverage-k, results='asis'}
+report_table(masem_named_matrix(data$K,run$labels),digits=0,caption="Contributing matrices per correlation (k)")
+```
+
+```{r coverage-n, results='asis'}
+report_table(masem_named_matrix(data$N,run$labels),digits=0,caption="Sum of reference Ns per correlation")
+```
+
+Coverage warnings refer to distinct off-diagonal variable pairs. Fewer than three matrices or a reference-N sum below 1000 is an advisory warning, not an exclusion rule. Pairs without any reported correlation prevent estimation in this app.
+
+```{r audit, results='asis'}
+report_table(data$audit,caption="Matrix checks; source values retained")
+```
+
+# Effective model specification
+
+The syntax below preserves the entered model, including supported fixed coefficients and parameter labels, and explicitly identifies any app-generated additions.
+
+Fixed directed paths and variables without directed paths are supported. Fixed coefficients are retained in the syntax; the estimates table lists free parameters. Feedback structures are rejected because the current correlation-model calculation requires an acyclic model. Measurement models require explicit covariance specification with automatic covariances switched off.
+
+```{r syntax, results='asis'}
+cat("```text\n",run$syntax,"\n```\n",sep="")
+```
+
+# Model results
+
+```{r diagnostics,results='asis'}
+for(note in run$diagnostics) cat("\n\n",note,"\n",sep="")
+if(isTRUE(run$summary$ChiDoF==0)) {
+ cat("\n\nThis is a saturated model (df = 0). Global fit indices are not informative.\n")
+} else {
+ report_table(masem_fit_table(run),caption="Model fit")
 }
-
-admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/matrix_codebook.xlsx"
-admcol <- load_xlsx_url(admcol_url)
-
-varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that can be used with different grain [Topic, BROAD, specific, and label]
-labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
-
-
-# Results and data from the app
-target_vars <- params$target_vars; target_vars_labs <- labels_app[as.character(target_vars)]
-metaD <- params$metaD
-year_filter <- params$year_filter
-age_filter <- params$age_filter
-cfa1 <- params$cfa1
-SumTable <- params$SumTable
-lavmodel <- params$lavmodel
-augmented_model <- params$augmented_model
-SEM <- params$SEM
-sumfit <- params$sumfit
-SEMresults_df <- params$SEMresults_df
-R2_table <- params$R2_table
-
 ```
 
-# Introduction and data description
+Regression coefficients, loadings, covariances and variances are different model parameters; they are not all Pearson correlations. Intervals below are Wald 95% confidence intervals.
 
-This report documents a meta-analytic structural equation modeling (MASEM) run through the Living SEB app. MASEM combines classical meta-analysis with structural equation modeling (SEM): instead of analyzing a single sample, it first aggregates the correlations reported across many studies and then fits an SEM to that meta-analytic correlation matrix. Concretely, the app (i) lets you choose the variables and optional filters (year, age group), (ii) pools the available correlations across studies into a single matrix that represents the best meta-analytic estimate of how the variables relate in the population, and (iii) fits your regression model to that matrix. Where helpful, the app augments the model (e.g., fixes variances of exogenous variables to 1 and adds the needed covariances/residual correlations) so the specification is identified and easy to interpret; the augmented syntax is shown below.
-
-How the pooled correlations are obtained (Stage 1). Each included study contributes a correlation matrix and its sample size. The app uses a random-effects meta-analytic framework to estimate one pooled correlation for each variable pair, while accounting for the sampling covariance among correlations drawn from the same study (so cells aren’t treated as independent). Intuitively, studies with larger samples get more weight, and when some studies don’t report a given pair, only the studies that do are used for that entry. The result is a symmetric, positive-definite meta-analytic correlation matrix summarizing the evidence base; we also report, for each cell, how many studies (k) and total participants (ΣN) contributed to that estimate.
-
-What “metaSEM” does with that matrix (Stage 2). Your specified model (possibly auto-augmented) is translated to RAM form and estimated on the meta-analytic correlation matrix under a random-effects MASEM framework. Path coefficients (~) and (co)variances (~~) are therefore on a correlation / standardized scale, which simplifies interpretation and comparison across variables. For endogenous variables we also report R² = 1 − residual variance, i.e., the proportion of variance explained by their predictors. If the model is saturated (degrees of freedom = 0), conventional global fit indices aren’t informative; interpretation should focus on the parameter estimates and R².
-
-## Data description
-
-You selected all the studies including the following variables:
-
-```{r}
-target_vars_labs
+```{r parameters, results='asis'}
+report_table(masem_parameters(run),caption="Model parameter estimates")
 ```
 
-If you chose filters, only studies matching those criteria were included.
-
--   Publication years selected
-
-```{r}
-# Years selected
-if (!is.null(year_filter)) paste0(year_filter) else "No year filtering applied"
+```{r technical,results='asis'}
+cat('<details><summary>Model details: standard errors and Wald tests</summary>\n')
+report_table(masem_parameters(run,details=TRUE))
+cat('\n</details>\n')
 ```
 
--   Age classifications selected
+## Residual variance and explained variance
 
-```{r}
-# Age selected
-if (!is.null(age_filter)) paste0(age_filter) else "No age filtering applied"
+R² is reported for endogenous variables where applicable as one minus the residual-to-total variance ratio. Total variance is obtained from the fitted RAM model. R² is not reported for feedback models or when the outcome residual correlates with a predictor. Negative or otherwise out-of-range values are retained and flagged rather than truncated.
+
+```{r r2, results='asis'}
+report_table(masem_r2(run),caption="Endogenous variables: residual variance and R²")
 ```
 
-## Descriptive statistics
+# Optional exploratory pooled matrix
 
-The evidence base for this run comprises `r length(unique(metaD$basic_info$doi))` papers and `r length(unique(metaD$basic_info$matrix_id))` independent samples (some papers contribute multiple samples/correlation matrices).
+The pooled matrix is a separate TSSEM calculation, not an input to the one-stage model above. It appears here only when computed successfully for the same data selection.
 
-### Papers
-
-Table \@ref(tab:papers) lists all included studies with author, year, age group, and sample size. Use it to see exactly which sources contribute to your results.
-
-```{r papers}
-StudyTab <- data.frame(
-    # Dataset = metaD()$basic_info$download_date,
-    StudyID = metaD$basic_info$matrix_id,
-    Authors = metaD$basic_info$author_et_al,
-    Year = as.character(metaD$basic_info$year),
-    Age = as.character(metaD$basic_info$age_class),
-    N = metaD$basic_info$n,
-    doi = metaD$basic_info$doi)
-
-knitr::kable(
-  StudyTab,
-  caption = 'Papers included in the analysis',
-  align = c("lccccccc")
-)
+```{r pooled, results='asis'}
+if(is.null(run$pooled)) {
+ cat("No matching exploratory pooled matrix was calculated. The one-stage model does not require it.")
+} else {
+ matrix <- masem_named_matrix(run$pooled$matrix,run$labels)
+ report_table(matrix,caption="Separate exploratory pooled correlations")
+}
 ```
 
-### Coverage (number of studies per correlation)
+# Interpretation and reproducibility
 
-Different variable pairs are informed by different subsets of studies. Table \@ref(tab:effects) shows k, the number of studies contributing each pairwise correlation. Values of 0 indicate no available information for that pair (the app highlighted such cases in the interface). Please avoid interpreting the results if any pair was informed by 0 observations.
-
-```{r effects}
-ktab<-pattern.na(metaD$cor_matrices, show.na = FALSE) # k cors
-rownames(ktab) <- paste0(1:nrow(ktab),".",rownames(ktab))
-colnames(ktab) <- paste0(1:ncol(ktab),".")
-
-knitr::kable(
-  ktab,
-  caption = 'Number of correlations considered for each pairwise combination',
-  align = c("lccccccc")
-)
-```
-
-### Pooled sample sizes per correlation
-
-Table \@ref(tab:correlationsN) reports the total sample size (ΣN) used to estimate each meta-analytic correlation. Because coverage differs by pair, ΣN can vary substantially across cells and will typically be smaller than the grand total when not all studies report all variables. Please ensure that a decent sample size for each correlation was available before interpreting the results.
-
-```{r correlationsN}
-ntab<-pattern.n(metaD$cor_matrices, metaD$basic_info$n) # k cors
-rownames(ntab) <- paste0(1:nrow(ntab),".",rownames(ntab))
-colnames(ntab) <- paste0(1:ncol(ntab),".")
-
-knitr::kable(
-  ntab,
-  caption = 'Total sample size for each pairwise combination',
-  align = c("lccccccc")
-)
-```
-
-# Results
-
-## Meta-analytic correlation matrix
-
-First, the app pooled the reported correlations across studies to obtain a meta-analytic correlation matrix among the selected variables. The numeric results are in Table \@ref(tab:metaMatrixCor).
-
-```{r metaMatrixCor}
-knitr::kable(
-  SumTable,
-  caption = 'Meta-analytical correlation coefficients',
-  align = c("lccccccc")
-)
-```
-
-To aid interpretation, Figure \@ref(fig:corrPlot) visualizes the same matrix: ellipses indicate the direction and strength of correlations, and numbers show the pooled estimates. Remember that not all cells are based on the same number of studies (see the coverage tables above).
-
-```{r corrPlot, fig.cap="Graphical representation of the estimated correlation coefficients"}
-SumTablePlot <- SumTable
-rownames(SumTablePlot)<-paste0(1:nrow(SumTable),".",rownames(SumTable))
-colnames(SumTablePlot)<-paste0(1:nrow(SumTable),".")
-corrplot(SumTable, method = "ellipse",
-                   addCoef.col = "black",
-                   tl.col = 'black', tl.srt = 45)
-```
-
-## metaSEM model
-
-Next, the app fit your regression model to the meta-analytic correlation matrix. The model you entered (possibly augmented automatically by the app to fix exogenous variances and add appropriate covariances/residual correlations) is shown below.
-
-```{r, echo=FALSE, results='asis'}
-txt <- params$augmented_model
-# If your string contains literal "\n", turn them into real newlines:
-txt <- gsub("\\\\n", "\n", txt)
-cat("```text\n", txt, "\n```", sep = "")
-```
-
-Table \@ref(tab:metaSEMresults) reports the estimated regression paths (~) and variances/covariances (~~). Estimates are on a correlation scale, which makes them easy to compare across variables. P-values refer to tests against zero.
-
-```{r metaSEMresults}
-knitr::kable(
-  SEMresults_df,
-  caption = 'MetaSEM results',
-  align = c("lccccccc")
-)
-```
-
-### Residual variances and R²
-
-Table \@ref(tab:resTab) summarizes residual variances and R² for endogenous variables. Here, R² = 1 − residual variance, which is appropriate because the model is estimated on correlations. Values near 1 indicate outcomes that are well explained by their predictors; values near 0 indicate limited explanatory power. Remember that, if the model was saturated, estimates might be informative but you have no indications about general model fit (if available, fit indices are shown in the app).
-
-```{r resTab}
-knitr::kable(
-  R2_table,
-  caption = 'Residual variances and R²',
-  align = "lccccccc"
-)
-```
-
-# Practical notes and interpretation tips
-
--   **Heterogeneous coverage**. Some correlations might be based on few studies or small ΣN. Use the coverage and ΣN tables to judge the robustness of specific cells and paths that depend on them.
-
--   **Directionality**. Regression paths reflect the structure you specified in the model; the meta-analytic correlations themselves are symmetric and do not imply causation.
-
--   **Scaling**. Because the analysis uses correlation matrices, results are directly comparable across variables and effectively standardized.
-
--   **Reproducibility**. The augmented model shown above captures any automatic adjustments made by the app (e.g., fixing exogenous variances to 1, adding covariances) so the analysis can be replicated exactly. To replicate the analysis, please download the selected data from the app.
-
--   **Further steps**. This report and the app are intended for quick exploratory analyses of SEB literature. To run publicable and robust findings you should enlarge the dataset to include studies covering associations between non-SEB variables (e.g., not all studies on the Big Five are included here and the estimation of the correlation between conscientiousness and academic achievement is possibly based on few samples).
-
-# General information
-
-  - All materials, data, and analytical code are provided in the GitHub repository associated with this project.
-  - You can download the filtered data used for this analysis from the Shiny app.
-  - All analyses were conducted in R (R Core Team, 2022) using the metaSEM package (Cheung, 2015).. 
+This app supports exploratory synthesis of the curated SEB literature. Participant overlap, heterogeneous pair-specific Ns and limited coverage remain relevant limitations. Regression direction reflects the specified model and does not establish causation. The selected RDS or ZIP export preserves matrices, canonical variable names, reference Ns, filters and model syntax for reproduction.
 
 # References

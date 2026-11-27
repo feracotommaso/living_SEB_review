@@ -217,143 +217,45 @@ augment_lavaan_model <- function(user_model, varnames,
                                  correlate_exogenous = TRUE,
                                  saturate_endogenous = TRUE,
                                  include_headings = TRUE) {
-  `%||%` <- function(a, b) if (!is.null(a)) a else b
-  squish <- function(x) gsub("\\s+", " ", trimws(x))
+  if (is.null(user_model) || !nzchar(trimws(user_model))) stop("Enter a model first.")
+  # Parse for validation and variable names; preserve the user's actual syntax.
+  parsed <- lavaan::lavParseModelString(user_model, as.data.frame = TRUE)
+  supported <- c("~", "~~", "=~")
+  if (any(!parsed$op %in% supported) || length(attr(parsed, "constraints")))
+    stop("Use regressions (~), covariances (~~) or loadings (=~). Intercepts, constraints and derived parameters are not supported here.")
+  latent <- unique(parsed$lhs[parsed$op == "=~"])
+  used <- unique(c(parsed$lhs, parsed$rhs))
+  unknown <- setdiff(used, c(varnames, latent))
+  if (length(unknown)) stop("Variables not in the current selection: ", paste(unknown, collapse = ", "))
+  if (length(intersect(latent, varnames))) stop("Latent variable names must differ from selected observed variables.")
+  if (length(latent) && (correlate_exogenous || saturate_endogenous))
+    stop("For measurement models, turn off automatic covariances and specify the required covariances explicitly.")
 
-  # 1) Split, strip comments
-  lines <- unlist(strsplit(user_model %||% "", "\n"))
-  lines <- trimws(gsub("#.*$", "", lines))
-  lines <- lines[nchar(lines) > 0]
-
-  # 2) Separate parts
-  meas_raw <- lines[grepl("=~", lines)]
-  meas_clean <- unique(squish(meas_raw))
-
-  is_reg  <- grepl("(^|[^~])~([^~]|$)", lines) & !grepl("~~", lines) & !grepl("=~", lines)
-  reg_raw <- lines[is_reg]
-
-  cov_existing <- unique(squish(lines[grepl("~~", lines)]))
-
-  # 3) Sanitize regressions
-  sanitize_reg_line <- function(line) {
-    parts <- strsplit(line, "~", fixed = TRUE)[[1]]
-    if (length(parts) < 2) return("")
-    lhs <- squish(parts[1])
-    rhs <- paste(parts[-1], collapse = "~")
-    terms <- strsplit(rhs, "\\+")[[1]]
-
-    clean_terms <- vapply(terms, function(t) {
-      t <- trimws(gsub("[()]", "", t))
-      if (grepl("\\*", t)) t <- sub(".*\\*", "", t)
-      t <- trimws(gsub("^[-+]", "", t))
-      if (t %in% c("", "1")) return("")
-      t
-    }, character(1))
-
-    clean_terms <- unique(clean_terms[clean_terms != ""])
-    if (length(clean_terms) == 0) return("")
-    squish(paste(lhs, "~", paste(clean_terms, collapse = " + ")))
+  endogenous <- unique(parsed$lhs[parsed$op == "~"])
+  exogenous <- setdiff(varnames, endogenous)
+  indicators <- unique(parsed$rhs[parsed$op == "=~"])
+  covariance <- parsed[parsed$op == "~~", , drop = FALSE]
+  # Compare pairs irrespective of order or a numeric/label modifier.
+  pair_key <- function(a, b) paste(sort(c(a, b)), collapse = "|")
+  existing <- mapply(pair_key, covariance$lhs, covariance$rhs, USE.NAMES = FALSE)
+  additions <- character()
+  if (fix_exo_var) for (variable in setdiff(exogenous, indicators)) {
+    if (!pair_key(variable, variable) %in% existing)
+      additions <- c(additions, paste0(variable, " ~~ 1*", variable))
   }
-
-  reg_clean <- Filter(nzchar, unique(vapply(reg_raw, sanitize_reg_line, character(1))))
-
-  # 4) Identify endogenous/exogenous
-  lhs <- if (length(reg_clean)) trimws(sub("\\~.*$", "", reg_clean)) else character(0)
-  endo <- unique(lhs)
-  exo  <- setdiff(varnames, endo)
-
-  # 4b) Parse indicators from measurement model
-  parse_indicators <- function(line) {
-    parts <- strsplit(line, "=~", fixed = TRUE)[[1]]
-    if (length(parts) < 2) return(character(0))
-    rhs <- squish(parts[2])
-    terms <- strsplit(rhs, "\\+")[[1]]
-    inds <- vapply(terms, function(t) {
-      t <- trimws(gsub("[()]", "", t))
-      if (grepl("\\*", t)) t <- sub(".*\\*", "", t)
-      t <- trimws(gsub("^[-+]", "", t))
-      if (t %in% c("", "1")) return("")
-      t
-    }, character(1))
-    unique(inds[nzchar(inds)])
+  add_pairs <- function(variables) {
+    if (length(variables) < 2) return(character())
+    pairs <- utils::combn(variables, 2)
+    keep <- !apply(pairs, 2, function(pair) pair_key(pair[1], pair[2]) %in% existing)
+    apply(pairs[, keep, drop = FALSE], 2, function(pair) paste(pair, collapse = " ~~ "))
   }
-  indicator_items <- unique(unlist(lapply(meas_clean, parse_indicators)))
-
-  # 5) Build auto-additions
-  add_cov <- character(0)
-  add_var <- character(0)
-
-  # Exogenous variances fixed to 1 (not for indicators if measurement present)
-  if (fix_exo_var && length(exo) > 0) {
-    exo_to_fix <- if (length(meas_clean) > 0) setdiff(exo, indicator_items) else exo
-    if (length(exo_to_fix) > 0) {
-      add_var <- paste0(exo_to_fix, " ~~ 1*", exo_to_fix)
-    }
-  }
-
-  # Exogenous–exogenous covariances
-  if (correlate_exogenous && length(exo) > 1) {
-    pe <- utils::combn(exo, 2)
-    add_cov <- c(add_cov, paste0(pe[1,], " ~~ ", pe[2,]))
-  }
-
-  # Residual correlations among endogenous variables
-  if (saturate_endogenous && length(endo) > 1) {
-    pi <- utils::combn(endo, 2)
-    add_cov <- c(add_cov, paste0(pi[1,], " ~~ ", pi[2,]))
-  }
-
-  add_cov <- setdiff(unique(squish(add_cov)), cov_existing)
-  add_var <- setdiff(unique(squish(add_var)), cov_existing)
-
-  # 6) Warn about unknown variables
-  rhs_all <- if (length(reg_clean)) trimws(sub(".*~", "", reg_clean)) else character(0)
-  rhs_terms <- trimws(unlist(strsplit(paste(rhs_all, collapse = " + "), "\\+")))
-  used_vars <- unique(c(endo, rhs_terms))
-  used_vars <- used_vars[nzchar(used_vars)]
-  bad <- setdiff(used_vars, varnames)
-  if (length(bad)) {
-    warning("These variables are not in the current data selection: ",
-            paste(bad, collapse = ", "))
-  }
-
-  # 7) Assemble with headings
-  blocks <- list()
-
-  # --- Measurement block ---
-  if (length(meas_clean)) {
-    blocks <- c(blocks,
-                list(if (include_headings) "# MEASUREMENT MODEL" else NULL),
-                list(meas_clean))
-  }
-
-  # --- Structural + user covariances ---
-  user_block <- c(reg_clean, cov_existing)
-  if (length(user_block)) {
-    blocks <- c(blocks,
-                list(if (include_headings) "# USER MODEL SPECIFICATION" else NULL),
-                list(user_block))
-  }
-
-  # --- Generated covariances ---
-  if (length(add_cov)) {
-    blocks <- c(blocks,
-                list(if (include_headings) "# APP-GENERATED COVARIANCES" else NULL),
-                list(add_cov))
-  }
-
-  # --- Generated variances ---
-  if (length(add_var)) {
-    blocks <- c(blocks,
-                list(if (include_headings) "# APP-GENERATED VARIANCES" else NULL),
-                list(add_var))
-  }
-
-  paste(unlist(blocks), collapse = "\n")
+  if (correlate_exogenous) additions <- c(additions, add_pairs(exogenous))
+  if (saturate_endogenous) additions <- c(additions, add_pairs(endogenous))
+  blocks <- c(if (include_headings) "# USER MODEL SPECIFICATION", trimws(user_model))
+  if (length(additions)) blocks <- c(blocks,
+    if (include_headings) "# APP-GENERATED VARIANCES AND COVARIANCES", additions)
+  paste(blocks, collapse = "\n")
 }
-
-
-
 
 make_osmasem_summary <- function(tab,
                                  skills,
@@ -482,52 +384,70 @@ makeReviewTable <- function(topics = NULL, subtopics = NULL, data = review, topi
               revTab = revTab))
 }
 
-generateBib <- function(bibAll = bibAll, data = NULL) {
-  df_unique <- data[!duplicated(data$paper_id), ]
+doi_code <- function(x) {
+  x <- trimws(as.character(x))
+  x <- sub("^(https?://(dx\\.)?doi\\.org/|doi:\\s*)", "", x, ignore.case = TRUE)
+  x[is.na(x) | !grepl("^10\\.[0-9]{4,9}/[^[:space:]]+$", x)] <- ""
+  tolower(x)
+}
 
-  # Clean titles from your dataset
-  titles_df <- trimws(tolower(df_unique$title))
+doi_links <- function(x) {
+  codes <- doi_code(x)
+  vapply(seq_along(x), function(i) {
+    if (!nzchar(codes[i])) return(as.character(htmltools::htmlEscape(ifelse(is.na(x[i]), "", x[i]))))
+    as.character(htmltools::tags$a(href = paste0("https://doi.org/", codes[i]),
+      target = "_blank", rel = "noopener noreferrer", codes[i]))
+  }, character(1))
+}
 
-  # Clean titles from BibEntry object
-  titles_bib <- tolower(sapply(bibAll, function(x) x$title))
-  titles_bib <- as.character(titles_bib)
+# HTML tables are used in both reports, including tables inside details/if blocks.
+report_table <- function(data, caption = NULL, digits = 3) {
+  data <- as.data.frame(data, check.names = FALSE)
+  counts <- c("Year", "Reference N", "Sum of reference Ns", "Papers", "Matrices",
+    "Matrices (k)", "Invalid values", "Available pairs", "df")
+  column_digits <- rep(digits, ncol(data))
+  column_digits[names(data) %in% counts] <- 0
+  for (name in names(data)) {
+    if (name == "DOI") data[[name]] <- doi_links(data[[name]]) else
+      if (is.character(data[[name]])) data[[name]] <- as.character(htmltools::htmlEscape(data[[name]]))
+  }
+  cat('\n<div class="report-table">\n',
+    knitr::kable(data, format = "html", escape = FALSE, digits = column_digits,
+      caption = caption, row.names = NA), '\n</div>\n\n', sep = "")
+}
 
-  # Titles that do not match exactly
-  unmatched_titles <- titles_df[titles_df %in% titles_bib == FALSE]
+generateBib <- function(bibAll = bibAll, data = NULL, review = NULL) {
+  papers <- data[!duplicated(data$paper_id), , drop = FALSE]
+  normalize_title <- function(x) gsub("[^[:alnum:]]", "", tolower(x))
+  bib_data <- as.data.frame(bibAll)
+  bib_field <- function(name) {
+    value <- if (name %in% names(bib_data)) as.character(bib_data[[name]]) else rep("", nrow(bib_data))
+    value[is.na(value)] <- ""
+    value
+  }
+  bib_doi <- doi_code(bib_field("doi"))
+  bib_title <- normalize_title(bib_field("title"))
+  entries <- lapply(seq_len(nrow(papers)), function(i) {
+    paper <- papers[i, , drop = FALSE]
+    doi <- doi_code(paper$doi)
+    matched <- if (nzchar(doi)) which(bib_doi == doi) else integer()
+    if (!length(matched)) {
+      matched <- which(bib_title == normalize_title(paper$title) &
+        (!nzchar(doi) | !nzchar(bib_doi) | bib_doi == doi))
+    }
+    if (length(matched)) return(bibAll[[matched[1]]])
 
-  # Fuzzy matching: only unmatched vs all BibTeX titles
-  dist_matrix <- stringdistmatrix(unmatched_titles, titles_bib, method = "osa")
-
-  # Get best match (lowest distance) for each unmatched title
-  closest_match_index <- apply(dist_matrix, 1, which.min)
-  closest_distances <- apply(dist_matrix, 1, min)
-
-  # Set a distance threshold for fuzzy match acceptance
-  threshold <- 20
-
-  # Build a data frame of fuzzy matches
-  fuzzy_matches <- data.frame(
-    original_title = unmatched_titles,
-    matched_bib_title = sapply(closest_match_index, function(i) bibAll[[i]]$title), #titles_bib[closest_match_index],
-    distance = closest_distances,
-    stringsAsFactors = FALSE
-  )
-
-  # Filter to only strong fuzzy matches
-  fuzzy_matches <- fuzzy_matches[fuzzy_matches$distance <= threshold, ]
-
-  # Exact matches
-  titles_exact <- titles_df[titles_df %in% titles_bib]
-
-  # Fuzzy matches — use the matched bib title column
-  titles_fuzzy <- tolower(fuzzy_matches$matched_bib_title)
-
-  # Combine all matched titles
-  all_matched_titles <- unique(c(titles_exact, titles_fuzzy))
-
-  # Filter the bib
-  matched <- titles_bib %in% all_matched_titles
-  filtered_bib <- bibAll[matched]
-
-  return(filtered_bib)
+    # Later acquisitions are not all in the historical bibAll export. Use the
+    # full authors and journal already recorded in the review, never a guessed match.
+    if (!is.null(review)) paper <- review[match(paper$paper_id, review$paper_id), , drop = FALSE]
+    required <- c("authors", "title", "journal", "year")
+    if (!all(required %in% names(paper)) || anyNA(paper[, required]) ||
+        any(!nzchar(trimws(unlist(paper[, required])))))
+      stop("Incomplete reference metadata for paper ", papers$paper_id[i], ". Check its coding before exporting.")
+    RefManageR::BibEntry(bibtype = "Article", key = paste0("livingSEB_", papers$paper_id[i]),
+      author = paper$authors, title = paper$title, journal = paper$journal,
+      year = paper$year, doi = if (nzchar(doi)) doi else NULL)
+  })
+  if (!length(entries)) return(bibAll[FALSE])
+  do.call(c, entries)
 }

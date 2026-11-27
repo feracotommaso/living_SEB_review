@@ -8,567 +8,393 @@ server <- function(input, output, session) {
   observeEvent(input$go_to_refs,      { updateNavbarPage(session, "pages", "About & Citation") })
   
   # META-ANALYSIS ----
-  # PAGE a ----
-  ### Data selection ----
-  # Basic info and moderators
-  study_info <- reactive({c("download_date","doi","year","age_class","paper_id", "matrix_id", "author_et_al", "n", "title", input$Moderators)})
-  # Reactive list of choices
+  study_info <- reactive({c("download_date", "doi", "year", "age_class", "paper_id",
+    "matrix_id", "author_et_al", "n", "title", input$Moderators)})
   outlist <- reactive({
-    req(input$outcomeTopics)  # ensure it's available
-    variable_search_choices(varlist[varlist$Topic == input$outcomeTopics,])
+    req(input$outcomeTopics)
+    variable_search_choices(varlist[varlist$Topic == input$outcomeTopics, ])
   })
-  # Dynamic UI generation
   output$dynamic_outcome_select <- renderUI({
-    selectInput("metaOutcomes", "Select the specific outcome:",
-                choices = outlist(),
+    selectInput("metaOutcomes", "Select the specific outcome:", choices = outlist(),
                 multiple = FALSE, selected = NULL)
   })
-  # Selected outcome
-  meta_outcome <- reactive({input$metaOutcomes})
-  # Get the requested data
+  meta_selection <- reactive({
+    list(outcome = input$metaOutcomes,
+      ages = sort(unique(as.character(input$age_filter))),
+      years = sort(unique(as.character(input$year_filter))))
+  })
   dm <- reactive({
-    # Get outcome variable
-    out_vars <- input$metaOutcomes
-    age_filter <- input$age_filter
-    year_filter <- input$year_filter
-    # Filter by age class if selected
-    if (!is.null(input$age_filter)) {
-      combined_data <- combined_data[combined_data$age_class %in% age_filter, ]
-    }
-    # Filter by year if selected
-    if (!is.null(input$year_filter)) {
-      combined_data <- combined_data[combined_data$year %in% year_filter, ]
-    }
-    # Compute metadata using your custom function
-    dm <- getMETAdata(pred_vars, out_vars, combined_data, study_info())
-    # Compute effect sizes
-    dm <- escalc(measure = "ZCOR", ri = value, ni = n, data = dm)
-    
-    return(dm)
+    req(input$metaOutcomes)
+    data <- combined_data
+    if (length(input$age_filter)) data <- data[data$age_class %in% input$age_filter, ]
+    if (length(input$year_filter)) data <- data[data$year %in% input$year_filter, ]
+    meta_prepare_effects(getMETAdata(pred_vars, input$metaOutcomes, data, study_info()))
   })
-  ### Data summary ----
-  # ---- Check study count
-  too_few_studies <- reactive({
-    d <- dm()
-    if (is.null(d)) return(TRUE)
-    k <- length(unique(d$matrix_id))   # number of unique studies
-    k <= 1
-  })
-  # ---- Red banner UI
+  output$metaCoverage <- renderTable({ meta_coverage_table(dm(), pred_vars, labels_app) }, digits = 0)
+  metaStudyTab <- reactive({ meta_sample_table(dm()) })
+  output$metaStudy_table <- DT::renderDT({
+    data <- metaStudyTab()
+    data$DOI <- doi_links(data$DOI)
+    table <- DT::datatable(data, rownames = FALSE, escape = setdiff(names(data), "DOI"),
+      options = list(pageLength = 10, scrollX = TRUE, order = list(list(0, "asc"), list(1, "asc"))))
+    table <- DT::formatRound(table, c("Year", "Reference N"), digits = 0, mark = "")
+    table <- DT::formatStyle(table, names(data), minWidth = "75px", verticalAlign = "top")
+    DT::formatStyle(table, "Title", minWidth = "300px", maxWidth = "400px", whiteSpace = "normal")
+  }, server = FALSE)
   output$studycount_banner <- renderUI({
-    if (!too_few_studies()) return(NULL)
-    
-    tags$div(
-      class = "alert alert-danger",
-      role = "alert",
-      tags$strong("STOP — insufficient data for meta-analysis."),
-      tags$br(),
-      "Only ", length(unique(dm()$matrix_id)), " study/studies available. ",
-      "Meta-analysis requires at least 2 studies.",
-      tags$br(),
-      "Please adjust your outcome selection or filters before proceeding."
-    )
+    coverage <- meta_coverage(dm(), pred_vars)
+    messages <- character()
+    if (any(coverage$k < 2)) messages <- c(messages,
+      paste("Fewer than two usable matrices:", paste(labels_app[coverage$skill[coverage$k < 2]], collapse = ", ")))
+    if (any(coverage$unusable > 0)) messages <- c(messages,
+      "Some observed values cannot be analyzed. The CSV identifies invalid correlations or reference Ns; source values are retained.")
+    if (!length(messages)) return(NULL)
+    div(class = "alert alert-warning", lapply(messages, p))
   })
-  # Study_table
-  metaStudyTab <- reactive({
-    uniqueD <- dm()[!duplicated(dm()$matrix_id), ]
-    data.frame(StudyID = uniqueD$matrix_id, 
-               Authors = uniqueD$author_et_al,
-               Year = as.character(uniqueD$year),
-               Age = uniqueD$age_class,
-               N = as.character(uniqueD$n),
-               doi = uniqueD$doi
-               )})
-  output$metaStudy_table <- renderTable({
-    rbind(metaStudyTab(),
-          c("Total","","","",sum(as.numeric(metaStudyTab()$N)),""))
-    })
-  ### Data download ----
-  # Downloadable csv of meta-analysis dataset
   output$downloadMetaData <- downloadHandler(
-    filename = function() {
-      paste(today(),"_livingSEBmetaData", ".csv", sep = "")
-    },
-    content = function(file) {
-      write.csv(dm(), file, row.names = FALSE)
-    }
-  )
-  
-  #PAGE b ####
-  ### Meta analysis ----
-  metaAnalysis <- eventReactive({input$meta_analysis},{
-    req(dm())
-    dm <- dm()
-    # Loop for each skill
-    outList <- list()
-    metaCol <- c("b","cil","ciu","se","z","p",
-                 "r","rcil","rciu","rpil","rpiu",
-                 "tau2",
-                 "k","N",
-                 "q","qdf","qp")
-    metaRes <- matrix(nrow = length(pred_vars), ncol = length(metaCol))
-    colnames(metaRes) <- metaCol
-    rownames(metaRes) <- pred_vars
-    
-    for (i in 1:length(pred_vars)) {
-      di <- dm[dm$pred == pred_vars[i] & is.na(dm$yi) == F,]
-      outList[[i]] <- rma.mv(yi = yi, V = vi, random = ~ 1 | paper_id / matrix_id,
-                             test = "t", data = di)
-      mres <- summary(outList[[i]])
-      pred <- predict(mres, transf=transf.ztor)
-      tau2 <- sum(mres$sigma2)
-      metaRes[i,] <- c(mres$beta,mres$ci.lb,mres$ci.ub,mres$se,mres$zval,mres$pval,
-                       pred$pred,pred$ci.lb,pred$ci.ub,pred$pi.lb,pred$pi.ub,
-                       tau2,
-                       nrow(di),sum(di$n[di$matrix_id %in% unique(di$matrix_id)]),
-                       mres$QE,mres$QEdf,mres$QEp
-      )
-    }
-    names(outList) <- pred_vars
-    
-    metaRes <- data.frame(metaRes)
-    metaRes$skill = pred_vars
-    
-    list(metaRes = metaRes, outList = outList)
+    filename = function() paste0(Sys.Date(), "_livingSEBmetaData.csv"),
+    content = function(file) write.csv(dm(), file, row.names = FALSE, fileEncoding = "UTF-8"))
+
+  # Save one complete analysis when the button is clicked.
+  metaAnalysis <- eventReactive(input$meta_analysis, {
+    run <- meta_fit_models(dm(), pred_vars)
+    run$selection <- meta_selection()
+    run$labels <- labels_app
+    run$outcome_label <- unname(labels_app[input$metaOutcomes])
+    run$created <- format(Sys.time(), "%Y-%m-%d %H:%M %Z")
+    run
   })
-  ### Output ----
-  output$metaResults <- renderTable({
-    metaRes <- metaAnalysis()$metaRes
-    metaResTable <- data.frame(
-      Skill = metaRes$skill,
-      N = paste0(metaRes$N, " k = (", metaRes$k, ")"),
-      r = format(round(metaRes$r, 3),nsmall=3),
-      CI = paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ",
-                  format(round(metaRes$rciu,3),nsmall=3),"]"),
-      se = format(round(metaRes$se,3),nsmall=3),
-      p = format(round(metaRes$p,4),3),
-      q = paste0(round(metaRes$q), "(",metaRes$qdf,")",ifelse(metaRes$qp < .01, "*", "")),
-      tau2 = format(round(metaRes$tau2,3),nsmall=3))
-    # Replace factor levels
-    metaResTable$Skill <- labels_app[as.character(metaResTable$Skill)]
-    metaResTable
+  meta_current <- reactive({
+    validate(need(isTruthy(input$meta_analysis), "Run the meta-analysis for the current selection."))
+    run <- metaAnalysis()
+    validate(need(identical(run$selection, meta_selection()),
+      "Selection changed. Run the meta-analysis again to update these results."))
+    run
   })
-  meta_outcome_selected <- eventReactive(input$meta_analysis, {
-    input$metaOutcomes
+  # Outputs stay empty until ready; instructions/errors are shown once in the status area.
+  meta_ready <- reactive({isTruthy(input$meta_analysis) &&
+    identical(metaAnalysis()$selection, meta_selection())})
+  output$meta_run_status <- renderUI({
+    if (!isTruthy(input$meta_analysis)) return(helpText("Select an outcome and filters, then run the meta-analysis."))
+    run <- metaAnalysis()
+    if (!identical(run$selection, meta_selection()))
+      return(div(class = "alert alert-warning", "Selection changed. Results and report are unavailable until you run the meta-analysis again."))
+    div(class = "alert alert-info", paste("Analysis:", run$outcome_label, "—", run$created))
+  })
+  shinyjs::disable("meta_analysis")
+  observe({
+    req(input$metaOutcomes)
+    shinyjs::toggleState("meta_analysis", condition = any(meta_coverage(dm(), pred_vars)$k >= 2))
+  })
+  shinyjs::disable("report")
+  observe({
+    valid <- FALSE
+    if (isTruthy(input$meta_analysis)) {
+      run <- metaAnalysis()
+      valid <- identical(run$selection, meta_selection()) && any(is.finite(run$metaRes$r))
+    }
+    shinyjs::toggleState("report", condition = valid)
+  })
+  observeEvent(metaAnalysis(), {
+    run <- metaAnalysis()
+    skills <- names(run$outList)[!vapply(run$outList, is.null, logical(1))]
+    updateSelectInput(session, "forestSelected", choices = stats::setNames(skills, unname(run$labels[skills])),
+      selected = if (length(skills)) skills[1] else character())
+  })
+  output$metaResults <- DT::renderDT({
+    req(meta_ready())
+    run <- meta_current()
+    data <- meta_results_table(run$metaRes, run$labels)
+    table <- DT::datatable(data, rownames = FALSE,
+      selection = "none", escape = TRUE,
+      options = list(dom = "t", scrollX = TRUE, ordering = FALSE))
+    table <- DT::formatRound(table, c("Papers", "Matrices (k)", "Sum of reference Ns"), digits = 0, mark = "")
+    DT::formatStyle(table, names(data), minWidth = "75px", whiteSpace = "nowrap")
+  }, server = FALSE)
+  output$meta_messages <- renderUI({
+    req(meta_ready())
+    run <- meta_current()
+    notes <- run$metaRes[nzchar(run$metaRes$note), , drop = FALSE]
+    if (!nrow(notes)) return(NULL)
+    div(class = "alert alert-warning", tags$ul(lapply(seq_len(nrow(notes)), function(i)
+      tags$li(tags$strong(paste0(run$labels[notes$skill[i]], ": ")), notes$note[i]))))
+  })
+  output$metaDetails <- renderTable({
+    req(meta_ready())
+    run <- meta_current()
+    meta_results_table(run$metaRes, run$labels, details = TRUE)
   })
   output$metaPlot <- renderPlot({
-    outcomemeta <- meta_outcome_selected()
-    outcomelabel <- varlist$label[varlist$column_name == outcomemeta]
-    metaRes <- metaAnalysis()$metaRes
-    metaRes$skill <- labels_app[as.character(metaRes$skill)]
-    metaRes$CI <- paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ",
-                         format(round(metaRes$rciu,3),nsmall=3),"]")
-    ggplot(metaRes, aes(x = r, y = reorder(skill,length(pred_vars):1))) +
-       geom_point(shape = 18,
-                  color = "black",
-                  size = 4) +
-       geom_errorbar(aes(xmin = rcil, xmax = rciu), width = 0, linewidth = .8) +
-       geom_vline(xintercept = c(.00), linetype = "dashed") +
-       labs(x = paste0("Meta-analytical association with ", outcomelabel), y = "Skill") +
-       theme_bw(base_size = 25) +
-       # theme(strip.text = element_text(size = 18)) +
-       annotate("text", x = metaRes$r,
-                y = length(pred_vars):1+.20,
-                label = paste0(round(metaRes$r,3)," ",metaRes$CI), 
-                hjust = "center", size = 5) +
-       coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.15,
-                                       min(metaRes$rcil)),
-                                 max(metaRes$rciu)))
+    req(meta_ready())
+    run <- meta_current()
+    validate(need(any(is.finite(run$metaRes$r)), "No skill could be estimated for this selection."))
+    meta_result_plot(run$metaRes, run$labels, run$outcome_label)
   })
-  
-  #PAGE c ####
-  ### Forest plots ----
   output$forestPlot <- renderPlot({
-    outList <- metaAnalysis()$outList
-    x = input$forestSelected
-    forest(outList[[x]], 
-           slab = outList[[x]]$data$author_et_al,
-           ilab = cbind(outList[[x]]$data$year,
-                        outList[[x]]$data$matrix_id),
-           ilab.lab = c("Year","ID"),
-           header = T,
-           main = paste0(x))
-  })
-  
-  # PAGE d. REPORT ####
-  output$report <- downloadHandler(
-    filename = "report_meta.html",
-    
-    content = function(file) {
-      # Generate filtered bib based on current data
-      filtered_bib <- generateBib(data = dm(), bibAll = bibAll)
-      #filtered_bib_path <- tempfile(fileext = ".bib")
-      filtered_bib_path <- file.path(tempdir(), "filtered_refs.bib")
-      RefManageR::WriteBib(filtered_bib, file = filtered_bib_path)
-      
-      # Copy the report template to a temporary location
-      tempReport <- file.path(tempdir(), "report_meta.Rmd")
-      file.copy("report_meta.Rmd", tempReport, overwrite = TRUE)
-      
-      # Parameters passed to Rmd
-      params <- list(
-        descriptives = metaStudyTab(),
-        metaRes = metaAnalysis()$metaRes,
-        outcome = meta_outcome(),
-        outlist = metaAnalysis()$outList,
-        dm = dm(),
-        bibfile = filtered_bib_path
-      )
-      
-      # Render the report
-      rmarkdown::render(
-        tempReport,
-        output_file = file,
-        params = params,
-        envir = new.env(parent = globalenv())
-      )
-    }
-  )
-  
-  # META-SEM ####
-  # PAGE a ####
-  ### Data selection ----
-  target_vars <- reactive({
-    # Combine all selections
-    all_selections <- c(input$SEBdomains, input$SEBfacets, input$PersonalityTraits, input$Outcomes)
-    # Remove NULLs or NA values
-    clean_selections <- na.omit(all_selections)
-    # Remove empty strings if needed
-    clean_selections <- clean_selections[clean_selections != ""]
-    clean_selections
-  })
-  # Get the requested data
-  metaD <- eventReactive({input$k_info}, {
-    # Filter
-    age_filter <- input$age_filter_masem
-    year_filter <- input$year_filter_masem
-    # Filter by age class if selected
-    if (!is.null(input$age_filter_masem)) {
-      combined_data <- combined_data[combined_data$age_class %in% age_filter, ]
-    }
-    # Filter by year if selected
-    if (!is.null(input$year_filter_masem)) {
-      combined_data <- combined_data[combined_data$year %in% year_filter, ]
-    }
-    # Get the data
-    getSEMdata(target_vars(),combined_data,study_info())
-  })
-  ### Data summary ----
-  # K_table
-  Ktab <- reactive({
-    req(metaD())
-    pattern.na(metaD()$cor_matrices, show.na = FALSE)  # counts of studies per correlation
-  })
-  output$K_table <- renderPrint({
-    ktab <- Ktab()
-    rownames(ktab) <- paste0(1:nrow(ktab),".",rownames(ktab))
-    colnames(ktab) <- paste0(1:ncol(ktab),".")
-    ktab
-  })
-  # ---- Find zero-coverage pairs
-  zero_pairs <- reactive({
-    ktab <- Ktab()
-    idx <- which(ktab == 0, arr.ind = TRUE)
-    if (nrow(idx) == 0) return(NULL)
-    data.frame(
-      var1 = rownames(ktab)[idx[,1]],
-      var2 = colnames(ktab)[idx[,2]],
-      stringsAsFactors = FALSE
-    )
-  })
-  zero_any <- reactive({ !is.null(zero_pairs()) })
-  # ---- Red banner UI
-  output$zero_banner <- renderUI({
-    if (!zero_any()) return(NULL)
-    pairs <- zero_pairs()
-    
-    # Show a concise list of the first few offending pairs
-    max_show <- 6
-    n <- nrow(pairs)
-    shown <- head(pairs, max_show)
-    pair_labels <- paste0(shown$var1, " \u2013 ", shown$var2)
-    extra <- if (n > max_show) paste0(" +", n - max_show, " more") else ""
-    tags$div(
-      class = "alert alert-danger",
-      role = "alert",
-      tags$strong("STOP — some correlations have ZERO coverage (k = 0)."),
-      tags$br(),
-      HTML(paste0("No studies report: ", paste(pair_labels, collapse = ", "), extra, ".")),
-      tags$br(),
-      "Please adjust your variable selection or filters before proceeding."
-    )
-  })
-  # Warnings
-  observeEvent(metaD(), {
-    req(metaD())
-    ktab<-pattern.na(metaD()$cor_matrices, show.na = FALSE)
-    if (sum(ktab<3)>0) {
-      showNotification("Some correlations will be based on few observations (< 3). Please proceed cautiously",
-                       type = "warning", duration = 6)
-    }
-    if (sum(ktab==0)>0) {
-      showNotification("Some correlations will be based on ZERO observations. Please DO NOT proceed",
-                       type = "error", duration = 6)
-    }
-  }, ignoreInit = TRUE)
-  # N_table
-  output$N_table <- renderPrint({
-    ntab<-pattern.n(metaD()$cor_matrices, metaD()$basic_info$n) 
-    rownames(ntab) <- paste0(1:nrow(ntab),".",rownames(ntab))
-    colnames(ntab) <- paste0(1:ncol(ntab),".")
-    ntab
-  }) 
-  # Warnings
-  observeEvent(metaD(), {
-    req(metaD())
-    ntab<-pattern.n(metaD()$cor_matrices, metaD()$basic_info$n) 
-    
-    if (sum(ntab<1000)>0) {
-      showNotification("Some correlations will be based on small sample size (<1000). Please proceed cautiously",
-                       type = "warning", duration = 6)
-    }
-    if (sum(ntab==0)>0) {
-      showNotification("Some correlations will be based on no samples. Please DO NOT proceed",
-                       type = "error", duration = 6)
-    }
-  }, ignoreInit = TRUE)
-  
-  # Study_table
-  StudyTab <- reactive({data.frame(
-    # Dataset = metaD()$basic_info$download_date,
-    StudyID = metaD()$basic_info$matrix_id,
-    Authors = metaD()$basic_info$author_et_al,
-    Year = as.character(metaD()$basic_info$year),
-    Age = as.character(metaD()$basic_info$age_class),
-    N = metaD()$basic_info$n,
-    doi = metaD()$basic_info$doi)})
-  output$Study_table <- renderTable({StudyTab()})
-  ### Data download ----
-  # Download list as RDS
-  output$downloadList <- downloadHandler(
-    filename = function() {
-      paste0(today(), "_livingSEB_SEM_data_list.rds")
-    },
-    content = function(file) {
-      saveRDS(metaD(), file)
-    }
-  )
-  # Download dataframes as separate csv
-  output$downloadZip <- downloadHandler(
-    filename = function() {
-      paste0(today(), "_livingSEB_SEM_data.zip")
-    },
-    content = function(file) {
-      tmpdir <- tempdir()
-      mylist <- metaD()
-      
-      # Track files explicitly
-      files_to_zip <- c()
-      
-      for (nm in names(mylist)) {
-        fpath <- file.path(tmpdir, paste0(nm, ".csv"))
-        write.csv(mylist[[nm]], fpath, row.names = FALSE)
-        files_to_zip <- c(files_to_zip, fpath)
-      }
-      
-      # Zip only the files we just wrote
-      zip::zip(zipfile = file, files = files_to_zip, mode = "cherry-pick")
-    },
-    contentType = "application/zip"
-  )
+    req(meta_ready())
+    run <- meta_current()
+    req(input$forestSelected)
+    model <- run$outList[[input$forestSelected]]
+    validate(need(!is.null(model), "This skill has no estimated model. Select an available skill."))
+    meta_forest_plot(model, run$labels[input$forestSelected])
+  }, height = 650)
 
-  # PAGE b ####
-  ### First-stage SEM ----
-  cfa1 <- eventReactive({input$s1_matrix}, {
-    metaSEM::tssem1(metaD()$cor_matrices, metaD()$basic_info$n)
+  # The report receives the saved run, never a mixture of old results and new inputs.
+  output$report <- downloadHandler(filename = "report_meta.html", content = function(file) {
+    run <- meta_current()
+    validate(need(nrow(run$used_data) > 0, "No estimated model is available for this report."))
+    report_dir <- tempfile("meta_report_")
+    dir.create(report_dir)
+    bib_file <- file.path(report_dir, "references.bib")
+    filtered_bib <- generateBib(data = run$used_data, bibAll = bibAll, review = review)
+    RefManageR::WriteBib(filtered_bib, file = bib_file, verbose = FALSE)
+    temp_report <- file.path(report_dir, "report_meta.Rmd")
+    file.copy("report_meta.Rmd", temp_report)
+    file.copy("R/meta_analysis.R", file.path(report_dir, "meta_analysis.R"))
+    file.copy("R/utils.R", file.path(report_dir, "utils.R"))
+    file.copy("report.css", file.path(report_dir, "report.css"))
+    rmarkdown::render(temp_report, output_file = file,
+      params = list(run = run, bibfile = bib_file), envir = new.env(parent = globalenv()), quiet = TRUE)
   })
-  ### Results ----
-  SumTable <- reactive({
-    x <- round(metaSEM::vec2symMat(coef(cfa1(),"fixed"),diag=FALSE),3)
-    dimnames(x) <- list(paste0(1:nrow(metaD()$cor_matrices[[1]]),".",rownames(metaD()$cor_matrices[[1]])),
-                        paste0(1:nrow(metaD()$cor_matrices[[1]]),"."))
-    #dimnames(x) <- rep(list(labels_app[rownames(metaD()$cor_matrices[[1]])]), 2)
-    x})
-  # Summary table
-  output$s1_table <- renderPrint({SumTable()}) 
-  output$s1_figure <- renderPlot({corrplot(SumTable(), method = "ellipse", 
-                                           addCoef.col = "black",
-                                           tl.col = 'black', tl.srt = 45)})
+
+  # META-SEM ----
+  target_vars <- reactive({sort(unique(na.omit(c(input$SEBdomains, input$SEBfacets,
+    input$PersonalityTraits, input$Outcomes))))})
+  observeEvent(target_vars(), {
+    updateTextAreaInput(session, "lavmodel", value = masem_model_variable_notes(
+      input$lavmodel, target_vars(), labels_app))
+  }, ignoreNULL = FALSE)
+  masem_selection <- reactive({list(variables = target_vars(),
+    ages = sort(unique(as.character(input$age_filter_masem))),
+    years = sort(unique(as.character(input$year_filter_masem))))})
+  masem_data_run <- eventReactive(input$k_info, {
+    tryCatch({
+      selection <- masem_selection()
+      data <- combined_data
+      if (length(selection$ages)) data <- data[data$age_class %in% selection$ages, ]
+      if (length(selection$years)) data <- data[data$year %in% selection$years, ]
+      loaded <- masem_prepare(selection$variables, data, study_info())
+      loaded$selection <- selection; loaded$labels <- labels_app
+      loaded
+    }, error = function(e) list(error = conditionMessage(e)))
+  })
+  metaD <- reactive({
+    validate(need(isTruthy(input$k_info), "Select variables and click Get info."))
+    loaded <- masem_data_run()
+    validate(need(is.null(loaded$error), loaded$error))
+    validate(need(identical(loaded$selection, masem_selection()), "Selection changed. Click Get info again."))
+    loaded
+  })
+  masem_data_ready <- reactive({
+    if (!isTruthy(input$k_info)) return(FALSE)
+    loaded <- masem_data_run()
+    is.null(loaded$error) && identical(loaded$selection, masem_selection())
+  })
+  output$masem_state <- renderUI({
+    if (!isTruthy(input$k_info)) return(helpText("Choose at least two variables, then click Get info."))
+    loaded <- masem_data_run()
+    if (!is.null(loaded$error)) return(div(class = "alert alert-warning", loaded$error))
+    if (!identical(loaded$selection, masem_selection()))
+      return(div(class = "alert alert-warning", "Selection changed. Click Get info again; earlier matrices, models and reports are unavailable."))
+    div(class = "alert alert-info", sprintf("Current data: %d articles, %d matrices, %d variables.",
+      length(unique(loaded$basic_info$paper_id)), nrow(loaded$basic_info), length(loaded$selection$variables)))
+  })
+  output$masem_variables <- renderTable({
+    req(masem_data_ready())
+    loaded <- metaD()
+    data.frame(Code = loaded$selection$variables, Label = unname(loaded$labels[loaded$selection$variables]))
+  })
+  output$K_table <- DT::renderDT({
+    req(masem_data_ready())
+    data <- metaD(); matrix <- masem_named_matrix(data$K, data$labels)
+    DT::datatable(data.frame(Variable = rownames(matrix), matrix, check.names = FALSE), rownames = FALSE,
+      selection = "none", options = list(dom = "t", scrollX = TRUE, ordering = FALSE))
+  }, server = FALSE)
+  output$N_table <- DT::renderDT({
+    req(masem_data_ready())
+    data <- metaD(); matrix <- masem_named_matrix(data$N, data$labels)
+    DT::datatable(data.frame(Variable = rownames(matrix), matrix, check.names = FALSE), rownames = FALSE,
+      selection = "none", options = list(dom = "t", scrollX = TRUE, ordering = FALSE))
+  }, server = FALSE)
+  output$zero_banner <- renderUI({
+    req(masem_data_ready())
+    data <- metaD(); pairs <- data$pairs
+    messages <- character()
+    if (any(pairs$k == 0)) {
+      zero <- pairs[pairs$k == 0, ]
+      shown <- head(zero, 6)
+      messages <- c(messages, paste("No reported correlation for:",
+        paste(paste(data$labels[shown$Variable1], data$labels[shown$Variable2], sep = " — "), collapse = "; "),
+        if (nrow(zero) > 6) paste("and", nrow(zero) - 6, "more pairs; see the exported pair table.")))
+    }
+    if (any(pairs$k > 0 & pairs$k < 3)) messages <- c(messages, "Some pairs have fewer than three contributing matrices.")
+    if (any(pairs$N > 0 & pairs$N < 1000)) messages <- c(messages, "Some pairs have a sum of reference Ns below 1000. This is an advisory warning, not an exclusion rule.")
+    if (!length(messages)) return(NULL)
+    div(class = "alert alert-warning", lapply(messages, p))
+  })
+  output$masem_audit <- renderTable({req(masem_data_ready()); metaD()$audit}, digits = 0)
+  output$Study_table <- DT::renderDT({
+    req(masem_data_ready())
+    data <- masem_sample_table(metaD())
+    data$DOI <- doi_links(data$DOI)
+    table <- DT::datatable(data, rownames = FALSE, escape = setdiff(names(data), "DOI"),
+      options = list(pageLength = 10, scrollX = TRUE, order = list(list(0, "asc"))))
+    DT::formatRound(table, c("Year", "Reference N"), digits = 0, mark = "")
+  }, server = FALSE)
+
+  # The pooled matrix is exploratory and is not an input to the one-stage model.
+  pooled_run <- eventReactive(input$s1_matrix, {
+    tryCatch({
+      data <- metaD(); result <- masem_pool(data)
+      result$selection <- data$selection; result$labels <- data$labels
+      result
+    }, error = function(e) list(error = conditionMessage(e)))
+  })
+  pooled_current <- reactive({
+    data <- metaD()
+    validate(need(isTruthy(input$s1_matrix), "Estimate the exploratory pooled matrix first."))
+    result <- pooled_run()
+    validate(need(is.null(result$error), result$error))
+    validate(need(identical(result$selection, data$selection), "Data selection changed. Estimate this matrix again."))
+    result
+  })
+  pooled_ready <- reactive({
+    if (!masem_data_ready() || !isTruthy(input$s1_matrix)) return(FALSE)
+    result <- pooled_run()
+    is.null(result$error) && identical(result$selection, masem_selection())
+  })
+  SumTable <- reactive({masem_named_matrix(pooled_current()$matrix, pooled_current()$labels)})
+  output$s1_diagnostics <- renderUI({
+    req(masem_data_ready())
+    if (!isTruthy(input$s1_matrix)) return(helpText("Optionally estimate the exploratory pooled matrix using the button on the left."))
+    result <- pooled_run()
+    if (!is.null(result$error)) return(div(class = "alert alert-warning", result$error))
+    if (!identical(result$selection, masem_selection()))
+      return(helpText("Data selection changed. Estimate the exploratory pooled matrix again."))
+    notes <- pooled_current()$diagnostics
+    if (length(notes)) div(class = "alert alert-warning", lapply(notes, p))
+  })
+  output$s1_table <- DT::renderDT({
+    req(pooled_ready())
+    matrix <- round(SumTable(), 3)
+    DT::datatable(data.frame(Variable = rownames(matrix), matrix, check.names = FALSE), rownames = FALSE,
+      selection = "none", options = list(dom = "t", scrollX = TRUE, ordering = FALSE))
+  }, server = FALSE)
+  output$s1_figure <- renderPlot({req(pooled_ready()); corrplot::corrplot(SumTable(), method = "ellipse", addCoef.col = "black",
+    tl.col = "black", tl.srt = 45, number.cex = .8)})
   output$download_s1_figure_png <- downloadHandler(
     filename = function() paste0("correlation_plot_", Sys.Date(), ".png"),
     content = function(file) {
-      # high-res PNG (2000x2000 px at 300 dpi ≈ ~6.7 in)
-      png(file, width = 2000, height = 2000, res = 300)
-      corrplot(SumTable(), method = "ellipse",
-               addCoef.col = "black",
-               tl.col = "black", tl.srt = 0)
-      dev.off()
-    }
-  )
-  
-  # PAGE c ####  
-  ### Model specification ----
+      matrix <- SumTable()
+      png(file, width = 2000, height = 2000, res = 300); on.exit(dev.off())
+      corrplot::corrplot(matrix, method = "ellipse", addCoef.col = "black", tl.col = "black", tl.srt = 45)
+    })
+
+  masem_specification <- reactive({list(user_model = input$lavmodel, auto_covariances = isTRUE(input$auto_saturate))})
   augmented_model <- reactive({
-    req(input$lavmodel, metaD())
-    augment_lavaan_model(
-      user_model          = input$lavmodel,
-      varnames            = rownames(metaD()$cor_matrices[[1]]),
-      fix_exo_var         = TRUE,
-      correlate_exogenous = input$auto_saturate,
-      saturate_endogenous = input$auto_saturate
-    )
+    data <- metaD()
+    tryCatch({
+      syntax <- augment_lavaan_model(input$lavmodel, data$selection$variables,
+        correlate_exogenous = isTRUE(input$auto_saturate), saturate_endogenous = isTRUE(input$auto_saturate))
+      masem_validate_ram(metaSEM::lavaan2RAM(syntax, obs.variables = data$selection$variables))
+      syntax
+    },
+      error = function(e) {validate(need(FALSE, conditionMessage(e)))})
   })
-  output$model_preview <- renderText({ augmented_model() })
-  ### Model fit ----
-  SEM <- eventReactive({input$fitSEM}, {
-    user_model <- input$lavmodel
-    varnames   <- rownames(metaD()$cor_matrices[[1]])
-    
-    model_aug <- augment_lavaan_model(
-      user_model          = user_model,
-      varnames            = varnames,
-      fix_exo_var         = TRUE,
-      correlate_exogenous = input$auto_saturate,
-      saturate_endogenous = input$auto_saturate
-    )
-    
-    RAM1 <- metaSEM::lavaan2RAM(model_aug, obs.variables = varnames)
-    T0   <- metaSEM::create.Tau2(RAM = RAM1, RE.type = "Zero",
-                                 Transform = "expLog", RE.startvalues = 0.05)
-    my.df <- metaSEM::Cor2DataFrame(metaD()$cor_matrices, metaD()$basic_info$n, acov = "weighted")
-    M0    <- create.vechsR(A0 = RAM1$A, S0 = RAM1$S, F0 = RAM1$F)
-    
-    osmasem(model.name = "One Stage MASEM (auto_augmented)",
-            Mmatrix = M0, Tmatrix = T0, data = my.df, intervals.type = "z")
+  output$model_preview <- renderText({req(masem_data_ready()); augmented_model()})
+  sem_run <- eventReactive(input$fitSEM, {
+    tryCatch({
+      data <- metaD()
+      run <- masem_fit(data, input$lavmodel, isTRUE(input$auto_saturate), data$labels)
+      run$selection <- data$selection; run$specification <- masem_specification()
+      run
+    }, error = function(e) list(error = conditionMessage(e)))
   })
-  ### Results ----
-  sumfit <- reactive({
-    req(SEM())
-    summary(SEM(), fitIndices = TRUE)
+  sem_attempt <- reactive({
+    data <- metaD()
+    validate(need(isTruthy(input$fitSEM), "Fit the model for the current data and syntax."))
+    run <- sem_run()
+    validate(need(is.null(run$error), run$error))
+    validate(need(identical(run$selection, data$selection), "Data selection changed. Fit the model again."))
+    validate(need(identical(run$specification, masem_specification()), "Model syntax or automatic covariances changed. Fit the model again."))
+    run
   })
-  # Fit indices and model fit
+  sem_current <- reactive({
+    run <- sem_attempt()
+    validate(need(isTRUE(run$ok), paste(run$diagnostics, collapse = " ")))
+    run
+  })
+  sem_ready <- reactive({
+    if (!masem_data_ready() || !isTruthy(input$fitSEM)) return(FALSE)
+    run <- sem_run()
+    is.null(run$error) && identical(run$selection, masem_selection()) &&
+      identical(run$specification, masem_specification()) && isTRUE(run$ok)
+  })
+  output$sem_diagnostics <- renderUI({
+    req(masem_data_ready())
+    if (!isTruthy(input$fitSEM)) return(helpText("Enter the model syntax, then click Fit model."))
+    run <- sem_run()
+    if (!is.null(run$error)) return(div(class = "alert alert-warning", run$error))
+    if (!identical(run$selection, masem_selection()) || !identical(run$specification, masem_specification()))
+      return(div(class = "alert alert-warning", "Data selection or model syntax changed. Fit the model again."))
+    div(class = if (run$ok && length(run$diagnostics) == 1) "alert alert-info" else "alert alert-warning",
+      lapply(run$diagnostics, p))
+  })
   output$fit_ui <- renderUI({
-    if (sumfit()$ChiDoF == 0) {
-      textOutput("fit_text")  # Show text
-    } else {
-      tableOutput("fit_table")  # Show table
-    }
+    req(sem_ready())
+    run <- sem_current()
+    if (isTRUE(run$summary$ChiDoF == 0))
+      return(helpText("Saturated model (df = 0): global fit indices are not informative. Inspect the estimates and uncertainty."))
+    tableOutput("fit_table")
   })
-  # Text output when ChiDoF == 0
-  output$fit_text <- renderText({
-    "This is a saturated model (df = 0), so the fit statistics are not informative, but the parameter estimates are (see below)."
-  })
-  # Table output when ChiDoF ≠ 0
-  output$fit_table <- renderTable({
-    data.frame(CFI = sumfit()$CFI,
-               TLI = sumfit()$TLI,
-               RMSEA = sumfit()$RMSEA,
-               SRMR = round(osmasemSRMR(SEM()),3)
-    )
-  })
-  # metaSEM results
-  SEMresults_df <- reactive({
-    req(sumfit())
-    sem_results_df(
-      sumfit    = sumfit(),
-      sem       = SEM(),
-      metaD     = list(
-        cor_matrices = metaD()$cor_matrices,  
-        basic_info   = list(n = metaD()$basic_info$n)
-      ),
-      labels_app = labels_app   
-    )
-  })
-  output$SEMresults <- renderTable({
-    SEMresults_df()[,-ncol(SEMresults_df())]
-  })
-  # Residual variances + R2
-  R2_table <- reactive({
-    req(SEM())
-    # extract residual (unique) variances from the fitted OSMASEM model
-    Sres_mat <- SEM()$mx.fit$Smatrix$result
-    Sres <- diag(Sres_mat)
-    
-    # variable names from your RAM S matrix labels
-    var_names <- colnames(SEM()$Mmatrix$S0$labels)
-    
-    # optional: replace with user-friendly labels if you have labels_app
-    if (exists("labels_app") && !is.null(labels_app)) {
-      clean_names <- ifelse(var_names %in% names(labels_app), labels_app[var_names], var_names)
-    } else {
-      clean_names <- var_names
-    }
-    
-    # build table
-    out <- data.frame(
-      variable = clean_names,
-      residual_var = round(Sres, 4),
-      R2 = round(pmax(0, 1 - Sres), 3),
-      stringsAsFactors = FALSE
-    )
-    
-    # helpful ordering: endogenous first (those appearing on LHS of A paths)
-    parTab <- sumfit()$parameters
-    endo_raw <- unique(parTab$row[parTab$matrix == "A0"])
-    endo <- if (exists("labels_app") && !is.null(labels_app)) {
-      ifelse(endo_raw %in% names(labels_app), labels_app[endo_raw], endo_raw)
-    } else endo_raw
-    out$endo <- out$variable %in% endo
-    out <- out[order(!out$endo, out$variable), c("variable","residual_var","R2")]
-    colnames(out) <- c("Variable","Residual var", "R2")
-    rownames(out) <- NULL
-    out
-  })
-  
-  output$R2_table <- renderTable({
-    R2_table()
-  }, striped = TRUE, bordered = TRUE, digits = 3)
-  # PAGE d. REPORT ####
-  output$report_masem <- downloadHandler(
-    # For PDF output, change this to "report.pdf"
-    filename = "report_masem.html",
-    
-    content = function(file) {
-      
-      # Generate filtered bib based on current data
-      filtered_bib <- generateBib(data = metaD()$basic_info, bibAll = bibAll)
-      #filtered_bib_path <- tempfile(fileext = ".bib")
-      filtered_bib_path <- file.path(tempdir(), "filtered_refs.bib")
-      RefManageR::WriteBib(filtered_bib, file = filtered_bib_path)
-      
-      # Copy the report file to a temporary directory before processing it, in
-      # case we don't have write permissions to the current working dir (which
-      # can happen when deployed).
-      tempReport <- file.path(tempdir(), "report_masem.Rmd")
-      file.copy("report_masem.Rmd", tempReport, overwrite = TRUE)
+  output$fit_table <- renderTable({req(sem_ready()); masem_fit_table(sem_current())}, digits = 3)
+  output$SEMresults <- renderTable({req(sem_ready()); masem_parameters(sem_current())})
+  output$SEMdetails <- renderTable({req(sem_ready()); masem_parameters(sem_current(), details = TRUE)})
+  output$R2_table <- renderTable({req(sem_ready()); masem_r2(sem_current())}, digits = 3)
 
-      # Set up parameters to pass to Rmd document
-      params <- list(
-        target_vars = target_vars(),
-        metaD = metaD(),
-        age_filter = input$age_filter_masem,
-        year_filter = input$year_filter_masem,
-        cfa1 = cfa1(),
-        SumTable = SumTable(),
-        lavmodel = input$lavmodel,
-        augmented_model = augmented_model(),
-        SEM = SEM(),
-        sumfit = sumfit(),
-        SEMresults_df = SEMresults_df(),
-        R2_table = R2_table(),
-        bibfile = filtered_bib_path
-        )
+  export_masem_data <- reactive({
+    data <- metaD()
+    data$software <- masem_require_versions()
+    data$user_model <- input$lavmodel; data$auto_covariances <- isTRUE(input$auto_saturate)
+    data$syntax <- tryCatch(augmented_model(), error = function(e) paste("Preview unavailable:", conditionMessage(e)))
+    data
+  })
+  output$downloadList <- downloadHandler(
+    filename = function() paste0(Sys.Date(), "_livingSEB_SEM_data_list.rds"),
+    content = function(file) saveRDS(export_masem_data(), file))
+  output$downloadZip <- downloadHandler(
+    filename = function() paste0(Sys.Date(), "_livingSEB_SEM_data.zip"),
+    content = function(file) masem_export_zip(export_masem_data(), file), contentType = "application/zip")
+  output$report_masem <- downloadHandler(filename = "report_masem.html", content = function(file) {
+    run <- sem_current()
+    run$pooled <- tryCatch(pooled_current(), error = function(e) NULL)
+    folder <- tempfile("masem_report_"); dir.create(folder)
+    bib <- file.path(folder, "references.bib")
+    RefManageR::WriteBib(generateBib(data = run$data$basic_info, bibAll = bibAll, review = review), bib, verbose = FALSE)
+    template <- file.path(folder, "report_masem.Rmd")
+    file.copy("report_masem.Rmd", template)
+    file.copy("R/masem_workflow.R", file.path(folder, "masem_workflow.R"))
+    file.copy("R/utils.R", file.path(folder, "utils.R"))
+    file.copy("report.css", file.path(folder, "report.css"))
+    rmarkdown::render(template, output_file = file, params = list(run = run, bibfile = bib),
+      envir = new.env(parent = globalenv()), quiet = TRUE)
+  })
 
-      # Knit the document, passing in the `params` list, and eval it in a
-      # child of the global environment (this isolates the code in the document
-      # from the code in this app).
-      rmarkdown::render(tempReport, output_file = file,
-                        params = params,
-                        envir = new.env(parent = globalenv())
-      )
-    }
-  )
-  
+  for (button in c("downloadList", "downloadZip", "s1_matrix", "download_s1_figure_png", "fitSEM", "report_masem")) shinyjs::disable(button)
+  observe({
+    shinyjs::toggleState("k_info", condition = length(target_vars()) >= 2)
+    data <- tryCatch(metaD(), error = function(e) NULL)
+    ready <- !is.null(data)
+    estimable <- ready && nrow(data$basic_info) >= 2 && all(data$pairs$k > 0)
+    syntax_ready <- estimable && !is.null(tryCatch(augmented_model(), error = function(e) NULL))
+    shinyjs::toggleState("downloadList", condition = ready)
+    shinyjs::toggleState("downloadZip", condition = ready)
+    shinyjs::toggleState("s1_matrix", condition = estimable)
+    shinyjs::toggleState("fitSEM", condition = syntax_ready)
+    shinyjs::toggleState("download_s1_figure_png", condition = isTruthy(input$s1_matrix) && !is.null(tryCatch(pooled_current(), error = function(e) NULL)))
+    shinyjs::toggleState("report_masem", condition = isTruthy(input$fitSEM) && !is.null(tryCatch(sem_current(), error = function(e) NULL)))
+  })
+
   # REVIEW ####
   ### Data selection ----
   # Choices for specific topics
@@ -602,10 +428,11 @@ server <- function(input, output, session) {
       p(sprintf('Detailed coding available for %d of %d articles. These filters search the coded articles; the complete list remains available without filters.',
         sum(!is.na(review$main_objective)&nzchar(review$main_objective)),nrow(review))),
       selectInput('review_constructs','Analyzed constructs (any selected):',choices=choices,multiple=TRUE),
-      selectInput('review_context','Sample context:',choices=c(tokens('sample_context'),'Not yet assessed'),multiple=TRUE),
-      selectInput('review_measurement','SEB measurement:',choices=c(tokens('seb_measurement'),'Not yet assessed'),multiple=TRUE),
-      selectInput('review_contribution','Scientific contribution:',choices=c(tokens('study_contribution'),'Not yet assessed'),multiple=TRUE),
-      selectInput('review_design','Study design:',choices=design_choices,multiple=TRUE))
+      tags$details(tags$summary('More filters: context, measurement, contribution and design'),
+        selectInput('review_context','Sample context:',choices=c(tokens('sample_context'),'Not yet assessed'),multiple=TRUE),
+        selectInput('review_measurement','SEB measurement:',choices=c(tokens('seb_measurement'),'Not yet assessed'),multiple=TRUE),
+        selectInput('review_contribution','Scientific contribution:',choices=c(tokens('study_contribution'),'Not yet assessed'),multiple=TRUE),
+        selectInput('review_design','Study design:',choices=design_choices,multiple=TRUE)))
   })
   revSelection <- reactive({
     # Inputs from UI
@@ -620,7 +447,8 @@ server <- function(input, output, session) {
     subtopics <- if (is.null(allSubLab) || !length(allSubLab)) NULL else
       unique(topics_list$Topic[topics_list$Topic_labs %in% allSubLab])
     
-    makeReviewTable(subtopics = subtopics, topics = topics,
+    search_data <- review_search_data(review, input$review_search, admcol, topics_list, combined_data)
+    makeReviewTable(subtopics = subtopics, topics = topics, data = search_data,
       constructs=input$review_constructs,context=input$review_context,measurement=input$review_measurement,
       contribution=input$review_contribution,design=input$review_design)
   })
@@ -632,14 +460,120 @@ server <- function(input, output, session) {
     shinyjs::toggleState("downloadFiltered", condition = has_data)
   })
   
-  output$revTable <- renderTable({
-    rs <- revSelection()
-    validate(
-      need(!is.null(rs$revTab), "No table available yet."),
-      need(NROW(rs$revTab) > 0,
-           "No results for the current combination. Try using the filtered specific topic that matches the selected broad topic(s).")
-    )
-    rs$revTab
+  review_articles <- reactive({
+    data <- revSelection()$filteredData
+    data[order(as.character(data$paper_id)), , drop = FALSE]
+  })
+  output$revTable <- DT::renderDT({
+    articles <- review_articles()
+    data <- review_browser_data(articles, input$review_columns, admcol, topics_list, combined_data)
+    doi <- doi_code(articles$doi[match(data$Code, articles$paper_id)])
+    data$Code <- vapply(seq_len(nrow(data)), function(i) {
+      code <- data$Code[i]
+      if (!nzchar(doi[i])) return(as.character(htmltools::htmlEscape(code)))
+      as.character(tags$a(code,
+        href = paste0("https://doi.org/", doi[i]),
+        target = "_blank", rel = "noopener noreferrer",
+        title = "Open article via DOI (new tab)",
+        `aria-label` = paste("Open article", code, "via DOI (new tab)")))
+    }, character(1))
+    # Plain links use DT's built-in behavior: opening a DOI does not select the row.
+    table <- DT::datatable(data, rownames = FALSE, escape = setdiff(names(data), "Code"),
+      selection = list(mode = "single", target = "row"),
+      class = "compact stripe hover",
+      options = list(pageLength = 10, lengthMenu = c(10, 25, 50), scrollX = TRUE,
+        scrollY = "45vh", scrollCollapse = TRUE, autoWidth = TRUE,
+        searching = FALSE,
+        order = list(list(0, "asc")),
+        language = list(emptyTable = "No matching articles. Adjust the filters.")))
+    # Scroll rows inside a bounded area: headers and the horizontal bar stay in view.
+    # Minimum widths keep added columns readable; scrollX handles the extra width.
+    widths <- stats::setNames(rep("220px", ncol(data)), names(data))
+    compact <- c(Code = "55px", Authors = "140px", Year = "55px", Title = "300px")
+    common <- intersect(names(compact), names(data))
+    widths[common] <- compact[common]
+    for (column in names(data)) {
+      table <- DT::formatStyle(table, column, minWidth = widths[[column]],
+        maxWidth = "360px", verticalAlign = "top", whiteSpace = "normal")
+    }
+    table
+  }, server = FALSE)
+
+  selected_review_id <- reactiveVal(NULL)
+  observeEvent(input$revTable_rows_selected, {
+    row <- input$revTable_rows_selected
+    if (length(row) == 1 && row <= nrow(review_articles()))
+      selected_review_id(as.character(review_articles()$paper_id[row]))
+  })
+  observeEvent(revSelection(), {
+    selected_review_id(NULL)
+    DT::selectRows(DT::dataTableProxy("revTable"), NULL)
+  })
+  # Changing columns redraws the table; clear the selection to keep it unambiguous.
+  observeEvent(input$review_columns, {
+    selected_review_id(NULL)
+    DT::selectRows(DT::dataTableProxy("revTable"), NULL)
+  })
+
+  output$review_article <- renderUI({
+    id <- selected_review_id()
+    if (is.null(id)) return(helpText("Select an article in the table to view its details."))
+    article <- review_articles()
+    article <- article[as.character(article$paper_id) == id, , drop = FALSE]
+    if (nrow(article) != 1) return(NULL)
+    text <- function(field) review_display_text(article[[field]], field, admcol, topics_list)
+    field <- function(label, name) tags$p(tags$strong(paste0(label, ": ")), text(name))
+    # Article coding is shared across components; instruments and Ns are sample-level.
+    samples <- combined_data[as.character(combined_data$paper_id) == id, , drop = FALSE]
+    sample_text <- function(name) {
+      if (!nrow(samples)) return(text(name))
+      values <- unique(as.character(samples[[name]]))
+      values <- values[!is.na(values) & nzchar(trimws(values))]
+      if (length(values)) paste(values, collapse = "; ") else "Not reported"
+    }
+    matrix_table <- NULL
+    if (nrow(samples)) {
+      matrix_data <- samples[, c("matrix_id", "n", "seb_measure", "seb_measure_type"), drop = FALSE]
+      names(matrix_data) <- c("Matrix", "Reference N", "SEB instruments", "Instrument format/version")
+      matrix_table <- tags$table(class = "table table-striped table-condensed",
+        tags$thead(tags$tr(lapply(names(matrix_data), tags$th))),
+        tags$tbody(lapply(seq_len(nrow(matrix_data)), function(i)
+          tags$tr(lapply(matrix_data[i, ], function(value)
+            tags$td(if (is.na(value) || !nzchar(as.character(value))) "Not reported" else as.character(value)))))))
+    }
+    doi <- text("doi")
+    doi_url <- if (grepl("^https?://doi\\.org/", doi)) doi else
+      if (grepl("^10\\.[0-9]{4,9}/", doi)) paste0("https://doi.org/", doi) else NULL
+    bslib::card(
+      bslib::card_header(paste("Article", id)),
+      bslib::card_body(
+        h3(text("title")),
+        p(paste(text("author_et_al"), text("year"), sep = " — ")),
+        field("Journal", "journal"), field("Inclusion", "final_decision"),
+        if (!is.null(doi_url)) tags$a("Open publication (DOI)", href = doi_url, target = "_blank", rel = "noopener"),
+        hr(), h4("Research focus"),
+        field("Main objective", "main_objective"),
+        field("Scientific contribution", "study_contribution"),
+        field("Study design", "study_design"), field("Topics", "review_topics"),
+        h4("Constructs, measures and context"),
+        tags$details(open = if (nchar(text("constructs_analyzed")) < 600) "open" else NULL,
+          tags$summary("Analyzed constructs"), p(text("constructs_analyzed"))),
+        helpText("Constructs analyzed in the article; availability in the quantitative matrices may differ."),
+        p(tags$strong("SEB instruments: "), sample_text("seb_measure")),
+        p(tags$strong("Instrument format/version: "), sample_text("seb_measure_type")),
+        field("SEB measurement", "seb_measurement"),
+        field("Sample context", "sample_context"), p(tags$strong("Country: "), sample_text("country")),
+        tags$details(tags$summary("Abstract"), p(text("abstract"))),
+        if (nrow(samples)) tagList(h4("Included quantitative matrices"), matrix_table,
+          helpText("Reference N is the coded sample size; available N can vary between correlations. Matrices may include documented sample overlaps.")),
+        hr(), h4("Data access and coding notes"),
+        field("Open data", "open_data"),
+        if (nrow(samples)) tags$details(tags$summary("Notes by quantitative matrix"),
+          lapply(seq_len(nrow(samples)), function(i) tagList(
+            h5(as.character(samples$matrix_id[i])),
+            p(review_display_text(samples$notes[i], "notes", admcol, topics_list))))) else
+          tagList(field("Notes", "notes"), field("Quantitative exclusion reason", "exclusion_meta")),
+        field("Additional information", "additional")))
   })
   output$revSummary <- renderUI({
     rs <- revSelection()
@@ -653,6 +587,7 @@ server <- function(input, output, session) {
   })
   ### Clean selection ---
   observeEvent(input$clean_rev, {
+    updateTextInput(session, "review_search", value = "")
     updateSelectInput(session, "topics",    selected = character(0))
     updateSelectInput(session, "subtopics", selected = character(0))
     for(id in c('review_constructs','review_context','review_measurement','review_contribution','review_design'))
@@ -674,8 +609,8 @@ server <- function(input, output, session) {
   
   # CITATION ####
   # Show APA (keeps line breaks)
-  output$apa_cite <- renderText({
-    apa_text
+  output$apa_cite <- renderUI({
+    shiny::markdown(apa_text)
   })
   
   # Show BibTeX (preformatted)

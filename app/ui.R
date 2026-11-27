@@ -21,6 +21,21 @@ ui <- navbarPage(
     tags$style(HTML("
     .home-cta { display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
     .home-cta .btn { width:auto; }   /* don't stretch */
+    .model-details { margin:16px 0; border:1px solid #cbd2d9; border-radius:6px; }
+    .model-details > summary { display:flex; align-items:center; gap:10px; padding:12px 14px;
+      background:#f3f5f7; font-weight:600; cursor:pointer; list-style:none; border-radius:6px; }
+    .model-details > summary::-webkit-details-marker { display:none; }
+    .model-details > summary::before { content:'›'; font-size:24px; line-height:1; }
+    .model-details[open] > summary::before { transform:rotate(90deg); }
+    .model-details[open] > summary { border-bottom:1px solid #cbd2d9; border-radius:6px 6px 0 0; }
+    .model-details > summary:hover { background:#e7ecf1; }
+    .model-details > summary:focus-visible { outline:2px solid #517c9c; outline-offset:2px; }
+    .model-details > summary small { margin-left:auto; color:#586571; font-weight:400; }
+    .model-details-body { padding:0 14px 10px; overflow-x:auto; }
+    .citation-code pre { white-space:pre-wrap; overflow-wrap:anywhere; word-break:normal; }
+    #revTable td:first-child > a { white-space:nowrap; font-weight:600; text-decoration:underline; }
+    #revTable td:first-child > a::after { content:'↗'; margin-left:3px; font-size:0.85em; }
+    #revTable tr.selected td:first-child > a { color:inherit; }
                     "))
   ),
 #  useShinyjs(),
@@ -32,17 +47,19 @@ ui <- navbarPage(
     title = "Home",
     br(),
     tags$div(
-      class = "alert alert-danger",
-      tags$strong("WARNING:"), " THIS IS STILL A DEMO"
+      class = "alert alert-info",
+      tags$strong("Exploratory evidence mapping. "),
+      "Use the curated data to explore the literature and plan analyses. Check sample overlap, coverage and measurement choices before a dedicated meta-analysis."
     ),
-    h1("The living SEB app - Introduction and functionalities", align = "left"),
+    h1("Explore the Living SEB database", align = "left"),
     p(
       "Explore peer-reviewed research on SEB skills: run classic meta-analyses of correlations, ",
       "estimate meta-analytic SEMs, and browse/download curated literature subsets."
     ),
-    tags$a("DOWNLOAD THE APP MANUAL HERE",
-           href = "https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf",
-           target = "_blank"),
+    tags$a("Read the manual", href = manual_html_url, target = "_blank", rel = "noopener",
+           class = "btn btn-outline-dark"),
+    tags$a("Download manual (PDF)", href = manual_pdf_url, target = "_blank", rel = "noopener",
+           class = "btn btn-outline-dark"),
     h3("What you can do"),
 
     # Use a 2-column layout
@@ -58,8 +75,8 @@ ui <- navbarPage(
             tags$ul(
               tags$li(tags$b("Choose outcomes:"), " pick a broad group and a specific outcome."),
               tags$li(tags$b("Filter:"), " restrict by age class and publication year."),
-              tags$li(tags$b("Run models:"), " multilevel random-effects via ", tags$code("metafor::rma.mv()"), "."),
-              tags$li(tags$b("Inspect:"), " results table, dot–CI plot, forest plots."),
+              tags$li(tags$b("Run models:"), " one multilevel random-effects model per BESSI domain."),
+              tags$li(tags$b("Inspect:"), " correlations and confidence intervals, article/matrix counts, expandable model details and forest plots."),
               tags$li(tags$b("Export:"), " CSV dataset and an HTML report.")
             )
           )
@@ -71,10 +88,11 @@ ui <- navbarPage(
             tags$ul(
               tags$li(tags$b("Select variables:"), " SEB domains/facets, traits, and outcomes."),
               tags$li(tags$b("Filter:"), " restrict by age class and publication year."),
-              tags$li(tags$b("Check coverage:"), " K/N tables with alerts for k=0 / small N."),
-              tags$li(tags$b("Pooled matrix:"), " compute meta-analytic correlations + plot."),
-              tags$li(tags$b("Specify model:"), " write lavaan syntax; app can auto-augment."),
-              tags$li(tags$b("Fit & interpret:"), " fit indices, parameters (with τ), and an R² table."),
+              tags$li(tags$b("Check coverage:"), " matrix counts and reference-N tables with coverage alerts."),
+              tags$li(tags$b("Pooled matrix:"), " optionally explore pooled correlations and a plot."),
+              tags$li(tags$b("Specify model:"), " use the selected variable codes listed in the model editor."),
+              tags$li(tags$b("Fit & interpret:"), " convergence, model parameters, fit indices and an R² table."),
+              tags$li(tags$b("Model:"), " one-stage estimation with between-study heterogeneity fixed at zero."),
               tags$li(tags$b("Export:"), " RDS/ZIP of data and an HTML report.")
             )
           )
@@ -84,10 +102,10 @@ ui <- navbarPage(
           bslib::card_header(tags$strong("Review browser")),
           bslib::card_body(
             tags$ul(
-              tags$li(tags$b("Filter by topics:"), " broad and specific topic labels."),
-              tags$li(tags$b("Dynamic filtering:"), " specific topics follow your broad choice."),
-              tags$li(tags$b("Results summary:"), " live count with helpful empty states."),
-              tags$li(tags$b("Export:"), " download the filtered studies as CSV.")
+              tags$li(tags$b("Find articles:"), " search text, topics, analyzed constructs and study characteristics."),
+              tags$li(tags$b("Browse:"), " articles initially ordered by code; sort headings and choose columns."),
+              tags$li(tags$b("Read details:"), " select a row to open the article card, including review-only papers."),
+              tags$li(tags$b("Export:"), " every matching article and all coded fields as CSV.")
             )
           )
         )
@@ -133,15 +151,19 @@ ui <- navbarPage(
                    #             multiple = FALSE )
       ),
       mainPanel(
+        uiOutput("meta_run_status"),
         tabsetPanel(
           tabPanel(
             "Summary",
-            h4("Samples included"),
-            tableOutput("metaStudy_table"),
-            h5("Note: N is the max sample size and may vary across skill domains"),
+            h4("Coverage by skill"),
+            tableOutput("metaCoverage"),
+            helpText("Invalid values counts observed correlations with non-finite r, r outside −1 < r < 1, or a non-finite reference N / N ≤ 3. Ordinary missing correlations are not counted. See analysis_status in the CSV for the reason."),
+            helpText("Ns are the reference sizes already coded for each matrix. Their sum is not a count of unique people; available N can vary by correlation and some samples overlap."),
+            h4("Included matrices"),
+            DT::DTOutput("metaStudy_table"),
             uiOutput("studycount_banner"),
             # Button
-            downloadButton("downloadMetaData", "Download the data")
+            downloadButton("downloadMetaData", "Download current selection")
           ),
 
 ### .b meta-matrix ####
@@ -151,7 +173,14 @@ ui <- navbarPage(
                          style="color: #fff; background-color: black; border-color: black"),
             br(),
             h4("Estimated correlations"),
-            tableOutput("metaResults"),
+            DT::DTOutput("metaResults"),
+            helpText("Correlations and their confidence intervals are on the r scale. N is the sum of coded reference sample sizes, not a count of unique people."),
+            uiOutput("meta_messages"),
+            tags$details(class = "model-details",
+              tags$summary(tags$span("Model details"), tags$small("SE · τ² · Q")),
+              div(class = "model-details-body",
+                helpText("SE and heterogeneity variance (tau-squared) are on the Fisher z scale. Q is the heterogeneity test statistic."),
+                tableOutput("metaDetails"))),
             # verbatimTextOutput("s1_table"),
             plotOutput("metaPlot")
           ),
@@ -160,7 +189,7 @@ ui <- navbarPage(
           tabPanel(
             title="Forest plots",
             selectInput("forestSelected", "Skill to show",
-                        pred_vars,
+                        stats::setNames(pred_vars, unname(labels_app[pred_vars])),
                         multiple = FALSE),
             plotOutput("forestPlot")
           ),
@@ -168,8 +197,7 @@ ui <- navbarPage(
 ### .d report ####
           tabPanel(
             title = "Report",
-            h4("You can download a report only if you run the meta-analysis first",
-               align = "left", style = "color: red; font-weight: bold;"), # WARNING
+            p("Run the meta-analysis for the current selection to enable the report. The report uses the same saved data, filters, labels and results."),
             br(),
             downloadButton("report", "Generate a brief report of the results")
           )
@@ -212,6 +240,7 @@ ui <- navbarPage(
       ),
 
       mainPanel(
+        uiOutput("masem_state"),
         tabsetPanel(
           tabPanel("Summary",
                    # Button
@@ -219,27 +248,32 @@ ui <- navbarPage(
                    downloadButton("downloadZip", "Download the data as csv files"),
                    br(),
 
-                   h4("K correlations"),
+                   h4("Contributing matrices per correlation (k)"),
                    uiOutput("zero_banner"),   # persistent red banner when k=0 pairs exist
-                   verbatimTextOutput("K_table"),
+                   DT::DTOutput("K_table"),
 
-                   h4("Sample size per correlation"),
-                   verbatimTextOutput("N_table"),
+                   h4("Sum of reference Ns per correlation"),
+                   DT::DTOutput("N_table"),
+                   helpText("Ns are the coded reference sample sizes, not pair-specific counts or counts of unique people. Missing correlations and documented sample overlaps are retained."),
+                   tags$details(class = "model-details", tags$summary("Selected variable codes and matrix checks"),
+                     div(class = "model-details-body", tableOutput("masem_variables"), tableOutput("masem_audit"))),
 
                    h4("Studies included"),
-                   tableOutput("Study_table")
+                   DT::DTOutput("Study_table")
           ),
 
 ### .b meta-matrix ####
           tabPanel(
             title="SEM matrix",
             br(),  # a capo
-            h1("Explore the meta-analytical matrix",align="left"), # titoletto di primo livello
+            h3("Explore the pooled correlation matrix"),
+            p("This optional TSSEM calculation is separate from the one-stage model. The one-stage model uses the study matrices directly."),
             br(),
             h4("Estimated correlation matrix"),
             actionButton("s1_matrix", "Get the meta-matrix",
                          style="color: #fff; background-color: black; border-color: black"),
-            verbatimTextOutput("s1_table"),
+            uiOutput("s1_diagnostics"),
+            DT::DTOutput("s1_table"),
             withSpinner(plotOutput("s1_figure")),
             downloadButton("download_s1_figure_png", "Download correlation plot (PNG)")
           ),
@@ -250,8 +284,8 @@ ui <- navbarPage(
             br(),
             textAreaInput(
               "lavmodel",
-              label = "Modify the model using lavaan syntax. The full model sintax is printed below",
-              width = "1000px",
+              label = "Model syntax (use the variable codes listed in the comments below):",
+              width = "100%",
               height = "300px",
               value =
                 "
@@ -259,32 +293,39 @@ ui <- navbarPage(
 # Regression coefficients as 'y ~ x1 + x2'
 academicachievement ~ selfmanagement + socialengagement + conscientiousness + extraversion
 
-# YOU CAN SATURATE THE MODEL (ESTIMATE ALL COVARIANCES BY THICKING THE BOX BELOW)
+# OPTIONAL COVARIANCES CAN BE ENTERED EXPLICITLY OR ADDED WITH THE CHECKBOX
 # Covariances as 'x1 ~~ x2'
 
-# EXOGENOUS VARIANCE IS SET TO 1 BY DEFAULT. DO NOT ADD IT
+# EXOGENOUS VARIANCES DEFAULT TO 1 UNLESS EXPLICITLY SPECIFIED
 "
             ),
+            helpText("Lines starting with # are comments and do not enter the model. The variable list updates when your selection changes; your model below it is retained."),
 #            checkboxInput("auto_fix_exo", "Fix exogenous variances to 1", TRUE),
-            checkboxInput("auto_saturate", "Saturate the model by adding residual correlations among all variables", TRUE),
+            checkboxInput("auto_saturate", "Add exogenous covariances and covariances between endogenous residuals", TRUE),
+            helpText("Fixed paths and variables without directed paths are supported. Feedback loops are not supported. For measurement models, switch off automatic covariances and specify them explicitly."),
             verbatimTextOutput("model_preview"),
             br(),
             actionButton("fitSEM","Fit the specified SEM model",
                          style="color: #fff; background-color: black; border-color: black"),
             h4("Model fit"),
+            p("One-stage MASEM; between-study heterogeneity is fixed at zero (the existing model setting)."),
+            uiOutput("sem_diagnostics"),
             uiOutput("fit_ui"),  # This will show either text or table dynamically
             h4("Model estimates"),
             withSpinner(tableOutput("SEMresults")), #withSpinner
+            helpText("Regression coefficients, loadings, covariances and variances are different parameters; they are not all correlations. Fixed coefficients remain visible in the model syntax; this table lists estimated parameters."),
+            tags$details(class = "model-details", tags$summary("Model details: standard errors and Wald tests"),
+              div(class = "model-details-body", tableOutput("SEMdetails"))),
             h4("Residual variance"),
-            withSpinner(tableOutput("R2_table"))#withSpinner
+            withSpinner(tableOutput("R2_table")),
+            helpText("R² is shown for endogenous variables where applicable, using their model-implied total variance. Out-of-range values are retained and flagged.")
 
           ),
 
 ### .d report ####
           tabPanel(
             title = "Report",
-            h4("You can download a report only if you run both the SEM matrix and the metaSEM",
-               align = "left", style = "color: red; font-weight: bold;"), # WARNING
+            p("Fit a validated one-stage model for the current data and syntax to enable the report. The exploratory pooled matrix is optional and is included only if calculated for the same data selection."),
             br(),
             downloadButton("report_masem", "Generate a brief report of the maSEM results")
           )
@@ -301,7 +342,9 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
     title="Review",
 ### .a topic selection ####
     sidebarLayout(
-      sidebarPanel(h3("Select the topics of interest"),
+      sidebarPanel(h3("Find articles"),
+                   textInput("review_search", "Search articles:",
+                     placeholder = "Any author, title, abstract, topic or construct"),
                    selectInput("topics", "BROAD topics:",
                                choices = unique(topics_list$Broad_topic_labs),
                                multiple = TRUE ),
@@ -316,10 +359,16 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
                    downloadButton("downloadFiltered", "Download the filtered data")
                    ),
       mainPanel(
-        h3("Filtered studies"),
+        h3("Included articles"),
         uiOutput("revSummary"),
-        #uiOutput("revTableUI"),
-        tableOutput("revTable")
+        selectizeInput("review_columns", "Columns to show (code is always included):",
+          choices = stats::setNames(setdiff(names(review_column_labels), "paper_id"),
+            unname(review_column_labels[names(review_column_labels) != "paper_id"])),
+          selected = c("author_et_al", "year", "title"), multiple = TRUE),
+        helpText("Click an article code ↗ to open its DOI in a new tab; click elsewhere in the row to read its details here. Click a heading to sort. Scroll within the table to browse rows; column headings and the horizontal scrollbar stay in place. Search and filters also include review-only articles; the download contains every matching article and all coded fields."),
+        DT::DTOutput("revTable"),
+        hr(),
+        uiOutput("review_article")
         )
       )
   ), #END PAGE REVIEW
@@ -332,41 +381,20 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
     bslib::card(
       bslib::card_header(tags$strong("Resources")),
       bslib::card_body(
-        br(),
-        actionButton(
-          inputId = "go_to_gitrepo",
-          label = "GitHub repository, data, and materials",
-          class = "btn btn-dark",
-          onclick = "window.open('https://github.com/feracotommaso/living_SEB_review/', '_blank')"
-          ),
-        br(),
-        actionButton(
-          inputId = "go_to_gitsite",
-          label = "Project site",
-          class = "btn btn-dark",
-          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/', '_blank')"
-        ),
-        br(),
-        actionButton(
-          inputId = "go_to_manual",
-          label = "Instruction manual",
-          class = "btn btn-dark",
-          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/appManual/livingSEBapp_manual.pdf', '_blank')"
-        ),
-        br(),
-        actionButton(
-          inputId = "go_to_preregistration",
-          label = "Preregistration",
-          class = "btn btn-dark",
-          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf', '_blank')"
-        ),
-        br(),
-        actionButton(
-          inputId = "go_to_livingpaper",
-          label = "Living results and database overview",
-          class = "btn btn-dark",
-          onclick = "window.open('https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html', '_blank')"
-        )
+        h4("Learn to use the app"),
+        p(tags$a("Manual (HTML)", href = manual_html_url, target = "_blank", rel = "noopener", class = "btn btn-dark"),
+          " ", tags$a("Manual (PDF)", href = manual_pdf_url, target = "_blank", rel = "noopener", class = "btn btn-outline-dark")),
+        p(tags$a("R analysis tutorials", href = "https://github.com/feracotommaso/living_SEB_review/tree/main/tutorialAnalysis",
+          target = "_blank", rel = "noopener"), " - simple scripts for local meta-analysis and one-stage MASEM."),
+        h4("Data, methods and results"),
+        p(tags$a("GitHub repository, codebooks and data", href = "https://github.com/feracotommaso/living_SEB_review/",
+          target = "_blank", rel = "noopener"), " - CSV data and XLSX companions for human review."),
+        p(tags$a("Living results and database overview", href = "https://feracotommaso.github.io/living_SEB_review/paper/livingSEBresults.html",
+          target = "_blank", rel = "noopener")),
+        p(tags$a("Preregistration", href = "https://feracotommaso.github.io/living_SEB_review/preregistration/Preregistration_protocol_livingSEB.pdf",
+          target = "_blank", rel = "noopener")),
+        p(tags$a("Project site", href = "https://feracotommaso.github.io/living_SEB_review/",
+          target = "_blank", rel = "noopener"))
       ),
       br(),
 
@@ -416,11 +444,11 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
         # How to cite
         bslib::card_header(tags$strong("Cite this app")),
         bslib::card_body(
-          p("If you use this app or dataset, please cite it as:"),
-          # preformatted APA (multi-line)
-          verbatimTextOutput("apa_cite"),
+          p("If you use this app or dataset, cite the Living SEB Skills Project:"),
+          p("Also record the app version, selected variables and filters, and save the analysis data and report. The project citation does not identify a particular data snapshot."),
+          uiOutput("apa_cite"),
           p("BibTeX:"),
-          verbatimTextOutput("bib_cite"),
+          div(class = "citation-code", verbatimTextOutput("bib_cite")),
           br(),
           downloadButton("download_bib", "Download .bib")
           ),
@@ -428,10 +456,19 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
 
         # Version / data snapshot
         bslib::card(
-          bslib::card_header(tags$strong("Version & data snapshot")),
+          bslib::card_header(tags$strong("Version & loaded data")),
           bslib::card_body(
-            p("App version: v0.1 (demo)"),
-            p("Dataset last updated: see repository README for the latest snapshot/date.")
+            p(paste("App interface version:", app_version)),
+            p("Data source: the published GitHub main branch, loaded when the app starts."),
+            p(paste("Data loaded at:", data_loaded_at)),
+            helpText("This is the retrieval time, not the date of the latest scientific database change. Data releases and app releases are updated separately."),
+            p(sprintf("Loaded database: %d review articles; %d quantitative articles; %d correlation matrices.",
+              length(unique(review$paper_id)), length(unique(combined_data$paper_id)), length(unique(combined_data$matrix_id)))),
+            tags$details(class = "model-details", tags$summary("Analysis environment"),
+              div(class = "model-details-body",
+              p(paste("R", getRversion())),
+              p(paste(names(masem_require_versions()), masem_require_versions(), collapse = "; ")),
+              p(paste("metafor", as.character(getNamespaceVersion("metafor"))))))
           )
         )
       ), # <-- CLOSE LEFT COLUMN DIV
@@ -445,10 +482,9 @@ academicachievement ~ selfmanagement + socialengagement + conscientiousness + ex
             br(),
             bslib::card_body(
               tags$ul(
-                tags$li(HTML("<b>Packages:</b> metafor, metaSEM, ggplot2, corrplot, shiny, bslib, shinyjs")),
+                tags$li(HTML("<b>Packages:</b> metafor, metaSEM, lavaan, OpenMx, ggplot2, corrplot, shiny, DT, bslib, shinyjs")),
                 tags$li(HTML("<b>Inspiration:</b> webMASEM — Jak et al. (2021), <a href='https://doi.org/10.1002/jrsm.1498' target='_blank'>https://doi.org/10.1002/jrsm.1498</a>")),
-                tags$li(HTML("<b>People:</b> I thank, Chris Soto and Brent Roberts for supporting and motivating the development of this app and Enrico Toffalini, Filippo Gambarota, and Margherita Calderan for teaching me how to manage all this.",
-                             "A special thank to Jak and colleagues (2021) for the webMASEM inspiration."))
+                tags$li(HTML("<b>Acknowledgments:</b> Thanks to Chris Soto and Brent Roberts for supporting the project, and to Enrico Toffalini, Filippo Gambarota and Margherita Calderan for their guidance and contributions. Thanks also to Jak and colleagues for the webMASEM inspiration."))
               )
             )
           ),

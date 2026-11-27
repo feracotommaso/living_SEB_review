@@ -15,6 +15,8 @@
 # - 'metaSEM' for metaSEM meta-analysis.
 # - 'tidyverse' for data wrangling and plotting via ggplot2.
 # - 'corrplot' for correlations plotting
+# Tested with metaSEM 2.0, lavaan 0.7-3 and OpenMx 2.22.7.
+# See INSTALLATION.md; restart R after package updates.
 source(here::here("R/utils.R"))
 
 library(metaSEM)   # Structural equation modeling in a meta-analytic framework
@@ -27,21 +29,23 @@ library(corrplot)  # Correlation matrix plotting
 # Notes:
 # - The two “Download from git” lines show how to fetch the latest files.
 # - The two “Open it locally” lines show how to use the data you downloaded locally.
-# - Only one source is needed in practice; here both are demonstrated.
+# - Local files are used below. The remote alternative is commented out.
+# - To use published data instead, uncomment the remote import and comment
+#   the matching local import; do not run both and silently replace one source.
 
 # -------------------- Combined meta-analytic dataset -------------------- #
 # Example pipeline: open combined data and analyze using meta-analytic SEM
 ## Download it from git
-data_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/3.meta_data/meta_data/metadata.xlsx"
-combined_data <- load_xlsx_url(data_url)  # helper that reads an xlsx from URL
+# data_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/3.meta_data/meta_data/metadata.xlsx"
+# combined_data <- load_xlsx_url(data_url)
 # Open it locally
 combined_data <- readxl::read_excel(here::here("data/3.meta_data/meta_data/metadata.xlsx"))
 
 # -------------------- Matrix codebook / admissible columns -------------- #
 # Codebook defines valid variable names and their human-readable labels
 ## Download it from git
-admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/matrix_codebook.xlsx"
-admcol <- load_xlsx_url(admcol_url)
+# admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/matrix_codebook.xlsx"
+# admcol <- load_xlsx_url(admcol_url)
 ## Open it locally
 admcol <- readxl::read_excel(here::here("data/matrix_codebook.xlsx"))
 
@@ -54,7 +58,8 @@ labels_app <- setNames(varlist$label, varlist$column_name)
 
 # ========================= STUDY SELECTION & SETUP ====================== ####
 # Define the variables to include in the correlation matrices and models.
-# NOTE: All variables referenced in the SEM must be present in each matrix.
+# Variables must be in the selected data; individual matrices may have missing
+# correlations. Do not replace missing correlations or source Ns automatically.
 target_vars <- c("academicachievement",
                  "selfmanagement", "socialengagement",
                  "conscientiousness", "extraversion")
@@ -64,18 +69,18 @@ study_info <- c("matrix_id", "author_et_al", "year", "n", "age_class", "doi")
 
 # Extract per-study correlation matrices and aligned metadata for SEM.
 # The helper 'getSEMdata':
-#  - filter to matrices containing the target_vars
-#  - harmonize order of variables
+#  - retain matrices reporting at least one selected pair
+#  - sort and name variables consistently, preserving missing correlations
 #  - return a list with $cor_matrices (list of R-by-R matrices)
 #    and $basic_info (data.frame aligned to that list)
-metaD <- getSEMdata(target_vars,combined_data,study_info) # !! This excludes rows without variables of interest
+metaD <- getSEMdata(target_vars,combined_data,study_info)
 
 # ============================== DATA DESCRIPTION ======================== ####
 # Inspect missingness patterns across matrices (by correlation entries).
 # 'pattern.na' shows which correlations are available across studies (k).
 pattern.na(metaD$cor_matrices, show.na = FALSE) # k cors
 
-# Inspect available sample sizes per correlation (n aligned to matrices).
+# Sums of coded reference Ns, not pair-specific counts or unique participants.
 pattern.n(metaD$cor_matrices, metaD$basic_info$n) # n per cor
 
 # Prepare a study inventory table (useful for PRISMA/reporting appendices).
@@ -90,7 +95,8 @@ StudyTab <- data.frame(
 
 # ============================== STEP 1 METASEM ======================== ####
 
-# GOAL: Pool correlation matrices across studies (Stage 1 of two-stage MASEM).
+# GOAL: Explore a pooled matrix. This is separate from the one-stage fit below;
+# the one-stage model uses the original matrices directly, not SumTable.
 # 'tssem1' performs a random-effects meta-analysis of each unique correlation,
 # weighting by study n, to estimate the pooled (weighted) correlation matrix.
 
@@ -117,12 +123,12 @@ corrplot::corrplot(SumTable, method = "ellipse",
 # ============================== STEP 2 OSMASEM ======================== ####
 
 # GOAL: One-Stage MASEM (OSMASEM): estimate the SEM directly from all study-
-# level correlation matrices, accounting for sampling error & between-study
-# heterogeneity in a single step (vs. two-stage approach).
+# level correlation matrices, accounting for sampling error. In the current
+# example, between-study heterogeneity is fixed at zero.
 
 # ------------------------ 1) Specify the SEM in lavaan syntax ------------- #
 # IMPORTANT:
-# - All target variables must appear in the model.
+# - The model must be identified and acyclic; coverage alone is not sufficient.
 # - Exogenous variables (predictors with no regressions onto them) typically
 #   have their variances fixed to 1 to set the scale in OSMASEM.
 # - Pairwise covariances among exogenous variables are included (~~).
@@ -130,7 +136,7 @@ lavmodel <- "
 # REGRESSION
 academicachievement ~ selfmanagement + socialengagement + conscientiousness + extraversion
 
-# COVARIANCES (not needed)
+# COVARIANCES AMONG PREDICTORS (estimated)
 conscientiousness ~~ extraversion
 conscientiousness ~~ selfmanagement
 conscientiousness ~~ socialengagement
@@ -157,7 +163,7 @@ varnames <- rownames(metaD$cor_matrices[[1]]) # Get the names of the variables
 #   varnames            = varnames,
 #   fix_exo_var         = TRUE,
 #   correlate_exogenous = TRUE,
-#   saturate_endogenous = TRUE$auto_saturate
+#   saturate_endogenous = FALSE
 #   )
 
 
@@ -169,10 +175,9 @@ nvar <- nrow(metaD$cor_matrices[[1]]) # Get their number
 
 RAM1 <- metaSEM::lavaan2RAM(lavmodel, obs.variables=varnames) # Generate RAM syntax from lavaan
 
-# Create a random-effects structure (Tau^2) for OSMASEM:
-# - RE.type = "Diag": independent random effects for each element.
-# - Transform = "expLog": keep variances positive via parameter transform.
-# - RE.startvalues: starting values for between-study variances.
+# Preserve the current model: RE.type = "Zero" fixes heterogeneity to zero.
+# Transform/start values are retained from the original call but do not free
+# any heterogeneity parameters in the Zero specification.
 T0 <- metaSEM::create.Tau2(RAM=RAM1, RE.type="Zero", 
                            Transform="expLog", RE.startvalues=0.05)
 
@@ -182,12 +187,13 @@ T0 <- metaSEM::create.Tau2(RAM=RAM1, RE.type="Zero",
 my.df <- metaSEM::Cor2DataFrame(metaD$cor_matrices, metaD$basic_info$n, acov = "weighted")
 
 # Build the model-implied vectorized covariance structure from RAM for OSMASEM:
-# - 'create.vechsR' prepares the M (means fixed to 0), A, S, F into vech form.
+# - 'create.vechsR' builds the implied correlation vector from A, S and F,
+#   deriving dependent-variable residual variances for correlation analysis.
 M0 <- create.vechsR(A0=RAM1$A, S0=RAM1$S, F0 = RAM1$F)
 
 # ------------------------ 3) Fit the One-Stage MASEM model --------------- #
-# 'osmasem' fits the SEM directly to all correlation matrices with random
-# effects Tmatrix = T0. 'intervals.type = "z"' requests z-based CIs.
+# 'osmasem' fits the original matrices directly with zero heterogeneity in T0.
+# 'intervals.type = "z"' requests Wald-z intervals for the model parameters.
 oss <- osmasem(model.name="One Stage MASEM", Mmatrix=M0, Tmatrix=T0, data=my.df, intervals.type = "z")
 
 # Summarize parameter estimates and global fit indices
@@ -197,9 +203,8 @@ sumfit
 
 # ------------------------ 4) Report key fit indices ---------------------- #
 # Assemble a compact fit table:
-# - CFI/TLI: incremental fit (closer to 1 is better)
-# - RMSEA: absolute misfit per df (≈ .05 good, .08 fair)
-# - SRMR: residual correlation misfit (≈ .08 or lower good)
+# - For this saturated example (df = 0), global fit indices are uninformative.
+# - For non-saturated models, interpret fit together with coverage and precision.
 data.frame(CFI = sumfit$CFI,
            TLI = sumfit$TLI,
            RMSEA = sumfit$RMSEA,
@@ -215,8 +220,8 @@ Sres <- as.matrix(diag(Sres))
 dimnames(Sres) <- list(colnames(oss$Mmatrix$S0$labels),'(residual) variance')
 round(Sres,4)
 
-# Extract between-study variance components (Tau) in vectorized order:
-# - 'VarCorr(oss)' returns the random-effect variances for model elements.
+# Extract correlation-level heterogeneity in vectorized order (all zero here):
+# - These are not heterogeneity estimates for individual regression paths.
 # - Taking diag() grabs variances; sqrt() converts to SDs (heterogeneity SD).
 vcor <- round(diag(metaSEM::VarCorr(oss)),3)
 names(vcor) <- my.df$ylabels

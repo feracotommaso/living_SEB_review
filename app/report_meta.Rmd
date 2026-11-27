@@ -1,167 +1,100 @@
 ---
-title: "Report - meta analysis of the correlations"
+title: "Meta-analysis of correlations"
 author: "Living SEB app"
 output:
-  bookdown::html_document2
+  bookdown::html_document2:
+    css: report.css
 params:
-  metaRes: NA
-  descriptives: NA
-  outcome: NA
-  outlist: NA
-  dm: NA
+  run: NA
   bibfile: NA
 bibliography: '`r normalizePath(params$bibfile, winslash = "/", mustWork = TRUE)`'
 nocite: "@*"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-
-library(kableExtra)
-library(ggplot2)
-
-#   - Labels for the plots and tables
-load_xlsx_url <- function(url) {
-  temp_file <- tempfile(fileext = ".xlsx")
-  tryCatch({
-    download.file(url, destfile = temp_file, mode = "wb")
-    readxl::read_excel(temp_file)
-  }, error = function(e) {
-    stop("Failed to download or read Excel file: ", e$message)
-  })
-}
-
-admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/matrix_codebook.xlsx"
-admcol <- load_xlsx_url(admcol_url)
-
-varlist <- admcol[complete.cases(admcol[,1:4]),] # List of the variables that can be used with different grain [Topic, BROAD, specific, and label]
-labels_app <- setNames(varlist$label, varlist$column_name) # Create a named vector from the lookup table
-
-# Results and data from the app
-descriptives <- params$descriptives
-metaRes <- params$metaRes
-metaRes$skill <- labels_app[as.character(metaRes$skill)]
-
-out_selected <- params$outcome
-out_selected <- labels_app[as.character(out_selected)]
-
-outList <- params$outlist
-dm <- params$dm
-
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+source("meta_analysis.R", local = TRUE)
+source("utils.R", local = TRUE)
+run <- params$run
+results <- run$metaRes
+estimated <- results[is.finite(results$r), , drop = FALSE]
+used <- run$used_data
+filters <- function(x) if (length(x)) paste(x, collapse = ", ") else "All"
 ```
 
-# Introduction
+# Selection and method
 
-This report summarizes a three-level random-effects meta-analysis of the cross-sectional associations between the five SEB skill domains and the selected outcome (`r out_selected`), run via the Living SEB app. The app workflow consisted in the following steps:
+Analysis run: **`r run$created`**.
 
--   Select the outcome and filters (e.g., publication years, age groups) and compile all eligible study effects.
--   Transform correlations from each study: Pearson’s 𝑟 values are converted to Fisher’s 𝑧 to stabilize variance.
--   Fit a three-level random-effects model (REML estimation) that separates sampling error from between-study and within-study/within-paper heterogeneity, so multiple effects from the same paper/sample are properly handled.
--   Pool effects and back-transform the model’s summary estimates from 𝑧 back to 𝑟 for interpretation, with t-based confidence intervals.
+- Outcome: **`r run$outcome_label`**.
+- Age groups: `r filters(run$selection$ages)`.
+- Publication years: `r filters(run$selection$years)`.
 
-In practical terms, the app computes a precision-weighted average of study-level Fisher's 𝑧 correlations for each skill–outcome pair, where larger samples carry more weight and a random-effects term allows true effects to vary across studies. Only studies that report a given pair contribute to that pair’s estimate. For transparency, we report per-pair k (number of contributing studies) and ΣN (total participants contributing to that specific pair).
+This report uses the data, filters, labels and fitted models saved together when the analysis was run. Changing the app filters requires a new analysis before exporting a report.
 
-What “three-level” means here. Effect sizes are nested (e.g., multiple correlations from the same sample or paper). A three-level model accounts for dependence by allowing variation within papers/samples and variation between papers, in addition to sampling error. This yields more accurate standard errors and heterogeneity estimates than treating all effects as independent.
+For each of the five BESSI domains, correlations are transformed to Fisher's *z*. The existing random-effects model is fitted with REML using `metafor::rma.mv`, with matrix identifiers nested within paper identifiers (`random = ~ 1 | paper_id / matrix_id`) and t-based inference. Pooled correlations and confidence limits are back-transformed to *r*. Standard errors and heterogeneity variances remain on the Fisher *z* scale.
 
-General details of the analysis:
+The model represents clustering within papers. It does not fully account for every form of participant overlap or correlated sampling error, including overlaps across different papers. The database is intended for exploratory synthesis; study-specific notes remain relevant when interpreting a result.
 
--   All materials, data, and code are available in the project’s GitHub repository.
--   Filtered data used for this run can be downloaded directly from the app.
--   Analyses were conducted in R (R Core Team, 2022) with metafor (Viechtbauer, 2010).
--   Pearson’s r correlation coefficients were transformed to Fisher’s z scale for analysis. The results were then back-transformed to Pearson’s r
--   We employed three-level meta-analytic random-effects models using restricted maximum likelihood estimation. This approach accounts for heterogeneity both between and within studies.
--   Confidence intervals were estimated based on a t-distribution
+# Data coverage
 
-## Descriptive statistics
+The estimated models use **`r length(unique(used$paper_id))` articles**, **`r length(unique(used$matrix_id))` matrices**, and **`r nrow(used)` observed skill–outcome correlations**. Counts below are specific to each skill, so the same matrix can contribute to several domains.
 
-The outcome selected for this meta-analysis is:
+Ns are the reference sample sizes already coded in the database. The sum of those Ns is **not a count of unique people**: sample overlap may be present, and the available N may differ between correlations. Ns have not been automatically replaced with pair-specific values.
 
-```{r}
-print(out_selected)
+```{r coverage, results='asis'}
+report_table(meta_coverage_table(run$data, results$skill, run$labels),
+  caption = "Available usable data by skill before model fitting")
 ```
 
-A total of `r length(unique(dm$paper_id))` papers, `r length(unique(dm$matrix_id))` samples, and `r length(dm)` effects were considered for this meta-analysis.
+Missing correlations do not contribute to a model. “Invalid values” counts observed correlations that cannot be analyzed because r is non-finite or outside −1 < r < 1, or the reference N is non-finite or at most 3. It does not count ordinary missing correlations. The downloadable data identify the reason; source values are retained. Skills with fewer than two usable matrices, or a model error, are marked as not estimable.
 
-The samples included in the meta-analysis are summarized in Table \@ref(tab:descriptives).
-
-```{r descriptives}
-knitr::kable(
-  descriptives,
-  caption = 'Samples included and corresponding sizes',
-  align = c("lllccc")
-)
+```{r descriptives, results='asis'}
+report_table(meta_sample_table(used), caption = "Matrices contributing to estimated models")
 ```
 
 # Results
 
-The results of the meta-analysis are synthesized in the following table (Table \@ref(tab:metaRes)).
-
--   The strongest association appeared for `r round(metaRes$r[which.max(metaRes$r)],2)` with `r out_selected` (pooled *r* = `r metaRes$skill[which.max(metaRes$r)]`), while the weakest is `r metaRes$skill[which.min(metaRes$r)]` (pooled *r* = `r round(metaRes$r[which.min(metaRes$r)],2)`).
--   In total, `r sum(metaRes$p < 0.05)` pairs reached *p* \< 0.05 (`r sum(metaRes$p < 0.01)` at *p* \< 0.01; `r sum(metaRes$p < 0.001)` at *p* \< 0.001).
--   Use the forest plots to verify whether significant results reflect consistent evidence or are driven by a few influential studies.
-
-```{r metaRes}
-metaResTable <- data.frame(
-      Skill = metaRes$skill,
-      N = paste0(metaRes$N, " k = (", metaRes$k, ")"),
-      r = format(round(metaRes$r, 3),nsmall=3),
-      CI = paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ",
-                  format(round(metaRes$rciu,3),nsmall=3),"]"),
-      se = format(round(metaRes$se,3),nsmall=3),
-      p = format(round(metaRes$p,4),3),
-      q = paste0(round(metaRes$q), "(",metaRes$qdf,")",ifelse(metaRes$qp < .01, "*", "")),
-      tau2 = format(round(metaRes$tau2,3),nsmall=3))
-
-# metaResTable$Skill <- labels_app[as.character(metaResTable$Skill)]
-
-knitr::kable(
-  metaResTable,
-  caption = 'Results of the meta-analysis',
-  align = c("lccccccc")
-)
+```{r results, results='asis'}
+report_table(meta_results_table(results, run$labels), caption = "Meta-analysis results")
 ```
 
-Figure \@ref(fig:metaplot) shows the same results graphically. Confidence intervals are plotted together with point estimates.
-
-```{r metaplot, fig.cap="Graphic representation of the results"}
-metaRes$CI <- paste0("[",format(round(metaRes$rcil,3),nsmall=3),"; ",
-                         format(round(metaRes$rciu,3),nsmall=3),"]")
-      
-ggplot(metaRes, aes(x = r, y = reorder(skill,5:1))) +
-       geom_point(shape = 18,
-                  color = "black",
-                  size = 4) +
-       geom_errorbar(aes(xmin = rcil, xmax = rciu), width = 0, linewidth = .8) +
-       geom_vline(xintercept = c(.00), linetype = "dashed") +
-       labs(x = "Meta-analytical association", y = "Skill") +
-       theme_bw(base_size = 18) +
-#       theme(strip.text = element_text(size = 18)) +
-       annotate("text", x = metaRes$r,
-                y = length(pred_vars):1+.20,
-                label = paste0(round(metaRes$r,3)," ",metaRes$CI), 
-                hjust = "center", size = 5) +
-       coord_cartesian(xlim = c(ifelse(min(metaRes$rcil) > -.05, -.15,
-                                       min(metaRes$rcil)),
-                                 max(metaRes$rciu)))
+```{r model-details, results='asis'}
+cat('<details><summary>Model details</summary>\n')
+cat('<p>SE and heterogeneity variance (tau-squared) are on the Fisher z scale. Q is the heterogeneity test statistic.</p>\n')
+report_table(meta_results_table(results, run$labels, details = TRUE),
+  caption = 'Technical model details')
+cat('\n</details>\n')
 ```
 
-## Forest plots
+```{r model-notes, results='asis'}
+for (i in which(nzchar(results$note))) {
+  cat("\n\n**", run$labels[results$skill[i]], ":** ", results$note[i], "\n", sep = "")
+}
+if (nrow(estimated)) {
+  largest <- which.max(abs(estimated$r))
+  cat("\n\nThe largest absolute pooled association among the estimated domains is for **",
+    run$labels[estimated$skill[largest]], "** (*r* = ",
+    formatC(estimated$r[largest], digits = 3, format = "f"), ").\n", sep = "")
+} else {
+  cat("\n\nNo model could be estimated.\n")
+}
+```
 
-For each skill–outcome pair, the forest plots display the study-level correlations (points with CIs) and the pooled estimate. This view is most useful for judging consistency across studies, spotting outliers, and understanding why a pair may have a wide CI or large 𝜏2. Plotted values are shown on the𝑟scale (back-transformed from Fisher’s𝑧) for interpretability.
+The figure below shows estimates and 95% confidence intervals on the correlation (*r*) scale, for domains with an estimated model.
 
-```{r}
-for (i in 1:length(outList)) {
-  this_var <- names(outList[i])
-  this_var <- labels_app[as.character(this_var)]
-  row_labels <- paste0(outList[[i]]$data$author_et_al, " ",
-                       outList[[i]]$data$year)
-  forest(outList[[i]],
-         slab = row_labels,
-         atransf = transf.ztor,
-         pch = 19,
-         xlab = "Fisher-transformed correlation (r)",
-         main = paste("Outcome:", this_var)
-  )
+```{r pooled-plot, fig.width=9, fig.height=5}
+if (nrow(estimated)) print(meta_result_plot(results, run$labels, run$outcome_label))
+```
+
+# Forest plots
+
+Forest plots identify each contributing matrix by authors, year and matrix code. Tick labels and estimates are displayed as correlations (*r*), with positions along a Fisher *z* axis. Only successfully estimated domains are plotted.
+
+```{r forest-plots, fig.width=11, fig.height=9}
+for (skill in names(run$outList)) {
+  model <- run$outList[[skill]]
+  if (!is.null(model)) meta_forest_plot(model, run$labels[skill])
 }
 ```
 

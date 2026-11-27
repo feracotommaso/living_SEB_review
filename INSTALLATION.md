@@ -24,6 +24,41 @@ See [MONTHLY_WORKFLOW.md](MONTHLY_WORKFLOW.md) for the sequence and
 one-time existing-workbook import and Windows locale settings.
 PDFs remain in the ignored `data/2.full_abstracting/pdfs/` directory.
 
+## MetaSEM app and analyses
+
+The revised app requires **metaSEM >= 2.0** and **lavaan >= 0.7-3** (R >= 4.2).
+The tested release bundle uses R 4.5.1 and OpenMx 2.22.7; this OpenMx version
+requires R >= 4.5.0. Use R 4.5 or newer for this package combination. Restart R after
+installing or updating either package. The app checks these minimum versions
+at startup and records the versions in its MetaSEM reports and data exports.
+
+```r
+install.packages(c("lavaan", "metaSEM"), repos = "https://cran.r-project.org")
+packageVersion("metaSEM")
+packageVersion("lavaan")
+```
+
+The one-stage model remains `RE.type="Zero"`, `acov="weighted"`, with Wald-z
+intervals. Fixed directed coefficients and variables without directed paths are
+supported; feedback loops remain unsupported by this correlation-model path.
+The exploratory `tssem1()` pooling remains a separate calculation with its
+existing defaults. Local version-comparison results and previous package copies
+are retained under Git-ignored `archive_local/metasem_version_check_2026_11_26/`.
+
+## App release
+
+Render `appManual/livingSEBapp_manual.qmd` to HTML and PDF, then version the
+reviewed app, manual, citation files and tutorials. Merge/push the approved
+changes to `main` and wait for GitHub Pages to publish the updated manual before
+deploying `app/`: standalone deployments link to the published Pages manual and
+load the citation/data files from `main`.
+
+Deploy the complete `app/` directory, including its `R/` helpers, both report
+templates and `report.css`. `rsconnect::listDeploymentFiles("app")` lists the
+payload; `rsconnect::appDependencies("app")` resolves package versions. Keep the
+local manual backup, raw/individual data and validation artifacts outside this
+payload. After deployment, check startup and one current analysis/report online.
+
 ## Paper formats
 
 APAquarto is stored only in `paper/_extensions/`. The paper selects

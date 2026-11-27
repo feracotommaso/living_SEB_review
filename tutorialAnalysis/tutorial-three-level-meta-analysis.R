@@ -27,21 +27,22 @@ library(ggplot2)
 # Notes:
 # - The two “Download from git” lines show how to fetch the latest files.
 # - The two “Open it locally” lines show how to use the data download locally.
-# - Only one source is needed in practice; here both are demonstrated.
+# - Local files are used below; the published-data alternative is commented.
+# - Choose one source for both inputs, rather than overwriting a remote import.
 
 # -------------------- Combined meta-analytic dataset -------------------- #
 # Here you can open the combined data and analyse them using metafor
 ## Download it from git
-data_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/3.meta_data/meta_data/metadata.xlsx"
-combined_data <- load_xlsx_url(data_url)
+# data_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/3.meta_data/meta_data/metadata.xlsx"
+# combined_data <- load_xlsx_url(data_url)
 # Open it locally
 combined_data <- readxl::read_excel(here::here("data/3.meta_data/meta_data/metadata.xlsx"))
 
 # -------------------- Matrix codebook / admissible columns -------------- #
 # Open the matrix codebook with the admissible colnames
 ## Download it from git
-admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/matrix_codebook.xlsx"
-admcol <- load_xlsx_url(admcol_url)
+# admcol_url <- "https://raw.githubusercontent.com/feracotommaso/living_SEB_review/main/data/matrix_codebook.xlsx"
+# admcol <- load_xlsx_url(admcol_url)
 ## Open it locally
 admcol <- readxl::read_excel(here::here("data/matrix_codebook.xlsx"))
 
@@ -78,6 +79,8 @@ out_var <- sort(c("academicachievement"))
 # the data as desired
 # Expected output 'dm' will contain columns:
 #   pred (predictor), out (outcome), value (r), n, paper_id, matrix_id, etc.
+# Missing correlations are retained in the data and omitted for the relevant
+# fit. Ns are coded reference sizes and can differ from pair-specific Ns.
 dm <- getMETAdata(pred_vars, out_var, combined_data, study_info)
 
 # -------------------- Effect size calculation --------------------------- #
@@ -105,6 +108,11 @@ rbind(metaStudyTab,
 #   - Extract point estimate (Fisher's z and back-transformed r), CIs, SE, p
 #   - Extract prediction interval (PI) on r scale and heterogeneity (tau^2)
 #   - Record k (number of effects) and total N for included matrices.
+# k counts contributing matrices, which can share participants. N is a sum of
+# reference Ns, not unique people. SE and tau^2 below remain on the Fisher-z
+# scale; r and its CI are back-transformed. REML is the rma.mv default.
+# The historical field named z stores mres$zval; with test="t" this is a t
+# statistic. Prediction intervals are calculated here, but the plot shows CIs.
 
 # Preallocate containers
 outList <- list()
